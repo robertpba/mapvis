@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+// sourceCompatibility = 1.5
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.testng:testng:6.8.8'
+    compile group: 'net.sf.jopt-simple', name: 'jopt-simple', version : '4.6'
+    compile 'org.apache.directory.studio:org.apache.commons.collections:3.2.1'
+    compile 'net.sf.jung:jung-visualization:2.0.1'
+    compile 'net.sf.jung:jung-api:2.0.1'
+    compile 'net.sf.jung:jung2:2.0.1'
+    compile 'net.sf.jung:jung-graph-impl:2.0.1'
+    compile 'org.prefuse:prefuse:beta-20071021'
+}
+
+test.scanForTestClasses = false

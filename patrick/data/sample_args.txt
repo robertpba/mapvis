@@ -1,0 +1,34 @@
+--conn jdbc:mysql://192.168.123.1/wikidb -u wikiuser -p wiki1111
+--conn jdbc:mysql://umsurvey.umac.mo/test -u cipang -p wiki1111
+
+Run on Windows command prompt:
+java -classpath ./mapwiki.jar;./lib/collections-generic-4.01.jar;./lib/colt-1.2.0.jar;./lib/concurrent-1.3.4.jar;./lib/j3d-core-1.3.1.jar;./lib/jopt-simple-3.2.jar;./lib/jung-3d-2.0.1.jar;./lib/jung-3d-demos-2.0.1.jar;./lib/jung-algorithms-2.0.1.jar;./lib/jung-api-2.0.1.jar;./lib/jung-graph-impl-2.0.1.jar;./lib/jung-io-2.0.1.jar;./lib/jung-jai-2.0.1.jar;./lib/jung-jai-samples-2.0.1.jar;./lib/jung-samples-2.0.1.jar;./lib/jung-visualization-2.0.1.jar;./lib/mysql-connector-java-5.0.8-bin.jar;./lib/stax-api-1.0.1.jar;./lib/vecmath-1.3.1.jar;./lib/wstx-asl-3.2.6.jar mapwiki.preprocessor.CalcCosSim
+
+Run on Linux
+java -classpath ./mapwiki.jar:./lib/collections-generic-4.01.jar:./lib/colt-1.2.0.jar:./lib/concurrent-1.3.4.jar:./lib/j3d-core-1.3.1.jar:./lib/jopt-simple-3.2.jar:./lib/jung-3d-2.0.1.jar:./lib/jung-3d-demos-2.0.1.jar:./lib/jung-algorithms-2.0.1.jar:./lib/jung-api-2.0.1.jar:./lib/jung-graph-impl-2.0.1.jar:./lib/jung-io-2.0.1.jar:./lib/jung-jai-2.0.1.jar:./lib/jung-jai-samples-2.0.1.jar:./lib/jung-samples-2.0.1.jar:./lib/jung-visualization-2.0.1.jar:./lib/mysql-connector-java-5.0.8-bin.jar:./lib/stax-api-1.0.1.jar:./lib/vecmath-1.3.1.jar:./lib/wstx-asl-3.2.6.jar mapwiki.preprocessor.CalcCosSim
+
+For visualization output:
+-l 3 -d -o C:\Users\cipang\Desktop\mapwiki\output\mapwiki.png
+-l 3 -lo C:\Users\cipang\Desktop\mapwiki\output\mapwiki_layout.dat -o C:\Users\cipang\Desktop\mapwiki\output\mapwiki.png
+-li C:\Users\cipang\Desktop\mapwiki\output\mapwiki_layout.dat -o C:\Users\cipang\Desktop\mapwiki\output\mapwiki.png
+
+Run script:
+Usage: run mapwiki.layout.LayoutGraphic [args]
+
+Script content on Windows:
+@echo off
+
+set JAVA="C:\Java\jre6_x64\bin\java.exe"
+set LIB=D:\Java\mapwiki\lib
+set MAPWIKI="C:\Users\Patrick\Desktop\mapwiki_results\mapwiki.jar"
+
+%JAVA% -Xmx2048M -classpath %MAPWIKI%;%LIB%/collections-generic-4.01.jar;%LIB%/colt-1.2.0.jar;%LIB%/concurrent-1.3.4.jar;%LIB%/j3d-core-1.3.1.jar;%LIB%/jopt-simple-3.2.jar;%LIB%/jung-3d-2.0.1.jar;%LIB%/jung-3d-demos-2.0.1.jar;%LIB%/jung-algorithms-2.0.1.jar;%LIB%/jung-api-2.0.1.jar;%LIB%/jung-graph-impl-2.0.1.jar;%LIB%/jung-io-2.0.1.jar;%LIB%/jung-jai-2.0.1.jar;%LIB%/jung-jai-samples-2.0.1.jar;%LIB%/jung-samples-2.0.1.jar;%LIB%/jung-visualization-2.0.1.jar;%LIB%/mysql-connector-java-5.0.8-bin.jar;%LIB%/stax-api-1.0.1.jar;%LIB%/vecmath-1.3.1.jar;%LIB%/wstx-asl-3.2.6.jar %*
+
+Script content on Linux:
+#!/bin/sh
+
+JAVA=java
+LIB=lib
+MAPWIKI=mapwiki.jar
+
+$JAVA -Xmx4000M -classpath $MAPWIKI:$LIB/collections-generic-4.01.jar:$LIB/colt-1.2.0.jar:$LIB/concurrent-1.3.4.jar:$LIB/j3d-core-1.3.1.jar:$LIB/jopt-simple-3.2.jar:$LIB/jung-3d-2.0.1.jar:$LIB/jung-3d-demos-2.0.1.jar:$LIB/jung-algorithms-2.0.1.jar:$LIB/jung-api-2.0.1.jar:$LIB/jung-graph-impl-2.0.1.jar:$LIB/jung-io-2.0.1.jar:$LIB/jung-jai-2.0.1.jar:$LIB/jung-jai-samples-2.0.1.jar:$LIB/jung-samples-2.0.1.jar:$LIB/jung-visualization-2.0.1.jar:$LIB/mysql-connector-java-5.0.8-bin.jar:$LIB/stax-api-1.0.1.jar:$LIB/vecmath-1.3.1.jar:$LIB/wstx-asl-3.2.6.jar $@

@@ -1,0 +1,14 @@
+sourceCompatibility = 1.8
+version = '1.0'
+
+task getHomeDir << {
+    println gradle.gradleHomeDir
+    println gradle.gradleUserHomeDir
+    println gradle.properties
+    println System.getenv()
+    println System.properties
+}
+
+repositories {
+    mavenCentral()
+}

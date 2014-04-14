@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.testng:testng:6.8.8'
+    compile 'org.prefuse:prefuse:beta-20071021'
+    compile 'org.apache.directory.studio:org.apache.commons.collections:3.2.1'
+}

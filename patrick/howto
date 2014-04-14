@@ -1,0 +1,31 @@
+Steps to produce map-like Wikipedia visualization
+
+1.	Create a full tree from the database dump:
+Run class: mapwiki.preprocessor.BuildCategoryTree
+Arguments: --conn jdbc:mysql://192.168.126.9:3306/simple1024 -o full.txt -u <username>  -p <password>
+
+2.	Generate a list of unwanted categories:
+Run class: mapwiki.preprocessor.GenUselessList
+Arguments: --tree full.txt -o blacklist.txt -k Stub Year List --sl 0.75
+
+3.	Re-run the build tree routine again with category blacklist information:
+Run class: mapwiki.preprocessor.BuildCategoryTree
+Arguments: --conn jdbc:mysql://192.168.126.9:3306/simple1024 -o simple.txt -u <username> -p <password> –b blacklist.txt
+
+4.	Compute cosine similarity:
+Run class: mapwiki.preprocessor.CalcCosSim2
+Arguments: --conn jdbc:mysql://192.168.126.9:3306/simple1024 -f simple.txt -u <username> -p <password> -o cossim.txt
+
+5.	Aggregate similarity:
+Run class: mapwiki.preprocess.AggSimilarity
+Arguments: -t 1 -l 6 --tree simple.txt --sim cossim.txt -o aggsim.txt
+
+6.	Generate page data (shown as cities in the visualization):
+Run class: mapwiki.preprocess.BuildPageData
+Arguments: --tree simple.txt -o page.txt --conn jdbc:mysql://192.168.126.9:3306/simple1024 -u <username> -p <password>
+
+7.	Execute the visualization algorithm:
+Run class: mapwiki.layout.LayoutGraphic
+Arguments: --as aggsim.txt --city page.txt -l 3 -o simple1024.png -p defaults.properties --sim cossim.txt --tree simple.txt [--cs or –-cl or --cr ]
+
+I used --cr.

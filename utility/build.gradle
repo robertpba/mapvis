@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    scalaCompiler
+    scalaLibrary
+}
+
+dependencies {
+    scalaCompiler 'org.scala-lang:scala-compiler:2.10.3'
+    scalaCompiler 'org.scala-lang:scala-library:2.10.3'
+
+    testCompile 'org.testng:testng:6.8.8'
+    compile 'org.scala-lang:scala-library:2.10.3'
+    compile 'org.scala-lang:scala-compiler:2.10.3'
+}
