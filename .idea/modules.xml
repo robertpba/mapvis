@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/plainmapper/plainmapper.iml" filepath="$PROJECT_DIR$/plainmapper/plainmapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/preprocessing/preprocessing.iml" filepath="$PROJECT_DIR$/preprocessing/preprocessing.iml" />
       <module fileurl="file://$PROJECT_DIR$/utility/utility.iml" filepath="$PROJECT_DIR$/utility/utility.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vistools/vistools.iml" filepath="$PROJECT_DIR$/vistools/vistools.iml" />
     </modules>
   </component>
 </project>

@@ -14,6 +14,8 @@ import javax.swing.*;
 
 import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.gui.NavigableImagePanel.ZoomDevice;
+import mapvis.vistools.colormap.ColorMap;
+import mapvis.vistools.colormap.Colorbar;
 
 public class Observer implements ActionListener {
     private final JPanel controls;
@@ -22,7 +24,7 @@ public class Observer implements ActionListener {
     private final JButton backButton;
     private final JButton forthButton;
     public BufferedImage image;
-    MapImageUpdater imageUpdater;
+    public MapImageUpdater imageUpdater;
     public JFrame frame;
     public MapModel method;
     public Timer timer;
@@ -94,7 +96,10 @@ public class Observer implements ActionListener {
         });
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
-        
+
+        frame.getContentPane().add(new Colorbar(v -> ColorMap.JET.getColor(v) ), BorderLayout.NORTH);
+
+
         GraphicsEnvironment ge = 
             GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle bounds = ge.getMaximumWindowBounds();

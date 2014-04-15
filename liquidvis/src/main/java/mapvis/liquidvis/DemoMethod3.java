@@ -4,10 +4,13 @@ import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.handler.CollectStatistics;
 import mapvis.liquidvis.util.LegacySeparateTextFileTreeLoader;
 import mapvis.liquidvis.gui.Observer;
+import mapvis.vistools.colormap.ColorMap;
 
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+
+import static mapvis.vistools.colormap.ColormapPackage.interpolate;
 
 public class DemoMethod3 {
     
@@ -42,6 +45,11 @@ public class DemoMethod3 {
         BufferedImage image = new BufferedImage(loader.width, loader.height+500, BufferedImage.TYPE_INT_RGB);
         
         Observer observer = new Observer(image, model);
+        observer.imageUpdater.mapPolygonFillingColor = c ->{
+            double v = interpolate(c.mass - c.area, 0.0, 0.0, 10000.0, 1.0);
+            return ColorMap.JET.getColor(v);
+        };
+
         observer.Start();
 
         method.IterateUntilStable(10000);

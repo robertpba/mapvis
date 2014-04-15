@@ -47,7 +47,10 @@ public class DemoMethod2 {
         BufferedImage image = new BufferedImage(loader.width, loader.height+500, BufferedImage.TYPE_INT_RGB);
         
         Observer observer = new Observer(image, model);
+//        observer.imageUpdater.mapPolygonFillingColor = c ->
+//            colormap((float)interpolate(c.mass - c.area, 0.0, 0.0, 2000.0, 1.0) );
         observer.Start();
+
 
         method.IterateUntilStable(10000);
 

@@ -99,12 +99,12 @@ public class MapImageUpdater {
         g.clearRect(0,0, image.getWidth(), image.getHeight());
 
         updatePosition(model.root);
-/*
+
         for (RegionDescriptor descriptor : descriptors) {
             if (descriptor.node.children == null || descriptor.node.children.length == 0)
                 drawPolygon(g, descriptor);
 
-        }*/
+        }
 
         for (RegionDescriptor descriptor : descriptors) {
             drawPolygonBorder(g, descriptor);

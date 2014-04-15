@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/plainmapper" />
             <option value="$PROJECT_DIR$/preprocessing" />
             <option value="$PROJECT_DIR$/utility" />
+            <option value="$PROJECT_DIR$/vistools" />
           </set>
         </option>
       </GradleProjectSettings>
