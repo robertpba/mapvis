@@ -25,6 +25,7 @@
     <orderEntry type="library" exported="" name="Gradle: scala-compiler-2.10.3" level="project" />
     <orderEntry type="library" exported="" name="Gradle: scala-reflect-2.10.3" level="project" />
     <orderEntry type="module" module-name="utility" exported="" />
+    <orderEntry type="module" module-name="plainmapper" exported="" />
   </component>
 </module>
 
