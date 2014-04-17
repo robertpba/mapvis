@@ -39,7 +39,7 @@ public class Method2 {
         this.model = model;
 
         descriptors = model.getPolygons().values().stream()
-                .map(polygon -> new PolygonDescriptor(polygon, (int) polygon.figure * 3))
+                .map(polygon -> new PolygonDescriptor(polygon, (int) polygon.mass))
                 .collect(Collectors.toList());
 
         descriptorMap = descriptors.stream()
@@ -74,7 +74,7 @@ public class Method2 {
                 Vector2D unit    = Vector2D.subtract( srcPos, polygon.getOrigin()).unit();
                 Vector2D dstPos = Vector2D.add(srcPos, unit);
 
-                Polygon dstPolygon = model.findSurroundingRegion(dstPos, polygon.node.parent.parent, polygon.node);
+                Polygon dstPolygon = model.findSurroundingRegion(dstPos, polygon.node);
 
                 if (dstPolygon == null){
                     Vertex vertex = polygon.getVertex(iPoint);

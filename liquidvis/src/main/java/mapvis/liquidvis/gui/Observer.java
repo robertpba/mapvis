@@ -29,7 +29,7 @@ public class Observer implements ActionListener {
     public MapModel method;
     public Timer timer;
 
-    public int refreshThreshold = 100;
+    public int refreshThreshold = 1000;
 
     public Observer(BufferedImage image, MapModel method)
     {

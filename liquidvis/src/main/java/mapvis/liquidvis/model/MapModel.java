@@ -6,6 +6,7 @@ import mapvis.liquidvis.model.event.VertexMoved;
 import mapvis.liquidvis.model.handler.*;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class MapModel {
     private HashMap<Node, Polygon> polygons = new HashMap<>();
@@ -17,10 +18,19 @@ public class MapModel {
 
         listeners.add(new UpdatePolygonSizeWhenVertexMoved());
 
-        createPolygon(root, 300);
+        createPolygon(root, n->n.figure * 300.0);
     }
 
-    private void createPolygon(Node node, int scale) {
+    public MapModel(Node root, Function<Node, Double> scale) {
+        this.root = root;
+
+        listeners.add(new UpdatePolygonSizeWhenVertexMoved());
+
+        createPolygon(root, scale);
+    }
+
+
+    private void createPolygon(Node node, Function<Node, Double> scale) {
         if (node.children == null || node.children.length == 0)
             polygons.put(node, new Polygon(node, scale));
         else for (Node child : node.children)
@@ -33,18 +43,13 @@ public class MapModel {
     }
 
 
-    public Polygon findSurroundingRegion(Vector2D point, Node level2, Node exclude) {
-        //for (Node level2 : PolygonModeling.root.children)
-        //for (Node level3 : level2.children)
-        for (Node level3 : level2.children) {
-            for (Node level4 : level3.children) {
-                // forth level
-                if (level4 == exclude)
-                    continue;
-                Polygon polygon = polygons.get(level4);
-                if (polygon.contains(point.x, point.y))
-                    return polygon;
-            }
+    public Polygon findSurroundingRegion(Vector2D point, Node exclude) {
+        return findSurroundingRegion(point, root, exclude);
+    }
+    private Polygon findSurroundingRegion(Vector2D point, Node root, Node exclude) {
+        for (Polygon polygon : polygons.values()) {
+            if (polygon.contains(point.x, point.y))
+                return polygon;
         }
         return null;
     }

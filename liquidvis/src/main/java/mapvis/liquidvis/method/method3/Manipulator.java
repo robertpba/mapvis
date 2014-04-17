@@ -16,7 +16,7 @@ public class Manipulator  {
         Vector2D unit = Vector2D.subtract(srcPos, srcPolygon.getOrigin()).unit();
         Vector2D dstPos = Vector2D.add(srcPos, unit);
 
-        Polygon dstRegion = model.findSurroundingRegion(dstPos, srcPolygon.node.parent.parent, null);
+        Polygon dstRegion = model.findSurroundingRegion(dstPos, null);
 
         // move to a free location
         if (dstRegion == null) {

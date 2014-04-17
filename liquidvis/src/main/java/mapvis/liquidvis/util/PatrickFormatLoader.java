@@ -30,6 +30,12 @@ public class PatrickFormatLoader {
 
         nodes = visbl;
         constructVisibleTree(root);
+
+        for (Node node : nodes) {
+            //node.x += 500;
+            //node.y += 250;
+        }
+
         return root;
     }
 
@@ -122,8 +128,8 @@ public class PatrickFormatLoader {
                 visbl.add(node);
             }
 
-            width  = (int)xmax + 200;
-            height = (int)ymax + 200;
+            width  = (int)xmax;
+            height = (int)ymax;
         }finally{
             if (scanner != null) {
                 scanner.close();
@@ -135,6 +141,7 @@ public class PatrickFormatLoader {
     {
         root.children = Stream.of(root.children)
                 .filter(n -> visbl.contains(n))
+                .filter(n -> (n.x != 0 && n.y != 0) || (n.children.length == 0 && n.figure == 0))
                 .toArray(Node[]::new);
 
         for (Node child : root.children) {
@@ -143,6 +150,17 @@ public class PatrickFormatLoader {
 
         if (root.children.length == 0)
             leaves.add(root);
+    }
+
+
+    protected void refinePoints()
+    {
+        for (Node node : nodes) {
+            node.x = node.x * 36;
+            node.y = node.y * 36;
+        }
+        width  = (width + 50)* 36;
+        height = (height + 50)* 36;
     }
 
     public static void main (String[] args) throws IOException {

@@ -30,7 +30,7 @@ public class DriveAwayInsideVertices implements ModelEventListener {
 
         for (Polygon polygon : model.getPolygons().values()) {
             for (Vertex vertex : polygon.vertices) {
-                Polygon surroundingRegion = model.findSurroundingRegion(vertex.getPoint(), vertex.polygon.node.parent.parent, vertex.polygon.node);
+                Polygon surroundingRegion = model.findSurroundingRegion(vertex.getPoint(), vertex.polygon.node);
                 if (surroundingRegion!=null)
                 {
                     method.manipulator.moveBack(vertex);
