@@ -114,6 +114,8 @@ public class MemoryCategoryProvider implements CategoryProvider {
 
 	@Override
 	public float getAltitude(Category c) {
-		return ((MemoryCategory)c).treeEntry.getAltitude();
+        // TODO remove it
+		return  100;
+        //return ((MemoryCategory)c).treeEntry.getAltitude();
 	}
 }

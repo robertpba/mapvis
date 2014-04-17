@@ -302,9 +302,12 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 	}
 	
 	private void drawCatRect(Category c, Graphics2D g, Color colour, int level, Point origin) {
-		if (c.getLocation() == null)
-			return;
-		
+		//if (c.getLocation() == null)
+		//	return;
+
+        if (level == 4)
+            return;
+
 		Rectangle drawRect = c.drawingRect();
 		int a = (int)(255 * (1 - level * (1.0 / LayoutGraphic.layoutDepth)));
 		g.setColor(new Color(colour.getRed(), colour.getGreen(), colour.getBlue(), a));
@@ -321,6 +324,15 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 			int py = origin.y + drawRect.y + pivot.y;
 			g.fillArc(px, py, c.getSize().width, c.getSize().height, 0, 360);
 		}
+
+        int px = origin.x + drawRect.x + pivot.x;
+        int py = origin.y + drawRect.y + pivot.y;
+        System.err.printf("%d\t%s\t%d\t%d\t%d\n",
+                c.getPageID(),c.getPageTitle(), level, px, py);
+
+
+        //System.err.printf("id\ttitle\tlevel\tx\ty\n")
+
 		
 		for (Category subCat: cp.findChildren(c))
 			drawCatRect(subCat, g, colour, level + 1, new Point(x, y));

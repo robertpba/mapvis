@@ -3,7 +3,7 @@ package mapwiki.preprocessor;
 import mapwiki.common.Database;
 import org.testng.annotations.Test;
 
-@Test(enabled = false)
+
 public class BuildCategoryTreeTest {
 
     // 1.	Create a full tree from the database dump:
@@ -62,10 +62,13 @@ public class BuildCategoryTreeTest {
     }
 
     // 7.	Execute the visualization algorithm:
-    @Test(enabled = false) public void layoutGraphic() throws Exception
+    @Test(enabled = true) public void layoutGraphic() throws Exception
     {
         mapwiki.layout.LayoutGraphic
-                .main("--as aggsim.txt --city page.txt -l 3 -o simple1024.png -p defaults.properties --sim cossim.txt --tree simple.txt --cr".split(" "));
+                .main(("--as data\\aggsim.txt --city data\\page.txt -l 3 -o simple1024.png" +
+                        " -p data\\defaults.properties --sim data\\cossim.txt --tree data\\simple.txt" +
+                        " --cr -d").split(" "));
+        //Thread.sleep(100000);
     }
 
 
