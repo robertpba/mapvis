@@ -40,7 +40,7 @@ public class CollectStatistics implements ModelEventListener {
     {
         System.out.println("------------------");
         for (Polygon polygon : model.getPolygons().values()) {
-            System.out.printf("d:%5.0f a:%7.0f, m:%7.0f %%:%6.3f\n", polygon.area - polygon.mass, polygon.area, polygon.mass, (polygon.area - polygon.mass)/ polygon.mass);
+            System.out.printf("d:%5.0f a:%7.0f, m:%7.0f %%:%6.3f\n", (polygon.mass - polygon.area), polygon.area, polygon.mass, (polygon.mass - polygon.area)/ polygon.mass * 100);
         }
         System.out.println("-------" + event.iteration + "---------");
     }

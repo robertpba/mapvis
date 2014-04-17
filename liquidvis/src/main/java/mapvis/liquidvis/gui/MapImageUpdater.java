@@ -108,11 +108,11 @@ public class MapImageUpdater {
 
         for (RegionDescriptor descriptor : descriptors) {
             //drawPolygonBorder(g, descriptor);
-            drawSimplePolygonBorder(g, descriptor);
 
-            if (descriptor.node.children == null && descriptor.node.children.length == 0) {
+            if (descriptor.node.children == null || descriptor.node.children.length == 0) {
                 //highlightVertices(g, descriptor);
-                //drawPolygonOrigin(g, descriptor);
+                drawSimplePolygonBorder(g, descriptor);
+                drawPolygonOrigin(g, descriptor);
             }
         }
 

@@ -7,7 +7,7 @@ public class Estimator  {
     MapModel mapModel;
 
     public double weightOfPressure  = 1;
-    public double weightOfConvexity = 3;
+    public double weightOfConvexity = 1;
 
 
     public Estimator(MapModel mapModel){
