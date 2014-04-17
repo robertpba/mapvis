@@ -21,6 +21,7 @@
       </GradleProjectSettings>
     </option>
     <option name="serviceDirectoryPath" value="$PROJECT_DIR$/../../.gradle" />
+    <option name="offlineWork" value="true" />
   </component>
 </project>
 
