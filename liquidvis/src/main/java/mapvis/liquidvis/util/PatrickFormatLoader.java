@@ -164,7 +164,7 @@ public class PatrickFormatLoader {
 
     protected boolean filterSmallNodes(Node root) {
         if (root.children.length == 0) {
-            if (root.figure <= 1)
+            if (root.figure <= 0.01)
                 return false;
 
             leaves.add(root);
@@ -189,11 +189,11 @@ public class PatrickFormatLoader {
     protected void refinePoints()
     {
         for (Node node : nodes) {
-            node.x = node.x * 6;
-            node.y = node.y * 6;
+            node.x = node.x * 2;
+            node.y = node.y * 2;
         }
-        width  = (width + 50)* 6;
-        height = (height + 50)* 6;
+        width  = (width + 50)* 2;
+        height = (height + 50)* 2;
     }
 
     public static void main (String[] args) throws IOException {

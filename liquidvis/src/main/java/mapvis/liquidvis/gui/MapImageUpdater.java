@@ -107,7 +107,8 @@ public class MapImageUpdater {
         }
 
         for (RegionDescriptor descriptor : descriptors) {
-            drawPolygonBorder(g, descriptor);
+            //drawPolygonBorder(g, descriptor);
+            drawSimplePolygonBorder(g, descriptor);
 
             if (descriptor.node.children == null && descriptor.node.children.length == 0) {
                 //highlightVertices(g, descriptor);
@@ -137,6 +138,19 @@ public class MapImageUpdater {
         g.setColor(mapPolygonFillingColor.apply(descriptor.polygon));
         g.fill(descriptor.area);
     }
+
+    private void drawSimplePolygonBorder(Graphics2D g, RegionDescriptor descriptor) {
+        Color color;
+        if (descriptor.node.children == null || descriptor.node.children.length == 0) {
+            color = mapPolygonBorderColor.apply(descriptor.polygon);
+            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), 220);
+            g.setColor(color);
+            g.setStroke(new BasicStroke(1));
+            g.draw(descriptor.area);
+        }
+    }
+
+
 
     private void drawPolygonBorder(Graphics2D g, RegionDescriptor descriptor) {
         Color color;
