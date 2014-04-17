@@ -1,4 +1,4 @@
-137597	Articles	0			0	0.0
+137597	Articles	0	0	x	0	0.0
 4985	Computer_science	4	5832	Computing	183	0.0
 5066	Sports	3	5872	Entertainment	49	0.0
 5067	Athletics	4	5066	Sports	29	0.0

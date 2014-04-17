@@ -1,12 +1,9 @@
 package mapvis.liquidvis.util;
 
 import mapvis.liquidvis.model.Node;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.prefs.CsvPreference;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class PatrickFormatLoader {
 
@@ -27,14 +24,11 @@ public class PatrickFormatLoader {
     {
         loadCategoryName(treefile);
         loadPoints(pointfile);
-
+        scaleAttribute(root);
+        filterUnpositionedNodes(root);
+        filterSmallNodes(root);
+        refinePoints();
         nodes = visbl;
-        constructVisibleTree(root);
-
-        for (Node node : nodes) {
-            //node.x += 500;
-            //node.y += 250;
-        }
 
         return root;
     }
@@ -137,30 +131,69 @@ public class PatrickFormatLoader {
         }
     }
 
-    protected void constructVisibleTree(Node root)
-    {
-        root.children = Stream.of(root.children)
-                .filter(n -> visbl.contains(n))
-                .filter(n -> (n.x != 0 && n.y != 0) || (n.children.length == 0 && n.figure == 0))
-                .toArray(Node[]::new);
-
+    protected void scaleAttribute(Node root){
+        //root.x = root.x * 36;
+        //root.y = root.y * 36;
+        root.figure = root.figure == 0.0? 0.0 : Math.log10(root.figure) / Math.log10(1.1) * 10;
         for (Node child : root.children) {
-            constructVisibleTree(child);
+            scaleAttribute(child);
+        }
+    }
+
+    protected boolean filterUnpositionedNodes(Node root) {
+        if (root.children.length == 0) {
+            if (!visbl.contains(root))
+                return false;
+            return true;
         }
 
-        if (root.children.length == 0)
+        List<Node> children = new ArrayList<>();
+
+        for (Node child : root.children) {
+            if (filterUnpositionedNodes(child))
+                children.add(child);
+        }
+
+        if (children.isEmpty())
+            return false;
+
+        root.children = children.toArray(new Node[children.size()]);
+        return true;
+    }
+
+
+    protected boolean filterSmallNodes(Node root) {
+        if (root.children.length == 0) {
+            if (root.figure <= 1)
+                return false;
+
             leaves.add(root);
+            return true;
+        }
+
+        List<Node> children = new ArrayList<>();
+
+        for (Node child : root.children) {
+            if (filterSmallNodes(child))
+                children.add(child);
+        }
+
+        if (children.isEmpty())
+            return false;
+
+        root.children = children.toArray(new Node[children.size()]);
+        return true;
     }
 
 
     protected void refinePoints()
     {
         for (Node node : nodes) {
-            node.x = node.x * 36;
-            node.y = node.y * 36;
+            node.x = node.x * 6;
+            node.y = node.y * 6;
         }
-        width  = (width + 50)* 36;
-        height = (height + 50)* 36;
+        width  = (width + 50)* 6;
+        height = (height + 50)* 6;
     }
 
     public static void main (String[] args) throws IOException {
@@ -168,9 +201,12 @@ public class PatrickFormatLoader {
 
         loader.loadCategoryName("data/simple.txt");
         loader.loadPoints("data/points.txt");
-        loader.constructVisibleTree(loader.root);
+        loader.scaleAttribute(loader.root);
+        loader.filterUnpositionedNodes(loader.root);
+        loader.filterSmallNodes(loader.root);
+        loader.refinePoints();
 
-        printNode (loader, "", loader.root, 4);
+        printNode (loader, "", loader.root, 6);
     }
 
 
@@ -179,7 +215,7 @@ public class PatrickFormatLoader {
         if (node.level >= maxlevel)
             return;
 
-        System.out.printf("%d  %s%-5d %s %.0f (%5d, %5d)\n",
+        System.out.printf("%d  %s%-5d %s %f (%5d, %5d)\n",
                 node.level, indent, node.pageId, node.name, node.figure, (int)node.x, (int)node.y);
         for (Node child : node.children)
         {

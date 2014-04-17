@@ -69,7 +69,7 @@ public class DemoMethod3 {
 
         Polygon polygon = model.getPolygons().get(first);
         polygon.figure += 30;
-        polygon.mass   += 30 * polygon.scale;
+        //polygon.mass   += 30 * polygon.scale.apply(polygon.node);
         method.IterateUntilStable(100000);
 
         System.gc();

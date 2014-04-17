@@ -48,14 +48,13 @@ public class DemoMethod2_5 {
 
         //loader.height += 500;
         //loader.width += 500;
-        MapModel model = new MapModel(loader.root, n->
-                Math.log10(n.figure) / Math.log10(1.1));
+        MapModel model = new MapModel(loader.root, n-> n.figure);
         Method2 method = new Method2(model);
 
         model.listeners.add(new CollectStatistics(model, 10));
 
 
-        BufferedImage image = new BufferedImage(loader.width, loader.height+500, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
         
         Observer observer = new Observer(image, model);
         observer.imageUpdater.mapPolygonFillingColor = c ->{
