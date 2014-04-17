@@ -11,6 +11,7 @@ dependencies {
     testCompile 'org.testng:testng:6.8.8'
     compile 'org.prefuse:prefuse:beta-20071021'
     compile 'org.apache.directory.studio:org.apache.commons.collections:3.2.1'
+    compile 'net.sf.supercsv:super-csv:2.1.0'
 
     compile project(":vistools")
 
