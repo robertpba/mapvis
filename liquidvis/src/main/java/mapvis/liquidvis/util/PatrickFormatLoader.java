@@ -6,13 +6,14 @@ import org.supercsv.prefs.CsvPreference;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class PatrickFormatLoader {
 
     // = 1143
     public int numNodes;
 
-    public ArrayList<Node> nodes = new ArrayList<>();
+    public List<Node> nodes = new ArrayList<>();
 
     public int height;
     public int width;
@@ -22,13 +23,21 @@ public class PatrickFormatLoader {
     // id : 667
     public Node root;
 
-    public Node load(String finalPointInfoFilePath, String edgeInfoFilePath, String categoryNameFilePath) throws FileNotFoundException
+    public Node load(String treefile, String pointfile) throws IOException
     {
-        loadCategoryName(categoryNameFilePath);
+        loadCategoryName(treefile);
+        loadPoints(pointfile);
+
+        nodes = visbl;
+        constructVisibleTree(root);
         return root;
     }
 
     public Map<Integer, Node> nodemap = new HashMap<>();
+
+    public ArrayList<Node> leaves = new ArrayList();
+
+    public List<Node> visbl = new ArrayList<>();
 
     protected void loadCategoryName(String categoryNameFilePath) throws FileNotFoundException
     {
@@ -109,6 +118,8 @@ public class PatrickFormatLoader {
 
                 xmax = Math.max(node.x, xmax);
                 ymax = Math.max(node.y, ymax);
+
+                visbl.add(node);
             }
 
             width  = (int)xmax + 200;
@@ -119,26 +130,42 @@ public class PatrickFormatLoader {
             }
         }
     }
+
+    protected void constructVisibleTree(Node root)
+    {
+        root.children = Stream.of(root.children)
+                .filter(n -> visbl.contains(n))
+                .toArray(Node[]::new);
+
+        for (Node child : root.children) {
+            constructVisibleTree(child);
+        }
+
+        if (root.children.length == 0)
+            leaves.add(root);
+    }
+
     public static void main (String[] args) throws IOException {
         PatrickFormatLoader loader = new PatrickFormatLoader();
 
         loader.loadCategoryName("data/simple.txt");
         loader.loadPoints("data/points.txt");
-        printNode ("", loader.root, 4);
+        loader.constructVisibleTree(loader.root);
 
-
+        printNode (loader, "", loader.root, 4);
     }
 
 
-    private static void printNode(String indent, Node node, int maxlevel)
+    private static void printNode(PatrickFormatLoader loader, String indent, Node node, int maxlevel)
     {
         if (node.level >= maxlevel)
             return;
+
         System.out.printf("%d  %s%-5d %s %.0f (%5d, %5d)\n",
                 node.level, indent, node.pageId, node.name, node.figure, (int)node.x, (int)node.y);
         for (Node child : node.children)
         {
-            printNode(indent+"  ", child, maxlevel);
+            printNode(loader, indent+"  ", child, maxlevel);
         }
     }
 
