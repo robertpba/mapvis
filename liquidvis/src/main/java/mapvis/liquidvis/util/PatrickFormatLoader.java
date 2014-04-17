@@ -4,9 +4,7 @@ import mapvis.liquidvis.model.Node;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class PatrickFormatLoader {
@@ -62,8 +60,8 @@ public class PatrickFormatLoader {
 
                 scanner.next();
                 node.figure = scanner.nextInt();
-                node.figure = Math.log10(node.figure) / Math.log10(1.1);
-                node.figure = node.figure * 6;
+                //node.figure = Math.log10(node.figure) / Math.log10(1.1);
+                //node.figure = node.figure * 6;
                 scanner.next();
 
                 ArrayList<Integer> children = edges.get(parentId);
@@ -89,28 +87,58 @@ public class PatrickFormatLoader {
         }
     }
 
-    public static void main (String[] args)
-    {
-        PatrickFormatLoader loader = new PatrickFormatLoader();
+    protected void loadPoints(String filePath) throws IOException {
+        Scanner scanner = null;
+
+        double xmax = 0;
+        double ymax = 0;
+
         try {
-            loader.loadCategoryName("data/simple.txt");
+            FileInputStream stream = new FileInputStream(filePath);
+            stream.skip(3); // skip BOM 65279 / EF BB BF
+            scanner = new Scanner(new InputStreamReader(stream));
 
-            printNode ("", loader.root);
+            while (scanner.hasNext()) {
+                int id = scanner.nextInt();
+                scanner.next();
+                scanner.next();
 
+                Node node = nodemap.get(id);
+                node.x = scanner.nextDouble();
+                node.y = scanner.nextDouble();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+                xmax = Math.max(node.x, xmax);
+                ymax = Math.max(node.y, ymax);
+            }
+
+            width  = (int)xmax + 200;
+            height = (int)ymax + 200;
+        }finally{
+            if (scanner != null) {
+                scanner.close();
+            }
         }
+    }
+    public static void main (String[] args) throws IOException {
+        PatrickFormatLoader loader = new PatrickFormatLoader();
+
+        loader.loadCategoryName("data/simple.txt");
+        loader.loadPoints("data/points.txt");
+        printNode ("", loader.root, 4);
+
 
     }
 
 
-    private static void printNode(String indent, Node node)
+    private static void printNode(String indent, Node node, int maxlevel)
     {
-        System.out.printf("%d  %s%-5d %s\n", node.level, indent, node.id, node.name);
+        if (node.level >= maxlevel)
+            return;
+        System.out.printf("%d  %s%-5d %s %.0f (%5d, %5d)\n",
+                node.level, indent, node.pageId, node.name, node.figure, (int)node.x, (int)node.y);
         for (Node child : node.children)
         {
-            printNode(indent+"  ", child);
+            printNode(indent+"  ", child, maxlevel);
         }
     }
 
