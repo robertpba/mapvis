@@ -17,7 +17,7 @@ public class MapImageUpdater {
     public MapImageUpdater(MapModel model) {
         this.model = model;
 
-        createDescriptors(model.root);
+        createDescriptors(model.root, 0);
         descriptors = new ArrayList<>(nodeToDescriptor.values());
 
         mapPolygonFillingColor = (polygon)-> mapColor(0,2000, (int)(polygon.mass - polygon.area));
@@ -37,7 +37,7 @@ public class MapImageUpdater {
         };
     }
 
-    private RegionDescriptor createDescriptors(Node node) {
+    private RegionDescriptor createDescriptors(Node node, int level) {
         if (node.children == null || node.children.length == 0) {
             Polygon polygon = model.getPolygons().get(node);
 
@@ -47,6 +47,7 @@ public class MapImageUpdater {
             descriptor.x = new int[polygon.npoints];
             descriptor.y = new int[polygon.npoints];
             descriptor.node = polygon.node;
+            descriptor.level = level;
 
             updatePosition(descriptor);
             nodeToDescriptor.put(node, descriptor);
@@ -56,9 +57,10 @@ public class MapImageUpdater {
             RegionDescriptor descriptor = new RegionDescriptor();
             descriptor.node = node;
             descriptor.area = new Area();
+            descriptor.level = level;
 
             for (Node childNode : node.children) {
-                RegionDescriptor child = createDescriptors(childNode);
+                RegionDescriptor child = createDescriptors(childNode, level+1);
                 descriptor.area.add(child.area);
             }
             nodeToDescriptor.put(node, descriptor);
@@ -113,11 +115,14 @@ public class MapImageUpdater {
                 //highlightVertices(g, descriptor);
                 drawSimplePolygonBorder(g, descriptor);
                 drawPolygonOrigin(g, descriptor);
-                drawPolygonCentroid(g,descriptor);
+                drawPolygonCentroid(g, descriptor);
             }
         }
+        for (RegionDescriptor descriptor : descriptors) {
+            drawLabel(g, descriptor);
+        }
 
-    }
+        }
 
     public class RegionDescriptor {
         public int nPoints;
@@ -125,6 +130,7 @@ public class MapImageUpdater {
         public int[] x;
         public int originX;
         public int originY;
+        public int level;
 
         public Area    area;
 
@@ -264,6 +270,55 @@ public class MapImageUpdater {
 
         return new Color(intR, intG, intB);
     }
+
+    private void drawLabel(Graphics2D g, RegionDescriptor descriptor){
+        if (descriptor.level == 0){
+            return;
+        }
+        if (descriptor.level == 1){
+            Rectangle bounds = descriptor.area.getBounds();
+
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            g.setColor(Color.BLACK);
+
+            double centerX = bounds.getCenterX();
+            double centerY = bounds.getCenterY();
+
+            FontMetrics fontMetrics = g.getFontMetrics();
+            int width = fontMetrics.stringWidth(descriptor.node.name);
+            g.drawString(descriptor.node.name, (float)(centerX-width/2), (float)centerY);
+            g.drawLine((int)(centerX-width/2), (int)centerY, (int)(centerX+width/2), (int)centerY);
+        }
+        if (descriptor.level == 2){
+            Rectangle bounds = descriptor.area.getBounds();
+
+            g.setFont(new Font("Arial", Font.ITALIC, 15));
+            g.setColor(Color.BLACK);
+
+            double centerX = bounds.getCenterX();
+            double centerY = bounds.getCenterY();
+
+            FontMetrics fontMetrics = g.getFontMetrics();
+            int width = fontMetrics.stringWidth(descriptor.node.name);
+            g.drawString(descriptor.node.name, (float)(centerX-width/2), (float)centerY);
+            //g.drawLine((int)(centerX-width/2), (int)centerY, (int)(centerX+width/2), (int)centerY);
+        }
+        if (descriptor.level == 3){
+            Rectangle bounds = descriptor.area.getBounds();
+
+            g.setFont(new Font("Arial", Font.PLAIN, 10));
+            g.setColor(Color.BLACK);
+
+            double centerX = bounds.getCenterX();
+            double centerY = bounds.getCenterY();
+
+            FontMetrics fontMetrics = g.getFontMetrics();
+            int width = fontMetrics.stringWidth(descriptor.node.name);
+            g.drawString(descriptor.node.name, (float)(centerX-width/2), (float)centerY);
+            //g.drawLine((int)(centerX-width/2), (int)centerY, (int)(centerX+width/2), (int)centerY);
+        }
+    }
+
 
     public Function<Polygon, Color> mapPolygonFillingColor;
     public Function<Polygon, Color> mapPolygonBorderColor;

@@ -11,10 +11,10 @@ public class ColorBarTest {
 
         frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        frame.getContentPane().add(new ColorBar(ColorMap.JET::getColor, ColorBar.Vertical));
-        frame.getContentPane().add(new ColorBar(ColorMap.hsv::getColor, ColorBar.Vertical));
-        frame.getContentPane().add(new ColorBar(ColorMap.hot::getColor, ColorBar.Vertical));
-        frame.getContentPane().add(new ColorBar(ColorMap.gray::getColor, ColorBar.Vertical));
+        frame.getContentPane().add(new ColorBar(ColorMap.JET::getColor, ColorBar.Y_AXIS));
+        frame.getContentPane().add(new ColorBar(ColorMap.hsv::getColor, ColorBar.Y_AXIS));
+        frame.getContentPane().add(new ColorBar(ColorMap.hot::getColor, ColorBar.Y_AXIS));
+        frame.getContentPane().add(new ColorBar(ColorMap.gray::getColor, ColorBar.Y_AXIS));
 
         frame.pack();
         frame.setVisible(true);
