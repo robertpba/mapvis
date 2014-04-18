@@ -3,20 +3,13 @@ package mapvis.liquidvis;
 import mapvis.liquidvis.gui.Observer;
 import mapvis.liquidvis.method.method2.Method2;
 import mapvis.liquidvis.model.MapModel;
-import mapvis.liquidvis.model.Node;
 import mapvis.liquidvis.model.handler.CollectStatistics;
-import mapvis.liquidvis.util.LegacySeparateTextFileTreeLoader;
 import mapvis.liquidvis.util.PatrickFormatLoader;
 import mapvis.vistools.colormap.ColorMap;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.prefs.CsvPreference;
 
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
 
 import static mapvis.vistools.colormap.ColormapPackage.interpolate;
 

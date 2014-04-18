@@ -1,11 +1,8 @@
 package mapvis.liquidvis;
 
 import mapvis.liquidvis.gui.Observer;
-import mapvis.liquidvis.method.method2.Method2;
 import mapvis.liquidvis.method.method3.Method3;
 import mapvis.liquidvis.model.MapModel;
-import mapvis.liquidvis.model.Node;
-import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.handler.CollectStatistics;
 import mapvis.liquidvis.util.PatrickFormatLoader;
 import mapvis.vistools.colormap.ColorMap;
