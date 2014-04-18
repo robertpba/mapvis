@@ -2,6 +2,7 @@ package mapvis.liquidvis.model;
 
 import mapvis.liquidvis.model.event.IterationFinished;
 import mapvis.liquidvis.model.event.ModelEvent;
+import mapvis.liquidvis.model.event.PolygonMoved;
 import mapvis.liquidvis.model.event.VertexMoved;
 import mapvis.liquidvis.model.handler.*;
 
@@ -83,6 +84,9 @@ public class MapModel {
             applyEvent((VertexMoved)event);
         else if (event instanceof IterationFinished)
             applyEvent((IterationFinished)event);
+        else if (event instanceof PolygonMoved)
+            applyEvent((PolygonMoved)event);
+
     }
 
     public void applyEvent(VertexMoved event){
@@ -92,5 +96,20 @@ public class MapModel {
         iteration++;
     }
 
+    public void applyEvent(PolygonMoved event){
+        Vector2D d = event.distance;
+        Polygon polygon = event.polygon;
+        Vector2D oldPivot = event.polygon.getOrigin();
+        double norm = d.norm();
 
+        for (Vertex vertex : event.polygon.vertices) {
+            polygon.moveBackward(vertex, (int)norm);
+            Vector2D pos = vertex.getPoint();
+            polygon.setVertex(vertex, Vector2D.add(d, pos));
+        }
+
+        Vector2D pivot = Vector2D.add(event.polygon.getOrigin(), d);
+        polygon.originX = pivot.x;
+        polygon.originY = pivot.y;
+    }
 }

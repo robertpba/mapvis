@@ -113,6 +113,7 @@ public class MapImageUpdater {
                 //highlightVertices(g, descriptor);
                 drawSimplePolygonBorder(g, descriptor);
                 drawPolygonOrigin(g, descriptor);
+                drawPolygonCentroid(g,descriptor);
             }
         }
 
@@ -221,6 +222,16 @@ public class MapImageUpdater {
         int y = descriptor.originY - (r/2);
 
         g.setColor(Color.red);
+        g.fillOval(x,y,r,r);
+    }
+
+    private void drawPolygonCentroid(Graphics2D g, RegionDescriptor descriptor){
+        final int r = 4;
+        Vector2D centroid = descriptor.polygon.calcCentroid();
+        int x =  (int)centroid.x - (r/2);
+        int y = (int)centroid.y - (r/2);
+
+        g.setColor(Color.yellow);
         g.fillOval(x,y,r,r);
     }
 

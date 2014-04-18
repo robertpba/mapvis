@@ -170,7 +170,19 @@ public class Polygon {
             maxY = Math.max(maxY, y);
         }
     }
-    
+
+    public void moveBackward(Vertex vertex, int unit){
+        unit = Math.min (vertex.moveCount, unit);
+
+        if (unit <= 0)
+            return;
+        Vector2D d = Vector2D.subtract(getOrigin(), vertex.getPoint());
+        Vector2D u = Vector2D.divide(d, d.norm()/unit);
+        vertex.x = vertex.x - u.x;
+        vertex.y = vertex.y - u.y;
+        vertex.moveCount -= unit ;
+    }
+
     public boolean contains(Vector2D pos) {
         return contains(pos.x, pos.y);
     }
