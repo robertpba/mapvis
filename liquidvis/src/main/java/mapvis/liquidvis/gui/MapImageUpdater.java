@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class MapImageUpdater {
     private MapModel model;
@@ -118,11 +119,9 @@ public class MapImageUpdater {
                 drawPolygonCentroid(g, descriptor);
             }
         }
-        for (RegionDescriptor descriptor : descriptors) {
-            drawLabel(g, descriptor);
-        }
+            drawLabel(g);
 
-        }
+    }
 
     public class RegionDescriptor {
         public int nPoints;
@@ -271,52 +270,29 @@ public class MapImageUpdater {
         return new Color(intR, intG, intB);
     }
 
-    private void drawLabel(Graphics2D g, RegionDescriptor descriptor){
-        if (descriptor.level == 0){
-            return;
-        }
-        if (descriptor.level == 1){
-            Rectangle bounds = descriptor.area.getBounds();
+    private void drawLabel(Graphics2D g){
+        LabelDrawer<RegionDescriptor> labelDrawer = new LabelDrawer<RegionDescriptor>(
+                descriptors.stream().filter(d->d.level == 3).collect(Collectors.toList()),
+                d -> d.node.name,
+                d -> d.level,
+                d -> d.area.getBounds());
+        labelDrawer.draw(g);
 
-            g.setFont(new Font("Arial", Font.BOLD, 30));
-            g.setColor(Color.BLACK);
+        LabelDrawer<RegionDescriptor> labelDrawer2 = new LabelDrawer<RegionDescriptor>(
+                descriptors.stream().filter(d->d.level == 2).collect(Collectors.toList()),
+                d -> d.node.name,
+                d -> d.level,
+                d -> d.area.getBounds());
+        labelDrawer2.draw(g);
 
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
+        LabelDrawer<RegionDescriptor> labelDrawer1 = new LabelDrawer<RegionDescriptor>(
+                descriptors.stream().filter(d->d.level == 1).collect(Collectors.toList()),
+                d -> d.node.name,
+                d -> d.level,
+                d -> d.area.getBounds());
+        labelDrawer1.draw(g);
 
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int width = fontMetrics.stringWidth(descriptor.node.name);
-            g.drawString(descriptor.node.name, (float)(centerX-width/2), (float)centerY);
-            g.drawLine((int)(centerX-width/2), (int)centerY, (int)(centerX+width/2), (int)centerY);
-        }
-        if (descriptor.level == 2){
-            Rectangle bounds = descriptor.area.getBounds();
 
-            g.setFont(new Font("Arial", Font.ITALIC, 15));
-            g.setColor(Color.BLACK);
-
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
-
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int width = fontMetrics.stringWidth(descriptor.node.name);
-            g.drawString(descriptor.node.name, (float)(centerX-width/2), (float)centerY);
-            //g.drawLine((int)(centerX-width/2), (int)centerY, (int)(centerX+width/2), (int)centerY);
-        }
-        if (descriptor.level == 3){
-            Rectangle bounds = descriptor.area.getBounds();
-
-            g.setFont(new Font("Arial", Font.PLAIN, 10));
-            g.setColor(Color.BLACK);
-
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
-
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int width = fontMetrics.stringWidth(descriptor.node.name);
-            g.drawString(descriptor.node.name, (float)(centerX-width/2), (float)centerY);
-            //g.drawLine((int)(centerX-width/2), (int)centerY, (int)(centerX+width/2), (int)centerY);
-        }
     }
 
 
