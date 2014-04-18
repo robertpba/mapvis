@@ -49,6 +49,8 @@ public class MapModel {
     }
     private Polygon findSurroundingRegion(Vector2D point, Node root, Node exclude) {
         for (Polygon polygon : polygons.values()) {
+            if (polygon.node == exclude)
+                continue;
             if (polygon.contains(point.x, point.y))
                 return polygon;
         }
