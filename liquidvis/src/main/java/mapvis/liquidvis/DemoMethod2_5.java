@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static mapvis.vistools.colormap.ColormapPackage.interpolate;
+import static mapvis.vistools.Helper.interpolate;
 
 public class DemoMethod2_5 {
     

@@ -10,7 +10,7 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-import static mapvis.vistools.colormap.ColormapPackage.interpolate;
+import static mapvis.vistools.Helper.interpolate;
 
 public class DemoMethod3 {
     

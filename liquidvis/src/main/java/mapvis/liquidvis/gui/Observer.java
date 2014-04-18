@@ -14,8 +14,8 @@ import javax.swing.*;
 
 import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.gui.NavigableImagePanel.ZoomDevice;
+import mapvis.vistools.colormap.ColorBar;
 import mapvis.vistools.colormap.ColorMap;
-import mapvis.vistools.colormap.Colorbar;
 
 public class Observer implements ActionListener {
     private final JPanel controls;
@@ -97,7 +97,7 @@ public class Observer implements ActionListener {
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-        frame.getContentPane().add(new Colorbar(v -> ColorMap.JET.getColor(v) ), BorderLayout.NORTH);
+        frame.getContentPane().add(new ColorBar(v -> ColorMap.JET.getColor(v) ), BorderLayout.NORTH);
 
 
         GraphicsEnvironment ge = 

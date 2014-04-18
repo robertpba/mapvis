@@ -8,26 +8,29 @@ public class ColorBar extends JComponent {
     private Function<Double, Color> colorFunc;
 
     public ColorBar(Function<Double, Color> colorFunc) {
+        super();
         this.colorFunc = colorFunc;
-        setPreferredSize(new Dimension(100, 20));
     }
 
     @Override
-    public void paintComponents(Graphics g) {
+    public Dimension getPreferredSize() {
+        return new Dimension(100, 20);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        this.setOpaque(false);
         super.paintComponents(g);
-        if (g instanceof Graphics2D)
-            return;
 
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
 
         double slope = getWidth() / 256.0;
 
-        int n = 255;
-        while(n-- != 0) {
+        for (int n = 256; n != 0; n--) {
             int x = (int)(n * slope);
-            g.setColor(colorFunc.apply(n / 255.0));
-            g.fillRect(x, 0, (int)slope, getHeight());
+            g.setColor(colorFunc.apply( (n-1) / 255.0));
+            g.fillRect(0, 0, x, getHeight());
         }
     }
 }
