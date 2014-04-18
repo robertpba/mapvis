@@ -1,7 +1,9 @@
 package mapvis.liquidvis.util;
 
+import algorithm.CircleOverlapRemoval;
 import mapvis.liquidvis.model.Node;
 
+import java.awt.geom.Point2D;
 import java.io.*;
 import java.util.*;
 
@@ -27,8 +29,11 @@ public class PatrickFormatLoader {
         scaleAttribute(root);
         filterUnpositionedNodes(root);
         filterSmallNodes(root);
+        nodes.clear();
+        leaves.clear();
+        updateCache(root, nodes, leaves);
+
         refinePoints();
-        nodes = visbl;
 
         return root;
     }
@@ -161,7 +166,6 @@ public class PatrickFormatLoader {
         return true;
     }
 
-
     protected boolean filterSmallNodes(Node root) {
         if (root.children.length == 0) {
             if (root.figure <= 0.01)
@@ -185,15 +189,37 @@ public class PatrickFormatLoader {
         return true;
     }
 
+    protected void updateCache(Node root, List<Node> nodes, List<Node> leaves){
+        nodes.add(root);
+        if (root.children.length == 0) {
+            leaves.add(root);
+        }
+        for (Node child : root.children) {
+            updateCache(child, nodes, leaves);
+        }
+    }
 
     protected void refinePoints()
     {
         for (Node node : nodes) {
-            node.x = node.x * 2;
-            node.y = node.y * 2;
+            node.x = node.x * 2 + 100;
+            node.y = node.y * 2 + 50;
+            node.figure = node.figure * 8;
         }
-        width  = (width + 50)* 2;
-        height = (height + 50)* 2;
+        width  = (width + 100)* 2;
+        height = (height + 100)* 2;
+
+
+        CircleOverlapRemoval<Node> removal = new CircleOverlapRemoval<>(leaves,
+                n -> new Point2D.Double(n.x, n.y),
+                n -> Math.sqrt(n.figure / Math.PI));
+        removal.run(1000);
+
+        for (Node node : leaves) {
+            Point2D position = removal.getPosition(node);
+            node.x = position.getX();
+            node.y = position.getY();
+        }
     }
 
     public static void main (String[] args) throws IOException {
@@ -204,6 +230,9 @@ public class PatrickFormatLoader {
         loader.scaleAttribute(loader.root);
         loader.filterUnpositionedNodes(loader.root);
         loader.filterSmallNodes(loader.root);
+        loader.nodes.clear();
+        loader.leaves.clear();
+        loader.updateCache(loader.root, loader.nodes,loader.leaves);
         loader.refinePoints();
 
         printNode (loader, "", loader.root, 6);

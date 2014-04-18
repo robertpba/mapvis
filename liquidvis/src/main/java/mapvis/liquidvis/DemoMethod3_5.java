@@ -41,15 +41,19 @@ public class DemoMethod3_5 {
 
         //loader.root.children = new Node[]{ geography};
 
-        MapModel model = new MapModel(loader.root, n-> n.figure * 10);
+        MapModel model = new MapModel(loader.root, n-> n.figure * 1.3);
         Method3 method = new Method3(model);
         model.listeners.add(new CollectStatistics(model, 100));
 
         BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
 
         Observer observer = new Observer(image, model);
+//        observer.imageUpdater.mapPolygonFillingColor = c ->{
+//            double v = interpolate(((c.mass - c.area)/c.mass), 0.0, 0.75, 1.0, 1.0);
+//            return ColorMap.JET.getColor(v);
+//        };
         observer.imageUpdater.mapPolygonFillingColor = c ->{
-            double v = interpolate(c.mass - c.area, 0.0, 0.0, 10000.0, 1.0);
+            double v = interpolate(((c.mass - c.area)/c.mass), 0.0, 0.5, 1.0, 1.0);
             return ColorMap.JET.getColor(v);
         };
 

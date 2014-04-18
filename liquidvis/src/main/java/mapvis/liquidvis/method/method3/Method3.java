@@ -18,7 +18,7 @@ public class Method3 {
     public Method3(MapModel model){
         this.model = model;
         model.listeners.add(new DriveAwayInsideVertices(this, 100));
-        model.listeners.add(new MovePivot(this, 100));
+        //model.listeners.add(new MovePivot(this, 100));
 
         estimator = new Estimator(model);
         manipulator = new Manipulator(model);
