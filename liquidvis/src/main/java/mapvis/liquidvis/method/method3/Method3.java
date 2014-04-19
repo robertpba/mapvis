@@ -2,12 +2,13 @@ package mapvis.liquidvis.method.method3;
 
 import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.model.Polygon;
+import mapvis.liquidvis.model.Vector2D;
 import mapvis.liquidvis.model.Vertex;
+import mapvis.liquidvis.model.event.CriticalPointArrived;
 import mapvis.liquidvis.model.event.IterationFinished;
+import mapvis.liquidvis.model.event.VertexMoved;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Method3 {
 
@@ -15,9 +16,13 @@ public class Method3 {
     public final Manipulator manipulator;
     public MapModel model;
 
+    DriveAwayInsideVertices driveAwayInsideVertices;
+
     public Method3(MapModel model){
         this.model = model;
-        model.listeners.add(new DriveAwayInsideVertices(this, 100));
+
+        driveAwayInsideVertices = new DriveAwayInsideVertices(this, 100);
+        model.listeners.add(driveAwayInsideVertices);
         //model.listeners.add(new MovePivot(this, 100));
 
         estimator = new Estimator(model);
@@ -30,6 +35,7 @@ public class Method3 {
         while (IterateOnce() && model.iteration < maxIteration)
         {
         }
+        model.fireModelEvent(new CriticalPointArrived(model.iteration, "iterations finished"));
     }
 
     public boolean IterateOnce() {
@@ -82,4 +88,87 @@ public class Method3 {
         return scores;
     }
 
+    public void growPolygons() {
+        model.listeners.remove(driveAwayInsideVertices);
+
+        for (int i = 0; i < 4; i++) {
+            _growPolygons();
+        }
+        model.fireModelEvent(new CriticalPointArrived(model.iteration, "growing finished"));
+        //restorePos();
+        model.fireModelEvent(new CriticalPointArrived(model.iteration, "shrinking finished"));
+    }
+
+    private void restorePos() {
+        for (Map.Entry<Vertex, Vector2D> entry : origPos.entrySet()) {
+            model.fireModelEvent(new VertexMoved(model.iteration,
+                    entry.getKey(), entry.getKey().getPoint(), entry.getValue()));
+        }
+    }
+
+    public Map<Vertex, Vector2D> origPos = new HashMap<>();
+    public Map<Vector2D, ArrayList<Vertex>> joints = new HashMap<>();
+
+
+    private void _growPolygons(){
+        for (Polygon polygon : model.getPolygons().values()) {
+            for (Vertex vertex : polygon.vertices) {
+
+                Vector2D srcPos = vertex.getPoint();
+                Vector2D unit = Vector2D.subtract(srcPos, polygon.getOrigin()).unit();
+                Vector2D dstPos = Vector2D.add(srcPos, unit);
+
+                Polygon dstRegion = model.findSurroundingRegion(dstPos, polygon.node);
+
+                if (dstRegion == null) {
+                    vertex.moveCount++;
+                    vertex.momentum = 0;
+
+                    if (!origPos.containsKey(vertex))
+                        origPos.put(vertex, vertex.getPoint());
+
+                    model.fireModelEvent(new VertexMoved(model.iteration, vertex, srcPos, dstPos));
+                } else {
+                    origPos.remove(vertex);
+
+                    if (joints.containsValue(vertex.getPoint())
+                            && joints.get(vertex.getPoint()).contains(vertex))
+                        continue;
+
+                    Vertex nearestVertex = model.findNearestVertex(srcPos, dstRegion);
+                    Vector2D matchedPoint = nearestVertex.getPoint();
+
+                    ArrayList<Vertex> joint = joints.remove(matchedPoint);
+
+                    if(joint == null){
+                        joint = new ArrayList<>();
+                        joint.add(nearestVertex);
+                    }
+
+                    joint.add(vertex);
+                    dstPos = Vector2D.average(srcPos, matchedPoint);
+                    joints.put(dstPos, joint);
+
+                    for (Vertex vertex1 : joint) {
+                        model.fireModelEvent(new VertexMoved(model.iteration,
+                                vertex1, vertex1.getPoint(), dstPos));
+                    }
+
+                }
+            }
+        }
+
+
+
+
+
+    }
+
+
 }
+
+
+
+
+
+

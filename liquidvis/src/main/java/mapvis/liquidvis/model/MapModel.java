@@ -1,9 +1,6 @@
 package mapvis.liquidvis.model;
 
-import mapvis.liquidvis.model.event.IterationFinished;
-import mapvis.liquidvis.model.event.ModelEvent;
-import mapvis.liquidvis.model.event.PolygonMoved;
-import mapvis.liquidvis.model.event.VertexMoved;
+import mapvis.liquidvis.model.event.*;
 import mapvis.liquidvis.model.handler.*;
 
 import java.util.*;
@@ -81,24 +78,24 @@ public class MapModel {
         }
     }
 
-    public void applyEvent(ModelEvent event) {
+    private void applyEvent(ModelEvent event) {
         if (event instanceof VertexMoved)
             applyEvent((VertexMoved)event);
         else if (event instanceof IterationFinished)
             applyEvent((IterationFinished)event);
         else if (event instanceof PolygonMoved)
             applyEvent((PolygonMoved)event);
+        else if (event instanceof CriticalPointArrived)
+            applyEvent((CriticalPointArrived)event);
 
     }
-
-    public void applyEvent(VertexMoved event){
+    private void applyEvent(VertexMoved event){
         event.polygon.setVertex(event.vertex.indexOfVertex, event.destination);
     }
-    public void applyEvent(IterationFinished event){
+    private void applyEvent(IterationFinished event){
         iteration++;
     }
-
-    public void applyEvent(PolygonMoved event){
+    private void applyEvent(PolygonMoved event){
         Vector2D d = event.distance;
         Polygon polygon = event.polygon;
         Vector2D oldPivot = event.polygon.getOrigin();
@@ -114,4 +111,5 @@ public class MapModel {
         polygon.originX = pivot.x;
         polygon.originY = pivot.y;
     }
+    private void applyEvent(CriticalPointArrived event){}
 }

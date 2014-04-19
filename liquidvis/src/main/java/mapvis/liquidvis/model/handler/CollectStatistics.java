@@ -2,6 +2,7 @@ package mapvis.liquidvis.model.handler;
 
 import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.model.Polygon;
+import mapvis.liquidvis.model.event.CriticalPointArrived;
 import mapvis.liquidvis.model.event.IterationFinished;
 import mapvis.liquidvis.model.event.ModelEvent;
 import mapvis.liquidvis.model.event.VertexMoved;
@@ -18,16 +19,23 @@ public class CollectStatistics implements ModelEventListener {
     }
 
     public void onEvent(ModelEvent event) {
-        if (event.iteration % period != 0)
-            return;
-
         /*if (event instanceof VertexMoved) {
             onVertexMoved((VertexMoved) event);
         }*/
+        if (event instanceof CriticalPointArrived) {
+            onIterationFinished(event);
+            onCriticalPointArrived((CriticalPointArrived) event);
+        } else {
 
-        if (event instanceof IterationFinished) {
-            onIterationFinished((IterationFinished) event);
+            if (event.iteration % period != 0)
+                return;
+
+            if (event instanceof IterationFinished
+                    || event instanceof CriticalPointArrived) {
+                onIterationFinished(event);
+            }
         }
+
     }
 
 
@@ -36,7 +44,7 @@ public class CollectStatistics implements ModelEventListener {
 
     }
 
-    private void onIterationFinished(IterationFinished event)
+    private void onIterationFinished(ModelEvent event)
     {
         System.out.println("------------------");
         for (Polygon polygon : model.getPolygons().values()) {
@@ -46,4 +54,10 @@ public class CollectStatistics implements ModelEventListener {
         }
         System.out.println("-------" + event.iteration + "---------");
     }
+    private void onCriticalPointArrived(CriticalPointArrived event)
+    {
+        System.out.println("###"+event.desc+"###");
+    }
+
+
 }

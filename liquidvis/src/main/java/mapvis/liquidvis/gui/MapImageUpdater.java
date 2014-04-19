@@ -80,7 +80,9 @@ public class MapImageUpdater {
             for (Node childNode : node.children) {
                 updatePosition(childNode);
                 RegionDescriptor child = nodeToDescriptor.get(childNode);
-                descriptor.area.add(expandShape(child.area, (float) 5.0));
+                descriptor.area.add(child.area);
+
+                        //expandShape(child.area, (float) 5.0));
             }
         }
     }
@@ -106,15 +108,25 @@ public class MapImageUpdater {
         for (RegionDescriptor descriptor : descriptors) {
             if (descriptor.node.children == null || descriptor.node.children.length == 0)
                 drawPolygon(g, descriptor);
-
         }
 
         for (RegionDescriptor descriptor : descriptors) {
-            //drawPolygonBorder(g, descriptor);
+            if (descriptor.level == 3)
+                drawPolygonBorder(g, descriptor);
+        }
+        for (RegionDescriptor descriptor : descriptors) {
+            if (descriptor.level == 2)
+                drawPolygonBorder(g, descriptor);
+        }
+        for (RegionDescriptor descriptor : descriptors) {
+            if (descriptor.level == 1)
+                drawPolygonBorder(g, descriptor);
+        }
 
+        for (RegionDescriptor descriptor : descriptors) {
             if (descriptor.node.children == null || descriptor.node.children.length == 0) {
                 //highlightVertices(g, descriptor);
-                drawSimplePolygonBorder(g, descriptor);
+                //drawSimplePolygonBorder(g, descriptor);
                 drawPolygonOrigin(g, descriptor);
                 drawPolygonCentroid(g, descriptor);
             }
@@ -156,53 +168,32 @@ public class MapImageUpdater {
         }
     }
 
-
-
     private void drawPolygonBorder(Graphics2D g, RegionDescriptor descriptor) {
         Color color;
-        if (descriptor.node.children == null || descriptor.node.children.length == 0) {
-            color = mapPolygonBorderColor.apply(descriptor.polygon);
-            color = new Color(color.getRed(), color.getGreen(), color.getBlue(), 220);
-            g.setColor(color);
+        if (descriptor.node.level == 3)
+        {
+            //final float dash1[] = {10.0f};
+//                final BasicStroke dashed =
+//                        new BasicStroke(1.0f,
+//                                BasicStroke.CAP_BUTT,
+//                                BasicStroke.JOIN_MITER,
+//                                10.0f, dash1, 0.0f);
+            g.setColor(Color.gray);
             g.setStroke(new BasicStroke(1));
             g.draw(descriptor.area);
         }
-        else {
-            if (descriptor.node.level == 4)
-            {
-                final float dash1[] = {10.0f};
-                final BasicStroke dashed =
-                        new BasicStroke(1.0f,
-                                BasicStroke.CAP_BUTT,
-                                BasicStroke.JOIN_MITER,
-                                10.0f, dash1, 0.0f);
-                color = Color.black;
-                g.setColor(color);
-                g.draw(descriptor.area);
-                g.draw(descriptor.area);
-            }
-            else if (descriptor.node.level == 3)
-            {
-                final float dash1[] = {10.0f};
-                final BasicStroke dashed =
-                        new BasicStroke(1.0f,
-                                BasicStroke.CAP_BUTT,
-                                BasicStroke.JOIN_MITER,
-                                10.0f, dash1, 0.0f);
-                color = Color.black;
-                g.setColor(color);
-                g.draw(descriptor.area);
-                g.draw(descriptor.area);
-            }else{
-                color = Color.black;
-                g.setColor(color);
-                g.setStroke(new BasicStroke(2));
-                g.draw(descriptor.area);
-            }
-
-
+        else if (descriptor.node.level == 2)
+        {
+            g.setStroke(new BasicStroke(1));
+            color = Color.black;
+            g.setColor(color);
+            g.draw(expandShape(descriptor.area, 1));
+        }else if (descriptor.node.level == 1){
+            g.setStroke(new BasicStroke(5));
+            color = Color.black;
+            g.setColor(color);
+            g.draw(expandShape(descriptor.area, 5));
         }
-
     }
 
     private void highlightVertices(Graphics2D g, RegionDescriptor descriptor) {
