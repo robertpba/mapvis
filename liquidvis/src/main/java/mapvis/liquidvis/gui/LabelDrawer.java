@@ -3,143 +3,183 @@ package mapvis.liquidvis.gui;
 import algorithm.FTAOverlapRemoval;
 
 import java.awt.*;
-import java.util.Collection;
-import java.util.List;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LabelDrawer<T> {
+    private ToLabel<T> toLabel;
 
     class Entry{
-        Entry(T node, String label, Rectangle bound, int level) {
-            this.node = node;
-            this.label = label;
-            this.bound = bound;
-            this.level = level;
+        public Entry (T element){
+            this.element = element;
         }
 
-        public T node;
-        public String label;
-        public Rectangle bound;
+        public T element;
+        public String text;
+        public Rectangle2D bounds;
+        private Point2D anchor;
         public int level;
 
         public Font font;
-        public Rectangle textRect;
+        public Rectangle2D textRect;
+        public Point2D textOrgin;
     }
-    public interface ToBoundRectangle<T> {
-        Rectangle getRectangle(T node);
-    }
-    public interface ToLevel<T> {
-        int getLevel(T node);
-    }
+
     public interface ToLabel<T> {
-        String getLabel(T node);
+        Rectangle2D bounds(T node);
+        int level(T node);
+        String text(T node);
+        Point2D anchor(T node);
     }
 
-    List<Entry> entries;
+    Map<T, Entry> entries = new HashMap<>();
 
-    public LabelDrawer(Collection<T> nodes,
-                          ToLabel<T> toLabel,
-                          ToLevel<T> toLevel,
-                          ToBoundRectangle<T> toBoundRectangle){
-        entries = nodes.stream()
-                .map(n -> new Entry(n,
-                        toLabel.getLabel(n),
-                        toBoundRectangle.getRectangle(n),
-                        toLevel.getLevel(n)))
-        .collect(Collectors.toList());
+    public LabelDrawer(Collection<T> items,
+                          ToLabel<T> toLabel){
+        this.toLabel = toLabel;
+        entries = items.stream()
+                .map(n -> new Entry(n))
+        .collect(Collectors.toMap(e -> e.element, e -> e));
+        update();
     }
 
-    public void calcTextAttribute(Graphics2D g, Entry entry){
-        if (entry.level == 0){
-            entry.textRect = new Rectangle();
-            return;
-        }
-        if (entry.level == 1){
-            Rectangle bounds = entry.bound;
+    public void update() {
+        FontRenderContext ctx = new FontRenderContext(null, false, false);
+        for (Entry entry : entries.values()) {
+            entry.text = toLabel.text(entry.element);
+            entry.level = toLabel.level(entry.element);
+            entry.bounds = toLabel.bounds(entry.element);
+            entry.anchor = toLabel.anchor(entry.element);
 
-            entry.font = new Font("Arial", Font.BOLD, 30);
+            if (entry.level == 0){
+                entry.font = new Font("Arial", Font.BOLD, 30);
+                entry.anchor = new Point.Double(-10, -10);
+            }
+            if (entry.level == 1){
+                entry.font = new Font("Arial", Font.BOLD, 30);
+            }
+            if (entry.level == 2){
+                entry.font = new Font("Arial", Font.ITALIC, 18);
+            }
+            if (entry.level == 3){
+                entry.font = new Font("Arial", Font.PLAIN, 15);
+            }
 
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
-
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int width = fontMetrics.stringWidth(entry.label);
-            int height = fontMetrics.getHeight();
-
-            entry.textRect = new Rectangle((int)(centerX-width/2),(int)(centerY-height/2),
-                    width, height);
-        }
-        if (entry.level == 2){
-            Rectangle bounds = entry.bound;
-
-            entry.font = new Font("Arial", Font.ITALIC, 15);
-
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
-
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int width = fontMetrics.stringWidth(entry.label);
-            int height = fontMetrics.getHeight();
-
-            entry.textRect = new Rectangle((int)(centerX-width/2),(int)(centerY-height/2),
-                    width, height);
-        }
-        if (entry.level == 3){
-            Rectangle bounds = entry.bound;
-
-            entry.font = new Font("Arial", Font.PLAIN, 10);
-
-            double centerX = bounds.getCenterX();
-            double centerY = bounds.getCenterY();
-
-            FontMetrics fontMetrics = g.getFontMetrics();
-            int width = fontMetrics.stringWidth(entry.label);
-            int height = fontMetrics.getHeight();
-
-            entry.textRect = new Rectangle((int)(centerX-width/2),(int)(centerY-height/2),
-                    width, height);
+            Rectangle2D strBounds = entry.font.getStringBounds(entry.text, ctx);
+            entry.textRect = new Rectangle2D.Double(
+                    -strBounds.getWidth()/2  + entry.anchor.getX(),
+                    -strBounds.getHeight()/2 + entry.anchor.getY(),
+                    strBounds.getWidth(),strBounds.getHeight());
+            entry.textOrgin = new Point2D.Double(strBounds.getX(), strBounds.getY());
         }
     }
 
     public void layout(){
-        FTAOverlapRemoval<Entry> removal = new FTAOverlapRemoval<>(entries, e -> e.textRect);
-        removal.run();
-        for (Entry entry : entries) {
-            entry.textRect =  removal.getRectangle(entry);
+        for (int i = 1; i <= 3; i++) {
+            final int l = i;
+            java.util.List<Entry> collect = entries.values().stream()
+                    .filter(e -> e.level == l)
+                    .collect(Collectors.toList());
+            FTAOverlapRemoval<Entry> removal = new FTAOverlapRemoval<>(collect, e -> e.textRect);
+            removal.run();
+
+            for (Entry entry : collect) {
+                entry.textRect =  removal.getRectangle(entry);
+            }
         }
     }
 
     public void draw(Graphics2D g){
-        for (Entry entry : entries) {
-            calcTextAttribute(g, entry);
-        }
         layout();
 
-        for (Entry entry : entries) {
-            if (entry.level == 0){
-                return;
-            }
-            if (entry.level == 1){
-                g.setFont(entry.font);
-                g.setColor(Color.BLACK);
-
-                g.drawString(entry.label, entry.textRect.x, entry.textRect.y);
-                g.drawLine(entry.textRect.x, entry.textRect.y,
-                        entry.textRect.x+entry.textRect.width, entry.textRect.y);
-            }
-            if (entry.level == 2){
-                g.setFont(entry.font);
-                g.setColor(Color.BLACK);
-
-                g.drawString(entry.label, entry.textRect.x, entry.textRect.y);
-            }
-            if (entry.level == 3){
-                g.setFont(entry.font);
-                g.setColor(Color.BLACK);
-
-                g.drawString(entry.label, entry.textRect.x, entry.textRect.y);
-            }
+        for (Entry entry : entries.values()) {
+            if (entry.level == 3)
+                renderLabel(g, entry);
+        }
+        for (Entry entry : entries.values()) {
+            if (entry.level == 2)
+                renderLabel(g, entry);
+        }
+        for (Entry entry : entries.values()) {
+            if (entry.level == 1)
+                renderLabel(g, entry);
         }
     }
 
+    public void renderLabel(Graphics2D g, Entry entry){
+        if (entry.level == 0){
+            return;
+        }
+        if (entry.level == 1){
+            g.setFont(entry.font);
+            g.setColor(Color.BLACK);
+
+            g.drawString(entry.text,
+                    (float)(entry.textRect.getX() - entry.textOrgin.getX()),
+                    (float)(entry.textRect.getY() - entry.textOrgin.getY()));
+//            g.drawRect((int)entry.textRect.getX(),
+//                    (int) entry.textRect.getY(),
+//                    (int) entry.textRect.getWidth(),
+//                    (int) entry.textRect.getHeight());
+//
+//            g.setColor(Color.red);
+//            g.setStroke(new BasicStroke(1));
+//            g.drawLine(
+//                    (int)entry.textRect.getX(),
+//                    (int)entry.textRect.getY(),
+//                    (int)entry.anchor.getX(),
+//                    (int)entry.anchor.getY()
+//                    );
+
+//            g.drawLine(entry.textRect.x, entry.textRect.y,
+//                    entry.textRect.x+entry.textRect.width, entry.textRect.y);
+        }
+        if (entry.level == 2){
+
+            g.setFont(entry.font);
+            g.setColor(new Color(156, 93, 82));
+
+            g.drawString(entry.text,
+                    (float)(entry.textRect.getX() - entry.textOrgin.getX()),
+                    (float)(entry.textRect.getY() - entry.textOrgin.getY()));
+//            g.drawRect((int) entry.textRect.getX(),
+//                    (int) entry.textRect.getY(),
+//                    (int) entry.textRect.getWidth(),
+//                    (int) entry.textRect.getHeight());
+//
+//            g.setColor(Color.red);
+//            g.setStroke(new BasicStroke(1));
+//            g.drawLine(
+//                    (int)entry.textRect.getX(),
+//                    (int)entry.textRect.getY(),
+//                    (int)entry.anchor.getX(),
+//                    (int)entry.anchor.getY()
+//            );
+
+        }
+        if (entry.level == 3){
+            g.setFont(entry.font);
+            g.setColor(Color.BLACK);
+
+            g.drawString(entry.text,
+                    (float)(entry.textRect.getX() - entry.textOrgin.getX()),
+                    (float)(entry.textRect.getY() - entry.textOrgin.getY()));
+//            g.drawRect((int)entry.textRect.getX(),
+//                    (int) entry.textRect.getY(),
+//                    (int) entry.textRect.getWidth(),
+//                    (int) entry.textRect.getHeight());
+//
+//            g.setColor(Color.red);
+//            g.setStroke(new BasicStroke(1));
+//            g.drawLine(
+//                    (int)entry.textRect.getX(),
+//                    (int)entry.textRect.getY(),
+//                    (int)entry.anchor.getX(),
+//                    (int)entry.anchor.getY()
+//            );
+        }
+    }
 }

@@ -6,6 +6,8 @@ import mapvis.liquidvis.model.Polygon;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
@@ -21,7 +23,7 @@ public class MapImageUpdater {
         createDescriptors(model.root, 0);
         descriptors = new ArrayList<>(nodeToDescriptor.values());
 
-        mapPolygonFillingColor = (polygon)-> mapColor(0,2000, (int)(polygon.mass - polygon.area));
+        mapPolygonFillingColor = (polygon)-> Color.blue;
         mapPolygonBorderColor  = (polygon)-> {
             Color[] colors = new Color[]{
                     Color.BLACK,
@@ -178,21 +180,21 @@ public class MapImageUpdater {
 //                                BasicStroke.CAP_BUTT,
 //                                BasicStroke.JOIN_MITER,
 //                                10.0f, dash1, 0.0f);
-            g.setColor(Color.gray);
+            g.setColor(Color.lightGray);
             g.setStroke(new BasicStroke(1));
             g.draw(descriptor.area);
         }
         else if (descriptor.node.level == 2)
         {
             g.setStroke(new BasicStroke(1));
-            color = Color.black;
+            color = Color.darkGray;
             g.setColor(color);
             g.draw(expandShape(descriptor.area, 1));
         }else if (descriptor.node.level == 1){
-            g.setStroke(new BasicStroke(5));
+            g.setStroke(new BasicStroke(3));
             color = Color.black;
             g.setColor(color);
-            g.draw(expandShape(descriptor.area, 5));
+            g.draw(expandShape(descriptor.area, 3));
         }
     }
 
@@ -250,38 +252,38 @@ public class MapImageUpdater {
         descriptor.area = new Area(path);
     }
 
-    public static Color mapColor(int minVal, int maxVal, int actual) {
-        actual = Math.min(maxVal, actual);
-        actual = Math.max(minVal, actual);
-        double percentage = ((double)(maxVal - actual))/((double)(maxVal - minVal));
-        int intR = 10;
-        int intG = 10;
-        int intB = 0+(int)(percentage*255);
-
-        return new Color(intR, intG, intB);
-    }
-
     private void drawLabel(Graphics2D g){
         LabelDrawer<RegionDescriptor> labelDrawer = new LabelDrawer<RegionDescriptor>(
-                descriptors.stream().filter(d->d.level == 3).collect(Collectors.toList()),
-                d -> d.node.name,
-                d -> d.level,
-                d -> d.area.getBounds());
+                descriptors,
+                new LabelDrawer.ToLabel<RegionDescriptor>() {
+                    @Override
+                    public Rectangle2D bounds(RegionDescriptor node) {
+                        return node.area.getBounds2D();
+                    }
+
+                    @Override
+                    public int level(RegionDescriptor node) {
+                        return node.level;
+                    }
+
+                    @Override
+                    public String text(RegionDescriptor node) {
+                        return node.node.name;
+                    }
+
+                    @Override
+                    public Point2D anchor(RegionDescriptor node) {
+                        if (node.polygon != null){
+                            Vector2D centroid = node.polygon.calcCentroid();
+                            return new Point.Double(centroid.x,centroid.y);
+                        }
+                        else
+                        return new Point.Double(
+                                node.area.getBounds2D().getCenterX(),
+                                node.area.getBounds2D().getCenterY());
+                    }
+                });
         labelDrawer.draw(g);
-
-        LabelDrawer<RegionDescriptor> labelDrawer2 = new LabelDrawer<RegionDescriptor>(
-                descriptors.stream().filter(d->d.level == 2).collect(Collectors.toList()),
-                d -> d.node.name,
-                d -> d.level,
-                d -> d.area.getBounds());
-        labelDrawer2.draw(g);
-
-        LabelDrawer<RegionDescriptor> labelDrawer1 = new LabelDrawer<RegionDescriptor>(
-                descriptors.stream().filter(d->d.level == 1).collect(Collectors.toList()),
-                d -> d.node.name,
-                d -> d.level,
-                d -> d.area.getBounds());
-        labelDrawer1.draw(g);
 
 
     }

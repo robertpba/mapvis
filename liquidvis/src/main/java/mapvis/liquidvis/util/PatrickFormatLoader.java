@@ -44,8 +44,7 @@ public class PatrickFormatLoader {
 
     public List<Node> visbl = new ArrayList<>();
 
-    protected void loadCategoryName(String categoryNameFilePath) throws FileNotFoundException
-    {
+    protected void loadCategoryName(String categoryNameFilePath) throws FileNotFoundException {
         Map<Integer, ArrayList<Integer>> edges = new HashMap<>();
 
         Scanner scanner = null;
@@ -201,13 +200,15 @@ public class PatrickFormatLoader {
 
     protected void refinePoints()
     {
+        int scale = 5;
+
         for (Node node : nodes) {
-            node.x = node.x * 2 + 100;
-            node.y = node.y * 2 + 50;
-            node.figure = node.figure * 8;
+            node.x = (node.x +50) * scale;
+            node.y = (node.y +50) * scale;
+            node.figure = node.figure * 2 * scale * scale;
         }
-        width  = (width + 100)* 2;
-        height = (height + 100)* 2;
+        width  = (width + 100)* scale;
+        height = (height + 100)* scale;
 
 
         CircleOverlapRemoval<Node> removal = new CircleOverlapRemoval<>(leaves,

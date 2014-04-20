@@ -1,4 +1,5 @@
 package algorithm;
+import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 
@@ -6,13 +7,13 @@ import java.awt.Rectangle;
 
 public class FTAOverlapRemoval<T> {
     public interface ToRectangle<T> {
-        Rectangle getRectangle(T obj);
+        Rectangle2D getRectangle(T obj);
     }
     public class Entry {
         public T element;
-        public Rectangle rect;
+        public Rectangle2D rect;
 
-        public Entry(T element, Rectangle rect) {
+        public Entry(T element, Rectangle2D rect) {
             this.element = element;
             this.rect = rect;
         }
@@ -26,7 +27,7 @@ public class FTAOverlapRemoval<T> {
     private List<Entry> entries = new ArrayList<>();
     private Map<T,Entry> map = new HashMap<>();
 
-    public FTAOverlapRemoval(List<T> elementList, ToRectangle<T> toRectangle) {
+    public FTAOverlapRemoval(Collection<T> elementList, ToRectangle<T> toRectangle) {
         for (T obj: elementList) {
             Entry entry = new Entry(obj, toRectangle.getRectangle(obj));
             entries.add(entry);
@@ -34,7 +35,7 @@ public class FTAOverlapRemoval<T> {
         }
     }
 
-    public Rectangle getRectangle(T obj){
+    public Rectangle2D getRectangle(T obj){
         return map.get(obj).rect;
     }
 
@@ -46,7 +47,7 @@ public class FTAOverlapRemoval<T> {
     }
 
     private void rightHorizontalScan() {
-        Collections.sort(entries, (a,b)-> a.rect.x - b.rect.x);
+        Collections.sort(entries, (a,b)-> Double.compare(a.rect.getX(), b.rect.getX()));
         for (Entry vi : entries) {
             Set<Entry> rns = findNS(vi, Direction.RIGHT);
             if (!rns.isEmpty()) {
@@ -61,15 +62,17 @@ public class FTAOverlapRemoval<T> {
                         f = delta;
                 }
                 if (f != 0) {
-                    for (Entry e : rtns)
-                        e.rect.x += f + xGap;
+                    for (Entry e : rtns) {
+                        Rectangle2D r = e.rect;
+                        r.setRect(r.getX() + f + xGap, r.getY(), r.getWidth(), r.getHeight());
+                    }
                 }
             }
         }
     }
 
     private void leftHorizontalScan() {
-        Collections.sort(entries, (a,b)-> a.rect.x - b.rect.x);
+        Collections.sort(entries, (a,b)-> Double.compare(a.rect.getX(), b.rect.getX()));
         for (int i = entries.size() - 1; i >= 0; i--) {
             Entry vi = entries.get(i);
             Set<Entry> lns = findNS(vi, Direction.LEFT);
@@ -85,15 +88,17 @@ public class FTAOverlapRemoval<T> {
                         f = delta;
                 }
                 if (f != 0) {
-                    for (Entry e: ltns)
-                        e.rect.x -= f - xGap;
+                    for (Entry e: ltns) {
+                        Rectangle2D r = e.rect;
+                        r.setRect(r.getX() - (f - xGap), r.getY(), r.getWidth(), r.getHeight());
+                    }
                 }
             }
         }
     }
 
     private void upVerticalScan() {
-        Collections.sort(entries, (a,b)-> a.rect.y - b.rect.y);
+        Collections.sort(entries, (a,b)-> Double.compare(a.rect.getY(), b.rect.getY()));
         for (int i = entries.size() - 1; i >= 0; i--) {
             Entry vi = entries.get(i);
             Set<Entry> uns = findNS(vi, Direction.UP);
@@ -109,14 +114,17 @@ public class FTAOverlapRemoval<T> {
                 }
                 if (f != 0) {
                     for (Entry e: utns)
-                        e.rect.y -= f - yGap;
+                    {
+                        Rectangle2D r = e.rect;
+                        r.setRect(r.getX(), r.getY() - (f - yGap), r.getWidth(), r.getHeight());
+                    }
                 }
             }
         }
     }
 
     private void downVerticalScan() {
-        Collections.sort(entries, (a,b)-> a.rect.y - b.rect.y);
+        Collections.sort(entries, (a,b)-> Double.compare(a.rect.getY(), b.rect.getY()));
         for (Entry vi : entries) {
             Set<Entry> dns = findNS(vi, Direction.DOWN);
             if (!dns.isEmpty()) {
@@ -131,21 +139,24 @@ public class FTAOverlapRemoval<T> {
                 }
                 if (f != 0) {
                     for (Entry e : dtns)
-                        e.rect.y += f + yGap;
+                    {
+                        Rectangle2D r = e.rect;
+                        r.setRect(r.getX(), r.getY() + (f + yGap), r.getWidth(), r.getHeight());
+                    }
                 }
             }
         }
     }
 
-    private static boolean intersects(Rectangle r1, Rectangle r2) {
+    private static boolean intersects(Rectangle2D r1, Rectangle2D r2) {
         return r1 != null && r1.intersects(r2);
     }
 
     private Set<Entry> findNS(Entry argEntry, Direction dir) {
         HashSet<Entry> nsSet = new HashSet<>();
         for (Entry e: entries) {
-            Rectangle r = e.rect;
-            Rectangle rect = argEntry.rect;
+            Rectangle2D r = e.rect;
+            Rectangle2D rect = argEntry.rect;
             if (!rect.equals(r) && intersects(r, rect)) {
                 if ((dir == Direction.LEFT && r.getX() < rect.getX()) ||
                         (dir == Direction.RIGHT && r.getX() >= rect.getX()) ||

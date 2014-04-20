@@ -6,8 +6,8 @@ public class Estimator  {
 
     MapModel mapModel;
 
-    public double weightOfPressure  = 3;
-    public double weightOfConvexity = 1;
+    public double weightOfPressure  = 1;
+    public double weightOfConvexity = 3;
 
 
     public Estimator(MapModel mapModel){
@@ -29,7 +29,10 @@ public class Estimator  {
 
     private double calcPressure(Vertex vertex) {
         Polygon polygon = vertex.polygon;
-        return polygon.mass-polygon.area + vertex.momentum;
+        double pressure = polygon.mass - polygon.area + vertex.momentum;
+        if (vertex.momentum >= 0)
+            return pressure + 10;
+        return pressure;
     }
 
     public double calcConvexity(Vertex vertex){

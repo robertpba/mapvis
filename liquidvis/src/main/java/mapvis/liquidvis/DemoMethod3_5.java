@@ -38,7 +38,7 @@ public class DemoMethod3_5 {
 
         //loader.root.children = new Node[]{ geography};
 
-        MapModel model = new MapModel(loader.root, n-> n.figure * 1.48);
+        MapModel model = new MapModel(loader.root, n-> n.figure * 1.6);
         Method3 method = new Method3(model);
         model.listeners.add(new CollectStatistics(model, 100));
 
