@@ -75,6 +75,7 @@ public class PatrickFormatLoader {
                 node.figure = scanner.nextInt();
                 //node.figure = Math.log10(node.figure) / Math.log10(1.1);
                 //node.figure = node.figure * 6;
+                node.figure2 = node.figure;
                 scanner.next();
 
                 ArrayList<Integer> children = edges.get(parentId);

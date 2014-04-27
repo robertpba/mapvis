@@ -6,6 +6,7 @@ public class Node {
 
     public int level;
     public double figure;
+    public double figure2;
     public double x;
     public double y;
 
