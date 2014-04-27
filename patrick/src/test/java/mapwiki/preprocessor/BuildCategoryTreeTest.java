@@ -65,9 +65,10 @@ public class BuildCategoryTreeTest {
     @Test(enabled = true) public void layoutGraphic() throws Exception
     {
         mapwiki.layout.LayoutGraphic
-                .main(("--as data\\aggsim.txt --city data\\page.txt -l 3 -o simple1024.png" +
+                .main(("--as data\\aggsim.txt  -l 3 -o simple1024.png" +
                         " -p data\\defaults.properties --sim data\\cossim.txt --tree data\\simple.txt" +
-                        " --cr -d").split(" "));
+                        " --cr").split(" "));
+
         //Thread.sleep(100000);
     }
 
