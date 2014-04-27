@@ -78,17 +78,12 @@ public class LabelDrawer<T> {
     }
 
     public void layout(){
-        for (int i = 1; i <= 3; i++) {
-            final int l = i;
-            java.util.List<Entry> collect = entries.values().stream()
-                    .filter(e -> e.level == l)
-                    .collect(Collectors.toList());
-            FTAOverlapRemoval<Entry> removal = new FTAOverlapRemoval<>(collect, e -> e.textRect);
-            removal.run();
 
-            for (Entry entry : collect) {
-                entry.textRect =  removal.getRectangle(entry);
-            }
+        FTAOverlapRemoval<Entry> removal = new FTAOverlapRemoval<>( entries.values(), e -> e.textRect);
+        removal.run();
+
+        for (Entry entry : entries.values()) {
+            entry.textRect =  removal.getRectangle(entry);
         }
     }
 
@@ -120,22 +115,6 @@ public class LabelDrawer<T> {
             g.drawString(entry.text,
                     (float)(entry.textRect.getX() - entry.textOrgin.getX()),
                     (float)(entry.textRect.getY() - entry.textOrgin.getY()));
-//            g.drawRect((int)entry.textRect.getX(),
-//                    (int) entry.textRect.getY(),
-//                    (int) entry.textRect.getWidth(),
-//                    (int) entry.textRect.getHeight());
-//
-//            g.setColor(Color.red);
-//            g.setStroke(new BasicStroke(1));
-//            g.drawLine(
-//                    (int)entry.textRect.getX(),
-//                    (int)entry.textRect.getY(),
-//                    (int)entry.anchor.getX(),
-//                    (int)entry.anchor.getY()
-//                    );
-
-//            g.drawLine(entry.textRect.x, entry.textRect.y,
-//                    entry.textRect.x+entry.textRect.width, entry.textRect.y);
         }
         if (entry.level == 2){
 
@@ -145,20 +124,6 @@ public class LabelDrawer<T> {
             g.drawString(entry.text,
                     (float)(entry.textRect.getX() - entry.textOrgin.getX()),
                     (float)(entry.textRect.getY() - entry.textOrgin.getY()));
-//            g.drawRect((int) entry.textRect.getX(),
-//                    (int) entry.textRect.getY(),
-//                    (int) entry.textRect.getWidth(),
-//                    (int) entry.textRect.getHeight());
-//
-//            g.setColor(Color.red);
-//            g.setStroke(new BasicStroke(1));
-//            g.drawLine(
-//                    (int)entry.textRect.getX(),
-//                    (int)entry.textRect.getY(),
-//                    (int)entry.anchor.getX(),
-//                    (int)entry.anchor.getY()
-//            );
-
         }
         if (entry.level == 3){
             g.setFont(entry.font);
@@ -167,19 +132,6 @@ public class LabelDrawer<T> {
             g.drawString(entry.text,
                     (float)(entry.textRect.getX() - entry.textOrgin.getX()),
                     (float)(entry.textRect.getY() - entry.textOrgin.getY()));
-//            g.drawRect((int)entry.textRect.getX(),
-//                    (int) entry.textRect.getY(),
-//                    (int) entry.textRect.getWidth(),
-//                    (int) entry.textRect.getHeight());
-//
-//            g.setColor(Color.red);
-//            g.setStroke(new BasicStroke(1));
-//            g.drawLine(
-//                    (int)entry.textRect.getX(),
-//                    (int)entry.textRect.getY(),
-//                    (int)entry.anchor.getX(),
-//                    (int)entry.anchor.getY()
-//            );
         }
     }
 }
