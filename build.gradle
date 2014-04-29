@@ -9,6 +9,22 @@ task getHomeDir << {
     println System.properties
 }
 
-repositories {
-    mavenCentral()
+allprojects {
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+   dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.7.271'
+    }
 }
