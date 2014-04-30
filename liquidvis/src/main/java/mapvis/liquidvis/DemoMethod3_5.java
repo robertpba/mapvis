@@ -9,18 +9,45 @@ import mapvis.liquidvis.util.PatrickFormatLoader;
 import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
 import mapvis.vistools.colormap.GenericColorMap;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static mapvis.vistools.Helper.interpolate;
 
 public class DemoMethod3_5 {
-    
+
+    public static boolean convertToVisibleTree(DirectedGraph<Node, DefaultEdge> oldgraph,
+                                        DirectedGraph<Node, DefaultEdge> newgraph,
+                                        Node node) {
+        if (oldgraph.outDegreeOf(node) == 0){
+            if (node.figure > 0) {
+                newgraph.addVertex(node);
+                return true;
+            }
+            return false;
+        }
+
+        newgraph.addVertex(node);
+
+        oldgraph.outgoingEdgesOf(node).stream()
+                .map(e -> oldgraph.getEdgeTarget(e))
+                .filter(v -> convertToVisibleTree(oldgraph, newgraph, v))
+                .forEach(v -> {
+                    newgraph.addEdge(node, v);
+                });
+        return true;
+    }
+
     public static void main (String[] args) throws IOException, InterruptedException {
         PatrickFormatLoader2 loader = new PatrickFormatLoader2();
         try {
@@ -31,10 +58,28 @@ public class DemoMethod3_5 {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
 //
-//        Node geography = Arrays.stream(loader.root.children)
+
+
+//        List<DefaultEdge> edges = new ArrayList( loader.graph.outgoingEdgesOf(loader.root));
+//
+//        Node geography = edges.stream()
+//                .map(e -> loader.graph.getEdgeTarget(e))
 //                .filter(n -> n.name.contains("Geography"))
 //                .findFirst().get();
+//
+//        for (DefaultEdge edge : edges) {
+//            if (loader.graph.getEdgeTarget(edge) != geography)
+//                loader.graph.removeEdge(edge);
+//        }
+//
+//        DirectedGraph<Node, DefaultEdge> ngraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+//        convertToVisibleTree(loader.graph, ngraph  ,  loader.root);
+//        loader.graph = ngraph;
+//        loader.printNode(loader, "", loader.root, 9);
+
+
 //
 //        Node byCountry = Arrays.stream(geography.children)
 //                .filter(n -> n.name.contains("Geography by country"))
@@ -52,7 +97,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure;
+                return node.figure * 1.3;
             }
         });
         Method3 method = new Method3(model);
@@ -67,6 +112,7 @@ public class DemoMethod3_5 {
 //            double v = interpolate(((c.mass - c.area)/c.mass), 0.0, 0.75, 1.0, 1.0);
 //            return ColorMap.JET.getColor(v);
 //        };
+        //observer.imageUpdater.
 
         int[] nlevels = {0,1,4,16,64,256,1024};
         String[] ncolors = {"#ffffff","#aae8ff", "#ffff33", "#ffcc00", "#ff9900", "#ff6600", "#cc3300", "#990000"};
@@ -106,6 +152,7 @@ public class DemoMethod3_5 {
 
         observer.Start();
 
+        //method.IterateUntilStable(100000);
         method.IterateUntilStable(100000);
 
         System.out.println("finished!");
