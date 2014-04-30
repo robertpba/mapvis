@@ -3,7 +3,7 @@ package mapvis.liquidvis.model;
 import java.util.function.Function;
 
 public class Polygon {
-    public Node node;
+    public Object node;
 
     public int npoints;
     public Vertex[] vertices;
@@ -18,7 +18,6 @@ public class Polygon {
 
     public double figure;
     public double mass;
-    public Function<Node, Double> scale;
 
     public int moveBackCount = 0;
     public int moveForwardCount = 0;
@@ -76,15 +75,14 @@ public class Polygon {
         return centroid;
     }
 
-    public Polygon(Node node, Function<Node, Double> scale){
+    public Polygon(Object node, double x, double y, double mass) {
         this.node = node;
-        this.scale = scale;
 
-        originX = node.x;
-        originY = node.y;
-        figure  = node.figure;
+        originX = x;
+        originY = y;
 
-        mass    = scale.apply(node);
+
+        this.mass    = mass;
 
         npoints = 100;
         vertices = new Vertex[npoints];

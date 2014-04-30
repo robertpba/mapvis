@@ -20,29 +20,15 @@ public class MapImageUpdater {
     public MapImageUpdater(MapModel model) {
         this.model = model;
 
-        createDescriptors(model.root, 0);
+        createDescriptors(model.getRoot(), 0);
         descriptors = new ArrayList<>(nodeToDescriptor.values());
 
         mapPolygonFillingColor = (polygon)-> Color.blue;
-        mapPolygonBorderColor  = (polygon)-> {
-            Color[] colors = new Color[]{
-                    Color.BLACK,
-                    Color.WHITE,
-                    Color.LIGHT_GRAY,
-                    Color.BLUE,
-                    Color.ORANGE,
-                    Color.CYAN,
-                    Color.RED,
-                    Color.PINK
-            };
-
-            return colors[polygon.node.id % colors.length];
-        };
     }
 
-    private RegionDescriptor createDescriptors(Node node, int level) {
-        if (node.children == null || node.children.length == 0) {
-            Polygon polygon = model.getPolygons().get(node);
+    private RegionDescriptor createDescriptors(Object node, int level) {
+        if (model.getChildren(node).isEmpty()) {
+            Polygon polygon = model.getPolygon(node);
 
             RegionDescriptor descriptor = new RegionDescriptor();
             descriptor.polygon = polygon;
@@ -53,7 +39,7 @@ public class MapImageUpdater {
             descriptor.level = level;
 
             updatePosition(descriptor);
-            nodeToDescriptor.put(node, descriptor);
+            setDescriptor(node, descriptor);
             return descriptor;
         }
         else {
@@ -62,24 +48,29 @@ public class MapImageUpdater {
             descriptor.area = new Area();
             descriptor.level = level;
 
-            for (Node childNode : node.children) {
+            for (Object childNode : model.getChildren(node)) {
                 RegionDescriptor child = createDescriptors(childNode, level+1);
                 descriptor.area.add(child.area);
             }
-            nodeToDescriptor.put(node, descriptor);
+            setDescriptor(node, descriptor);
             return descriptor;
         }
     }
 
-    private void updatePosition(Node node) {
+    protected void setDescriptor(Object node, RegionDescriptor descriptor) {
+        nodeToDescriptor.put(node, descriptor);
+        model.setValue(node, "map region descriptor", descriptor);
+    }
+
+    private void updatePosition(Object node) {
         RegionDescriptor descriptor = nodeToDescriptor.get(node);
-        if (node.children == null || node.children.length == 0) {
+        if (model.getChildren(node).isEmpty()) {
             updatePosition(descriptor);
         }
         else {
             descriptor.area = new Area();
 
-            for (Node childNode : node.children) {
+            for (Object childNode : model.getChildren(node)) {
                 updatePosition(childNode);
                 RegionDescriptor child = nodeToDescriptor.get(childNode);
                 descriptor.area.add(child.area);
@@ -91,7 +82,7 @@ public class MapImageUpdater {
 
     public Area expandShape(Shape s, float d) {
         BasicStroke bs = new BasicStroke(d);
-// or new BasicStroke(d, CAP_ROUND, JOIN_ROUND);
+        // or new BasicStroke(d, CAP_ROUND, JOIN_ROUND);
         Area a = new Area(bs.createStrokedShape(s));
         a.add(new Area(s));
         return a;
@@ -105,10 +96,10 @@ public class MapImageUpdater {
         g.setBackground(Color.WHITE);
         g.clearRect(0,0, image.getWidth(), image.getHeight());
 
-        updatePosition(model.root);
+        updatePosition(model.getRoot());
 
         for (RegionDescriptor descriptor : descriptors) {
-            if (descriptor.node.children == null || descriptor.node.children.length == 0)
+            if (model.getChildren(descriptor.node).isEmpty())
                 drawPolygon(g, descriptor);
         }
 
@@ -126,7 +117,7 @@ public class MapImageUpdater {
         }
 
         for (RegionDescriptor descriptor : descriptors) {
-            if (descriptor.node.children == null || descriptor.node.children.length == 0) {
+            if (model.getChildren(descriptor.node).isEmpty()) {
                 //highlightVertices(g, descriptor);
                 //drawSimplePolygonBorder(g, descriptor);
                 drawPolygonOrigin(g, descriptor);
@@ -148,11 +139,11 @@ public class MapImageUpdater {
         public Area    area;
 
         public Polygon polygon;
-        public Node    node;
+        public Object    node;
     }
 
     private List<RegionDescriptor> descriptors;
-    private Map<Node, RegionDescriptor> nodeToDescriptor = new HashMap<>();
+    private Map<Object, RegionDescriptor> nodeToDescriptor = new HashMap<>();
 
     private void drawPolygon(Graphics2D g, RegionDescriptor descriptor) {
         g.setColor(mapPolygonFillingColor.apply(descriptor.polygon));
@@ -161,7 +152,7 @@ public class MapImageUpdater {
 
     private void drawSimplePolygonBorder(Graphics2D g, RegionDescriptor descriptor) {
         Color color;
-        if (descriptor.node.children == null || descriptor.node.children.length == 0) {
+        if (model.getChildren(descriptor.node).isEmpty()) {
             color = mapPolygonBorderColor.apply(descriptor.polygon);
             color = new Color(color.getRed(), color.getGreen(), color.getBlue(), 220);
             g.setColor(color);
@@ -172,25 +163,25 @@ public class MapImageUpdater {
 
     private void drawPolygonBorder(Graphics2D g, RegionDescriptor descriptor) {
         Color color;
-        if (descriptor.node.level == 3)
+        if (((Node)descriptor.node).level == 3)
         {
             //final float dash1[] = {10.0f};
-//                final BasicStroke dashed =
-//                        new BasicStroke(1.0f,
-//                                BasicStroke.CAP_BUTT,
-//                                BasicStroke.JOIN_MITER,
-//                                10.0f, dash1, 0.0f);
+    //                final BasicStroke dashed =
+    //                        new BasicStroke(1.0f,
+    //                                BasicStroke.CAP_BUTT,
+    //                                BasicStroke.JOIN_MITER,
+    //                                10.0f, dash1, 0.0f);
             g.setColor(Color.lightGray);
             g.setStroke(new BasicStroke(1));
             g.draw(descriptor.area);
         }
-        else if (descriptor.node.level == 2)
+        else if (((Node)descriptor.node).level == 2)
         {
             g.setStroke(new BasicStroke(1));
             color = Color.darkGray;
             g.setColor(color);
             g.draw(expandShape(descriptor.area, 1));
-        }else if (descriptor.node.level == 1){
+        }else if (((Node)descriptor.node).level == 1){
             g.setStroke(new BasicStroke(3));
             color = Color.black;
             g.setColor(color);
@@ -268,7 +259,7 @@ public class MapImageUpdater {
 
                     @Override
                     public String text(RegionDescriptor node) {
-                        return node.node.name;
+                        return ((Node)node.node).name;
                     }
 
                     @Override

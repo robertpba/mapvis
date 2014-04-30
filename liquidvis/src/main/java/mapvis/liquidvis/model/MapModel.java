@@ -2,50 +2,79 @@ package mapvis.liquidvis.model;
 
 import mapvis.liquidvis.model.event.*;
 import mapvis.liquidvis.model.handler.*;
+import org.jgrapht.DirectedGraph;
 
+import java.awt.geom.Point2D;
 import java.util.*;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class MapModel {
-    private HashMap<Node, Polygon> polygons = new HashMap<>();
-    public Node root;
+public class MapModel<V> {
     public int iteration = 0;
 
-    public MapModel(Node root) {
+    public DirectedGraph<V, Object> tree;
+    private Collection<V> leaves;
+    private V root;
+
+    public Map<V, Map<String, Object>> data = new HashMap<>();
+    public Object getValue(V vertex, String key ){
+        Map<String, Object> map = data.get(vertex);
+
+        if (map == null)
+            return null;
+
+        return map.get(key);
+    }
+    public Object setValue(V vertex, String key, Object value){
+        Map<String, Object> map = data.get(vertex);
+
+        if (map == null)
+            data.put(vertex , map = new HashMap<>());
+
+        return map.put(key, value);
+    }
+
+    public V getRoot() {
+        return root;
+    }
+    public Polygon getPolygon(V vertex){
+        return (Polygon) getValue(vertex, "polygon");
+    }
+    public Collection<V> getLeaves(){
+        return Collections.unmodifiableCollection(leaves);
+    }
+    public Collection<V> getChildren(V vertex){
+        return tree.outgoingEdgesOf(vertex).stream()
+                .map(v -> tree.getEdgeTarget(v))
+                .collect(Collectors.toList());
+    }
+
+
+
+    public interface ToInitialValue<V> {
+        Point2D getPosition(V v);
+        double getMass(V v);
+    }
+
+    public MapModel(DirectedGraph<V,Object> tree, V root, ToInitialValue<V> toInitialValue){
+        this.tree = tree;
         this.root = root;
-
+        leaves = tree.vertexSet()
+                .stream()
+                .filter(v -> tree.outDegreeOf(v) == 0)
+                .collect(Collectors.toList());
+        leaves.forEach(n -> {
+            setValue(n, "polygon" ,new Polygon(
+                    n,
+                    toInitialValue.getPosition(n).getX(),
+                    toInitialValue.getPosition(n).getY(),
+                    toInitialValue.getMass(n)));
+        });
         listeners.add(new UpdatePolygonSizeWhenVertexMoved());
-
-        createPolygon(root, n->n.figure * 300.0);
     }
 
-    public MapModel(Node root, Function<Node, Double> scale) {
-        this.root = root;
-
-        listeners.add(new UpdatePolygonSizeWhenVertexMoved());
-
-        createPolygon(root, scale);
-    }
-
-
-    private void createPolygon(Node node, Function<Node, Double> scale) {
-        if (node.children == null || node.children.length == 0)
-            polygons.put(node, new Polygon(node, scale));
-        else for (Node child : node.children)
-            createPolygon(child, scale);
-    }
-
-    // getters and setters
-    public HashMap<Node, Polygon> getPolygons() {
-        return polygons;
-    }
-
-
-    public Polygon findSurroundingRegion(Vector2D point, Node exclude) {
-        return findSurroundingRegion(point, root, exclude);
-    }
-    private Polygon findSurroundingRegion(Vector2D point, Node root, Node exclude) {
-        for (Polygon polygon : polygons.values()) {
+    public Polygon findSurroundingRegion(Vector2D point, V exclude) {
+        for (V leaf : leaves) {
+            Polygon polygon = (Polygon) getValue(leaf, "polygon");
             if (polygon.node == exclude)
                 continue;
             if (polygon.contains(point.x, point.y))

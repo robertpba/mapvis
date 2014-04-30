@@ -6,10 +6,12 @@ import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.model.Node;
 import mapvis.liquidvis.model.handler.CollectStatistics;
 import mapvis.liquidvis.util.PatrickFormatLoader;
+import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
 import mapvis.vistools.colormap.GenericColorMap;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,7 +22,7 @@ import static mapvis.vistools.Helper.interpolate;
 public class DemoMethod3_5 {
     
     public static void main (String[] args) throws IOException, InterruptedException {
-        PatrickFormatLoader loader = new PatrickFormatLoader();
+        PatrickFormatLoader2 loader = new PatrickFormatLoader2();
         try {
 
             loader.load(
@@ -42,7 +44,17 @@ public class DemoMethod3_5 {
 
         //loader.root.children = new Node[]{ geography};
 
-        MapModel model = new MapModel(loader.root, n-> n.figure * 1.6);
+        MapModel model = new MapModel(loader.graph, loader.root, new MapModel.ToInitialValue<Node>() {
+            @Override
+            public Point2D getPosition(Node node) {
+                return new Point2D.Double(node.x, node.y);
+            }
+
+            @Override
+            public double getMass(Node node) {
+                return node.figure;
+            }
+        });
         Method3 method = new Method3(model);
 
         CollectStatistics collectStatistics = new CollectStatistics(model, 100);
@@ -68,7 +80,7 @@ public class DemoMethod3_5 {
         //GenericColorMap genericColorMap = new GenericColorMap(colors);
 
         observer.imageUpdater.mapPolygonFillingColor = c ->{
-            double v = c.node.figure2;
+            double v = ((Node)c.node).figure2;
             if (v <= nlevels[1] )
                 return colors[1];
             else if (v <= nlevels[2])
@@ -81,16 +93,9 @@ public class DemoMethod3_5 {
                 return colors[5];
             else if (v <= nlevels[6])
                 return colors[6];
-            else if (v <= nlevels[7])
-                return colors[7];
             else
                 return colors[7];
         };
-
-        for (Node node : loader.nodes) {
-            System.out.println(node.figure2);
-        }
-
 
 //        observer.imageUpdater.mapPolygonFillingColor = c ->{
 //            double v = interpolate(((c.mass - c.area)/c.mass), 0.0, 0.5, 1.0, 1.0);

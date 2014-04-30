@@ -61,7 +61,11 @@ public class CollectStatistics implements ModelEventListener {
         double e = 0;
         int n = 0;
 
-        for (Polygon polygon : model.getPolygons().values()) {
+
+
+        for (Object leaf : model.getLeaves()) {
+            Polygon polygon = model.getPolygon(leaf);
+
             System.out.printf("d:%5.0f a:%7.0f, m:%7.0f %%:%6.3f\n",
                     (polygon.mass - polygon.area), polygon.area, polygon.mass,
                     (polygon.mass - polygon.area)/ polygon.mass * 100);

@@ -18,7 +18,7 @@ public class Method2 {
     private Map<Polygon, PolygonDescriptor> descriptorMap;
 
     public class PolygonDescriptor {
-        public Node      node;
+        public Object      node;
         public Polygon   polygon;
 
         public int       iteration;
@@ -38,9 +38,11 @@ public class Method2 {
     public Method2(MapModel model){
         this.model = model;
 
-        descriptors = model.getPolygons().values().stream()
-                .map(polygon -> new PolygonDescriptor(polygon, (int) polygon.mass))
-                .collect(Collectors.toList());
+        descriptors = new ArrayList<>();
+        for (Object leaf : model.getLeaves()) {
+            Polygon polygon = model.getPolygon(leaf);
+            descriptors.add(new PolygonDescriptor(polygon, (int) polygon.mass));
+        };
 
         descriptorMap = descriptors.stream()
                 .collect(Collectors.toMap(x -> x.polygon, x -> x));

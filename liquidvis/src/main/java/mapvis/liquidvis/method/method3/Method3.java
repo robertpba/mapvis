@@ -41,7 +41,8 @@ public class Method3 {
     public boolean IterateOnce() {
         boolean stable = true;
 
-        for (Polygon polygon : model.getPolygons().values()) {
+        for (Object leaf : model.getLeaves()) {
+            Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
                 vertex.momentum = vertex.momentum * 99 / 100;
             }
@@ -111,7 +112,8 @@ public class Method3 {
 
 
     private void _growPolygons(){
-        for (Polygon polygon : model.getPolygons().values()) {
+        for (Object leaf : model.getLeaves()) {
+            Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
 
                 Vector2D srcPos = vertex.getPoint();
