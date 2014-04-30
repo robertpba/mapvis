@@ -97,7 +97,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.3;
+                return node.figure * 1.25;
             }
         });
         Method3 method = new Method3(model);

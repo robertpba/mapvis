@@ -5,11 +5,14 @@ import mapvis.liquidvis.model.handler.*;
 import org.jgrapht.DirectedGraph;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class MapModel<V> {
     public int iteration = 0;
+
+    SpatialIndex<V> index;
 
     public DirectedGraph<V, Object> tree;
     private Collection<V> leaves;
@@ -48,8 +51,6 @@ public class MapModel<V> {
                 .collect(Collectors.toList());
     }
 
-
-
     public interface ToInitialValue<V> {
         Point2D getPosition(V v);
         double getMass(V v);
@@ -62,18 +63,29 @@ public class MapModel<V> {
                 .stream()
                 .filter(v -> tree.outDegreeOf(v) == 0)
                 .collect(Collectors.toList());
-        leaves.forEach(n -> {
+
+        double maxX = 0;
+        double maxY = 0;
+
+        for (V n : leaves) {
             setValue(n, "polygon" ,new Polygon(
                     n,
                     toInitialValue.getPosition(n).getX(),
                     toInitialValue.getPosition(n).getY(),
                     toInitialValue.getMass(n)));
-        });
+
+            maxX = Math.max(maxX, toInitialValue.getPosition(n).getX());
+            maxY = Math.max(maxY, toInitialValue.getPosition(n).getY());
+        }
+
         listeners.add(new UpdatePolygonSizeWhenVertexMoved());
+
+        double c = Math.min(maxX, maxY) / Math.sqrt(leaves.size());
+        index = new SpatialIndex<V>( (int)(maxY / c) ,(int)(maxY / c) , c);
     }
 
     public Polygon findSurroundingRegion(Vector2D point, V exclude) {
-        for (V leaf : leaves) {
+        for (V leaf : index.neighbours(new Point2D.Double(point.x, point.y))) {
             Polygon polygon = (Polygon) getValue(leaf, "polygon");
             if (polygon.node == exclude)
                 continue;
@@ -120,6 +132,12 @@ public class MapModel<V> {
     }
     private void applyEvent(VertexMoved event){
         event.polygon.setVertex(event.vertex.indexOfVertex, event.destination);
+
+        index.update((V)event.polygon.node, new Rectangle2D.Double(
+                event.polygon.minX, event.polygon.minY,
+                event.polygon.maxX - event.polygon.minX,
+                event.polygon.maxY - event.polygon.minY
+        ));
     }
     private void applyEvent(IterationFinished event){
         iteration++;
