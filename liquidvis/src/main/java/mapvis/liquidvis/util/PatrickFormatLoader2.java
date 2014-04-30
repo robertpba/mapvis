@@ -219,10 +219,7 @@ public class PatrickFormatLoader2 {
         return true;
     }
 
-
-
-    protected void refinePoints()
-    {
+    protected void refinePoints() {
         int scale = 5;
 
         List<Node> leaves = graph.vertexSet().stream()
@@ -232,7 +229,7 @@ public class PatrickFormatLoader2 {
         leaves.forEach(node -> {
             node.x = (node.x + 50) * scale;
             node.y = (node.y + 50) * scale;
-            node.figure = node.figure * 2 * scale * scale;
+            node.figure = node.figure * scale * scale;
         });
         width  = (width + 100)* scale;
         height = (height + 100)* scale;
@@ -265,7 +262,7 @@ public class PatrickFormatLoader2 {
     }
 
 
-    private static void printNode(PatrickFormatLoader2 loader, String indent, Node node, int maxlevel)
+    public static void printNode(PatrickFormatLoader2 loader, String indent, Node node, int maxlevel)
     {
         if (node.level >= maxlevel)
             return;

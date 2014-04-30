@@ -30,7 +30,8 @@ public class MovePivot implements ModelEventListener {
         if (event.iteration % period != 0)
             return;
 
-        for (Polygon polygon : model.getPolygons().values()) {
+        for (Object leaf : model.getLeaves()) {
+            Polygon polygon = model.getPolygon(leaf);
 
             Vector2D centroid = polygon.calcCentroid();
             Vector2D pivot = polygon.getOrigin();
