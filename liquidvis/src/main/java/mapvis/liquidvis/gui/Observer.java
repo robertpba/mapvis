@@ -24,22 +24,21 @@ public class Observer implements ActionListener {
     private final JButton backButton;
     private final JButton forthButton;
     public BufferedImage image;
-    public MapImageUpdater imageUpdater;
     public JFrame frame;
-    public MapModel method;
+    public MapModel model;
     public Timer timer;
 
     public int refreshThreshold = 1000;
 
-    public Observer(BufferedImage image, MapModel method)
+
+    public Observer(BufferedImage image, MapModel model)
     {
-        imageUpdater = new MapImageUpdater(method);
 
         this.timer = new Timer(refreshThreshold, this);
         this.image = image;
-        this.method = method;
+        this.model = model;
         this.frame = new JFrame("Navigable Image Panel");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         NavigableImagePanel panel = new NavigableImagePanel();
         try {
             panel.setImage(image); 
@@ -80,20 +79,6 @@ public class Observer implements ActionListener {
 
         });
 
-        iterButton.addActionListener(e ->
-        {
-            imageUpdater.mapPolygonFillingColor = (polygon)-> mapColor(0,2000, (int)(polygon.mass - polygon.area));
-        });
-
-        backButton.addActionListener(e ->
-        {
-            imageUpdater.mapPolygonFillingColor = (polygon) -> mapColor(0, 2000, polygon.moveBackCount);
-        });
-
-        forthButton.addActionListener(e ->
-        {
-            imageUpdater.mapPolygonFillingColor = (polygon) -> mapColor(0, 5000, polygon.moveForwardCount);
-        });
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
@@ -108,8 +93,7 @@ public class Observer implements ActionListener {
     }
 
     public void Start() {
-
-        imageUpdater.updateImage(image);
+        draw();
         timer.start();
     }
     public void Stop()
@@ -119,19 +103,16 @@ public class Observer implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        imageUpdater.updateImage(image);
+        draw();
         frame.repaint();
     }
 
-    public static Color mapColor(int minVal, int maxVal, int actual) {
-        actual = Math.min(maxVal, actual);
-        actual = Math.max(minVal, actual);
-        double percentage = ((double)(maxVal - actual))/((double)(maxVal - minVal));
-        int intR = 10;
-        int intG = 10;
-        int intB = 0+(int)(percentage*255);
 
-        return new Color(intR, intG, intB);
+    public void draw(){
+        Graphics2D g = image.createGraphics();
+        g.setBackground(Color.WHITE);
+        g.clearRect(0,0, image.getWidth(), image.getHeight());
+        model.draw(g);
     }
 
     public void save(String filename) throws IOException {

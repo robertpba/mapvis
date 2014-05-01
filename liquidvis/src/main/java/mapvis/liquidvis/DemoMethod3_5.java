@@ -1,16 +1,14 @@
 package mapvis.liquidvis;
 
-import mapvis.liquidvis.gui.Observer;
+import mapvis.liquidvis.gui.*;
+import mapvis.liquidvis.gui.actions.*;
 import mapvis.liquidvis.method.method3.Method3;
-import mapvis.liquidvis.model.MapModel;
-import mapvis.liquidvis.model.Node;
+import mapvis.liquidvis.model.*;
+import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.handler.CollectStatistics;
-import mapvis.liquidvis.util.PatrickFormatLoader;
 import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
-import mapvis.vistools.colormap.GenericColorMap;
 import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.awt.*;
@@ -18,9 +16,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.function.Function;
 
 import static mapvis.vistools.Helper.interpolate;
 
@@ -62,7 +58,7 @@ public class DemoMethod3_5 {
 //
 
 
-//        List<DefaultEdge> edges = new ArrayList( loader.graph.outgoingEdgesOf(loader.root));
+//        List<DefaultEdge> edges = new ArrayList<>( loader.graph.outgoingEdgesOf(loader.root));
 //
 //        Node geography = edges.stream()
 //                .map(e -> loader.graph.getEdgeTarget(e))
@@ -77,7 +73,7 @@ public class DemoMethod3_5 {
 //        DirectedGraph<Node, DefaultEdge> ngraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 //        convertToVisibleTree(loader.graph, ngraph  ,  loader.root);
 //        loader.graph = ngraph;
-//        loader.printNode(loader, "", loader.root, 9);
+//        PatrickFormatLoader2.printNode(loader, "", loader.root, 9);
 
 
 //
@@ -89,7 +85,7 @@ public class DemoMethod3_5 {
 
         //loader.root.children = new Node[]{ geography};
 
-        MapModel model = new MapModel(loader.graph, loader.root, new MapModel.ToInitialValue<Node>() {
+        MapModel<Node> model = new MapModel<>(loader.graph, loader.root, new MapModel.ToInitialValue<Node>() {
             @Override
             public Point2D getPosition(Node node) {
                 return new Point2D.Double(node.x, node.y);
@@ -97,7 +93,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.25;
+                return node.figure * 1.33;
             }
         });
         Method3 method = new Method3(model);
@@ -108,26 +104,23 @@ public class DemoMethod3_5 {
         BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
 
         Observer observer = new Observer(image, model);
-//        observer.imageUpdater.mapPolygonFillingColor = c ->{
-//            double v = interpolate(((c.mass - c.area)/c.mass), 0.0, 0.75, 1.0, 1.0);
-//            return ColorMap.JET.getColor(v);
-//        };
-        //observer.imageUpdater.
 
         int[] nlevels = {0,1,4,16,64,256,1024};
         String[] ncolors = {"#ffffff","#aae8ff", "#ffff33", "#ffcc00", "#ff9900", "#ff6600", "#cc3300", "#990000"};
-
         Color[] colors = new Color[ncolors.length];
-        //float[] levels = new float[ncolors.length];
         for (int i = 0; i < ncolors.length; i++) {
             colors[i] = Color.decode(ncolors[i]);
-            //levels[i] = (float) nlevels[i];
         }
-        //GenericColorMap genericColorMap = new GenericColorMap(colors);
 
-        observer.imageUpdater.mapPolygonFillingColor = c ->{
-            double v = ((Node)c.node).figure2;
-            if (v <= nlevels[1] )
+        final Function<Node, Color> colorMap1 = c -> {
+            Polygon polygon = model.getPolygon(c);
+            double v = interpolate(((polygon.mass - polygon.area)/polygon.mass), 0.0, 0.5, 1.0, 1.0);
+            return ColorMap.JET.getColor(v);
+        };
+
+        final Function<Node, Color> colorMap2 = c -> {
+            double v = (c).figure2;
+            if (v <= nlevels[1])
                 return colors[1];
             else if (v <= nlevels[2])
                 return colors[2];
@@ -143,38 +136,22 @@ public class DemoMethod3_5 {
                 return colors[7];
         };
 
-//        observer.imageUpdater.mapPolygonFillingColor = c ->{
-//            double v = interpolate(((c.mass - c.area)/c.mass), 0.0, 0.5, 1.0, 1.0);
-//            return ColorMap.JET.getColor(v);
-//        };
+        model.actions.add(new LevelEncoder<>(model));
+        model.actions.add(new EncodeLabelText<>(model, n->n.name));
 
-
+        model.actions.add(new CreateAreas<>(model));
+        model.actions.add(new FillNode<>(model, colorMap2));
+        model.actions.add(new LabelRender<>(model));
+        model.actions.add(new RenderBoundary<>(model));
+        model.actions.add(new RenderOriginCentroid<>(model));
 
         observer.Start();
 
-        //method.IterateUntilStable(100000);
         method.IterateUntilStable(100000);
 
         System.out.println("finished!");
-//
 
         method.growPolygons();
-
-//        model.getPolygons().values().stream()
-//                .forEach(p -> {
-//                    p.moveBackCount = 0;
-//                    p.moveForwardCount = 0;
-//                });
-//
-//        Node first = loader.nodes.stream()
-//                .filter(n -> n.name.contains("Belgium"))
-//                .filter(n -> n.name.contains("Geography"))
-//                .findFirst().get();
-
-        //Polygon polygon = model.getPolygons().get(first);
-        //polygon.figure += 30;
-        //polygon.mass   += 30 * polygon.scale.apply(polygon.node);
-        //method.IterateUntilStable(100000);
 
         System.gc();
 

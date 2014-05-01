@@ -1,16 +1,20 @@
-package mapvis.liquidvis.gui;
+package mapvis.liquidvis.gui.actions;
 
 import algorithm.FTAOverlapRemoval;
+import mapvis.liquidvis.gui.RenderAction;
+import mapvis.liquidvis.model.*;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class LabelDrawer<T> {
-    private ToLabel<T> toLabel;
+public class LabelRender<T> implements RenderAction {
+    private MapModel<T> model;
 
     class Entry{
         public Entry (T element){
@@ -28,31 +32,52 @@ public class LabelDrawer<T> {
         public Point2D textOrgin;
     }
 
-    public interface ToLabel<T> {
-        Rectangle2D bounds(T node);
-        int level(T node);
-        String text(T node);
-        Point2D anchor(T node);
-    }
-
     Map<T, Entry> entries = new HashMap<>();
 
-    public LabelDrawer(Collection<T> items,
-                          ToLabel<T> toLabel){
-        this.toLabel = toLabel;
-        entries = items.stream()
+    protected Rectangle2D getBounds(T node) {
+        return ((Area) model.getValue(node, "__area")).getBounds2D();
+    }
+    protected int getLevel(T node) {
+        return ((int) model.getValue(node, "__level"));
+    }
+    protected String getText(T node) {
+        return ((String) model.getValue(node, "__label.text"));
+    }
+    protected Point2D getAnchor(T node) {
+        mapvis.liquidvis.model.Polygon polygon = model.getPolygon(node);
+
+        if (polygon != null){
+            Vector2D centroid = polygon.calcCentroid();
+            return new Point.Double(centroid.x,centroid.y);
+        }
+        else {
+            Rectangle2D area = ((Area) model.getValue(node, "__area")).getBounds2D();
+            return new Point2D.Double(area.getCenterX(), area.getCenterY());
+        }
+
+    }
+
+    public LabelRender(MapModel<T> model){
+        this.model = model;
+        entries = model.getLeaves().stream()
                 .map(n -> new Entry(n))
-        .collect(Collectors.toMap(e -> e.element, e -> e));
-        update();
+                .collect(Collectors.toMap(e -> e.element, e -> e));
     }
 
     public void update() {
         FontRenderContext ctx = new FontRenderContext(null, false, false);
+
+        entries = model.getLeaves().stream()
+                .filter(n -> getLevel(n) > 0)
+                .filter(n -> getText(n) != null)
+                .map(n -> new Entry(n))
+                .collect(Collectors.toMap(e -> e.element, e -> e));
+
         for (Entry entry : entries.values()) {
-            entry.text = toLabel.text(entry.element);
-            entry.level = toLabel.level(entry.element);
-            entry.bounds = toLabel.bounds(entry.element);
-            entry.anchor = toLabel.anchor(entry.element);
+            entry.text = getText(entry.element);
+            entry.level = getLevel(entry.element);
+            entry.bounds = getBounds(entry.element);
+            entry.anchor = getAnchor(entry.element);
 
             if (entry.level == 0){
                 entry.font = new Font("Arial", Font.BOLD, 30);
@@ -75,20 +100,26 @@ public class LabelDrawer<T> {
                     strBounds.getWidth(),strBounds.getHeight());
             entry.textOrgin = new Point2D.Double(strBounds.getX(), strBounds.getY());
         }
+        layout();
     }
 
     public void layout(){
-
-        FTAOverlapRemoval<Entry> removal = new FTAOverlapRemoval<>( entries.values(), e -> e.textRect);
+        java.util.List<Entry> collect = entries.values().stream().filter(e -> e.level > 2).collect(Collectors.toList());
+        FTAOverlapRemoval<Entry> removal = new FTAOverlapRemoval<>( collect, e -> e.textRect);
         removal.run();
+        for (Entry entry : collect) {
+            entry.textRect =  removal.getRectangle(entry);
+        }
 
-        for (Entry entry : entries.values()) {
+        collect = entries.values().stream().filter(e -> e.level <= 2).collect(Collectors.toList());
+        removal = new FTAOverlapRemoval<>( collect, e -> e.textRect);
+        removal.run();
+        for (Entry entry : collect) {
             entry.textRect =  removal.getRectangle(entry);
         }
     }
 
     public void draw(Graphics2D g){
-        layout();
 
         for (Entry entry : entries.values()) {
             if (entry.level == 3)

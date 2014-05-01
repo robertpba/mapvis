@@ -1,12 +1,16 @@
 package mapvis.liquidvis.model;
 
+import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.event.*;
 import mapvis.liquidvis.model.handler.*;
 import org.jgrapht.DirectedGraph;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MapModel<V> {
@@ -50,15 +54,19 @@ public class MapModel<V> {
                 .map(v -> tree.getEdgeTarget(v))
                 .collect(Collectors.toList());
     }
+    public Set<V> getAllNodes(){
+        return tree.vertexSet();
+    }
 
     public interface ToInitialValue<V> {
         Point2D getPosition(V v);
         double getMass(V v);
     }
 
-    public MapModel(DirectedGraph<V,Object> tree, V root, ToInitialValue<V> toInitialValue){
-        this.tree = tree;
+    public MapModel(DirectedGraph<V,?> tree, V root, ToInitialValue<V> toInitialValue){
+        this.tree = (DirectedGraph<V, Object>) tree;
         this.root = root;
+
         leaves = tree.vertexSet()
                 .stream()
                 .filter(v -> tree.outDegreeOf(v) == 0)
@@ -109,7 +117,6 @@ public class MapModel<V> {
         return dstRegion.getVertex(minPosition);
     }
 
-
     public List<ModelEventListener> listeners = new ArrayList<>();
 
     public void fireModelEvent(ModelEvent event) {
@@ -133,7 +140,7 @@ public class MapModel<V> {
     private void applyEvent(VertexMoved event){
         event.polygon.setVertex(event.vertex.indexOfVertex, event.destination);
 
-        index.update((V)event.polygon.node, new Rectangle2D.Double(
+        index.update((V) event.polygon.node, new Rectangle2D.Double(
                 event.polygon.minX, event.polygon.minY,
                 event.polygon.maxX - event.polygon.minX,
                 event.polygon.maxY - event.polygon.minY
@@ -159,4 +166,23 @@ public class MapModel<V> {
         polygon.originY = pivot.y;
     }
     private void applyEvent(CriticalPointArrived event){}
+
+
+
+    public List<RenderAction> actions = new ArrayList<>();
+
+    public void draw(Graphics2D g) {
+        //Graphics2D g = image.createGraphics();
+        //g.setBackground(Color.WHITE);
+        //g.clearRect(0,0, image.getWidth(), image.getHeight());
+
+        for (RenderAction action : actions) {
+            action.update();
+        }
+
+        for (RenderAction action : actions) {
+            action.draw(g);
+        }
+    }
+
 }
