@@ -67,7 +67,7 @@ public class LabelRender<T> implements RenderAction {
     public void update() {
         FontRenderContext ctx = new FontRenderContext(null, false, false);
 
-        entries = model.getLeaves().stream()
+        entries = model.getAllNodes().stream()
                 .filter(n -> getLevel(n) > 0)
                 .filter(n -> getText(n) != null)
                 .map(n -> new Entry(n))
@@ -79,10 +79,6 @@ public class LabelRender<T> implements RenderAction {
             entry.bounds = getBounds(entry.element);
             entry.anchor = getAnchor(entry.element);
 
-            if (entry.level == 0){
-                entry.font = new Font("Arial", Font.BOLD, 30);
-                entry.anchor = new Point.Double(-10, -10);
-            }
             if (entry.level == 1){
                 entry.font = new Font("Arial", Font.BOLD, 30);
             }
@@ -111,7 +107,7 @@ public class LabelRender<T> implements RenderAction {
             entry.textRect =  removal.getRectangle(entry);
         }
 
-        collect = entries.values().stream().filter(e -> e.level <= 2).collect(Collectors.toList());
+        collect = entries.values().stream().filter(e -> e.level > 0 && e.level <= 2).collect(Collectors.toList());
         removal = new FTAOverlapRemoval<>( collect, e -> e.textRect);
         removal.run();
         for (Entry entry : collect) {
