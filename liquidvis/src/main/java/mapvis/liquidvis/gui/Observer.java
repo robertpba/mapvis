@@ -107,10 +107,11 @@ public class Observer implements ActionListener {
         frame.repaint();
     }
 
+    public Color backgroundColor = Color.white;
 
     public void draw(){
         Graphics2D g = image.createGraphics();
-        g.setBackground(Color.WHITE);
+        g.setBackground(backgroundColor);
         g.clearRect(0,0, image.getWidth(), image.getHeight());
         model.draw(g);
     }

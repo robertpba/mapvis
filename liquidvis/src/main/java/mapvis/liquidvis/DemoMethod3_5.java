@@ -55,9 +55,6 @@ public class DemoMethod3_5 {
             e.printStackTrace();
         }
 
-//
-
-
 //        List<DefaultEdge> edges = new ArrayList<>( loader.graph.outgoingEdgesOf(loader.root));
 //
 //        Node geography = edges.stream()
@@ -93,7 +90,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.33;
+                return node.figure * 1.45;
             }
         });
         Method3 method = new Method3(model);
@@ -104,6 +101,7 @@ public class DemoMethod3_5 {
         BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
 
         Observer observer = new Observer(image, model);
+        observer.backgroundColor = Color.decode("#aae8ff");
 
         int[] nlevels = {0,1,4,16,64,256,1024};
         String[] ncolors = {"#ffffff","#aae8ff", "#ffff33", "#ffcc00", "#ff9900", "#ff6600", "#cc3300", "#990000"};
@@ -138,12 +136,12 @@ public class DemoMethod3_5 {
 
         model.actions.add(new LevelEncoder<>(model));
         model.actions.add(new EncodeLabelText<>(model, n->n.name));
-
         model.actions.add(new CreateAreas<>(model));
+
         model.actions.add(new FillNode<>(model, colorMap2));
         model.actions.add(new LabelRender<>(model));
         model.actions.add(new RenderBoundary<>(model));
-        model.actions.add(new RenderOriginCentroid<>(model));
+        //model.actions.add(new RenderOriginCentroid<>(model));
 
         observer.Start();
 
