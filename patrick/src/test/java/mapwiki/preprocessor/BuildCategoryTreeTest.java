@@ -1,7 +1,11 @@
 package mapwiki.preprocessor;
 
 import mapwiki.common.Database;
+import mapwiki.layout.Category;
+import mapwiki.layout.HexagonLayout;
 import org.testng.annotations.Test;
+
+import java.util.Map;
 
 
 public class BuildCategoryTreeTest {
@@ -68,6 +72,28 @@ public class BuildCategoryTreeTest {
                 .main(("--as data\\aggsim.txt  -l 3 -o simple1024.png" +
                         " -p data\\defaults.properties --sim data\\cossim.txt --tree data\\simple.txt" +
                         " --cr").split(" "));
+
+        int one=0;
+        int inf=0;
+        int o = 0;
+
+        for (Map.Entry<Category, Integer> entry : HexagonLayout.size.entrySet()) {
+            Category c = entry.getKey();
+            if (entry.getValue() == c.getArea()) {
+                one++;
+                continue;
+            }
+            if (c.getArea() == 0) {
+                inf++;
+                continue;
+            }
+
+            o++;
+            System.out.printf("%s, %d/%d, %f\n", c.getPageTitle(),
+                    entry.getValue(), c.getArea(), (double)entry.getValue() / c.getArea());
+        }
+
+        System.out.printf("1:%d, inf:%d, o:%d", one, inf, o);
 
         //Thread.sleep(100000);
     }

@@ -35,7 +35,9 @@ public class DefaultHexagonDrawer implements HexagonDrawer {
 	public void draw(HexagonCanvas hc, Graphics2D g) {
 		this.canvas = hc;
 		this.g = g;
-		drawLegend();
+
+        // FIXME: remove the comment to draw the legend
+        // drawLegend();
 		
 		// Let the sub-class has a chance to adjust the hexagons first.
 		for (int i = 0; i < this.canvas.getWidth(); i++) {

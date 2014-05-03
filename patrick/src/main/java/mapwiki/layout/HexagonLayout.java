@@ -8,12 +8,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -207,7 +202,10 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 			makeHexagons(c, 1, start);
 		}
 	}
-	
+
+
+    public static Map<Category, Integer> size = new HashMap<>();
+
 	private void makeHexagons(Category c, int level, Point origin) {
 		if (c.getLocation() == null)
 			return;
@@ -217,7 +215,11 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 		int px = origin.x + drawRect.x + pivot.x + c.getSize().width / 2;
 		int py = origin.y + drawRect.y + pivot.y + c.getSize().height / 2;
 		int areaSize = assignHexagons(c, px, py);
-		
+
+        // FIXME: size statistics
+        size.put(c, areaSize);
+
+
 		// Don't show capital city label if the area is too small.
 		if (pageDB != null && areaSize > areaSizeCityVisible) {
 			PageEntry page = pageDB.findEntry(c.getPageTitle());
