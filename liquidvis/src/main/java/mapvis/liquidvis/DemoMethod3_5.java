@@ -6,6 +6,7 @@ import mapvis.liquidvis.method.method3.Method3;
 import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.handler.CollectStatistics;
+import mapvis.liquidvis.model.TreeImp;
 import mapvis.liquidvis.util.Node;
 import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
@@ -37,13 +38,21 @@ public class DemoMethod3_5 {
         newgraph.addVertex(node);
 
         oldgraph.outgoingEdgesOf(node).stream()
-                .map(e -> oldgraph.getEdgeTarget(e))
+                .map(t -> oldgraph.getEdgeTarget(t))
                 .filter(v -> convertToVisibleTree(oldgraph, newgraph, v))
-                .forEach(v -> {
-                    newgraph.addEdge(node, v);
-                });
+                .forEach(v -> newgraph.addEdge(node, v));
         return true;
     }
+
+    public static void addChildrenToTree(DirectedGraph<Node, DefaultEdge> graph, TreeImp<Node> tree, Node parent){
+
+        for (DefaultEdge edge : graph.outgoingEdgesOf(parent)) {
+            Node child = graph.getEdgeTarget(edge);
+            tree.addChild(parent, child);
+            addChildrenToTree(graph, tree, child);
+        };
+    }
+
 
     public static void main (String[] args) throws IOException, InterruptedException {
         PatrickFormatLoader2 loader = new PatrickFormatLoader2();
@@ -83,7 +92,12 @@ public class DemoMethod3_5 {
 
         //loader.root.children = new Node[]{ geography};
 
-        MapModel<Node> model = new MapModel<>(loader.graph, loader.root, new MapModel.ToInitialValue<Node>() {
+        TreeImp<Node> tree = new TreeImp<>();
+
+        tree.setRoot(loader.root);
+        addChildrenToTree(loader.graph, tree, tree.getRoot());
+
+        MapModel<Node> model = new MapModel<>(tree, new MapModel.ToInitialValue<Node>() {
             @Override
             public Point2D getPosition(Node node) {
                 return new Point2D.Double(node.x, node.y);
@@ -101,8 +115,8 @@ public class DemoMethod3_5 {
 
         BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
 
-        Visualization observer = new Visualization(image, model);
-        observer.backgroundColor = Color.decode("#aae8ff");
+        Visualization visualization = new Visualization(image, model);
+        visualization.backgroundColor = Color.decode("#aae8ff");
 
         int[] nlevels = {0,1,4,16,64,256,1024};
         String[] ncolors = {"#ffffff","#aae8ff", "#ffff33", "#ffcc00", "#ff9900", "#ff6600", "#cc3300", "#990000"};
@@ -144,7 +158,7 @@ public class DemoMethod3_5 {
         //model.actions.add(new RenderOriginCentroid<>(model));
         model.actions.add(new LabelRender<>(model));
 
-        observer.Start();
+        visualization.Start();
 
         method.IterateUntilStable(100000);
 

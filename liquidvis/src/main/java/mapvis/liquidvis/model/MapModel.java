@@ -4,7 +4,6 @@ import mapvis.common.SpatialIndex;
 import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.event.*;
 import mapvis.liquidvis.model.handler.*;
-import org.jgrapht.DirectedGraph;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -20,9 +19,8 @@ public class MapModel<V> {
 
     SpatialIndex<V> index;
 
-    public DirectedGraph<V, Object> tree;
-    private Collection<V> leaves;
-    private V root;
+    Tree<V> tree;
+    Set<V> leaves;
 
     public Map<V, Map<String, Object>> data = new HashMap<>();
     public Object getValue(V vertex, String key ){
@@ -42,22 +40,22 @@ public class MapModel<V> {
         return map.put(key, value);
     }
 
+
     public V getRoot() {
-        return root;
+        return tree.getRoot();
     }
     public Polygon getPolygon(V vertex){
         return (Polygon) getValue(vertex, "polygon");
     }
     public Collection<V> getLeaves(){
-        return Collections.unmodifiableCollection(leaves);
+        return leaves;
     }
+
     public Collection<V> getChildren(V vertex){
-        return tree.outgoingEdgesOf(vertex).stream()
-                .map(v -> tree.getEdgeTarget(v))
-                .collect(Collectors.toList());
+        return tree.getChildren(vertex);
     }
     public Set<V> getAllNodes(){
-        return tree.vertexSet();
+        return tree.getNodes();
     }
 
     public interface ToInitialValue<V> {
@@ -65,19 +63,17 @@ public class MapModel<V> {
         double getMass(V v);
     }
 
-    public MapModel(DirectedGraph<V,?> tree, V root, ToInitialValue<V> toInitialValue){
-        this.tree = (DirectedGraph<V, Object>) tree;
-        this.root = root;
-
-        leaves = tree.vertexSet()
-                .stream()
-                .filter(v -> tree.outDegreeOf(v) == 0)
-                .collect(Collectors.toList());
+    public MapModel(Tree<V> tree, ToInitialValue<V> toInitialValue){
+        this.tree = tree;
 
         double maxX = 0;
         double maxY = 0;
 
-        for (V n : leaves) {
+        leaves =  tree.getNodes().stream()
+                .filter(n->tree.getChildren(n).size() == 0)
+                .collect(Collectors.toSet());
+
+        for (V n : getLeaves()) {
             setValue(n, "polygon" ,new Polygon(
                     n,
                     toInitialValue.getPosition(n).getX(),
@@ -90,7 +86,7 @@ public class MapModel<V> {
 
         listeners.add(new UpdatePolygonSizeWhenVertexMoved());
 
-        double c = Math.min(maxX, maxY) / Math.sqrt(leaves.size());
+        double c = Math.min(maxX, maxY) / Math.sqrt(getLeaves().size());
         index = new SpatialIndex<>( (int)(maxY / c) ,(int)(maxY / c) , c);
     }
 
@@ -139,10 +135,13 @@ public class MapModel<V> {
             applyEvent((CriticalPointArrived)event);
 
     }
+
+    @SuppressWarnings("unchecked")
     private void applyEvent(VertexMoved event){
         event.polygon.setVertex(event.vertex.indexOfVertex, event.destination);
 
-        index.update((V) event.polygon.node, new Rectangle2D.Double(
+
+        index.update((V)event.polygon.node, new Rectangle2D.Double(
                 event.polygon.minX, event.polygon.minY,
                 event.polygon.maxX - event.polygon.minX,
                 event.polygon.maxY - event.polygon.minY
