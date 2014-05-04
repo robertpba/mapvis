@@ -1,9 +1,6 @@
-package algorithm;
+package mapvis.common.algorithm;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
-
-
-import java.awt.Rectangle;
 
 public class FTAOverlapRemoval<T> {
     public interface ToRectangle<T> {

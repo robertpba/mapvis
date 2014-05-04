@@ -1,7 +1,6 @@
 package mapvis.liquidvis.util;
 
-import algorithm.CircleOverlapRemoval;
-import mapvis.liquidvis.model.Node;
+import mapvis.common.algorithm.CircleOverlapRemoval;
 
 import java.awt.geom.Point2D;
 import java.io.*;

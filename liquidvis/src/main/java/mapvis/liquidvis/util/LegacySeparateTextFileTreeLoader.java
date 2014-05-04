@@ -1,7 +1,5 @@
 package mapvis.liquidvis.util;
 
-import mapvis.liquidvis.model.Node;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;

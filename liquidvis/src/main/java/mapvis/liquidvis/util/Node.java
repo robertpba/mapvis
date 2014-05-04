@@ -1,4 +1,4 @@
-package mapvis.liquidvis.model;
+package mapvis.liquidvis.util;
 
 public class Node {
     public int id;

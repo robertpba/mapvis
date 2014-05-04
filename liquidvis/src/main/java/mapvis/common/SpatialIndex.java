@@ -1,11 +1,11 @@
-package mapvis.liquidvis.model;
+package mapvis.common;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 public class SpatialIndex<T> {
-    Set<T>[] buckets;
+    Set[] buckets;
     Map<T, Rectangle2D> pos;
     private int nCols;
     private int nRows;

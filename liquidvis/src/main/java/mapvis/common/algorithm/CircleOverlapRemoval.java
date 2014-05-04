@@ -1,4 +1,4 @@
-package algorithm;
+package mapvis.common.algorithm;
 
 
 import java.awt.geom.Point2D;
