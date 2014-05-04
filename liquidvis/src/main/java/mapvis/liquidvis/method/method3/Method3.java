@@ -2,13 +2,15 @@ package mapvis.liquidvis.method.method3;
 
 import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.model.Polygon;
-import mapvis.liquidvis.model.Vector2D;
 import mapvis.liquidvis.model.Vertex;
 import mapvis.liquidvis.model.event.CriticalPointArrived;
 import mapvis.liquidvis.model.event.IterationFinished;
 import mapvis.liquidvis.model.event.VertexMoved;
 
+import java.awt.geom.Point2D;
 import java.util.*;
+
+import static mapvis.common.PointExtension.*;
 
 public class Method3 {
 
@@ -101,14 +103,14 @@ public class Method3 {
     }
 
     private void restorePos() {
-        for (Map.Entry<Vertex, Vector2D> entry : origPos.entrySet()) {
+        for (Map.Entry<Vertex, Point2D> entry : origPos.entrySet()) {
             model.fireModelEvent(new VertexMoved(model.iteration,
                     entry.getKey(), entry.getKey().getPoint(), entry.getValue()));
         }
     }
 
-    public Map<Vertex, Vector2D> origPos = new HashMap<>();
-    public Map<Vector2D, ArrayList<Vertex>> joints = new HashMap<>();
+    public Map<Vertex, Point2D> origPos = new HashMap<>();
+    public Map<Point2D, ArrayList<Vertex>> joints = new HashMap<>();
 
 
     private void _growPolygons(){
@@ -116,9 +118,9 @@ public class Method3 {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
 
-                Vector2D srcPos = vertex.getPoint();
-                Vector2D unit = Vector2D.subtract(srcPos, polygon.getOrigin()).unit();
-                Vector2D dstPos = Vector2D.add(srcPos, unit);
+                Point2D srcPos = vertex.getPoint();
+                Point2D unit = unit(subtract(srcPos, polygon.getPivot()));
+                Point2D dstPos = add(srcPos, unit);
 
                 Polygon dstRegion = model.findSurroundingRegion(dstPos, polygon.node);
 
@@ -138,7 +140,7 @@ public class Method3 {
                         continue;
 
                     Vertex nearestVertex = model.findNearestVertex(srcPos, dstRegion);
-                    Vector2D matchedPoint = nearestVertex.getPoint();
+                    Point2D matchedPoint = nearestVertex.getPoint();
 
                     ArrayList<Vertex> joint = joints.remove(matchedPoint);
 
@@ -148,7 +150,7 @@ public class Method3 {
                     }
 
                     joint.add(vertex);
-                    dstPos = Vector2D.average(srcPos, matchedPoint);
+                    dstPos = midpoint(srcPos, matchedPoint);
                     joints.put(dstPos, joint);
 
                     for (Vertex vertex1 : joint) {

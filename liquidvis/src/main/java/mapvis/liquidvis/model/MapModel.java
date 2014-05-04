@@ -1,5 +1,6 @@
 package mapvis.liquidvis.model;
 
+import mapvis.common.SpatialIndex;
 import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.event.*;
 import mapvis.liquidvis.model.handler.*;
@@ -8,10 +9,11 @@ import org.jgrapht.DirectedGraph;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static mapvis.common.PointExtension.*;
 
 public class MapModel<V> {
     public int iteration = 0;
@@ -89,21 +91,21 @@ public class MapModel<V> {
         listeners.add(new UpdatePolygonSizeWhenVertexMoved());
 
         double c = Math.min(maxX, maxY) / Math.sqrt(leaves.size());
-        index = new SpatialIndex<V>( (int)(maxY / c) ,(int)(maxY / c) , c);
+        index = new SpatialIndex<>( (int)(maxY / c) ,(int)(maxY / c) , c);
     }
 
-    public Polygon findSurroundingRegion(Vector2D point, V exclude) {
-        for (V leaf : index.neighbours(new Point2D.Double(point.x, point.y))) {
+    public Polygon findSurroundingRegion(Point2D point, V exclude) {
+        for (V leaf : index.neighbours(point)) {
             Polygon polygon = (Polygon) getValue(leaf, "polygon");
             if (polygon.node == exclude)
                 continue;
-            if (polygon.contains(point.x, point.y))
+            if (polygon.contains(point.getX(), point.getY()))
                 return polygon;
         }
         return null;
     }
 
-    public Vertex findNearestVertex(Vector2D srcPos, Polygon dstRegion) {
+    public Vertex findNearestVertex(Point2D srcPos, Polygon dstRegion) {
         double minDistance = srcPos.distance(dstRegion.getVertexPosition(0));
         int minPosition = 0;
 
@@ -146,25 +148,26 @@ public class MapModel<V> {
                 event.polygon.maxY - event.polygon.minY
         ));
     }
+    @SuppressWarnings("UnusedParameters")
     private void applyEvent(IterationFinished event){
         iteration++;
     }
     private void applyEvent(PolygonMoved event){
-        Vector2D d = event.distance;
+        Point2D d = event.distance;
         Polygon polygon = event.polygon;
-        Vector2D oldPivot = event.polygon.getOrigin();
-        double norm = d.norm();
+        double norm = length(d);
 
         for (Vertex vertex : event.polygon.vertices) {
             polygon.moveBackward(vertex, (int)norm);
-            Vector2D pos = vertex.getPoint();
-            polygon.setVertex(vertex, Vector2D.add(d, pos));
+            Point2D pos = vertex.getPoint();
+            polygon.setVertex(vertex, add(d, pos));
         }
 
-        Vector2D pivot = Vector2D.add(event.polygon.getOrigin(), d);
-        polygon.originX = pivot.x;
-        polygon.originY = pivot.y;
+        Point2D pivot = add(event.polygon.getPivot(), d);
+        polygon.originX = pivot.getX();
+        polygon.originY = pivot.getY();
     }
+    @SuppressWarnings("UnusedParameters")
     private void applyEvent(CriticalPointArrived event){}
 
 

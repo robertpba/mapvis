@@ -1,28 +1,33 @@
 package mapvis.liquidvis.model;
 
+import mapvis.common.PointExtension;
+
+import java.awt.geom.Point2D;
+
 public class Vertex {
     public Polygon polygon;
     public int indexOfVertex;
-    public double x;
-    public double y;
+
+    public Point2D pos;
 
     public int moveCount;
 
     public int momentum = 0;
 
-
     public Vertex(double x, double y) {
-        this.x = x;
-        this.y = y;
+        this.pos = new Point2D.Double(x,y);
     }
 
     public Vertex(Polygon polygon, int indexOfVertex) {
         this.polygon = polygon;
         this.indexOfVertex = indexOfVertex;
     }
-    
-    public Vector2D getPoint()
-    {
-        return new Vector2D(x,y);
+
+    public Point2D getPoint() {
+        return pos;
+    }
+
+    public void setPoint(Point2D point) {
+        this.pos = point;
     }
 }

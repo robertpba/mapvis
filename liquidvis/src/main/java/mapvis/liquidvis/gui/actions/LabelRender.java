@@ -1,6 +1,6 @@
 package mapvis.liquidvis.gui.actions;
 
-import algorithm.FTAOverlapRemoval;
+import mapvis.common.algorithm.FTAOverlapRemoval;
 import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.*;
 
@@ -11,7 +11,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LabelRender<T> implements RenderAction {
     private MapModel<T> model;
@@ -47,8 +46,7 @@ public class LabelRender<T> implements RenderAction {
         mapvis.liquidvis.model.Polygon polygon = model.getPolygon(node);
 
         if (polygon != null){
-            Vector2D centroid = polygon.calcCentroid();
-            return new Point.Double(centroid.x,centroid.y);
+            return polygon.calcCentroid();
         }
         else {
             Rectangle2D area = ((Area) model.getValue(node, "__area")).getBounds2D();

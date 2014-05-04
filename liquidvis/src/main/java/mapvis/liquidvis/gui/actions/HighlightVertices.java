@@ -6,6 +6,7 @@ import mapvis.liquidvis.model.Polygon;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 
 public class HighlightVertices<T> implements RenderAction {
 
@@ -31,8 +32,11 @@ public class HighlightVertices<T> implements RenderAction {
             Polygon polygon = model.getPolygon(n);
 
             for (Vertex vertice : polygon.vertices) {
-                int x = (int)vertice.x - (r/2);
-                int y = (int)vertice.y - (r/2);
+
+                Point2D pos = vertice.getPoint();
+
+                int x = (int) pos.getX() - (r/2);
+                int y = (int) pos.getY() - (r/2);
 
                 g.setColor(color);
                 g.fillOval(x,y,r,r);

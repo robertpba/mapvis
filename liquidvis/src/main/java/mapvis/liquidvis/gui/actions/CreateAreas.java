@@ -7,6 +7,7 @@ import mapvis.liquidvis.model.Polygon;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.util.Collection;
 
 public class CreateAreas<T> implements RenderAction {
@@ -33,8 +34,9 @@ public class CreateAreas<T> implements RenderAction {
 
             Path2D path = new Path2D.Double();
             for(int j=0; j<polygon.npoints; j++){
-                int x = (int) polygon.vertices[j].x;
-                int y = (int) polygon.vertices[j].y;
+                Point2D pos = polygon.vertices[j].getPoint();
+                int x = (int) pos.getX();
+                int y = (int) pos.getY();
                 if (j == 0)
                     path.moveTo(x, y);
                 else

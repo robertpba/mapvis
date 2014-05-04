@@ -5,6 +5,7 @@ import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.Polygon;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class RenderOriginCentroid<T> implements RenderAction {
 
@@ -42,9 +43,9 @@ public class RenderOriginCentroid<T> implements RenderAction {
     private void drawPolygonCentroid(Graphics2D g, T node){
         final int r = 4;
         Polygon polygon = model.getPolygon(node);
-        Vector2D centroid = polygon.calcCentroid();
-        int x =  (int)centroid.x - (r/2);
-        int y = (int)centroid.y - (r/2);
+        Point2D centroid = polygon.calcCentroid();
+        int x =  (int)centroid.getX() - (r/2);
+        int y = (int)centroid.getY() - (r/2);
 
         g.setColor(Color.yellow);
         g.fillOval(x,y,r,r);

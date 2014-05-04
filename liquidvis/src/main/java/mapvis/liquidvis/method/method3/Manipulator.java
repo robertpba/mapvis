@@ -3,6 +3,10 @@ package mapvis.liquidvis.method.method3;
 import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.event.VertexMoved;
 
+import java.awt.geom.Point2D;
+
+import static mapvis.common.PointExtension.*;
+
 public class Manipulator  {
     private MapModel model;
 
@@ -12,9 +16,9 @@ public class Manipulator  {
 
     public boolean moveForth(Vertex srcVertex) {
         Polygon srcPolygon = srcVertex.polygon;
-        Vector2D srcPos = srcVertex.getPoint();
-        Vector2D unit = Vector2D.subtract(srcPos, srcPolygon.getOrigin()).unit();
-        Vector2D dstPos = Vector2D.add(srcPos, unit);
+        Point2D srcPos = srcVertex.getPoint();
+        Point2D unit = unit(subtract(srcPos, srcPolygon.getPivot()));
+        Point2D dstPos = add(srcPos, unit);
 
         Polygon dstRegion = model.findSurroundingRegion(dstPos, null);
 
@@ -38,19 +42,17 @@ public class Manipulator  {
             return true;
         }
         return false;
-
-
     }
 
     public boolean moveBack(Vertex vertex) {
         Polygon region = vertex.polygon;
-        Vector2D srcPos = vertex.getPoint();
-        Vector2D unit = Vector2D.subtract(srcPos, vertex.polygon.getOrigin()).unit();
+        Point2D srcPos = vertex.getPoint();
+        Point2D unit = unit(subtract(srcPos, vertex.polygon.getPivot()));
 
         if (vertex.moveCount <= 1)
             return false;
 
-        Vector2D dstPos = Vector2D.subtract(vertex.getPoint(), unit);
+        Point2D dstPos = subtract(vertex.getPoint(), unit);
 
         if (!region.contains(dstPos))
             return false;

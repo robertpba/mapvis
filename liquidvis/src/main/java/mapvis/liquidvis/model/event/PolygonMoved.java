@@ -1,14 +1,15 @@
 package mapvis.liquidvis.model.event;
 
 import mapvis.liquidvis.model.Polygon;
-import mapvis.liquidvis.model.Vector2D;
+
+import java.awt.geom.Point2D;
 
 public class PolygonMoved extends ModelEvent {
 
     public final Polygon polygon;
-    public final Vector2D distance;
+    public final Point2D distance;
 
-    public PolygonMoved(int iteration, Polygon polygon, Vector2D distance) {
+    public PolygonMoved(int iteration, Polygon polygon, Point2D distance) {
         this.distance = distance;
         this.iteration = iteration;
         this.polygon = polygon;

@@ -4,16 +4,17 @@ import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.Vertex;
 import mapvis.liquidvis.model.event.IterationFinished;
-import mapvis.liquidvis.model.Node;
-import mapvis.liquidvis.model.Vector2D;
 import mapvis.liquidvis.model.event.VertexMoved;
 
+import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static mapvis.common.PointExtension.*;
+
 public class Method2 {
     public MapModel model;
-    public Map<Vector2D, ArrayList<Vertex>> joints = new HashMap<>();
+    public Map<Point2D, ArrayList<Vertex>> joints = new HashMap<>();
     private List<PolygonDescriptor> descriptors;
     private Map<Polygon, PolygonDescriptor> descriptorMap;
 
@@ -72,9 +73,9 @@ public class Method2 {
 
                 stable=false;
 
-                Vector2D srcPos  = polygon.getVertex(iPoint).getPoint();
-                Vector2D unit    = Vector2D.subtract( srcPos, polygon.getOrigin()).unit();
-                Vector2D dstPos = Vector2D.add(srcPos, unit);
+                Point2D srcPos  = polygon.getVertex(iPoint).getPoint();
+                Point2D unit    = unit(subtract(srcPos, polygon.getPivot()));
+                Point2D dstPos = add(srcPos, unit);
 
                 Polygon dstPolygon = model.findSurroundingRegion(dstPos, polygon.node);
 
@@ -96,8 +97,8 @@ public class Method2 {
                     }
                 }
 
-                Vector2D matchedPoint = dstPolygon.getVertex(minPosition).getPoint();
-                dstPos = Vector2D.average(srcPos, matchedPoint);
+                Point2D matchedPoint = dstPolygon.getVertex(minPosition).getPoint();
+                dstPos = midpoint(srcPos, matchedPoint);
 
                 ArrayList<Vertex> joint = joints.remove(matchedPoint);
 

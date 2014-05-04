@@ -2,12 +2,14 @@ package mapvis.liquidvis.method.method3;
 
 import mapvis.liquidvis.model.MapModel;
 import mapvis.liquidvis.model.Polygon;
-import mapvis.liquidvis.model.Vector2D;
-import mapvis.liquidvis.model.Vertex;
 import mapvis.liquidvis.model.event.IterationFinished;
 import mapvis.liquidvis.model.event.ModelEvent;
 import mapvis.liquidvis.model.event.PolygonMoved;
 import mapvis.liquidvis.model.handler.ModelEventListener;
+
+import java.awt.geom.Point2D;
+
+import static mapvis.common.PointExtension.*;
 
 public class MovePivot implements ModelEventListener {
 
@@ -33,14 +35,14 @@ public class MovePivot implements ModelEventListener {
         for (Object leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
 
-            Vector2D centroid = polygon.calcCentroid();
-            Vector2D pivot = polygon.getOrigin();
-            Vector2D d = Vector2D.subtract(centroid , pivot);
+            Point2D centroid = polygon.calcCentroid();
+            Point2D pivot = polygon.getPivot();
+            Point2D d = subtract(centroid, pivot);
 
-            if (d.norm() < Math.sqrt(polygon.area)/3)
+            if (length(d) < Math.sqrt(polygon.area)/3)
                 continue;
 
-            d = Vector2D.divide(d,5);
+            d = divide(d, 5);
 
             model.fireModelEvent(new PolygonMoved(event.iteration, polygon, d));
         }

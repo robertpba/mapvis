@@ -1,6 +1,10 @@
 package mapvis.liquidvis.model;
 
-import java.util.function.Function;
+import mapvis.common.PointExtension;
+
+import java.awt.geom.Point2D;
+
+import static mapvis.common.PointExtension.*;
 
 public class Polygon {
     public Object node;
@@ -14,65 +18,68 @@ public class Polygon {
     public double maxY;
 
     public double originX, originY;
-    public double area;
 
-    public double figure;
+    public double area;
     public double mass;
 
     public int moveBackCount = 0;
     public int moveForwardCount = 0;
-
 
     public double polygonArea() {
         double area = 0;         // Accumulates area in the loop
         int j = npoints - 1;  // The last vertex is the 'previous' one to the first
 
         for (int i = 0; i < npoints; i++) {
-            area = area + (vertices[j].x + vertices[i].x) * (vertices[i].y - vertices[j].y);
+            Point2D pj = vertices[j].getPoint();
+            Point2D pi = vertices[i].getPoint();
+
+            area = area + (pj.getX() + pi.getX()) * (pi.getY() - pj.getY());
             j = i;  //j is previous vertex to i
         }
         return area / 2;
     }
 
     // formulae: http://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
-    public Vector2D calcCentroid(){
-        Vector2D centroid = new Vector2D(0, 0);
+    public Point2D calcCentroid(){
+        double x=0.0, y=0.0;
+
         double signedArea = 0.0;
-        double x0 = 0.0; // Current vertex X
-        double y0 = 0.0; // Current vertex Y
-        double x1 = 0.0; // Next vertex X
-        double y1 = 0.0; // Next vertex Y
-        double a = 0.0;  // Partial signed area
+        double x0, y0; // Current vertex
+        double x1, y1; // Next vertex
+        double a;  // Partial signed area
 
         // For all vertices except last
-        int i=0;
+        int i;
         for (i=0; i<npoints-1; ++i)
         {
-            x0 = vertices[i].x;
-            y0 = vertices[i].y;
-            x1 = vertices[i+1].x;
-            y1 = vertices[i+1].y;
+            Point2D p0 = vertices[i].getPoint();
+            Point2D p1 = vertices[i+1].getPoint();
+
+            x0 = p0.getX();
+            y0 = p0.getY();
+            x1 = p1.getX();
+            y1 = p1.getY();
             a = x0*y1 - x1*y0;
             signedArea += a;
-            centroid.x += (x0 + x1)*a;
-            centroid.y += (y0 + y1)*a;
+            x += (x0 + x1)*a;
+            y += (y0 + y1)*a;
         }
 
         // Do last vertex
-        x0 = vertices[i].x;
-        y0 = vertices[i].y;
-        x1 = vertices[0].x;
-        y1 = vertices[0].y;
+        x0 = vertices[i].getPoint().getX();
+        y0 = vertices[i].getPoint().getY();
+        x1 = vertices[0].getPoint().getX();
+        y1 = vertices[0].getPoint().getY();
         a = x0*y1 - x1*y0;
         signedArea += a;
-        centroid.x += (x0 + x1)*a;
-        centroid.y += (y0 + y1)*a;
+        x += (x0 + x1)*a;
+        y += (y0 + y1)*a;
 
         signedArea *= 0.5;
-        centroid.x /= (6.0*signedArea);
-        centroid.y /= (6.0*signedArea);
+        x /= (6.0*signedArea);
+        y /= (6.0*signedArea);
 
-        return centroid;
+        return new Point2D.Double(x,y);
     }
 
     public Polygon(Object node, double x, double y, double mass) {
@@ -104,40 +111,40 @@ public class Polygon {
 
         boolean c = false;
         for (int i = 0, j = npoints-1; i < npoints; j = i++) {
-            if ( ((vertices[i].y>testy) != (vertices[j].y>testy)) &&
-                    (testx < (vertices[j].x-vertices[i].x) * (testy-vertices[i].y) / (vertices[j].y-vertices[i].y) + vertices[i].x) )
+            Point2D pi = vertices[i].getPoint();
+            Point2D pj = vertices[j].getPoint();
+
+            if ( ((pi.getY()>testy) != (pj.getY()>testy)) &&
+                    (testx < (pj.getX()- pi.getX()) * (testy- pi.getY())
+                            / (pj.getY()- pi.getY()) + pi.getX()) )
                 c = !c;
         }
         return c;
     }
     
-    public Vector2D getVertexPosition(int index) {
-        return new Vector2D(this.vertices[index].x, this.vertices[index].y);
+    public Point2D getVertexPosition(int index) {
+        return this.vertices[index].getPoint();
     }
     public Vertex getVertex(int index)
     {
         return vertices[index];
     }
     
-    public Vector2D getOrigin()
-    {
-        return new Vector2D(this.originX, this.originY);
+    public Point2D getPivot(){
+        return new Point2D.Double(this.originX, this.originY);
     }
 
-    public void setVertex(int index, Vector2D vertex) {
-        this.vertices[index].x = vertex.x;
-        this.vertices[index].y = vertex.y;
-        
-        updateBounds(vertex.x, vertex.y);
+    public void setVertex(int index, Point2D position) {
+        this.vertices[index].setPoint(position);
+
+        updateBounds(position.getX(), position.getY());
     }
-    public void setVertex(Vertex vertex, Vector2D position) {
+    public void setVertex(Vertex vertex, Point2D position) {
         if (vertex.polygon != this)
             throw new RuntimeException("can't set other polygon's vertex");
 
-        vertex.x = position.x;
-        vertex.y = position.y;
-
-        updateBounds(position.x, position.y);
+        vertex.setPoint(position);
+        updateBounds(position.getX(), position.getY());
     }
 
 
@@ -160,10 +167,10 @@ public class Polygon {
         maxY = Integer.MIN_VALUE;
 
         for (int i = 0; i < npoints; i++) {
-            double x = this.vertices[i].x;
+            double x = this.vertices[i].getPoint().getX();
             minX = Math.min(minX, x);
             maxX = Math.max(maxX, x);
-            double y = this.vertices[i].y;
+            double y = this.vertices[i].getPoint().getY();
             minY = Math.min(minY, y);
             maxY = Math.max(maxY, y);
         }
@@ -174,14 +181,13 @@ public class Polygon {
 
         if (unit <= 0)
             return;
-        Vector2D d = Vector2D.subtract(getOrigin(), vertex.getPoint());
-        Vector2D u = Vector2D.divide(d, d.norm()/unit);
-        vertex.x = vertex.x - u.x;
-        vertex.y = vertex.y - u.y;
+        Point2D d = subtract(getPivot(), vertex.getPoint());
+        Point2D u = divide(d, length(d) / unit);
+        vertex.setPoint(subtract(vertex.getPoint(), u ));
         vertex.moveCount -= unit ;
     }
 
-    public boolean contains(Vector2D pos) {
-        return contains(pos.x, pos.y);
+    public boolean contains(Point2D pos) {
+        return contains(pos.getX(), pos.getY());
     }
 }
