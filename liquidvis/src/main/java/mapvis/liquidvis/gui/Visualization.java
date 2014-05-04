@@ -17,7 +17,7 @@ import mapvis.liquidvis.gui.NavigableImagePanel.ZoomDevice;
 import mapvis.vistools.colormap.ColorBar;
 import mapvis.vistools.colormap.ColorMap;
 
-public class Observer implements ActionListener {
+public class Visualization implements ActionListener {
     private final JPanel controls;
     private final JButton saveButton;
     private final JButton iterButton;
@@ -31,7 +31,7 @@ public class Observer implements ActionListener {
     public int refreshThreshold = 1000;
 
 
-    public Observer(BufferedImage image, MapModel model)
+    public Visualization(BufferedImage image, MapModel model)
     {
 
         this.timer = new Timer(refreshThreshold, this);
