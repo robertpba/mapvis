@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.*;
 
 public class SpatialIndex<T> {
-    Set[] buckets;
+    Set<T>[] buckets;
     Map<T, Rectangle2D> pos;
     private int nCols;
     private int nRows;
@@ -15,7 +15,9 @@ public class SpatialIndex<T> {
         this.nCols = nCols;
         this.nRows = nRows;
         this.cellSize = size;
-        buckets = new Set[ nCols * nRows];
+        @SuppressWarnings("unchecked")
+        final Set<T>[] buckets = new Set[ nCols * nRows];
+        this.buckets = buckets;
 
         for (int x = 0; x < nCols; x++)
             for (int y = 0; y < nRows; y++){
@@ -40,7 +42,7 @@ public class SpatialIndex<T> {
         int minY = Math.min(nRows-1, Math.max(0, (int) (bounds.getMinY() / cellSize)));
         int maxY = Math.min(nRows-1, Math.max(0, (int) (bounds.getMaxY() / cellSize)));
 
-        int x = minX; int y = minY;
+        int x; int y = minY;
         do {
             x = minX;
             do
@@ -57,7 +59,7 @@ public class SpatialIndex<T> {
         int minY = Math.min(nRows-1, Math.max(0, (int) (bounds.getMinY() / cellSize)));
         int maxY = Math.min(nRows-1, Math.max(0, (int) (bounds.getMaxY() / cellSize)));
 
-        int x = minX; int y = minY;
+        int x; int y = minY;
         do {
             x = minX;
             do

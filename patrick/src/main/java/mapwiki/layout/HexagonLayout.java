@@ -37,7 +37,7 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 	private int breakCount;
 	private boolean debug;
 	
-	public static int computeCategorySize(int n) {
+	public static double computeCategorySize(int n) {
 		if (n == 0)
 			return 0;
 		if (cacheAreaMultiplier < 0) {
@@ -45,9 +45,9 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 			cacheLogBase = Double.parseDouble(LayoutGraphic.propertyAsString("LOG_BASE"));
 		}
 		double log = Math.log10(n) / Math.log10(cacheLogBase);
-		return (int)Math.ceil(log * cacheAreaMultiplier);
+		return Math.ceil(log * cacheAreaMultiplier);
 	}
-	
+
 	public HexagonLayout(CategoryProvider cp, PageDatabase pdb) {
 		this.cp = cp;
 		this.pageDB = pdb;

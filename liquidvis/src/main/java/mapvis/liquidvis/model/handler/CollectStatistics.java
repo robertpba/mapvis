@@ -40,19 +40,13 @@ public class CollectStatistics implements ModelEventListener {
             if (event.iteration % period != 0)
                 return;
 
-            if (event instanceof IterationFinished
-                    || event instanceof CriticalPointArrived) {
+            if (event instanceof IterationFinished) {
                 onIterationFinished(event);
             }
         }
 
     }
 
-
-    private void onVertexMoved(VertexMoved event)
-    {
-
-    }
 
     private void onIterationFinished(ModelEvent event)
     {

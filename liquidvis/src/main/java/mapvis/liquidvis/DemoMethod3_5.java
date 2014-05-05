@@ -101,7 +101,7 @@ public class DemoMethod3_5 {
 
         BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
 
-        Observer observer = new Observer(image, model);
+        Visualization observer = new Visualization(image, model);
         observer.backgroundColor = Color.decode("#aae8ff");
 
         int[] nlevels = {0,1,4,16,64,256,1024};

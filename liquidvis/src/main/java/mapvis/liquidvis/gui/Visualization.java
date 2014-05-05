@@ -18,11 +18,6 @@ import mapvis.vistools.colormap.ColorBar;
 import mapvis.vistools.colormap.ColorMap;
 
 public class Visualization implements ActionListener {
-    private final JPanel controls;
-    private final JButton saveButton;
-    private final JButton iterButton;
-    private final JButton backButton;
-    private final JButton forthButton;
     public BufferedImage image;
     public JFrame frame;
     public MapModel model;
@@ -44,23 +39,23 @@ public class Visualization implements ActionListener {
             panel.setImage(image); 
             panel.setZoomDevice(ZoomDevice.MOUSE_BUTTON);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "", 
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "",
                 JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 
-        controls = new JPanel();
-        saveButton = new JButton("Save");
+        JPanel controls = new JPanel();
+        JButton saveButton = new JButton("Save");
         controls.add(saveButton);
         frame.getContentPane().add(controls, BorderLayout.SOUTH);
 
-        iterButton = new JButton("By iterations");
+        JButton iterButton = new JButton("By iterations");
         controls.add(iterButton);
 
-        backButton = new JButton("By times pushed back");
+        JButton backButton = new JButton("By times pushed back");
         controls.add(backButton);
 
-        forthButton = new JButton("By times move forth");
+        JButton forthButton = new JButton("By times move forth");
         controls.add(forthButton);
 
         saveButton.addActionListener(e -> {
@@ -71,7 +66,7 @@ public class Visualization implements ActionListener {
                 e1.printStackTrace();
             }
             try {
-                save("output/"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())+".png");
+                save("output/" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".png");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -82,7 +77,7 @@ public class Visualization implements ActionListener {
 
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-        frame.getContentPane().add(new ColorBar(v -> ColorMap.JET.getColor(v) ), BorderLayout.NORTH);
+        frame.getContentPane().add(new ColorBar(ColorMap.JET::getColor), BorderLayout.NORTH);
 
 
         GraphicsEnvironment ge = 

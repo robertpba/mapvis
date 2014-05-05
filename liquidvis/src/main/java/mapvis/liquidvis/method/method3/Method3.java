@@ -12,15 +12,15 @@ import java.util.*;
 
 import static mapvis.common.PointExtension.*;
 
-public class Method3 {
+public class Method3<T> {
 
     public final Estimator estimator;
     public final Manipulator manipulator;
-    public MapModel model;
+    public MapModel<T> model;
 
     DriveAwayInsideVertices driveAwayInsideVertices;
 
-    public Method3(MapModel model){
+    public Method3(MapModel<T> model){
         this.model = model;
 
         driveAwayInsideVertices = new DriveAwayInsideVertices(this, 100);
@@ -43,7 +43,7 @@ public class Method3 {
     public boolean IterateOnce() {
         boolean stable = true;
 
-        for (Object leaf : model.getLeaves()) {
+        for (T leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
                 vertex.momentum = vertex.momentum * 99 / 100;
@@ -94,7 +94,7 @@ public class Method3 {
     public void growPolygons() {
         model.listeners.remove(driveAwayInsideVertices);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 1; i++) {
             _growPolygons();
         }
         model.fireModelEvent(new CriticalPointArrived(model.iteration, "growing finished"));
@@ -114,7 +114,7 @@ public class Method3 {
 
 
     private void _growPolygons(){
-        for (Object leaf : model.getLeaves()) {
+        for (T leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
 
@@ -122,7 +122,7 @@ public class Method3 {
                 Point2D unit = unit(subtract(srcPos, polygon.getPivot()));
                 Point2D dstPos = add(srcPos, unit);
 
-                Polygon dstRegion = model.findSurroundingRegion(dstPos, polygon.node);
+                Polygon dstRegion = model.findSurroundingRegion(dstPos, (T)polygon.node);
 
                 if (dstRegion == null) {
                     vertex.moveCount++;

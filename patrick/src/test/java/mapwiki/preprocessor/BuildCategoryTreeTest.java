@@ -77,10 +77,15 @@ public class BuildCategoryTreeTest {
         int inf=0;
         int o = 0;
 
+        double sum=0;
         for (Map.Entry<Category, Integer> entry : HexagonLayout.size.entrySet()) {
+
             Category c = entry.getKey();
+            double size = HexagonLayout.computeCategorySize(c.getArticleCount());
             if (entry.getValue() == c.getArea()) {
                 one++;
+
+                sum += entry.getValue() / size;
                 continue;
             }
             if (c.getArea() == 0) {
@@ -89,11 +94,12 @@ public class BuildCategoryTreeTest {
             }
 
             o++;
-            System.out.printf("%s, %d/%d, %f\n", c.getPageTitle(),
-                    entry.getValue(), c.getArea(), (double)entry.getValue() / c.getArea());
+            System.out.printf("%s, %d/%f, %f\n", c.getPageTitle(),
+                    entry.getValue(), size, (double)entry.getValue() / size);
+            sum += (double)entry.getValue() / size;
         }
 
-        System.out.printf("1:%d, inf:%d, o:%d", one, inf, o);
+        System.out.printf("1:%d, inf:%d, o:%d, a:%f", one, inf, o, (1-sum/(one+o))*100);
 
         //Thread.sleep(100000);
     }

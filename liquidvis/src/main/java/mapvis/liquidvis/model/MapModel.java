@@ -106,11 +106,11 @@ public class MapModel<V> {
     }
 
     public Vertex findNearestVertex(Point2D srcPos, Polygon dstRegion) {
-        double minDistance = srcPos.distance(dstRegion.getVertexPosition(0));
+        double minDistance = srcPos.distance(dstRegion.getVertex(0).getPoint());
         int minPosition = 0;
 
         for (int f = 1; f < dstRegion.npoints; f++) {
-            double d = srcPos.distance(dstRegion.getVertexPosition(f));
+            double d = srcPos.distance(dstRegion.getVertex(f).getPoint());
             if (d < minDistance) {
                 minDistance = d;
                 minPosition = f;

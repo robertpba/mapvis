@@ -125,7 +125,7 @@ public final class BottomUpLayout {
 
 	private void makeAreaFromArticleNumber(int level, Category c) {
 		int articleCount = cp.getDirectCount(c);
-		int area = HexagonLayout.computeCategorySize(articleCount);
+		int area = (int)HexagonLayout.computeCategorySize(articleCount);
 		if (maxSizeForLevels[level] != 0 && area > maxSizeForLevels[level])
 			area = maxSizeForLevels[level]; 
 		

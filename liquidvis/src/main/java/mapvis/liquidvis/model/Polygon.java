@@ -1,7 +1,5 @@
 package mapvis.liquidvis.model;
 
-import mapvis.common.PointExtension;
-
 import java.awt.geom.Point2D;
 
 import static mapvis.common.PointExtension.*;
@@ -122,9 +120,6 @@ public class Polygon {
         return c;
     }
     
-    public Point2D getVertexPosition(int index) {
-        return this.vertices[index].getPoint();
-    }
     public Vertex getVertex(int index)
     {
         return vertices[index];
