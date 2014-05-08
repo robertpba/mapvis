@@ -6,6 +6,7 @@ import mapvis.liquidvis.model.*;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
+import java.awt.font.TextAttribute;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -26,7 +27,6 @@ public class LabelRender<T> implements RenderAction {
         private Point2D anchor;
         public int level;
 
-        public Font font;
         public Rectangle2D textRect;
         public Point2D textOrgin;
     }
@@ -77,17 +77,9 @@ public class LabelRender<T> implements RenderAction {
             entry.bounds = getBounds(entry.element);
             entry.anchor = getAnchor(entry.element);
 
-            if (entry.level == 1){
-                entry.font = new Font("Arial", Font.BOLD, 30);
-            }
-            if (entry.level == 2){
-                entry.font = new Font("Arial", Font.ITALIC, 18);
-            }
-            if (entry.level == 3){
-                entry.font = new Font("Arial", Font.PLAIN, 15);
-            }
+            Font font = getFont(entry.level);
 
-            Rectangle2D strBounds = entry.font.getStringBounds(entry.text, ctx);
+            Rectangle2D strBounds = font.getStringBounds(entry.text, ctx);
             entry.textRect = new Rectangle2D.Double(
                     -strBounds.getWidth()/2  + entry.anchor.getX(),
                     -strBounds.getHeight()/2 + entry.anchor.getY(),
@@ -105,7 +97,14 @@ public class LabelRender<T> implements RenderAction {
             entry.textRect =  removal.getRectangle(entry);
         }
 
-        collect = entries.values().stream().filter(e -> e.level > 0 && e.level <= 2).collect(Collectors.toList());
+        collect = entries.values().stream().filter(e -> e.level == 2).collect(Collectors.toList());
+        removal = new FTAOverlapRemoval<>( collect, e -> e.textRect);
+        removal.run();
+        for (Entry entry : collect) {
+            entry.textRect =  removal.getRectangle(entry);
+        }
+
+        collect = entries.values().stream().filter(e -> e.level == 1).collect(Collectors.toList());
         removal = new FTAOverlapRemoval<>( collect, e -> e.textRect);
         removal.run();
         for (Entry entry : collect) {
@@ -114,7 +113,6 @@ public class LabelRender<T> implements RenderAction {
     }
 
     public void draw(Graphics2D g){
-
         for (Entry entry : entries.values()) {
             if (entry.level == 3)
                 renderLabel(g, entry);
@@ -133,30 +131,38 @@ public class LabelRender<T> implements RenderAction {
         if (entry.level == 0){
             return;
         }
-        if (entry.level == 1){
-            g.setFont(entry.font);
-            g.setColor(Color.BLACK);
+        if (entry.level <= 3){
+            g.setFont(getFont(entry.level));
+            g.setColor(getColor(entry.level));
 
             g.drawString(entry.text,
                     (float)(entry.textRect.getX() - entry.textOrgin.getX()),
                     (float)(entry.textRect.getY() - entry.textOrgin.getY()));
         }
-        if (entry.level == 2){
+    }
 
-            g.setFont(entry.font);
-            g.setColor(new Color(156, 93, 82));
+    private Font[] fonts;
+    {
+        Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
+        fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 
-            g.drawString(entry.text,
-                    (float)(entry.textRect.getX() - entry.textOrgin.getX()),
-                    (float)(entry.textRect.getY() - entry.textOrgin.getY()));
-        }
-        if (entry.level == 3){
-            g.setFont(entry.font);
-            g.setColor(Color.BLACK);
+        fonts = new Font[] {
+            new Font("Arial", Font.BOLD, 64).deriveFont(fontAttributes),
+            new Font("Arial", Font.BOLD, 32),
+            new Font("Arial", Font.BOLD, 16)
+        };
+    }
 
-            g.drawString(entry.text,
-                    (float)(entry.textRect.getX() - entry.textOrgin.getX()),
-                    (float)(entry.textRect.getY() - entry.textOrgin.getY()));
-        }
+    protected Font getFont(int level){
+        level = Math.min(3, level);
+        level = Math.max(1, level);
+        return fonts[level-1];
+    }
+
+    private Color[] colors = {Color.BLACK, Color.BLACK, Color.decode("#004000")};
+    protected Color getColor(int level){
+        level = Math.min(3, level);
+        level = Math.max(1, level);
+        return colors[level-1];
     }
 }

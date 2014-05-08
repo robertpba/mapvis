@@ -140,9 +140,9 @@ public class DemoMethod3_5 {
         model.actions.add(new CreateAreas<>(model));
 
         model.actions.add(new FillNode<>(model, colorMap2));
-        model.actions.add(new LabelRender<>(model));
         model.actions.add(new RenderBoundary<>(model));
         //model.actions.add(new RenderOriginCentroid<>(model));
+        model.actions.add(new LabelRender<>(model));
 
         observer.Start();
 
