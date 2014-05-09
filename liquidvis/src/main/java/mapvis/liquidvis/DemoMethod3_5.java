@@ -18,6 +18,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.function.Function;
 
 import static mapvis.vistools.Helper.interpolate;
@@ -160,9 +161,22 @@ public class DemoMethod3_5 {
 
         visualization.Start();
 
+        Date d1= new Date();
+
         method.IterateUntilStable(100000);
 
+        Date d2= new Date();
+
         System.out.println("finished!");
+
+        long diff = d2.getTime() - d1.getTime();
+
+        long diffSeconds = diff / 1000 % 60;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+
 
         method.growPolygons();
 
@@ -172,7 +186,10 @@ public class DemoMethod3_5 {
             System.out.printf("%d\t%f\n", l.iteration, l.error);
         }
 
-
+        System.out.print(diffDays + " days, ");
+        System.out.print(diffHours + " hours, ");
+        System.out.print(diffMinutes + " minutes, ");
+        System.out.print(diffSeconds + " seconds.");
     }
 }
 
