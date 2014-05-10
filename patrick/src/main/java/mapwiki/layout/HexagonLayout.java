@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import mapwiki.common.PageDatabase;
 import mapwiki.common.PageEntry;
+import mapwiki.layout.categoryprovider.MemoryCategory;
 import mapwiki.layout.hexagon.Hexagon;
 import mapwiki.layout.hexagon.HexagonCanvas;
 import mapwiki.layout.hexagon.HexagonText.Type;
@@ -187,8 +188,21 @@ public class HexagonLayout implements BottomUpLayout.DrawDebugImageProvider {
 	private void bottomUpLayout() {
 		layout = new BottomUpLayout(cp, this);
 		layout.run();
-		
-		// Create hexagon canvas.
+
+
+        // FIXME: hacks to remove "former good articles"
+
+        Category former_good_articles = cp.findByTitle("Former_good_articles");
+        MemoryCategory fp = (MemoryCategory) cp.findParent(former_good_articles);
+        fp.children.remove(former_good_articles);
+
+        Category former_very_good_articles = cp.findByTitle("Former_very_good_articles");
+        MemoryCategory fvp = (MemoryCategory) cp.findParent(former_good_articles);
+        fvp.children.remove(former_very_good_articles);
+
+
+
+        // Create hexagon canvas.
 		Dimension rootSize = cp.findRoot().getBorder();
 		int w = rootSize.width + 2 * affectRange;
 		int h = rootSize.height + 2 * affectRange;

@@ -8,7 +8,7 @@ import mapwiki.layout.Category;
 
 public class MemoryCategory extends Category {
 	WikiTreeEntry treeEntry;
-	List<Category> children = new ArrayList<Category>();
+	public List<Category> children = new ArrayList<Category>();
 	Category topCategory;
 	
 	public MemoryCategory(WikiTreeEntry entry) {

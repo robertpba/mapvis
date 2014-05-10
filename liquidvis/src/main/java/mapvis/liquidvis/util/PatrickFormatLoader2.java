@@ -24,6 +24,7 @@ public class PatrickFormatLoader2 {
         scaleAttribute(root);
         filterUnpositionedNodes();
         filterZeroNodes();
+        filterNoiseNodes();
         convertToVisibleTree();
         refinePoints();
 
@@ -161,8 +162,20 @@ public class PatrickFormatLoader2 {
                 .filter(v -> graph.outDegreeOf(v) == 0 && v.figure == 0)
                 .collect(Collectors.toList());
         graph.removeAllVertices(collect);
-
     }
+
+    protected void filterNoiseNodes() {
+
+        List bl = Arrays.asList(
+                "Former very good articles",
+                "Former good articles");
+
+        List<Node> collect = graph.vertexSet().stream()
+                .filter(v -> bl.contains(v.name))
+                .collect(Collectors.toList());
+        graph.removeAllVertices(collect);
+    }
+
 
     protected void updateCache(Node root, Collection<Node> nodes, List<Node> leaves){
         nodes.add(root);
@@ -228,8 +241,11 @@ public class PatrickFormatLoader2 {
         leaves.forEach(node -> {
             node.x = (node.x + 50) * scale;
             node.y = (node.y + 50) * scale;
-            node.figure = node.figure * scale * scale;
         });
+
+        graph.vertexSet().stream()
+                .forEach(node-> node.figure = node.figure * scale * scale);
+
         width  = (width + 100)* scale;
         height = (height + 100)* scale;
 
@@ -254,6 +270,7 @@ public class PatrickFormatLoader2 {
         loader.scaleAttribute(loader.root);
         loader.filterUnpositionedNodes();
         loader.filterZeroNodes();
+        loader.filterNoiseNodes();
         loader.convertToVisibleTree();
         loader.refinePoints();
 
