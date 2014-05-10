@@ -106,7 +106,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.45;
+                return node.figure * 1.40;
             }
         });
         Method3 method = new Method3(model);
@@ -117,7 +117,7 @@ public class DemoMethod3_5 {
         BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
 
         Visualization visualization = new Visualization(image, model);
-        visualization.backgroundColor = Color.decode("#aae8ff");
+        visualization.backgroundColor = Color.decode("#aaffff");
 
         int[] nlevels = {0,1,4,16,64,256,1024};
         String[] ncolors = {"#ffffff","#aae8ff", "#ffff33", "#ffcc00", "#ff9900", "#ff6600", "#cc3300", "#990000"};
@@ -157,7 +157,17 @@ public class DemoMethod3_5 {
         model.actions.add(new FillNode<>(model, colorMap2));
         model.actions.add(new RenderBoundary<>(model));
         //model.actions.add(new RenderOriginCentroid<>(model));
-        model.actions.add(new LabelRender<>(model));
+        model.actions.add(new LabelRender<Node>(model){
+            protected void renderLabel(Graphics2D g, Entry entry){
+                Node element = (Node) entry.element;
+                if (entry.level == 2 && element.name.equals("Engineering")) {
+                    entry.textOrgin = new Point2D.Double(
+                            entry.textOrgin.getX(), entry.textOrgin.getY() + 75);
+                }
+                super.renderLabel(g,entry);
+            }
+
+        });
 
         visualization.Start();
 

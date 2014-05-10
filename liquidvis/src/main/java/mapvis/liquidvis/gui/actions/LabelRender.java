@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class LabelRender<T> implements RenderAction {
     private MapModel<T> model;
 
-    class Entry{
+    protected class Entry{
         public Entry (T element){
             this.element = element;
         }
@@ -127,7 +127,7 @@ public class LabelRender<T> implements RenderAction {
         }
     }
 
-    public void renderLabel(Graphics2D g, Entry entry){
+    protected void renderLabel(Graphics2D g, Entry entry){
         if (entry.level == 0){
             return;
         }
