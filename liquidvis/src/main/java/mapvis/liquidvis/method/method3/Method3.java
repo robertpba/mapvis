@@ -94,7 +94,7 @@ public class Method3<T> {
     public void growPolygons() {
         model.listeners.remove(driveAwayInsideVertices);
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 5; i++) {
             _growPolygons();
         }
         model.fireModelEvent(new CriticalPointArrived(model.iteration, "growing finished"));

@@ -48,12 +48,12 @@ public class RenderBoundary<T> implements RenderAction {
         }
         else if (level == 2)
         {
-            g.setStroke(new BasicStroke(2));
+            g.setStroke(new BasicStroke(3));
             color = Color.black;
             g.setColor(color);
             g.draw(expandShape(getArea(node), 1));
         }else if (level == 1){
-            g.setStroke(new BasicStroke(4));
+            g.setStroke(new BasicStroke(8));
             color = Color.black;
             g.setColor(color);
             g.draw(expandShape(getArea(node), 1));
