@@ -42,21 +42,21 @@ public class RenderBoundary<T> implements RenderAction {
             //                                BasicStroke.CAP_BUTT,
             //                                BasicStroke.JOIN_MITER,
             //                                10.0f, dash1, 0.0f);
-            g.setColor(Color.lightGray);
+            g.setColor(Color.black);
             g.setStroke(new BasicStroke(1));
             g.draw(getArea(node));
         }
         else if (level == 2)
         {
-            g.setStroke(new BasicStroke(1));
-            color = Color.darkGray;
+            g.setStroke(new BasicStroke(2));
+            color = Color.black;
             g.setColor(color);
             g.draw(expandShape(getArea(node), 1));
         }else if (level == 1){
-            g.setStroke(new BasicStroke(3));
+            g.setStroke(new BasicStroke(4));
             color = Color.black;
             g.setColor(color);
-            g.draw(expandShape(getArea(node), 3));
+            g.draw(expandShape(getArea(node), 1));
         }
     }
     private Area expandShape(Shape s, float d) {
