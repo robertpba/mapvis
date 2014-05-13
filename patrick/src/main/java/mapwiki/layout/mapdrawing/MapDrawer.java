@@ -253,7 +253,9 @@ public class MapDrawer extends DefaultHexagonDrawer {
 		int result = 0;
 		for (int i = 0; i < altitudeLevels.length; i++) {
 			AltitudeLevel level = altitudeLevels[i];
-			if (level.altitude <= h.getAltitude())
+
+            // FIXME: HACK TO MAKE CORRECT COLOR
+			if (level.altitude <= h.getCategory(cp).getArticleCount())
 				result = i;
 		}
 		return result;
