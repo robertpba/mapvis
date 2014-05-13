@@ -79,7 +79,7 @@ public class LabelRender<T> implements RenderAction {
 
             Font font = getFont(entry.level);
 
-            Rectangle2D strBounds = font.getStringBounds(entry.text, ctx);
+            Rectangle2D strBounds = font.getStringBounds(entry.level < 3 ? entry.text.toUpperCase(): entry.text, ctx);
             entry.textRect = new Rectangle2D.Double(
                     -strBounds.getWidth()/2  + entry.anchor.getX(),
                     -strBounds.getHeight()/2 + entry.anchor.getY(),
@@ -135,7 +135,7 @@ public class LabelRender<T> implements RenderAction {
             g.setFont(getFont(entry.level));
             g.setColor(getColor(entry.level));
 
-            g.drawString(entry.text,
+            g.drawString(entry.level < 3 ? entry.text.toUpperCase(): entry.text,
                     (float)(entry.textRect.getX() - entry.textOrgin.getX()),
                     (float)(entry.textRect.getY() - entry.textOrgin.getY()));
         }
@@ -147,9 +147,9 @@ public class LabelRender<T> implements RenderAction {
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 
         fonts = new Font[] {
-            new Font("Arial", Font.BOLD, 64).deriveFont(fontAttributes),
-            new Font("Arial", Font.BOLD, 32),
-            new Font("Arial", Font.BOLD, 16)
+            new Font("Arial", Font.BOLD, 72).deriveFont(fontAttributes),
+            new Font("Arial", Font.PLAIN, 42),
+            new Font("Arial", Font.PLAIN, 24)
         };
     }
 

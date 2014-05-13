@@ -162,11 +162,10 @@ public class DemoMethod3_5 {
                 Node element = (Node) entry.element;
                 if (entry.level == 2 && element.name.equals("Engineering")) {
                     entry.textOrgin = new Point2D.Double(
-                            entry.textOrgin.getX(), entry.textOrgin.getY() + 75);
+                            entry.textOrgin.getX(), entry.textOrgin.getY() + 150);
                 }
                 super.renderLabel(g,entry);
             }
-
         });
 
         visualization.Start();

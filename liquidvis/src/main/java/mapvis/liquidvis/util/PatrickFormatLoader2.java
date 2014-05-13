@@ -232,7 +232,7 @@ public class PatrickFormatLoader2 {
     }
 
     protected void refinePoints() {
-        int scale = 5;
+        int scale = 7;
 
         List<Node> leaves = graph.vertexSet().stream()
                 .filter(v -> graph.outDegreeOf(v) == 0)
