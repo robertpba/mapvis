@@ -15,6 +15,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -161,8 +162,9 @@ public class DemoMethod3_5 {
             protected void renderLabel(Graphics2D g, Entry entry){
                 Node element = (Node) entry.element;
                 if (entry.level == 2 && element.name.equals("Engineering")) {
-                    entry.textOrgin = new Point2D.Double(
-                            entry.textOrgin.getX(), entry.textOrgin.getY() + 150);
+                    Rectangle2D bounds = entry.label.getBounds();
+
+                    entry.label.setPosition(bounds.getX(), bounds.getY() + 150);
                 }
                 super.renderLabel(g,entry);
             }

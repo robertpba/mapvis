@@ -6,11 +6,13 @@ import mapvis.liquidvis.model.*;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class LabelRender<T> implements RenderAction {
@@ -27,8 +29,10 @@ public class LabelRender<T> implements RenderAction {
         private Point2D anchor;
         public int level;
 
+        public Label label;
         public Rectangle2D textRect;
-        public Point2D textOrgin;
+        public Rectangle2D textRectOrig;
+
     }
 
     Map<T, Entry> entries = new HashMap<>();
@@ -63,8 +67,6 @@ public class LabelRender<T> implements RenderAction {
     }
 
     public void update() {
-        FontRenderContext ctx = new FontRenderContext(null, false, false);
-
         entries = model.getAllNodes().stream()
                 .filter(n -> getLevel(n) > 0)
                 .filter(n -> getText(n) != null)
@@ -79,12 +81,18 @@ public class LabelRender<T> implements RenderAction {
 
             Font font = getFont(entry.level);
 
-            Rectangle2D strBounds = font.getStringBounds(entry.level < 3 ? entry.text.toUpperCase(): entry.text, ctx);
-            entry.textRect = new Rectangle2D.Double(
-                    -strBounds.getWidth()/2  + entry.anchor.getX(),
-                    -strBounds.getHeight()/2 + entry.anchor.getY(),
-                    strBounds.getWidth(),strBounds.getHeight());
-            entry.textOrgin = new Point2D.Double(strBounds.getX(), strBounds.getY());
+            Label label = new Label();
+            label.font = getFont(entry.level);
+            label.text = String.join("\n", wrapLine(entry.level < 3 ? entry.text.toUpperCase(): entry.text));
+
+            entry.label = label;
+
+            Rectangle2D bounds = label.getBounds();
+            label.setPosition(entry.anchor.getX() - bounds.getWidth()/2,
+                    entry.anchor.getY() - bounds.getHeight() / 2);
+
+            entry.textRect = label.getBounds();
+            entry.textRectOrig = entry.textRect;
         }
         layout();
     }
@@ -95,6 +103,7 @@ public class LabelRender<T> implements RenderAction {
         removal.run();
         for (Entry entry : collect) {
             entry.textRect =  removal.getRectangle(entry);
+            entry.label.setPosition(entry.textRect.getX(), entry.textRect.getY());
         }
 
         collect = entries.values().stream().filter(e -> e.level == 2).collect(Collectors.toList());
@@ -102,6 +111,7 @@ public class LabelRender<T> implements RenderAction {
         removal.run();
         for (Entry entry : collect) {
             entry.textRect =  removal.getRectangle(entry);
+            entry.label.setPosition(entry.textRect.getX(), entry.textRect.getY());
         }
 
         collect = entries.values().stream().filter(e -> e.level == 1).collect(Collectors.toList());
@@ -109,6 +119,7 @@ public class LabelRender<T> implements RenderAction {
         removal.run();
         for (Entry entry : collect) {
             entry.textRect =  removal.getRectangle(entry);
+            entry.label.setPosition(entry.textRect.getX(), entry.textRect.getY());
         }
     }
 
@@ -135,9 +146,7 @@ public class LabelRender<T> implements RenderAction {
             g.setFont(getFont(entry.level));
             g.setColor(getColor(entry.level));
 
-            g.drawString(entry.level < 3 ? entry.text.toUpperCase(): entry.text,
-                    (float)(entry.textRect.getX() - entry.textOrgin.getX()),
-                    (float)(entry.textRect.getY() - entry.textOrgin.getY()));
+            entry.label.draw(g);
         }
     }
 
@@ -165,4 +174,92 @@ public class LabelRender<T> implements RenderAction {
         level = Math.max(1, level);
         return colors[level-1];
     }
+
+    public static final int LINE_BREAK_LEN = 7;
+    public static final int MAX_TAIL_LEN = 2;
+
+    /**
+     * Wrap a string using the length for one line defined in LINE_BREAK_LEN.
+     * @param s String to be processed.
+     * @return A string list with wrapped lines.
+     */
+    public static List<String> wrapLine(String s) {
+        String[] broken = s.split(" ");
+        ArrayList<String> list = new ArrayList<String>(broken.length);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < broken.length; i++) {
+            String current = broken[i];
+            String next = i < broken.length - 1 ? broken[i + 1] : "";
+            sb.append(current);
+            if (sb.length() < LINE_BREAK_LEN || next.length() <= MAX_TAIL_LEN) {
+                sb.append(" ");
+            } else {
+                list.add(sb.toString().trim());
+                sb.setLength(0);
+            }
+        }
+        if (sb.length() > 0)
+            list.add(sb.toString().trim());
+        return list;
+    }
+
+
+    public static class Label {
+        public Font font;
+        public Color Color;
+        public String text;
+        public double posX, posY;
+
+        Rectangle2D boundsCache;
+
+        public void setPosition(double x, double y){
+            posX = x;
+            posY = y;
+            boundsCache = null;
+        }
+
+        public Rectangle2D getBounds(){
+            if (boundsCache != null)
+                return boundsCache;
+
+
+            FontRenderContext ctx = new FontRenderContext(null, false, false);
+
+            double minX = posX, maxX = posX;
+            double minY = posY, maxY = posY;
+            double x=0.0, y=0.0;
+
+            String[] lines = text.split("\n");
+            for (int i = 0; i < lines.length; i++) {
+                LineMetrics metrics = font.getLineMetrics(lines[i], ctx);
+                Rectangle2D bounds = font.getStringBounds(lines[i], ctx);
+
+                if (i == 0) {
+                    x = minX;
+                    y = minY + metrics.getAscent();
+                }
+                maxX = Math.max(maxX, bounds.getMaxX() + x);
+                maxY = Math.max(maxY, bounds.getMaxY() + y);
+
+                y += metrics.getAscent() + metrics.getDescent();
+            }
+
+            return boundsCache = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        public void draw(Graphics2D g){
+            g.setFont(font);
+            FontMetrics metrics = g.getFontMetrics();
+            String[] lines = text.split("\n");
+            double x = posX, y = posY + metrics.getAscent();
+            for (int i = 0; i < lines.length; i++) {
+                g.drawString(lines[i], (float)x, (float)y);
+                y += metrics.getAscent()+metrics.getDescent();
+            }
+        }
+    }
+
+
+
+
 }
