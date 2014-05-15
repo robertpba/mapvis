@@ -48,20 +48,34 @@ public class RenderBoundary<T> implements RenderAction {
         }
         else if (level == 2)
         {
-            g.setStroke(new BasicStroke(3));
+            g.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             color = Color.black;
             g.setColor(color);
-            g.draw(expandShape(getArea(node), 1));
+
+            Area a = getArea(node);
+            //a = expandShape(a, 3);
+            //a = expandShape(a, (float) 0.5);
+
+
+            //g.draw(expandShape(getArea(node), 2));
+            //g.draw(expandShape(getArea(node), 0.5));
+            //g.draw(expandShape(getArea(node), 1));
+            g.draw(a);
         }else if (level == 1){
-            g.setStroke(new BasicStroke(8));
+            g.setStroke(new BasicStroke(15, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             color = Color.black;
             g.setColor(color);
-            g.draw(expandShape(getArea(node), 1));
+            //g.draw(expandShape(getArea(node), 1));
+            //g.draw(getArea(node));
+            Area a = getArea(node);
+            //a = expandShape(a, 2);
+            //a = expandShape(a, (float) 0.5);
+            g.draw(a);
         }
     }
     private Area expandShape(Shape s, float d) {
-        BasicStroke bs = new BasicStroke(d);
-        // or new BasicStroke(d, CAP_ROUND, JOIN_ROUND);
+        //BasicStroke bs = new BasicStroke(d);
+        BasicStroke bs = new BasicStroke(d, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         Area a = new Area(bs.createStrokedShape(s));
         a.add(new Area(s));
         return a;
