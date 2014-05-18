@@ -164,7 +164,7 @@ public class DemoMethod3_5 {
                 if (entry.level == 2 && element.name.equals("Engineering")) {
                     Rectangle2D bounds = entry.label.getBounds();
 
-                    entry.label.setPosition(bounds.getX(), bounds.getY() + 150);
+                    entry.label.setPosition(bounds.getX(), bounds.getY() - 250);
                 }
                 super.renderLabel(g,entry);
             }
