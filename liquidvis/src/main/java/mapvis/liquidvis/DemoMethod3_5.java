@@ -11,14 +11,20 @@ import mapvis.liquidvis.util.Node;
 import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -63,6 +69,7 @@ public class DemoMethod3_5 {
             loader.load(
                     "data/simple.txt",
                     "data/points.txt");
+            loader.refinePoints(8, 0.64);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -83,8 +90,8 @@ public class DemoMethod3_5 {
 //        convertToVisibleTree(loader.graph, ngraph  ,  loader.root);
 //        loader.graph = ngraph;
 //        PatrickFormatLoader2.printNode(loader, "", loader.root, 9);
-
-
+//
+//
 //
 //        Node byCountry = Arrays.stream(geography.children)
 //                .filter(n -> n.name.contains("Geography by country"))
@@ -107,7 +114,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.40;
+                return node.figure * 1.4 * 0.64;
             }
         });
         Method3 method = new Method3(model);
@@ -155,8 +162,14 @@ public class DemoMethod3_5 {
         model.actions.add(new EncodeLabelText<>(model, n->n.name));
         model.actions.add(new CreateAreas<>(model));
 
+
+
+
         model.actions.add(new FillNode<>(model, colorMap2));
-        model.actions.add(new RenderBoundary<>(model));
+
+        RenderBoundary<Node> renderBoundary = new RenderBoundary<>(model);
+
+        model.actions.add(renderBoundary);
         //model.actions.add(new RenderOriginCentroid<>(model));
         model.actions.add(new LabelRender<Node>(model){
             protected void renderLabel(Graphics2D g, Entry entry){
@@ -171,6 +184,30 @@ public class DemoMethod3_5 {
         });
 
         visualization.Start();
+        visualization.iterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (renderBoundary.firstLevelColor == Color.black)
+                    renderBoundary.firstLevelColor = visualization.backgroundColor;
+                else
+                    renderBoundary.firstLevelColor = Color.black;
+            }
+        });
+        visualization.backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (renderBoundary.firstLevelThickness == 15) {
+                    renderBoundary.firstLevelThickness = 10;
+                    renderBoundary.secondLevelThickness = 6;
+                } else if (renderBoundary.firstLevelThickness == 10) {
+                    renderBoundary.firstLevelThickness = 5;
+                    renderBoundary.secondLevelThickness = 3;
+                }else {
+                    renderBoundary.firstLevelThickness = 15;
+                    renderBoundary.secondLevelThickness = 8;
+                }
+            }
+        });
 
         Date d1= new Date();
 

@@ -157,7 +157,7 @@ public class LabelRender<T> implements RenderAction {
 
         fonts = new Font[] {
             new Font("Arial", Font.BOLD, 72).deriveFont(fontAttributes),
-            new Font("Arial", Font.PLAIN, 42),
+            new Font("Arial", Font.PLAIN, 26),
             new Font("Arial", Font.PLAIN, 24)
         };
     }

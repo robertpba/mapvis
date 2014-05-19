@@ -18,6 +18,8 @@ import mapvis.vistools.colormap.ColorBar;
 import mapvis.vistools.colormap.ColorMap;
 
 public class Visualization implements ActionListener {
+    public final JButton iterButton;
+    public final JButton backButton;
     public BufferedImage image;
     public JFrame frame;
     public MapModel model;
@@ -49,10 +51,10 @@ public class Visualization implements ActionListener {
         controls.add(saveButton);
         frame.getContentPane().add(controls, BorderLayout.SOUTH);
 
-        JButton iterButton = new JButton("By iterations");
+        iterButton = new JButton("border color");
         controls.add(iterButton);
 
-        JButton backButton = new JButton("By times pushed back");
+        backButton = new JButton("thickness");
         controls.add(backButton);
 
         JButton forthButton = new JButton("By times move forth");

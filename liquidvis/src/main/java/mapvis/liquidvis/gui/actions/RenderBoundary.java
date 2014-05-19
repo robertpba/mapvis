@@ -27,9 +27,6 @@ public class RenderBoundary<T> implements RenderAction {
         model.getAllNodes().stream().filter(n-> getLevel(n) == 1).forEach(n->drawPolygonBorder(g, n));
     }
 
-    protected Color getColor(Object node){
-        return Color.BLACK;
-    }
 
     private void drawPolygonBorder(Graphics2D g, T node) {
         Color color;
@@ -42,14 +39,15 @@ public class RenderBoundary<T> implements RenderAction {
             //                                BasicStroke.CAP_BUTT,
             //                                BasicStroke.JOIN_MITER,
             //                                10.0f, dash1, 0.0f);
-            g.setColor(Color.black);
+            color = getColor(node);
+            g.setColor(color);
             g.setStroke(new BasicStroke(1));
             g.draw(getArea(node));
         }
         else if (level == 2)
         {
-            g.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            color = Color.black;
+            g.setStroke(new BasicStroke(secondLevelThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            color = getColor(node);
             g.setColor(color);
 
             Area a = getArea(node);
@@ -62,8 +60,8 @@ public class RenderBoundary<T> implements RenderAction {
             //g.draw(expandShape(getArea(node), 1));
             g.draw(a);
         }else if (level == 1){
-            g.setStroke(new BasicStroke(15, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            color = Color.black;
+            g.setStroke(new BasicStroke(firstLevelThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            color = getColor(node);
             g.setColor(color);
             //g.draw(expandShape(getArea(node), 1));
             //g.draw(getArea(node));
@@ -88,4 +86,14 @@ public class RenderBoundary<T> implements RenderAction {
         return ((Area) model.getValue(node, "__area"));
     }
 
+    public Color firstLevelColor = Color.black;
+    public float firstLevelThickness = 15;
+    public float secondLevelThickness = 8;
+    protected Color getColor(T node) {
+        int level = getLevel(node);
+        if (level == 1)
+            return firstLevelColor;
+        else
+            return Color.BLACK;
+    }
 }

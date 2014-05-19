@@ -26,7 +26,7 @@ public class PatrickFormatLoader2 {
         filterZeroNodes();
         filterNoiseNodes();
         convertToVisibleTree();
-        refinePoints();
+        //refinePoints();
 
         return root;
     }
@@ -231,8 +231,8 @@ public class PatrickFormatLoader2 {
         return true;
     }
 
-    protected void refinePoints() {
-        int scale = 8;
+    public void refinePoints(double scale, double tolerance) {
+        //int scale = 8;
 
         List<Node> leaves = graph.vertexSet().stream()
                 .filter(v -> graph.outDegreeOf(v) == 0)
@@ -246,13 +246,13 @@ public class PatrickFormatLoader2 {
         graph.vertexSet().stream()
                 .forEach(node-> node.figure = node.figure * scale * scale);
 
-        width  = (width + 100)* scale;
-        height = (height + 100)* scale;
+        width  = (int)((width + 100)* scale);
+        height = (int)((height + 100)* scale);
 
 
         CircleOverlapRemoval<Node> removal = new CircleOverlapRemoval<>(leaves,
                 n -> new Point2D.Double(n.x, n.y),
-                n -> Math.sqrt(n.figure / Math.PI));
+                n -> Math.sqrt(n.figure * tolerance / Math.PI));
         removal.run(1000);
 
         for (Node node : leaves) {
@@ -272,7 +272,7 @@ public class PatrickFormatLoader2 {
         loader.filterZeroNodes();
         loader.filterNoiseNodes();
         loader.convertToVisibleTree();
-        loader.refinePoints();
+        //loader.refinePoints();
 
         printNode(loader, "", loader.root, 6);
     }
