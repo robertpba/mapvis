@@ -2,10 +2,11 @@ package mapvis.grid;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class HashMapGrid implements Grid {
 
-    Map map = new HashMap();
+    Map<Pos, Object> map = new HashMap();
 
     @Override
     public void put(int x, int y, Object obj) {
@@ -52,4 +53,15 @@ public class HashMapGrid implements Grid {
 
         return new Tile(nx, ny, map.get(new Pos(nx, ny)));
     }
+
+    @Override
+    public void foreach(Consumer<Tile> consumer) {
+        for (Map.Entry<Pos, Object> entry : map.entrySet()) {
+            if (entry.getValue() != null)
+                consumer.accept(new Tile(entry.getKey().getX(),
+                        entry.getKey().getY(),
+                        entry.getValue()));
+        }
+    }
+
 }
