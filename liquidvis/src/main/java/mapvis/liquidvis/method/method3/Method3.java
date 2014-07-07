@@ -40,8 +40,13 @@ public class Method3<T> {
         model.fireModelEvent(new CriticalPointArrived(model.iteration, "iterations finished"));
     }
 
+
+    public static int[] movecount = new int[20000];
+
     public boolean IterateOnce() {
         boolean stable = true;
+
+        int c = 0;
 
         for (T leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
@@ -51,6 +56,8 @@ public class Method3<T> {
 
             if (polygon.area >= polygon.mass)
                 continue;
+
+            c++;
 
             List<Pair<Vertex, Integer>> scores = getScoresOfAllMove(polygon);
 
@@ -62,7 +69,11 @@ public class Method3<T> {
             stable = false;
         }
 
+        movecount[model.iteration] = c;
+
         model.fireModelEvent(new IterationFinished(model.iteration));
+
+
 
         return  !stable;
     }

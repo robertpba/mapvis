@@ -30,8 +30,8 @@ public class Estimator  {
     private double calcPressure(Vertex vertex) {
         Polygon polygon = vertex.polygon;
         double pressure = polygon.mass - polygon.area + vertex.momentum;
-        if (vertex.momentum >= 0)
-            return pressure + 10;
+        //if (vertex.momentum >= 0)
+        //    return pressure + 10;
         return pressure;
     }
 

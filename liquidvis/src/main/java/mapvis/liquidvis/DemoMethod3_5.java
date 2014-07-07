@@ -69,7 +69,7 @@ public class DemoMethod3_5 {
             loader.load(
                     "data/simple.txt",
                     "data/points.txt");
-            loader.refinePoints(8, 0.64);
+            loader.refinePoints(8, 0.81);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.4 * 0.64;
+                return node.figure * 1.4 * 0.81;
             }
         });
         Method3 method = new Method3(model);
@@ -237,7 +237,12 @@ public class DemoMethod3_5 {
         System.out.print(diffDays + " days, ");
         System.out.print(diffHours + " hours, ");
         System.out.print(diffMinutes + " minutes, ");
-        System.out.print(diffSeconds + " seconds.");
+        System.out.print(diffSeconds + " seconds.\n");
+
+        for (int i = 0; i < model.iteration; i++) {
+            System.out.printf("%d\t%d\n", i, method.movecount[i]);
+
+        }
     }
 }
 
