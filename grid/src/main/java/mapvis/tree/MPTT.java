@@ -9,6 +9,7 @@ public class MPTT<T> {
     static public class MPTTNode<T> {
         public int left;
         public int right;
+        public int depth;
         public T element;
 
         public MPTTNode<T> parent;
@@ -72,20 +73,26 @@ public class MPTT<T> {
 
     // recalculates all cached information after data changed
     public void refresh(){
-        populate(1, root);
+        populate(1, 0, root);
         refreshLeafCache();
     }
 
     // recalculate the left and right value of all nodes.
     /// @return: right
-    public int populate(int left, MPTTNode<T> node){
+    public int populate(int left, int depth, MPTTNode<T> node){
         node.left = left;
+        node.depth = depth;
         left ++;
         for (MPTTNode<T> child : node.children) {
-            left = populate(left, child) + 1;
+            left = populate(left, depth + 1, child) + 1;
         }
         node.right = left;
         return left;
+    }
+
+    public int getDepth(T elem){
+        MPTTNode<T> node = o2n.get(elem);
+        return node.depth;
     }
 
     //public  T root;
@@ -101,9 +108,7 @@ public class MPTT<T> {
         if (node.children.size() == 0)
             leaves.add(node.element);
         else {
-            for (MPTTNode<T> child : node.children) {
-                refreshLeafCache(child);
-            }
+            node.children.forEach(this::refreshLeafCache);
         }
     }
 
@@ -124,6 +129,20 @@ public class MPTT<T> {
             return n1;
         }
         return getLCA(n1.parent, n2);
+    }
+
+    public List<T> getPathToNode(T elem){
+        ArrayList<T> list = new ArrayList<>();
+        MPTTNode<T> node = o2n.get(elem);
+        list.add(elem);
+
+        while (node.parent != null){
+            node = node.parent;
+            list.add(node.element);
+        }
+
+        Collections.reverse(list);
+        return list;
     }
 
 }

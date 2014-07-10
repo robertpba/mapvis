@@ -4,7 +4,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.testng.Assert.*;
@@ -31,12 +33,21 @@ public class MPTTTest {
     }
 
     @Test
-    public void testGetParent() throws Exception {
+    public void testGetPath() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        tree.setRoot(1);
+        tree.addChild(1, 2);
+        tree.addChild(1, 3);
+        tree.addChild(2, 5);
 
-    }
+        tree.refresh();
 
-    @Test
-    public void testGetNodes() throws Exception {
+        List<Integer> list = tree.getPathToNode(5);
+
+        assertEquals(list.size(), 3);
+        assertEquals(list.get(0).intValue(), 1);
+        assertEquals(list.get(1).intValue(), 2);
+        assertEquals(list.get(2).intValue(), 5);
 
     }
 
