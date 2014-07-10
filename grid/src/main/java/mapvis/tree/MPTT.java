@@ -40,7 +40,7 @@ public class MPTT<T> {
         if (o2n.containsKey(obj))
             throw new RuntimeException("the child already exists");
         if (root == null) {
-            this.root = new MPTTNode<T>();
+            this.root = new MPTTNode<>();
             this.root.element = obj;
         }
         else
@@ -148,6 +148,10 @@ public class MPTT<T> {
     public boolean isAncestorOf(T ancestor, T decedent){
         MPTTNode<T> na = o2n.get(ancestor);
         MPTTNode<T> nd = o2n.get(decedent);
+        if (na == null)
+            return false;
+        if (nd == null)
+            return false;
 
         return na.left < nd.left && na.right > nd.right;
     }
