@@ -1,0 +1,97 @@
+package mapvis.tree;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.testng.Assert.*;
+
+public class MPTTTest {
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+    }
+
+
+
+    @Test
+    public void testGetNullRoot() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        Assert.assertEquals(tree.getRoot(), null);
+    }
+
+    @Test
+    public void testSetRoot() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        tree.setRoot(1);
+        Assert.assertEquals(tree.getRoot(), (Integer)1);
+    }
+
+    @Test
+    public void testGetParent() throws Exception {
+
+    }
+
+    @Test
+    public void testGetNodes() throws Exception {
+
+    }
+
+    @Test
+    public void testAddChild() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        tree.setRoot(1);
+        tree.addChild(1, 2);
+        tree.addChild(1, 3);
+        tree.addChild(2, 5);
+
+        Set<Integer> children1 = tree.getChildren(1);
+        Set<Integer> expected1 = new HashSet<>();
+        expected1.add(2);
+        expected1.add(3);
+
+        assertEquals(children1, expected1);
+
+        Set<Integer> children2 = tree.getChildren(2);
+        Set<Integer> expected2 = new HashSet<>();
+        expected2.add(5);
+
+        assertEquals(children2, expected2);
+    }
+
+    @Test
+    public void testRefresh() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        tree.setRoot(1);
+        tree.addChild(1, 2);
+        tree.addChild(1, 3);
+        tree.addChild(2, 5);
+
+        tree.refresh();
+
+        Set<Integer> leaves = tree.getLeaves();
+        Set<Integer> expected = new HashSet<>();
+        expected.add(3);
+        expected.add(5);
+
+        assertEquals(leaves,expected);
+    }
+
+    @Test
+    public void testGetLCA() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        tree.setRoot(1);
+        tree.addChild(1, 2);
+        tree.addChild(1, 3);
+        tree.addChild(2, 5);
+
+        tree.refresh();
+
+        assertEquals(tree.getLCA(2, 5), (Integer)2);
+        assertEquals(tree.getLCA(3, 5), (Integer)1);
+        assertEquals(tree.getLCA(4, 5), null);
+    }
+}
