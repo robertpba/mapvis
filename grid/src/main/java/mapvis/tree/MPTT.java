@@ -145,4 +145,15 @@ public class MPTT<T> {
         return list;
     }
 
+    public boolean isAncestorOf(T ancestor, T decedent){
+        MPTTNode<T> na = o2n.get(ancestor);
+        MPTTNode<T> nd = o2n.get(decedent);
+
+        return na.left < nd.left && na.right > nd.right;
+    }
+    public boolean isSibling(T o1, T o2){
+        MPTTNode<T> n1 = o2n.get(o1);
+        MPTTNode<T> n2 = o2n.get(o2);
+        return n1.parent == n2.parent;
+    }
 }
