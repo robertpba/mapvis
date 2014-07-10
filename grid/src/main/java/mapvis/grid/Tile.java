@@ -1,6 +1,6 @@
 package mapvis.grid;
 
-public class Tile {
+public class Tile<T> {
     public int x;
     public int y;
 
@@ -12,16 +12,16 @@ public class Tile {
         return y;
     }
 
-    public Object getObj() {
+    public T getObj() {
         return obj;
     }
 
-    public Tile(int x, int y, Object obj) {
+    public Tile(int x, int y, T obj) {
 
         this.x = x;
         this.y = y;
         this.obj = obj;
     }
 
-    public Object obj;
+    public T obj;
 }
