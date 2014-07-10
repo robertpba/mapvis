@@ -48,7 +48,22 @@ public class MPTTTest {
         assertEquals(list.get(0).intValue(), 1);
         assertEquals(list.get(1).intValue(), 2);
         assertEquals(list.get(2).intValue(), 5);
+    }
 
+    @Test
+    public void testGetDepth() throws Exception {
+        MPTT<Integer> tree = new MPTT<>();
+        tree.setRoot(1);
+        tree.addChild(1, 2);
+        tree.addChild(1, 3);
+        tree.addChild(2, 5);
+
+        tree.refresh();
+
+        assertEquals(tree.getDepth(1), 0);
+        assertEquals(tree.getDepth(2), 1);
+        assertEquals(tree.getDepth(3), 1);
+        assertEquals(tree.getDepth(5), 2);
     }
 
     @Test
