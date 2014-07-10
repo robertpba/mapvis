@@ -1,25 +1,32 @@
 package mapvis.grid;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
-public class HashMapGrid implements Grid {
+public class HashMapGrid<T> implements Grid<T> {
 
-    Map<Pos, Object> map = new HashMap();
+    Map<Pos, T> map = new HashMap<>();
 
     @Override
-    public void put(int x, int y, Object obj) {
+    public void put(int x, int y, T obj) {
         map.put(new Pos(x, y), obj);
     }
 
     @Override
-    public Object get(int x, int y) {
+    public T get(int x, int y) {
         return map.get(new Pos(x, y));
     }
 
     @Override
-    public Tile getNeighbour(int x, int y, Dir dir) {
+    public Tile<T> getTile(int x, int y) {
+        return new Tile<>(x, y, map.get(new Pos(x, y)));
+    }
+
+    @Override
+    public Tile<T> getNeighbour(int x, int y, Dir dir) {
         int nx, ny;
 
         //  0,0         2,0
@@ -51,14 +58,32 @@ public class HashMapGrid implements Grid {
             }
         }
 
-        return new Tile(nx, ny, map.get(new Pos(nx, ny)));
+        return new Tile<>(nx, ny, map.get(new Pos(nx, ny)));
     }
 
     @Override
-    public void foreach(Consumer<Tile> consumer) {
-        for (Map.Entry<Pos, Object> entry : map.entrySet()) {
+    public Set<Tile<T>> getNeighbours(int x, int y) {
+        Tile<T> n = getNeighbour(x, y, Dir.N);
+        Tile<T> ne = getNeighbour(x, y, Dir.NE);
+        Tile<T> nw = getNeighbour(x, y, Dir.NW);
+        Tile<T> s = getNeighbour(x, y, Dir.S);
+        Tile<T> sw = getNeighbour(x, y, Dir.SW);
+        Tile<T> se = getNeighbour(x, y, Dir.SE);
+        HashSet<Tile<T>> set = new HashSet<>();
+        set.add(n);
+        set.add(ne);
+        set.add(nw);
+        set.add(s);
+        set.add(sw);
+        set.add(se);
+        return set;
+    }
+
+    @Override
+    public void foreach(Consumer<Tile<T>> consumer) {
+        for (Map.Entry<Pos, T> entry : map.entrySet()) {
             if (entry.getValue() != null)
-                consumer.accept(new Tile(entry.getKey().getX(),
+                consumer.accept(new Tile<>(entry.getKey().getX(),
                         entry.getKey().getY(),
                         entry.getValue()));
         }
