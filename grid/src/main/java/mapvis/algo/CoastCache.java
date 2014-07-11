@@ -1,6 +1,5 @@
 package mapvis.algo;
 
-import mapvis.grid.Dir;
 import mapvis.grid.Grid;
 import mapvis.grid.Tile;
 import mapvis.tree.MPTT;
@@ -9,7 +8,8 @@ import java.util.*;
 
 public class CoastCache<T> {
 
-    Map<T, Set<Tile<T>>> m = new HashMap<>();
+    Map<T, Set<Tile<T>>> edge = new HashMap<>();
+    Map<T, Set<Tile<T>>> coast = new HashMap<>();
 
     public Grid<T> grid;
     public MPTT<T> tree;
@@ -28,6 +28,9 @@ public class CoastCache<T> {
         neighbours.forEach(this::recursivelyAffect);
     }
 
+    public Set<Tile<T>> getEdge(T o){
+        return Collections.unmodifiableSet(getEdgeList(o));
+    }
     public Set<Tile<T>> getCoast(T o){
         return Collections.unmodifiableSet(getCoastList(o));
     }
@@ -43,28 +46,43 @@ public class CoastCache<T> {
     }
 
     private void affect(T o, Tile<T> t){
-        Set<Tile<T>> l = getCoastList(o);
+        Set<Tile<T>> el = getEdgeList(o);
+        Set<Tile<T>> cl = getCoastList(o);
 
         Set<Tile<T>> neighbours = grid.getNeighbours(t.getX(), t.getY());
 
         // surrounded by anything other than its decedents
-        boolean isCoast = !neighbours.stream()
+        boolean isEdge = !neighbours.stream()
                 .allMatch(n -> tree.isAncestorOf(o, n.getObj()));
 
+        boolean isCoast = !neighbours.stream()
+                .allMatch(n -> n.getObj() != null);
+
         if (isCoast)
-            l.add(t);
+            cl.add(t);
         else
-            l.remove(t);
+            cl.remove(t);
+
+        if (isEdge)
+            el.add(t);
+        else
+            el.remove(t);
+
     }
 
 
-
-
-    private Set<Tile<T>> getCoastList(T o){
-        Set<Tile<T>> list = m.get(o);
+    private Set<Tile<T>> getEdgeList(T o){
+        Set<Tile<T>> list = edge.get(o);
         if (list==null)
-            m.put(o, list = new HashSet<>());
+            edge.put(o, list = new HashSet<>());
         return list;
     }
+    private Set<Tile<T>> getCoastList(T o){
+        Set<Tile<T>> list = coast.get(o);
+        if (list==null)
+            coast.put(o, list = new HashSet<>());
+        return list;
+    }
+
 
 }
