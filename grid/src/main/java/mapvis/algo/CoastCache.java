@@ -14,6 +14,11 @@ public class CoastCache<T> {
     public Grid<T> grid;
     public MPTT<T> tree;
 
+    public CoastCache(Grid<T> grid, MPTT<T> tree){
+
+        this.grid = grid;
+        this.tree = tree;
+    }
 
     public void insertAffect(int x, int y, T o){
         Tile<T> t = grid.getTile(x, y);
@@ -23,8 +28,14 @@ public class CoastCache<T> {
         neighbours.forEach(this::recursivelyAffect);
     }
 
+    public Set<Tile<T>> getCoast(T o){
+        return Collections.unmodifiableSet(getCoastList(o));
+    }
+
 
     private void recursivelyAffect(Tile<T> t) {
+        if (t.getObj() == null)
+            return;
         List<T> pathToNode = tree.getPathToNode(t.getObj());
         for (T t1 : pathToNode) {
             affect(t1, t);

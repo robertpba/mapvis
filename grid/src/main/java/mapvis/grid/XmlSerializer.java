@@ -34,9 +34,9 @@ public class XmlSerializer {
         doc.appendChild(root);
         grid.foreach(t->{
             Element tile = doc.createElement("tile");
-            tile.setAttribute("x", Integer.toString(t.getX()));
-            tile.setAttribute("y", Integer.toString(t.getY()));
-            tile.setAttribute("id", t.getObj().toString());
+            tile.setAttribute("x", Integer.toString(((Tile)t).getX()));
+            tile.setAttribute("y", Integer.toString(((Tile)t).getY()));
+            tile.setAttribute("id", ((Tile)t).getObj().toString());
             root.appendChild(tile);
         });
 
