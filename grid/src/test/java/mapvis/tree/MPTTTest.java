@@ -36,9 +36,9 @@ public class MPTTTest {
     public void testGetPath() throws Exception {
         MPTT<Integer> tree = new MPTT<>();
         tree.setRoot(1);
-        tree.addChild(1, 2);
-        tree.addChild(1, 3);
-        tree.addChild(2, 5);
+        tree.addChild(1, 2, 0);
+        tree.addChild(1, 3, 0);
+        tree.addChild(2, 5, 0);
 
         tree.refresh();
 
@@ -54,9 +54,9 @@ public class MPTTTest {
     public void testGetDepth() throws Exception {
         MPTT<Integer> tree = new MPTT<>();
         tree.setRoot(1);
-        tree.addChild(1, 2);
-        tree.addChild(1, 3);
-        tree.addChild(2, 5);
+        tree.addChild(1, 2, 0);
+        tree.addChild(1, 3, 0);
+        tree.addChild(2, 5, 0);
 
         tree.refresh();
 
@@ -70,9 +70,9 @@ public class MPTTTest {
     public void testAddChild() throws Exception {
         MPTT<Integer> tree = new MPTT<>();
         tree.setRoot(1);
-        tree.addChild(1, 2);
-        tree.addChild(1, 3);
-        tree.addChild(2, 5);
+        tree.addChild(1, 2, 0);
+        tree.addChild(1, 3, 0);
+        tree.addChild(2, 5, 0);
 
         Set<Integer> children1 = tree.getChildren(1);
         Set<Integer> expected1 = new HashSet<>();
@@ -92,9 +92,9 @@ public class MPTTTest {
     public void testRefresh() throws Exception {
         MPTT<Integer> tree = new MPTT<>();
         tree.setRoot(1);
-        tree.addChild(1, 2);
-        tree.addChild(1, 3);
-        tree.addChild(2, 5);
+        tree.addChild(1, 2, 0);
+        tree.addChild(1, 3, 0);
+        tree.addChild(2, 5, 0);
 
         tree.refresh();
 
@@ -110,9 +110,9 @@ public class MPTTTest {
     public void testGetLCA() throws Exception {
         MPTT<Integer> tree = new MPTT<>();
         tree.setRoot(1);
-        tree.addChild(1, 2);
-        tree.addChild(1, 3);
-        tree.addChild(2, 5);
+        tree.addChild(1, 2, 0);
+        tree.addChild(1, 3, 0);
+        tree.addChild(2, 5, 0);
 
         tree.refresh();
 

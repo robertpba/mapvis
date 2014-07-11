@@ -10,6 +10,7 @@ public class MPTT<T> {
         public int left;
         public int right;
         public int depth;
+        public int weight;
         public T element;
 
         public MPTTNode<T> parent;
@@ -48,7 +49,7 @@ public class MPTT<T> {
         o2n.put(obj, root);
     }
 
-    public void addChild(T parent, T child){
+    public void addChild(T parent, T child, int weight){
         if (o2n.containsKey(child))
             throw new RuntimeException("the child already exists");
         if (!o2n.containsKey(parent))
@@ -58,6 +59,7 @@ public class MPTT<T> {
 
         MPTTNode<T> nChild = new MPTTNode<>();
         nChild.element = child;
+        nChild.weight  = weight;
         nParent.children.add(nChild);
         nChild.parent = nParent;
 
@@ -79,21 +81,36 @@ public class MPTT<T> {
 
     // recalculate the left and right value of all nodes.
     /// @return: right
-    public int populate(int left, int depth, MPTTNode<T> node){
+    public void populate(int left, int depth, MPTTNode<T> node){
         node.left = left;
         node.depth = depth;
         left ++;
+
+        if (node.children.size() == 0){
+            node.right = left;
+            return;
+        }
+
+        node.weight = 0;
+
         for (MPTTNode<T> child : node.children) {
-            left = populate(left, depth + 1, child) + 1;
+            populate(left, depth + 1, child);
+            node.weight += child.weight;
+            left = child.right + 1;
         }
         node.right = left;
-        return left;
     }
 
     public int getDepth(T elem){
         MPTTNode<T> node = o2n.get(elem);
         return node.depth;
     }
+
+    public int getWeight(T elem){
+        MPTTNode<T> node = o2n.get(elem);
+        return node.weight;
+    }
+
 
     //public  T root;
     private Set<T> leaves = new HashSet<>();
