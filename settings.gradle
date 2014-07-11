@@ -12,3 +12,4 @@ include 'preprocessing'
 
 include 'vistools'
 
+include 'grid'
