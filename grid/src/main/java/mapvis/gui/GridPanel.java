@@ -14,7 +14,7 @@ public class GridPanel extends JPanel {
     static final double COS30 = Math.cos(Math.toRadians(30));
     static final double SideLength = 10;
 
-    static Path2D.Double hexagon; {
+    static protected Path2D.Double hexagon; {
         hexagon = new Path2D.Double();
         //    0 - 1
         //  5   c   2
@@ -96,12 +96,17 @@ public class GridPanel extends JPanel {
 
                     AffineTransform save = g2d.getTransform();
                     g2d.translate(point2D.getX(), point2D.getY());
-                    g2d.draw(hexagon);
                     //g2d.drawString(String.format("%d,%d",i,j), 0,0);
+                    renderCell(g2d, i, j, o);
                     g2d.setTransform(save);
                 }
             }
         }
+    }
+
+    protected void renderCell(Graphics2D g2d, int i, int j, Object o){
+        g2d.setColor(Color.black);
+        g2d.draw(hexagon);
     }
 
 

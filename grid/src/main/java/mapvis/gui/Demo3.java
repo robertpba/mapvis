@@ -15,22 +15,30 @@ public class Demo3 {
     public static void main (String[] args){
 
 
-        Grid<String> grid = new HashMapGrid<>();
-        grid.put(1,1,"#1,1#");
-        grid.put(1,2,"#1,2#");
-        grid.put(1,3,"#1,3#");
-        grid.put(2,1,"#2,1#");
-        grid.put(2,2,"#2,2#");
-        grid.put(2,3,"#2,3#");
-        grid.put(3,1,"#3,1#");
-        grid.put(3,2,"#3,2#");
-        grid.put(3,3,"#3,3#");
+        Grid<Color> grid = new HashMapGrid<>();
+        grid.put(1,1,Color.RED);
+        grid.put(1,2,Color.black);
+        grid.put(1,3,Color.blue);
+        grid.put(2,1,Color.cyan);
+        grid.put(2,2,Color.YELLOW);
+        grid.put(2,3,Color.GRAY);
+        grid.put(3,1,Color.MAGENTA);
+        grid.put(3,2,Color.ORANGE);
+        grid.put(3,3,Color.green);
         //grid.put(1,4,1);
         //grid.put(1,6,1);
 
         GridRender gridRender = new GridRender(grid);
 
-        GridPanel gridPanel = new GridPanel();
+        GridPanel gridPanel = new GridPanel(){
+            @Override
+            protected void renderCell(Graphics2D g2d, int i, int j, Object o) {
+                super.renderCell(g2d, i, j, o);
+                //hexagon
+                g2d.setColor((Color)o);
+                g2d.fill(hexagon);
+            }
+        };
         gridPanel.grid = grid;
         gridPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -38,7 +46,7 @@ public class Demo3 {
                 super.mouseClicked(e);
                 Point point = e.getPoint();
                 Point coord = gridPanel.screenToGridCoordinate(point.x, point.y);
-                String str = grid.get(coord.x, coord.y);
+                Color str = grid.get(coord.x, coord.y);
                 System.out.println(str);
 
             }
