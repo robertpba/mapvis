@@ -62,6 +62,7 @@ public class Method1<T> {
             tile = (Tile<T>)array[item];
             Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
             tile = neighbours.stream().filter(t -> t.getObj() == null).findFirst().get();
+            break;
         }
         if (tile == null)
             return new Tile<>(0,0,null);
