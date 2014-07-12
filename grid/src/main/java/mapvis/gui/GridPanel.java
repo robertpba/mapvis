@@ -30,7 +30,7 @@ public class GridPanel extends JPanel {
 
     public Grid grid;
 
-    public Point2D toCenter(int x, int y){
+    public Point2D gridToPlaneCoordinate(int x, int y){
         double cx = x * 3 * SideLength / 2;
         double cy;
         cy = 2 * COS30 * SideLength * y;
@@ -40,6 +40,27 @@ public class GridPanel extends JPanel {
         }
 
         return new Point2D.Double(cx, cy);
+    }
+    public Point planeToGridCoordinate(int x, int y){
+        double cx = x / 3 * 2 / SideLength;
+        int nx = (int) Math.round(cx);
+        int ny;
+
+        if (nx%2 == 0) {
+            ny = (int)Math.round(y / 2 / COS30 / SideLength);
+        }else {
+            ny = (int)Math.round((y - COS30 * SideLength) / 2 / COS30 / SideLength);
+        }
+
+        return new Point(nx, ny);
+    }
+    public Point screenToGridCoordinate(int x, int y){
+        x -= getWidth()/2 + originX;
+        y -= getHeight()/2 + originY;
+        x /= zoom;
+        y /= zoom;
+
+        return planeToGridCoordinate(x,y);
     }
 
     public double zoom = 1.0;
@@ -51,7 +72,6 @@ public class GridPanel extends JPanel {
         addMouseMotionListener(zoomDevice);
         addMouseListener(zoomDevice);
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -72,7 +92,7 @@ public class GridPanel extends JPanel {
             for (int j = -100; j < 100; j++) {
                 Object o = grid.get(i, j);
                 if (o!=null) {
-                    Point2D point2D = toCenter(i, j);
+                    Point2D point2D = gridToPlaneCoordinate(i, j);
 
                     AffineTransform save = g2d.getTransform();
                     g2d.translate(point2D.getX(), point2D.getY());
@@ -106,10 +126,9 @@ public class GridPanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
             inDrag = false;
         }
-
         public void mouseDragged(MouseEvent e) {
             Point p = e.getPoint();
-            System.err.println("mouse Dragged from " + lastX+","+lastY +" to " + p);
+            //System.err.println("mouse Dragged from " + lastX+","+lastY +" to " + p);
 
             double dx = (lastX - p.x) / zoom;
             double dy = (lastY - p.y) / zoom;
