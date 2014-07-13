@@ -13,6 +13,7 @@ public class Method1<T> {
     public MPTT<T> tree;
     public CoastCache<T> cache;
     public Grid<T> grid;
+    private Random random = new Random(1);
 
     public Method1(MPTT<T> tree, CoastCache<T> cache, Grid<T> grid) {
         this.tree = tree;
@@ -53,19 +54,27 @@ public class Method1<T> {
         for (int i = 0; i < nodes.size(); i++) {
             o = nodes.get(i);
             Set<Tile<T>> coast = cache.getCoast(o);
-            if (coast.size() == 0)
+            if (coast.size() == 0) {
+
+                if (cache.getEdge(o).size() > 0)
+                    System.out.printf("Insufficient space: %d\n", o);
+
                 continue;
+            }
             Object[] array = coast.toArray();
             int size = coast.size();
-            int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+
+
+            int item = random.nextInt(size); // In real life, the Random object should be rather more shared than this
 
             tile = (Tile<T>)array[item];
             Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
             tile = neighbours.stream().filter(t -> t.getObj() == null).findFirst().get();
             break;
         }
-        if (tile == null)
-            return new Tile<>(0,0,null);
+        if (tile == null) {
+            return new Tile<>(0, 0, null);
+        }
         return tile;
     }
 

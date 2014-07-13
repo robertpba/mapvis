@@ -88,8 +88,11 @@ public class GridPanel extends JPanel {
         g2d.translate(originX, originY);
         g2d.scale(zoom, zoom);
 
-        for (int i = -100; i < 100; i++) {
-            for (int j = -100; j < 100; j++) {
+        Point tl = screenToGridCoordinate(0, 0);
+        Point br = screenToGridCoordinate(getWidth(), getHeight());
+
+        for (int i = tl.x; i < br.x; i++) {
+            for (int j = tl.y; j <  br.y; j++) {
                 Object o = grid.get(i, j);
                 if (o!=null) {
                     Point2D point2D = gridToPlaneCoordinate(i, j);
