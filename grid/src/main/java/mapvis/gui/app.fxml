@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.embed.swing.*?>
+<?import mapvis.gui.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.AppController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -27,11 +29,29 @@
         </menus>
       </MenuBar>
    </top>
+   <bottom>
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <Slider fx:id="zoomSlider" blockIncrement="0.1" majorTickUnit="0.05" max="1.0" min="0.1" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" BorderPane.alignment="CENTER" />
+         </center>
+         <bottom>
+            <HBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[ " />
+                  <Text fx:id="panFactorX" strokeType="OUTSIDE" strokeWidth="0.0" text="x" BorderPane.alignment="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" , " />
+                  <Text fx:id="panFactorY" strokeType="OUTSIDE" strokeWidth="0.0" text="y" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" ]">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </bottom>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-             <SwingNode fx:id="swingnode" layoutX="207.0" layoutY="129.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+      <GridPanel fx:id="gridPanel" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

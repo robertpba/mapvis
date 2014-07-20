@@ -1,55 +1,41 @@
 package mapvis.gui;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import mapvis.grid.Grid;
+import mapvis.grid.Pos;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
 
-public class GridPanel extends JPanel {
+
+public class GridPanel extends Pane {
     static final double COS30 = Math.cos(Math.toRadians(30));
     static final double SideLength = 10;
 
-    static protected Path2D.Double hexagon;
-    static protected Path2D.Double triangle;
-    static double[] hexagonVerticesX = new double[6];
-    static double[] hexagonVerticesY = new double[6];
+    static protected Polygon hexagon;
     {
+        hexagon = new Polygon();
+        hexagon.getPoints().addAll(
+                -SideLength/2, -SideLength*COS30,
+                SideLength/2, -SideLength*COS30,
+                SideLength, 0.0,
+                SideLength/2, SideLength*COS30,
+                -SideLength/2, SideLength*COS30,
+                -SideLength, 0.0);
 
-        hexagon = new Path2D.Double();
         //    0 - 1
         //  5   c   2
         //    4 - 3
-        hexagon.moveTo(-SideLength/2, -SideLength*COS30);
-        hexagon.lineTo( SideLength/2, -SideLength*COS30);
-        hexagon.lineTo( SideLength  , 0);
-        hexagon.lineTo( SideLength/2,  SideLength*COS30);
-        hexagon.lineTo(-SideLength/2,  SideLength*COS30);
-        hexagon.lineTo(-SideLength  , 0);
-        hexagon.closePath();
-
-        triangle = new Path2D.Double();
-        triangle.moveTo(-SideLength/2, -SideLength*COS30);
-        triangle.lineTo( SideLength/2, -SideLength*COS30);
-        triangle.lineTo( 0, 0);
-        triangle.closePath();
-
-        hexagonVerticesX[0] = -SideLength/2;
-        hexagonVerticesY[0] = -SideLength*COS30;
-        hexagonVerticesX[1] =  SideLength/2;
-        hexagonVerticesY[1] = -SideLength*COS30;
-        hexagonVerticesX[2] =  SideLength;
-        hexagonVerticesY[2] =  0;
-        hexagonVerticesX[3] =  SideLength/2;
-        hexagonVerticesY[3] =  SideLength*COS30;
-        hexagonVerticesX[4] = -SideLength/2;
-        hexagonVerticesY[4] =  SideLength*COS30;
-        hexagonVerticesX[5] = -SideLength;
-        hexagonVerticesY[5] =  0;
     }
 
     public Grid grid;
@@ -63,9 +49,9 @@ public class GridPanel extends JPanel {
             cy += COS30 * SideLength;
         }
 
-        return new Point2D.Double(cx, cy);
+        return new Point2D(cx, cy);
     }
-    public Point planeToGridCoordinate(int x, int y){
+    public Point planeToGridCoordinate(double x, double y){
         double cx = x / 3 * 2 / SideLength;
         int nx = (int) Math.round(cx);
         int ny;
@@ -78,117 +64,219 @@ public class GridPanel extends JPanel {
 
         return new Point(nx, ny);
     }
-    public Point screenToGridCoordinate(int x, int y){
-        x -= getWidth()/2 + originX;
-        y -= getHeight()/2 + originY;
-        x /= zoom;
-        y /= zoom;
-
-        return planeToGridCoordinate(x,y);
+    public Point paneToGridCoordinate(double x, double y){
+        Point2D point2D = g.parentToLocal(x, y);
+        return planeToGridCoordinate(point2D.getX(), point2D.getY());
     }
 
-    public double zoom = 1.0;
-    public double originX = 0.0;
-    public double originY = 0.0;
+
+    private DoubleProperty zoomFactor;
+    public DoubleProperty zoomFactorProperty() {
+        if(this.zoomFactor == null) { this.zoomFactor = new SimpleDoubleProperty(1.0); }
+        return this.zoomFactor;
+    }
+    public final double getZoomFactor() { return this.zoomFactorProperty().get(); }
+    public final void setZoomFactor(double height) { this.zoomFactorProperty().set(height); }
+
+    private DoubleProperty panFactorX;
+    public DoubleProperty panFactorXProperty() {
+        if(this.panFactorX == null) { this.panFactorX = new SimpleDoubleProperty(0.0); }
+        return this.panFactorX;
+    }
+    public final double getPanFactorX() { return this.panFactorXProperty().get(); }
+    public final void setPanFactorX(double x) { this.panFactorXProperty().set(x); }
+
+    private DoubleProperty panFactorY;
+    public DoubleProperty panFactorYProperty() {
+        if(this.panFactorY == null) { this.panFactorY = new SimpleDoubleProperty(0.0); }
+        return this.panFactorY;
+    }
+    public final double getPanFactorY() { return this.panFactorYProperty().get(); }
+    public final void setPanFactorY(double x) { this.panFactorYProperty().set(x); }
 
     public GridPanel(){
-        ButtonZoomDevice zoomDevice = new ButtonZoomDevice();
-        addMouseMotionListener(zoomDevice);
-        addMouseListener(zoomDevice);
+        //ButtonZoomDevice zoomDevice = new ButtonZoomDevice(this);
+        setPrefSize(500, 500);
+        getChildren().add(g);
+        createHexagons();
 
-        setPreferredSize(new Dimension(500,500));
+        addEventHandler(MouseEvent.MOUSE_DRAGGED, this::dragEntered);
+        addEventHandler(MouseEvent.MOUSE_PRESSED, this::mousePressed);
+        addEventHandler(MouseEvent.MOUSE_RELEASED, this::mouseReleased);
+
+
+        Rectangle clipRectangle = new Rectangle();
+        setClip(clipRectangle);
+        layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
+            clipRectangle.setWidth(newValue.getWidth());
+            clipRectangle.setHeight(newValue.getHeight());
+        });
+
+        g.getChildren().addAll(hexagons.values());
+
+        zoomFactorProperty().addListener((observable, oldValue, newValue) -> {
+            g.setScaleX(newValue.doubleValue());
+            g.setScaleY(newValue.doubleValue());
+        });
+        panFactorXProperty().addListener((observable, oldValue, newValue) -> {
+            g.setTranslateX(newValue.doubleValue());
+        });
+        panFactorYProperty().addListener((observable, oldValue, newValue) -> {
+            g.setTranslateY(newValue.doubleValue());
+        });
+        //g.setClip();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (grid == null)
-            return;
 
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setColor(Color.white);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
-        g2d.setColor(Color.black);
 
-        g2d.drawString(String.format("zoom:%f,center:%f,%f", zoom, originX, originY), 0, getHeight()-20);
+    Group g = new Group();
+    Map<Pos, Shape> hexagons = new HashMap<>();
 
-        g2d.translate(getWidth()/2, getHeight()/2);
-        g2d.translate(originX, originY);
-        g2d.scale(zoom, zoom);
+    public void createHexagons(){
+        //if (grid == null)
+        //    return;
 
-        Point tl = screenToGridCoordinate(0, 0);
-        Point br = screenToGridCoordinate(getWidth(), getHeight());
-        tl.x -= 1;
-        tl.y -= 1;
-        br.x += 1;
-        br.y += 1;
 
-        for (int i = tl.x; i < br.x; i++) {
-            for (int j = tl.y; j <  br.y; j++) {
-                Object o = grid.get(i, j);
-                if (o!=null) {
-                    Point2D point2D = gridToPlaneCoordinate(i, j);
+        updateHexagon(0, 0);
+        updateHexagon(11, 12);
+        updateHexagon(12, 13);
 
-                    AffineTransform save = g2d.getTransform();
-                    g2d.translate(point2D.getX(), point2D.getY());
-                    //g2d.drawString(String.format("%d,%d",i,j), 0,0);
-                    renderCell(g2d, i, j, o);
-                    g2d.setTransform(save);
-                }
-            }
+        updateHexagon(10, 10);
+        updateHexagon(11, 10);
+        updateHexagon(50, 50);
+
+        //updateHexagon(1, 3);
+        //updateHexagon(1, 4);
+        //updateHexagon(1, 4);
+
+
+
+    }
+
+    private void updateHexagon(int x, int y) {
+        Pos pos = new Pos(x, y);
+        Shape shape = hexagons.get(pos);
+        if (shape == null){
+            Polygon polygon = new Polygon();
+            polygon.getPoints().addAll(hexagon.getPoints());
+            polygon.setFill(Color.RED);
+            shape = polygon;
+            hexagons.put(pos, shape);
         }
+
+        Point2D point2D = gridToPlaneCoordinate(x, y);
+        shape.setTranslateX(point2D.getX());
+        shape.setTranslateY(point2D.getY());
     }
 
-    protected void renderCell(Graphics2D g2d, int i, int j, Object o){
-        g2d.setColor(Color.black);
-        g2d.draw(hexagon);
-    }
+
+//    @Override
+//    protected void paintComponent(Graphics g) {
+//        if (grid == null)
+//            return;
+//
+//        Graphics2D g2d = (Graphics2D) g.create();
+//        g2d.setColor(Color.white);
+//        //g2d.fillRect(0, 0, getWidth(), getHeight());
+//        g2d.setColor(Color.black);
+//
+//        //g2d.drawString(String.format("zoom:%f,center:%f,%f", zoom, originX, originY), 0, getHeight()-20);
+//
+//        g2d.translate(getWidth()/2, getHeight()/2);
+//        g2d.translate(originX, originY);
+//        g2d.scale(zoom, zoom);
+//
+//        Point tl = screenToGridCoordinate(0, 0);
+//        //Point br = screenToGridCoordinate(getWidth(), getHeight());
+//        tl.x -= 1;
+//        tl.y -= 1;
+//        br.x += 1;
+//        br.y += 1;
+//
+//        for (int i = tl.x; i < br.x; i++) {
+//            for (int j = tl.y; j <  br.y; j++) {
+//                Object o = grid.get(i, j);
+//                if (o!=null) {
+//                    Point2D point2D = gridToPlaneCoordinate(i, j);
+//
+//                    AffineTransform save = g2d.getTransform();
+//                    g2d.translate(point2D.getX(), point2D.getY());
+//                    //g2d.drawString(String.format("%d,%d",i,j), 0,0);
+//                    renderCell(g2d, i, j, o);
+//                    g2d.setTransform(save);
+//                }
+//            }
+//        }
+//    }
 
 
-    private class ButtonZoomDevice extends MouseAdapter {
-        int startX = -1, startY = -1;
-        int lastX = -1, lastY = -1;
-        int currX = -1, currY = -1;
+        double startX = -1, startY = -1;
+        double origTranslateX,origTranslateY;
+        double origScale;
 
         boolean inDrag;
 
+        boolean panButton;
+
         public void mousePressed(MouseEvent e) {
-            Point p = e.getPoint();
 
-            startX = p.x;
-            startY = p.y;
+            System.out.println("translate: " + g.getTranslateX() + ", " + g.getTranslateY());
+            System.out.println("scale: "+g.getScaleX()+", " + g.getScaleY());
 
-            lastX = p.x;
-            lastY = p.y;
+            double x = e.getX();
+            double y = e.getY();
+
+
+            startX = x;
+            startY = y;
+
+            origTranslateX = getPanFactorX();
+            origTranslateY = getPanFactorY();
+
+            //origTranslateX = g.getTranslateX();
+            //origTranslateY = g.getTranslateY();
+
+
+            origScale = getZoomFactor();
+
+            if (e.isPrimaryButtonDown())
+                panButton = true;
+            else
+                panButton = false;
 
             inDrag = true;
+
+            Point point = paneToGridCoordinate(x, y);
+            System.out.println(point);
+
         }
         public void mouseReleased(MouseEvent e) {
             inDrag = false;
         }
-        public void mouseDragged(MouseEvent e) {
-            Point p = e.getPoint();
-            //System.err.println("mouse Dragged from " + lastX+","+lastY +" to " + p);
+        public void dragEntered(MouseEvent event) {
+            double x = event.getX();
+            double y = event.getY();
+            System.err.println("mouse Dragged from " + startX+","+startY +" to " + x+","+y);
 
-            double dx = (lastX - p.x) / zoom;
-            double dy = (lastY - p.y) / zoom;
+            double dx = (startX - x);
+            double dy = (startY - y);
 
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                originX = originX - (lastX - p.x);// / zoom;
-                originY = originY - (lastY - p.y);//;; / zoom;
-                // TODO: bug in java 8, isRightMouseButton is wrong in SwingNode
-            } else { //if (SwingUtilities.isRightMouseButton(e)) {
-                zoom += dx/getWidth()*zoom  + dy/getHeight()*zoom;
-
-                zoom = Math.max(0.001, zoom);
+            if (panButton) {
+                setPanFactorX(origTranslateX - dx);
+                setPanFactorY(origTranslateY - dy);
+                //g.setTranslateX(origTranslateX - dx);
+                //g.setTranslateY(origTranslateY - dy);
+            } else {
+                double zf = getZoomFactor();
+                zf += dx/getWidth()* origScale  + dy/getHeight()*origScale;
+                zf = Math.max(0.1, zf);
+                setZoomFactor(zf);
             }
 
-            lastX = p.x;
-            lastY = p.y;
             if (inDrag) {
-                repaint();
+                //repaint();
             }
+
         }
-    }
 
 }
