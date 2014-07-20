@@ -27,8 +27,6 @@ public class App extends Application {
         URL location = AppController.class.getResource("app.fxml");
 
         FXMLLoader loader = new FXMLLoader();
-        //AppController controller = new AppController();
-        //loader.setController(controller);
         BorderPane root = loader.load(location.openStream());
 
         Scene scene = new Scene(root);
