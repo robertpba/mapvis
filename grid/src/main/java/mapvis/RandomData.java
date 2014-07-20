@@ -5,7 +5,7 @@ import mapvis.tree.MPTT;
 import java.util.Random;
 
 public class RandomData {
-    static Random rn = new Random(1);
+    public static Random rn = new Random(1);
     static int lastId = 0;
 
     public static MPTT<Integer> getTree(){

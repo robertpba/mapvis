@@ -12,9 +12,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import mapvis.grid.Grid;
 import mapvis.grid.Pos;
-import mapvis.grid.Tile;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -25,7 +24,7 @@ public class GridPanel extends Pane {
     static final double SideLength = 10;
 
     static protected Polygon standardHexagon;
-    {
+    static {
         standardHexagon = new Polygon();
         standardHexagon.getPoints().addAll(
                 -SideLength/2, -SideLength*COS30,
@@ -93,12 +92,8 @@ public class GridPanel extends Pane {
             g.setScaleX(newValue.doubleValue());
             g.setScaleY(newValue.doubleValue());
         });
-        panFactorXProperty().addListener((observable, oldValue, newValue) -> {
-            g.setTranslateX(newValue.doubleValue());
-        });
-        panFactorYProperty().addListener((observable, oldValue, newValue) -> {
-            g.setTranslateY(newValue.doubleValue());
-        });
+        panFactorXProperty().addListener((observable, oldValue, newValue) -> g.setTranslateX(newValue.doubleValue()));
+        panFactorYProperty().addListener((observable, oldValue, newValue) -> g.setTranslateY(newValue.doubleValue()));
 
         updateHexagons();
 
@@ -112,15 +107,6 @@ public class GridPanel extends Pane {
     public void updateHexagons(){
         g.getChildren().removeAll();
 
-//        updateHexagon(0, 0);
-//        updateHexagon(11, 12);
-//        updateHexagon(12, 13);
-//
-//        updateHexagon(10, 10);
-//        updateHexagon(11, 10);
-//        updateHexagon(50, 50);
-
-//
         if (grid == null)
             return;
 
@@ -133,9 +119,7 @@ public class GridPanel extends Pane {
 
         hexagons.clear();
 
-        grid.foreach(t->{
-            updateHexagon(t.getX(), t.getY());
-        });
+        grid.foreach(t-> updateHexagon(t.getX(), t.getY()));
 
 
         g.getChildren().addAll(hexagons.values());
@@ -185,10 +169,7 @@ public class GridPanel extends Pane {
             origTranslateY = getPanFactorY();
             origScale = getZoomFactor();
 
-            if (e.isPrimaryButtonDown())
-                panButton = true;
-            else
-                panButton = false;
+            panButton = e.isPrimaryButtonDown();
 
             inDrag = true;
 
@@ -216,11 +197,6 @@ public class GridPanel extends Pane {
                 zf = Math.min(1.0, zf);
                 setZoomFactor(zf);
             }
-
-            if (inDrag) {
-                //repaint();
-            }
-
         }
 
 
