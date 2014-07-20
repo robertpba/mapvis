@@ -14,7 +14,12 @@ public class GridPanel extends JPanel {
     static final double COS30 = Math.cos(Math.toRadians(30));
     static final double SideLength = 10;
 
-    static protected Path2D.Double hexagon; {
+    static protected Path2D.Double hexagon;
+    static protected Path2D.Double triangle;
+    static double[] hexagonVerticesX = new double[6];
+    static double[] hexagonVerticesY = new double[6];
+    {
+
         hexagon = new Path2D.Double();
         //    0 - 1
         //  5   c   2
@@ -26,6 +31,25 @@ public class GridPanel extends JPanel {
         hexagon.lineTo(-SideLength/2,  SideLength*COS30);
         hexagon.lineTo(-SideLength  , 0);
         hexagon.closePath();
+
+        triangle = new Path2D.Double();
+        triangle.moveTo(-SideLength/2, -SideLength*COS30);
+        triangle.lineTo( SideLength/2, -SideLength*COS30);
+        triangle.lineTo( 0, 0);
+        triangle.closePath();
+
+        hexagonVerticesX[0] = -SideLength/2;
+        hexagonVerticesY[0] = -SideLength*COS30;
+        hexagonVerticesX[1] =  SideLength/2;
+        hexagonVerticesY[1] = -SideLength*COS30;
+        hexagonVerticesX[2] =  SideLength;
+        hexagonVerticesY[2] =  0;
+        hexagonVerticesX[3] =  SideLength/2;
+        hexagonVerticesY[3] =  SideLength*COS30;
+        hexagonVerticesX[4] = -SideLength/2;
+        hexagonVerticesY[4] =  SideLength*COS30;
+        hexagonVerticesX[5] = -SideLength;
+        hexagonVerticesY[5] =  0;
     }
 
     public Grid grid;
@@ -71,11 +95,15 @@ public class GridPanel extends JPanel {
         ButtonZoomDevice zoomDevice = new ButtonZoomDevice();
         addMouseMotionListener(zoomDevice);
         addMouseListener(zoomDevice);
+
+        setPreferredSize(new Dimension(500,500));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (grid == null)
+            return;
 
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(Color.white);
@@ -90,6 +118,10 @@ public class GridPanel extends JPanel {
 
         Point tl = screenToGridCoordinate(0, 0);
         Point br = screenToGridCoordinate(getWidth(), getHeight());
+        tl.x -= 1;
+        tl.y -= 1;
+        br.x += 1;
+        br.y += 1;
 
         for (int i = tl.x; i < br.x; i++) {
             for (int j = tl.y; j <  br.y; j++) {
@@ -144,7 +176,8 @@ public class GridPanel extends JPanel {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 originX = originX - (lastX - p.x);// / zoom;
                 originY = originY - (lastY - p.y);//;; / zoom;
-            } else if (SwingUtilities.isRightMouseButton(e)) {
+                // TODO: bug in java 8, isRightMouseButton is wrong in SwingNode
+            } else { //if (SwingUtilities.isRightMouseButton(e)) {
                 zoom += dx/getWidth()*zoom  + dy/getHeight()*zoom;
 
                 zoom = Math.max(0.001, zoom);
@@ -157,4 +190,5 @@ public class GridPanel extends JPanel {
             }
         }
     }
+
 }
