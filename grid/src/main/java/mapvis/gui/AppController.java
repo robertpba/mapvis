@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -15,6 +16,7 @@ import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
 import mapvis.grid.HashMapGrid;
 import mapvis.tree.MPTT;
+import utils.PanZoomPanel;
 
 import java.awt.*;
 import java.net.URL;
@@ -24,7 +26,10 @@ import java.util.*;
 public class AppController implements Initializable {
 
     @FXML
-    public GridPanel gridPanel;
+    public GridChart gridChart;
+
+    @FXML
+    public PanZoomPanel panPanel;
 
     @FXML
     public Slider zoomSlider;
@@ -39,17 +44,28 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         zoomSlider.valueProperty()
-                .bindBidirectional(gridPanel.zoomFactorProperty());
+                .bindBidirectional(panPanel.zoomFactorProperty());
         panFactorX.textProperty()
-                .bind(gridPanel.panOriginXProperty().asString());
+                .bind(panPanel.panOriginXProperty().asString());
         panFactorY.textProperty()
-                .bind(gridPanel.panOriginXProperty().asString());
+                .bind(panPanel.panOriginXProperty().asString());
 
-        gridPanel.getContent().setOnMouseClicked(e -> {
-            Point point = gridPanel.planeToGridCoordinate(e.getX(), e.getY());
+//        panPanel.setOnMouseClicked(e -> {
+//            Point2D local = gridChart.parentToLocal(e.getX(), e.getY());
+//            Point point = gridChart.toGridCoordinate(local.getX(), local.getY());
+//            Integer id = grid.get(point.x, point.y);
+//            if (id == null)
+//                return;
+//            System.out.printf("id:%s, weight:%d\n", id, tree.getWeight(id));
+//        });
+        gridChart.setOnMouseClicked(e -> {
+            Point point = gridChart.toGridCoordinate(e.getX(), e.getY());
             Integer id = grid.get(point.x, point.y);
+            if (id == null)
+                return;
             System.out.printf("id:%s, weight:%d\n", id, tree.getWeight(id));
         });
+
     }
 
 
@@ -93,22 +109,22 @@ public class AppController implements Initializable {
         for (Integer leaf : leaves) {
             map.put(leaf, new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
         }
-        gridPanel.grid = null;
-        gridPanel.colorMap = o -> map.get(o);
-        gridPanel.grid = grid;
-        gridPanel.updateHexagons();
+        gridChart.grid = null;
+        gridChart.colorMap = o -> map.get(o);
+        gridChart.grid = grid;
+        gridChart.updateHexagons();
     }
 
     @FXML
     public void begin(ActionEvent event) {
         method1.Begin();
-        gridPanel.updateHexagons();
+        gridChart.updateHexagons();
     }
 
     @FXML
     public void reset(ActionEvent event) {
-        gridPanel.zoomTo(1.0);
-        gridPanel.scrollTo(0,0);
+        panPanel.zoomTo(1.0);
+        panPanel.scrollTo(0,0);
     }
 
     @FXML

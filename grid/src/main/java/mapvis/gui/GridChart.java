@@ -2,6 +2,7 @@ package mapvis.gui;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 
-public class GridPanel extends PanZoomPanel {
+public class GridChart extends Parent {
     static final double COS30 = Math.cos(Math.toRadians(30));
     static final double SideLength = 10;
 
@@ -37,7 +38,7 @@ public class GridPanel extends PanZoomPanel {
 
     public Grid<?> grid;
 
-    public Point2D gridToPlaneCoordinate(int x, int y){
+    public Point2D toChartCoordinate(int x, int y){
         double cx = x * 3 * SideLength / 2;
         double cy;
         cy = 2 * COS30 * SideLength * y;
@@ -48,7 +49,7 @@ public class GridPanel extends PanZoomPanel {
 
         return new Point2D(cx, cy);
     }
-    public Point planeToGridCoordinate(double x, double y){
+    public Point toGridCoordinate(double x, double y){
         double cx = x / 3 * 2 / SideLength;
         int nx = (int) Math.round(cx);
         int ny;
@@ -61,26 +62,16 @@ public class GridPanel extends PanZoomPanel {
 
         return new Point(nx, ny);
     }
-    public Point paneToGridCoordinate(double x, double y){
-        Point2D p = getContent().parentToLocal(x, y);
-        return planeToGridCoordinate(p.getX(),p.getY());
-    }
 
-
-
-    public GridPanel(){
+    public GridChart(){
         super();
-        setPrefSize(500, 500);
-
         updateHexagons();
     }
-
-
 
     Map<Pos, Shape> hexagons = new HashMap<>();
 
     public void updateHexagons(){
-        ((Group)getContent()).getChildren().removeAll();
+        getChildren().removeAll();
 
         if (grid == null)
             return;
@@ -89,7 +80,7 @@ public class GridPanel extends PanZoomPanel {
 
         grid.foreach(t-> updateHexagon(t.getX(), t.getY()));
 
-        ((Group)getContent()).getChildren().addAll(hexagons.values());
+        getChildren().addAll(hexagons.values());
     }
 
     private void updateHexagon(int x, int y) {
@@ -104,7 +95,7 @@ public class GridPanel extends PanZoomPanel {
             hexagons.put(pos, shape);
         }
 
-        Point2D point2D = gridToPlaneCoordinate(x, y);
+        Point2D point2D = toChartCoordinate(x, y);
         shape.setTranslateX(point2D.getX());
         shape.setTranslateY(point2D.getY());
     }
