@@ -8,6 +8,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import mapvis.RandomData;
 import mapvis.algo.CoastCache;
@@ -15,6 +16,7 @@ import mapvis.algo.Method1;
 import mapvis.grid.HashMapGrid;
 import mapvis.tree.MPTT;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.*;
 
@@ -39,9 +41,15 @@ public class AppController implements Initializable {
         zoomSlider.valueProperty()
                 .bindBidirectional(gridPanel.zoomFactorProperty());
         panFactorX.textProperty()
-                .bind(gridPanel.panFactorXProperty().asString());
+                .bind(gridPanel.panOriginXProperty().asString());
         panFactorY.textProperty()
-                .bind(gridPanel.panFactorYProperty().asString());
+                .bind(gridPanel.panOriginXProperty().asString());
+
+        gridPanel.content.setOnMouseClicked(e -> {
+            //Point point = paneToGridCoordinate(e.getX(), e.getY());
+            Point point = gridPanel.planeToGridCoordinate(e.getX(), e.getY());
+            System.out.println(point);
+        });
     }
 
 
