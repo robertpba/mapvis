@@ -1,16 +1,17 @@
 package mapvis.gui;
 
-import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import mapvis.RandomData;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
@@ -40,6 +41,9 @@ public class AppController implements Initializable {
     @FXML
     public Text panFactorY;
 
+    @FXML
+    public TreeTableView<Integer> treeTableView;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,14 +54,6 @@ public class AppController implements Initializable {
         panFactorY.textProperty()
                 .bind(panPanel.panOriginXProperty().asString());
 
-//        panPanel.setOnMouseClicked(e -> {
-//            Point2D local = gridChart.parentToLocal(e.getX(), e.getY());
-//            Point point = gridChart.toGridCoordinate(local.getX(), local.getY());
-//            Integer id = grid.get(point.x, point.y);
-//            if (id == null)
-//                return;
-//            System.out.printf("id:%s, weight:%d\n", id, tree.getWeight(id));
-//        });
         gridChart.setOnMouseClicked(e -> {
             Point point = gridChart.toGridCoordinate(e.getX(), e.getY());
             Integer id = grid.get(point.x, point.y);
@@ -66,6 +62,29 @@ public class AppController implements Initializable {
             System.out.printf("id:%s, weight:%d\n", id, tree.getWeight(id));
         });
 
+        for (TreeTableColumn column : treeTableView.getColumns()) {
+            if (column.getText().equals("ID")) {
+                column.setCellValueFactory(
+                    new Callback<TreeTableColumn.CellDataFeatures<Integer, ?>, ObservableValue<?>>() {
+                    @Override
+                    public ObservableValue<?> call(TreeTableColumn.CellDataFeatures<Integer, ?> param) {
+                        return new ReadOnlyIntegerWrapper(param.getValue().getValue());
+                    }
+                });
+            } else if (column.getText().equals("Size")) {
+                column.setCellValueFactory(
+                        new Callback<TreeTableColumn.CellDataFeatures<Integer, ?>, ObservableValue<?>>() {
+                            @Override
+                            public ObservableValue<?> call(TreeTableColumn.CellDataFeatures<Integer, ?> param) {
+                                return new ReadOnlyIntegerWrapper(tree.getWeight(param.getValue().getValue()));
+                            }
+                        });
+            } else {
+                column.setCellValueFactory( p -> new ReadOnlyStringWrapper(""));
+            }
+
+
+        }
     }
 
 
@@ -109,10 +128,26 @@ public class AppController implements Initializable {
         for (Integer leaf : leaves) {
             map.put(leaf, new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
         }
+
         gridChart.grid = null;
         gridChart.colorMap = o -> map.get(o);
         gridChart.grid = grid;
         gridChart.updateHexagons();
+
+
+        TreeItem<Integer> rootItem = translateTree(tree.getRoot());
+        rootItem.setExpanded(true);
+        treeTableView.setRoot(rootItem);
+    }
+
+
+    private TreeItem translateTree(Integer p){
+        TreeItem item = new TreeItem(p);
+
+        for (Integer integer : tree.getChildren(p)) {
+            item.getChildren().add(translateTree(integer));
+        }
+        return item;
     }
 
     @FXML
