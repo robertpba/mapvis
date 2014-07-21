@@ -105,6 +105,11 @@ public class AppController implements Initializable {
         gridPanel.updateHexagons();
     }
 
+    @FXML
+    public void reset(ActionEvent event) {
+        gridPanel.zoomTo(1.0);
+        gridPanel.scrollTo(0,0);
+    }
 
     @FXML
     private TextField weightField;

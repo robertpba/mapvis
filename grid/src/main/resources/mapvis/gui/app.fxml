@@ -94,6 +94,7 @@
                                                       <Insets />
                                                    </HBox.margin>
                                                 </Text>
+                                    <Button mnemonicParsing="false" onAction="#reset" text="Reset" />
                                              </children>
                                           </HBox>
                            </children>

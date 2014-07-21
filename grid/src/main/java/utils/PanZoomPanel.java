@@ -45,7 +45,15 @@ public class PanZoomPanel extends Pane {
     double originX = 0, originY = 0;
     double scaleFactor = 1;
 
-    private void zoom(Point2D pivot, double scale){
+    public void zoom(double scale){
+        Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
+        zoom(center, scale);
+    }
+    public void zoomTo(double scale){
+        Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
+        zoom(center, scale/this.scaleFactor);
+    }
+    public void zoom(Point2D pivot, double scale){
         Point2D o0 = content.localToParent(new Point2D(0, 0));
         double dx = (pivot.getX() - o0.getX()) * (scale - 1);
         double dy = (pivot.getY() - o0.getY()) * (scale - 1);
@@ -67,6 +75,16 @@ public class PanZoomPanel extends Pane {
         Transform scaleTransform = Affine.scale(s1, s1);
         content.getTransforms().clear();
         content.getTransforms().addAll(translateTransform,scaleTransform);
+    }
+    public void pan(double dx, double dy){
+        Point2D o0 = new Point2D(originX, originY);
+        Point2D o1 = new Point2D(originX+dx, originY+dy);
+        pan(o0, o0, o1);
+    }
+    public void scrollTo(double x, double y){
+        Point2D o0 = new Point2D(originX, originY);
+        Point2D o1 = new Point2D(x+getWidth()/2, y+getHeight()/2);
+        pan(o0, o0, o1);
     }
     private void pan(Point2D orig, Point2D from, Point2D to){
         double x = orig.getX();
