@@ -21,7 +21,7 @@ public class PanZoomPanelTest  extends Application {
         String imageUrl = "file:\\C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg";
         Image image = new Image(imageUrl);
         ImageView imageView = new ImageView(image);
-        panZoomPanel.content.getChildren().add(imageView);
+        panZoomPanel.setContent(imageView);
 
 
         pane.getChildren().add(panZoomPanel);

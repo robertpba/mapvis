@@ -45,10 +45,10 @@ public class AppController implements Initializable {
         panFactorY.textProperty()
                 .bind(gridPanel.panOriginXProperty().asString());
 
-        gridPanel.content.setOnMouseClicked(e -> {
-            //Point point = paneToGridCoordinate(e.getX(), e.getY());
+        gridPanel.getContent().setOnMouseClicked(e -> {
             Point point = gridPanel.planeToGridCoordinate(e.getX(), e.getY());
-            System.out.println(point);
+            Integer id = grid.get(point.x, point.y);
+            System.out.printf("id:%s, weight:%d\n", id, tree.getWeight(id));
         });
     }
 

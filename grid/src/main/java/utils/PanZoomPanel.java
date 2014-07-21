@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
@@ -15,15 +16,13 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
 public class PanZoomPanel extends Pane {
-    public Group content = new Group();
-
     public PanZoomPanel(){
         setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setPrefSize(500, 500);
-        getChildren().add(content);
+        setContent(new Group());
 
         layoutBoundsProperty().addListener(this::onLayoutBoundsChange);
 
@@ -33,6 +32,22 @@ public class PanZoomPanel extends Pane {
         addEventHandler(ScrollEvent.SCROLL, this::onScroll);
 
         initializeProperties();
+    }
+
+    private Node content;
+    public void setContent(Node content){
+        if (this.content == content)
+            return;
+        if (this.content != null)
+            getChildren().remove(this.content);
+        if (content == null)
+            content = new Group();
+
+        this.content = content;
+        getChildren().add(content);
+    }
+    public Node getContent(){
+        return this.content;
     }
 
     Rectangle clip = new Rectangle();
@@ -149,6 +164,8 @@ public class PanZoomPanel extends Pane {
 
     }
     private void onScroll(ScrollEvent event) {
+        if (content == null)
+            return;
         double scale =  1 + event.getDeltaY() / 40/10;
         Point2D o0 = content.localToParent(new Point2D(0, 0));
 

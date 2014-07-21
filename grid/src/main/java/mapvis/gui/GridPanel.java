@@ -62,7 +62,7 @@ public class GridPanel extends PanZoomPanel {
         return new Point(nx, ny);
     }
     public Point paneToGridCoordinate(double x, double y){
-        Point2D p = content.parentToLocal(x, y);
+        Point2D p = getContent().parentToLocal(x, y);
         return planeToGridCoordinate(p.getX(),p.getY());
     }
 
@@ -80,7 +80,7 @@ public class GridPanel extends PanZoomPanel {
     Map<Pos, Shape> hexagons = new HashMap<>();
 
     public void updateHexagons(){
-        content.getChildren().removeAll();
+        ((Group)getContent()).getChildren().removeAll();
 
         if (grid == null)
             return;
@@ -89,7 +89,7 @@ public class GridPanel extends PanZoomPanel {
 
         grid.foreach(t-> updateHexagon(t.getX(), t.getY()));
 
-        content.getChildren().addAll(hexagons.values());
+        ((Group)getContent()).getChildren().addAll(hexagons.values());
     }
 
     private void updateHexagon(int x, int y) {
