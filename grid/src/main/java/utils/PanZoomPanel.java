@@ -1,11 +1,14 @@
 package utils;
 
+import javafx.beans.DefaultProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -15,6 +18,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
+import java.util.List;
+
+@DefaultProperty("content")
 public class PanZoomPanel extends Pane {
     public PanZoomPanel(){
         setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -22,7 +28,6 @@ public class PanZoomPanel extends Pane {
                 CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setPrefSize(500, 500);
-        setContent(new Group());
 
         layoutBoundsProperty().addListener(this::onLayoutBoundsChange);
 
@@ -34,23 +39,18 @@ public class PanZoomPanel extends Pane {
         initializeProperties();
     }
 
-    private Node content;
-    public void setContent(Node content){
-        if (this.content == content)
-            return;
-        if (this.content != null)
-            getChildren().remove(this.content);
-        if (content == null)
-            content = new Group();
 
-        this.content = content;
-        getChildren().add(content);
+    public final ObjectProperty<Node> contentProperty() {
+        if (content == null) {
+            content = new ChildNodeProperty("content");
+        }
+        return content;
     }
-    public Node getContent(){
-        return this.content;
-    }
+    private ObjectProperty<Node> content;
+    public final void setContent(Node value) { contentProperty().set(value); }
+    public final Node getContent() { return content == null ? null : content.get(); }
 
-    Rectangle clip = new Rectangle();
+
     private void onLayoutBoundsChange(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue){
         setClip(new Rectangle(getWidth(), getHeight()));
     }
@@ -69,11 +69,10 @@ public class PanZoomPanel extends Pane {
         zoom(center, scale/this.scaleFactor);
     }
     public void zoom(Point2D pivot, double scale){
-        Point2D o0 = content.localToParent(new Point2D(0, 0));
-        double dx = (pivot.getX() - o0.getX()) * (scale - 1);
-        double dy = (pivot.getY() - o0.getY()) * (scale - 1);
-        double x1 = originX - dx;
-        double y1 = originY - dy;
+        double dx  = (pivot.getX() - originX) * (scale - 1);
+        double dy  = (pivot.getY() - originY) * (scale - 1);
+        double x1  = originX - dx;
+        double y1  = originY - dy;
 
         Transform translateTransform = Affine.translate(x1, y1);
         originX = x1;
@@ -88,8 +87,9 @@ public class PanZoomPanel extends Pane {
         zoomFactorProperty().set(s1);
 
         Transform scaleTransform = Affine.scale(s1, s1);
-        content.getTransforms().clear();
-        content.getTransforms().addAll(translateTransform,scaleTransform);
+        if (getContent() == null) return;
+        getContent().getTransforms().clear();
+        getContent().getTransforms().addAll(translateTransform,scaleTransform);
     }
     public void pan(double dx, double dy){
         Point2D o0 = new Point2D(originX, originY);
@@ -116,8 +116,9 @@ public class PanZoomPanel extends Pane {
         panOriginX.set(x1);
         panOriginY.set(y1);
 
-        content.getTransforms().clear();
-        content.getTransforms().addAll(translateTransform, scaleTransform);
+        if (getContent() == null) return;
+        getContent().getTransforms().clear();
+        getContent().getTransforms().addAll(translateTransform, scaleTransform);
     }
 
     ////////////////////////
@@ -164,10 +165,8 @@ public class PanZoomPanel extends Pane {
 
     }
     private void onScroll(ScrollEvent event) {
-        if (content == null)
-            return;
         double scale =  1 + event.getDeltaY() / 40/10;
-        Point2D o0 = content.localToParent(new Point2D(0, 0));
+        // Point2D o0 = getContent().localToParent(new Point2D(0, 0));
 
         Point2D pivot = new Point2D(event.getX(), event.getY());
         //System.out.printf("[%.1f,%.1f] [%.1f,%.1f] [%.1f,%.1f] %.1f %s\n",
@@ -229,4 +228,61 @@ public class PanZoomPanel extends Pane {
     }
 
 
+    private final class ChildNodeProperty extends ObjectPropertyBase<Node> {
+        private Node oldValue = null;
+        private final String propertyName;
+        private boolean isBeingInvalidated;
+
+        ChildNodeProperty(String propertyName) {
+            this.propertyName = propertyName;
+            getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> {
+                if (oldValue == null || isBeingInvalidated) {
+                    return;
+                }
+                while (c.next()) {
+                    if (c.wasRemoved()) {
+                        List<? extends Node> removed = c.getRemoved();
+                        // Do not remove again in invalidated
+                        removed.stream()
+                                .filter(aRemoved -> aRemoved == oldValue)
+                                .forEach(aRemoved -> {
+                            oldValue = null; // Do not remove again in invalidated
+                            set(null);
+                        });
+                    }
+                }
+            });
+        }
+
+        @Override
+        protected void invalidated() {
+            final List<Node> children = getChildren();
+
+            isBeingInvalidated = true;
+            try {
+                if (oldValue != null) {
+                    children.remove(oldValue);
+                }
+
+                final Node _value = get();
+                this.oldValue = _value;
+
+                if (_value != null) {
+                    children.add(_value);
+                }
+            } finally {
+                isBeingInvalidated = false;
+            }
+        }
+
+        @Override
+        public Object getBean() {
+            return PanZoomPanel.this;
+        }
+
+        @Override
+        public String getName() {
+            return propertyName;
+        }
+    }
 }
