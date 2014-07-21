@@ -37,10 +37,7 @@ public class PanZoomPanel extends Pane {
 
     Rectangle clip = new Rectangle();
     private void onLayoutBoundsChange(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue){
-        if (clip == null)
-            setClip(clip = new Rectangle());
-        clip.setWidth(newValue.getWidth());
-        clip.setHeight(newValue.getHeight());
+        setClip(new Rectangle(getWidth(), getHeight()));
     }
 
     //////////////////////
@@ -76,7 +73,7 @@ public class PanZoomPanel extends Pane {
         double y = orig.getY();
         double x1 = x + to.getX() - from.getX();
         double y1 = y + to.getY() - from.getY();
-        System.out.printf("trans: [%.1f,%.1f]\n", x1, y1);
+        //System.out.printf("trans: [%.1f,%.1f]\n", x1, y1);
 
         Transform translateTransform = Affine.translate(x1, y1);
         Transform scaleTransform = Affine.scale(scaleFactor, scaleFactor);
@@ -122,11 +119,11 @@ public class PanZoomPanel extends Pane {
         double x = event.getX();
         double y = event.getY();
 
-        System.out.printf("dragged: s[%.1f,%.1f] f[%.1f,%.1f] o[%.1f,%.1f] t[%.1f,%.1f]\n",
-                saveOriginX,saveOriginY,
-                startX, startY,
-                originX, originY,
-                x,y);
+        //System.out.printf("dragged: s[%.1f,%.1f] f[%.1f,%.1f] o[%.1f,%.1f] t[%.1f,%.1f]\n",
+        //       saveOriginX,saveOriginY,
+        //        startX, startY,
+        //        originX, originY,
+        //        x,y);
 
         pan(new Point2D(saveOriginX, saveOriginY),
                 new Point2D(startX, startY),
@@ -138,12 +135,12 @@ public class PanZoomPanel extends Pane {
         Point2D o0 = content.localToParent(new Point2D(0, 0));
 
         Point2D pivot = new Point2D(event.getX(), event.getY());
-        System.out.printf("[%.1f,%.1f] [%.1f,%.1f] [%.1f,%.1f] %.1f %s\n",
-                pivot.getX(),pivot.getY(),
-                o0.getX(),o0.getY(),
-                originX,originY,
-                scaleFactor,
-                event.getSource());
+        //System.out.printf("[%.1f,%.1f] [%.1f,%.1f] [%.1f,%.1f] %.1f %s\n",
+        //        pivot.getX(),pivot.getY(),
+        //        o0.getX(),o0.getY(),
+        //        originX,originY,
+        //        scaleFactor,
+        //        event.getSource());
 
         zoom(pivot, scale);
     }
