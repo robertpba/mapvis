@@ -132,8 +132,8 @@ public class AppController implements Initializable {
         gridChart.grid = null;
         gridChart.colorMap = o -> map.get(o);
         gridChart.grid = grid;
+        gridChart.tree = tree;
         gridChart.updateHexagons();
-
 
         TreeItem<Integer> rootItem = translateTree(tree.getRoot());
         rootItem.setExpanded(true);
