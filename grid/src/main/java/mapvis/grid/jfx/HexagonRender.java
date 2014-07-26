@@ -2,6 +2,7 @@ package mapvis.grid.jfx;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
 import mapvis.grid.Dir;
 import mapvis.grid.Tile;
 
@@ -80,6 +81,7 @@ class HexagonRender {
     public void drawBorders(GraphicsContext g,int x, int y) {
         Integer o = view.grid.get(x, y);
 
+        g.setLineCap(StrokeLineCap.ROUND);
         applyBorderStyle(g, o, x, y, Dir.N);
         applyBorderStyle(g, o, x, y, Dir.NE);
         applyBorderStyle(g, o, x, y, Dir.NW);
