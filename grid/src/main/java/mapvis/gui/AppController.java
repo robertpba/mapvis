@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,10 +17,9 @@ import mapvis.RandomData;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
 import mapvis.grid.HashMapGrid;
+import mapvis.grid.jfx.HexagonalTilingView;
 import mapvis.tree.MPTT;
-import utils.PanZoomPanel;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.*;
 
@@ -27,10 +27,8 @@ import java.util.*;
 public class AppController implements Initializable {
 
     @FXML
-    public GridChart gridChart;
+    public HexagonalTilingView chart;
 
-    @FXML
-    public PanZoomPanel panPanel;
 
     @FXML
     public Slider zoomSlider;
@@ -48,18 +46,23 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         zoomSlider.valueProperty()
-                .bindBidirectional(panPanel.zoomFactorProperty());
+                .bindBidirectional(chart.zoomProperty());
         panFactorX.textProperty()
-                .bind(panPanel.panOriginXProperty().asString());
+                .bind(chart.originXProperty().asString());
         panFactorY.textProperty()
-                .bind(panPanel.panOriginXProperty().asString());
+                .bind(chart.originXProperty().asString());
 
-        gridChart.setOnMouseClicked(e -> {
-            Point point = gridChart.toGridCoordinate(e.getX(), e.getY());
-            Integer id = grid.get(point.x, point.y);
+        chart.setOnMouseClicked(e -> {
+            Point2D pl = chart.localToPlane(e.getX(), e.getY());
+            Point2D point = chart.planeToHexagonal(pl.getX(), pl.getY());
+            Integer id = grid.get((int)point.getX(), (int)point.getY());
             if (id == null)
                 return;
-            System.out.printf("id:%s, weight:%d\n", id, tree.getWeight(id));
+
+            StringBuilder sb = new StringBuilder();
+            tree.getPathToNode(id).forEach(i->sb.append(">"+i));
+
+            System.out.printf("id:%s, weight:%d %s\n", id, tree.getWeight(id), sb.toString());
         });
 
         for (TreeTableColumn column : treeTableView.getColumns()) {
@@ -129,11 +132,11 @@ public class AppController implements Initializable {
             map.put(leaf, new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
         }
 
-        gridChart.grid = null;
-        gridChart.colorMap = o -> map.get(o);
-        gridChart.grid = grid;
-        gridChart.tree = tree;
-        gridChart.updateHexagons();
+        chart.grid = null;
+        chart.colorMap = o -> map.get(o);
+        chart.grid = grid;
+        chart.tree = tree;
+        chart.updateHexagons();
 
         TreeItem<Integer> rootItem = translateTree(tree.getRoot());
         rootItem.setExpanded(true);
@@ -153,13 +156,13 @@ public class AppController implements Initializable {
     @FXML
     public void begin(ActionEvent event) {
         method1.Begin();
-        gridChart.updateHexagons();
+        chart.updateHexagons();
     }
 
     @FXML
     public void reset(ActionEvent event) {
-        panPanel.zoomTo(1.0);
-        panPanel.scrollTo(0,0);
+        chart.zoomTo(1.0);
+        chart.scrollTo(0,0);
     }
 
     @FXML
