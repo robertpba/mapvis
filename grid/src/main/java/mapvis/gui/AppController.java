@@ -13,13 +13,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import mapvis.RandomData;
+import utils.RandomTreeGenerator;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
 import mapvis.grid.HashMapGrid;
 import mapvis.grid.jfx.HexagonalTilingView;
-import mapvis.tree.MPTree;
-import mapvis.tree.TreeModel;
+import mapvis.Impl.TreeModel;
 
 import java.net.URL;
 import java.util.*;
@@ -61,7 +60,7 @@ public class AppController implements Initializable {
                 return;
 
             StringBuilder sb = new StringBuilder();
-            tree.getPathToNode(id).forEach(i->sb.append(">"+i));
+            tree.getPathToNode(id).forEach(i-> sb.append(">").append(i));
 
             System.out.printf("id:%s, weight:%d %s\n", id, tree.getWeight(id), sb.toString());
         });
@@ -104,28 +103,28 @@ public class AppController implements Initializable {
         try {
             span = Integer.parseInt(spanField.getText());
         }
-        catch (NumberFormatException e) { }
+        catch (NumberFormatException ignored) { }
         try {
             weight = Integer.parseInt(weightField.getText());
         }
-        catch (NumberFormatException e) {  }
+        catch (NumberFormatException ignored) {  }
         try {
             depth = Integer.parseInt(depthField.getText());
         }
-        catch (NumberFormatException e) {  }
+        catch (NumberFormatException ignored) {  }
         try {
             seed = Integer.parseInt(seedField.getText());
         }
-        catch (NumberFormatException e) {  }
+        catch (NumberFormatException ignored) {  }
 
-        RandomData.rn.setSeed(seed);
-        tree = RandomData.getTree(depth, span, weight);
+        RandomTreeGenerator gen = new RandomTreeGenerator(seed);
+        tree = gen.getTree(depth, span, weight);
 
         grid = new HashMapGrid<>();
         cache = new CoastCache<>(grid, tree);
         method1 = new Method1<>(tree, cache, grid);
         Set<Integer> leaves = tree.getLeaves();
-        Map<Integer, Color> map = new HashMap();
+        Map<Integer, Color> map = new HashMap<>();
         Random rand = new Random(seed);
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
 
@@ -134,7 +133,7 @@ public class AppController implements Initializable {
         }
 
         chart.grid = null;
-        chart.colorMap = o -> map.get(o);
+        chart.colorMap = map::get;
         chart.grid = grid;
         chart.tree = tree;
         chart.updateHexagons();
@@ -145,8 +144,8 @@ public class AppController implements Initializable {
     }
 
 
-    private TreeItem translateTree(Integer p){
-        TreeItem item = new TreeItem(p);
+    private TreeItem<Integer> translateTree(Integer p){
+        TreeItem<Integer> item = new TreeItem<>(p);
 
         for (Integer integer : tree.getChildren(p)) {
             item.getChildren().add(translateTree(integer));

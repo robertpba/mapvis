@@ -1,5 +1,7 @@
 package mapvis.tree;
 
+import mapvis.Impl.TreeModel;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

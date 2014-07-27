@@ -8,11 +8,9 @@ public class Tile<T> {
     public int getX() {
         return x;
     }
-
     public int getY() {
         return y;
     }
-
     public T getObj() {
         return obj;
     }

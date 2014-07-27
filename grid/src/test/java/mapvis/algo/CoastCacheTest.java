@@ -4,7 +4,6 @@ import mapvis.grid.Grid;
 import mapvis.grid.HashMapGrid;
 import mapvis.grid.Tile;
 import mapvis.tree.MPTree;
-import mapvis.tree.TreeModel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

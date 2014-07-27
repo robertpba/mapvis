@@ -1,5 +1,6 @@
 package mapvis.tree;
 
+import mapvis.Impl.TreeModel;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

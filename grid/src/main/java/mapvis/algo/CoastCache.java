@@ -2,7 +2,7 @@ package mapvis.algo;
 
 import mapvis.grid.Grid;
 import mapvis.grid.Tile;
-import mapvis.tree.TreeModel;
+import mapvis.Impl.TreeModel;
 
 import java.util.*;
 

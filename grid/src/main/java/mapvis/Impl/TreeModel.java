@@ -1,4 +1,4 @@
-package mapvis.tree;
+package mapvis.Impl;
 
 import java.util.List;
 import java.util.Set;

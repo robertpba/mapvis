@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
 import mapvis.grid.Grid;
-import mapvis.tree.TreeModel;
+import mapvis.Impl.TreeModel;
 
 import java.awt.*;
 import java.net.URL;

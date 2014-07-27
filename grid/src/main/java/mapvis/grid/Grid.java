@@ -10,5 +10,6 @@ public interface Grid<T> {
     Tile<T> getNeighbour(int x, int y, Dir dir);
     Set<Tile<T>> getNeighbours(int x, int y);
 
+
     void foreach(Consumer<Tile<T>> consumer);
 }

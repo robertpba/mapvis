@@ -2,7 +2,7 @@ package mapvis.algo;
 
 import mapvis.grid.Grid;
 import mapvis.grid.Tile;
-import mapvis.tree.TreeModel;
+import mapvis.Impl.TreeModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,9 +28,7 @@ public class Method1<T> {
     public void recursive(T o){
         Set<T> children = tree.getChildren(o);
         if (children.size() > 0) {
-            for (T child : children) {
-                recursive(child);
-            }
+            children.forEach(this::recursive);
             return;
         }
 
@@ -51,23 +49,24 @@ public class Method1<T> {
 
         Tile<T> tile = null;
 
-        for (int i = 0; i < nodes.size(); i++) {
-            o = nodes.get(i);
+        for (T node : nodes) {
+            o = node;
             Set<Tile<T>> coast = cache.getCoast(o);
             if (coast.size() == 0) {
 
                 if (cache.getEdge(o).size() > 0)
-                    System.out.printf("Insufficient space: %d\n", o);
+                    System.out.printf("Insufficient space: %s\n", o.toString());
 
                 continue;
             }
-            Object[] array = coast.toArray();
+            @SuppressWarnings("unchecked")
+            Tile<T>[] array = coast.toArray(new Tile[coast.size()]);
             int size = coast.size();
 
 
             int item = random.nextInt(size); // In real life, the Random object should be rather more shared than this
 
-            tile = (Tile<T>)array[item];
+            tile = array[item];
             Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
             tile = neighbours.stream().filter(t -> t.getObj() == null).findFirst().get();
             break;

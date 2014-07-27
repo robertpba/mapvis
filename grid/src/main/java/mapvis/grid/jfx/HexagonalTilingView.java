@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.grid.Grid;
-import mapvis.tree.TreeModel;
+import mapvis.Impl.TreeModel;
 
 import java.util.List;
 import java.util.function.Function;
