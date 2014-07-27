@@ -83,24 +83,11 @@ public class ChartController implements Initializable  {
     public StringProperty colorscheme = new SimpleStringProperty();
 
     @FXML
-    public void onChooseRandomColor(ActionEvent event){
+    public void onChooseRandom(ActionEvent event){
         colorscheme.set("random");
     }
     @FXML
-    public void onChooseLevel1(ActionEvent event){
-        colorscheme.set("level1");
+    public void onChooseRamp(ActionEvent event){
+        colorscheme.set("ramp");
     }
-    @FXML
-    public void onChooseLevel2(ActionEvent event){
-        colorscheme.set("level2");
-    }
-    @FXML
-    public void onChooseLevel3(ActionEvent event){
-        colorscheme.set("level3");
-    }
-    @FXML
-    public void onChooseLevel4(ActionEvent event){
-        colorscheme.set("level4");
-    }
-
 }

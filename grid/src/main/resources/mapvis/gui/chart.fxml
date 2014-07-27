@@ -43,6 +43,12 @@
                               <Integer fx:value="100" />
                            </value>
                               </ChoiceBox>
+                        <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="colorSchemeGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton mnemonicParsing="false" onAction="#onChooseRamp" text="Ramp" toggleGroup="$colorSchemeGroup" />
                             </children>
                         </FlowPane>
                     </children>

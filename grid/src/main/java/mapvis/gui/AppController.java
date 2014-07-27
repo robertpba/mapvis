@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import mapvis.Impl.HashMapGrid;
+import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
 import mapvis.Impl.TreeModel;
 import mapvis.graphic.TileStyler;
@@ -41,6 +42,7 @@ public class AppController implements Initializable {
             {
                 super.bind(chartController.levelChoiceBox.valueProperty(),
                         chartController.colorPicker.valueProperty(),
+                        chartController.colorscheme,
                         tree, grid);
             }
             @Override
@@ -50,10 +52,20 @@ public class AppController implements Initializable {
                 if (grid.get() == null)
                     grid.set(new HashMapGrid<>());
 
-                return new RandomColorStyler<>(tree.get(), grid.get(),
+                String s = chartController.colorscheme.get();
+                if (s == null) s = "random";
+
+                if (s.equals("random"))
+                    return new RandomColorStyler<>(tree.get(), grid.get(),
                         chartController.levelChoiceBox.valueProperty().get(),
                         chartController.colorPicker.valueProperty().get(),
                         1);
+                if (s.equals("ramp")){
+                    return new RampColorStyler<>(tree.get(), grid.get(),
+                            chartController.levelChoiceBox.valueProperty().get(),
+                            chartController.colorPicker.valueProperty().get());
+                }
+                throw new RuntimeException();
             }
         };
         //tileStyler.bind(db);
