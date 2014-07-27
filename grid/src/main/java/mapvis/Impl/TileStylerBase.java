@@ -7,11 +7,11 @@ import mapvis.grid.Dir;
 import mapvis.grid.Grid;
 import mapvis.grid.Tile;
 
-public class TileStylerImpl<T> implements TileStyler<T> {
+public class TileStylerBase<T> implements TileStyler<T> {
     TreeModel<T> tree;
     Grid<T>      grid;
 
-    public TileStylerImpl(TreeModel<T> tree, Grid<T> grid) {
+    public TileStylerBase(TreeModel<T> tree, Grid<T> grid) {
         this.tree = tree;
         this.grid = grid;
     }

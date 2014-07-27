@@ -7,7 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import mapvis.Impl.TileStylerImpl;
+import mapvis.Impl.RandomColorStyler;
+import mapvis.Impl.TileStylerBase;
 import mapvis.Impl.TreeModel;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
@@ -74,21 +75,11 @@ public class SettingController {
         grid.set(new HashMapGrid<>());
         cache.set(new CoastCache<>(grid.get(), tree.get()));
         method1.set(new Method1<>(tree.get(), cache.get(), grid.get()));
+
         Set<Integer> leaves = tree.get().getLeaves();
-        Map<Integer, Color> map = new HashMap<>();
-        Random rand = new Random(seed);
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
 
-        tileStyler.set(new TileStylerImpl<Integer>(tree.get(), grid.get()){
-            @Override
-            protected Color getColorByValue(Integer v) {
-                return map.get(v);
-            }
-        });
-
-        for (Integer leaf : leaves) {
-            map.put(leaf, new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
-        }
+        tileStyler.set(new RandomColorStyler<>(tree.get(), grid.get(), 1));
     }
 
 
