@@ -49,7 +49,6 @@ class HexagonRender {
 
     public void drawHexagon(GraphicsContext g,int x, int y) {
         TileStyler<Integer> styler = view.getStyler();
-        System.out.println(((RandomColorStyler)styler).level);
 
         if (!styler.isVisible(x,y))
             return;

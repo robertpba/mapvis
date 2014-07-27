@@ -28,21 +28,23 @@
                         <FlowPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                             <children>
                         <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
+                              <ChoiceBox fx:id="levelChoiceBox">
+                                 <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                    <Integer fx:value="100" />
+                                    <Integer fx:value="1" />
+                                    <Integer fx:value="2" />
+                                    <Integer fx:value="3" />
+                                    <Integer fx:value="4" />
+                                    <Integer fx:value="5" />
+                                 </FXCollections>
+                                 </items>
+                                 <value>
+                              <Integer fx:value="100" />
+                           </value>
+                              </ChoiceBox>
                             </children>
                         </FlowPane>
-                        <ChoiceBox fx:id="levelChoiceBox">
-                           <items>
-                           <FXCollections fx:factory="observableArrayList">
-                              <Integer fx:value="100" />
-                              <Integer fx:value="1" />
-                              <Integer fx:value="2" />
-                              <Integer fx:value="3" />
-                              <Integer fx:value="4" />
-                              <Integer fx:value="5" />
-                           </FXCollections>
-                           </items>
-                           <value><Integer fx:value="100" /></value>
-                        </ChoiceBox>
                     </children>
                 </HBox>
             </children>

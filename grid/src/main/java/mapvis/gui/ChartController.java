@@ -65,7 +65,7 @@ public class ChartController implements Initializable  {
             StringBuilder sb = new StringBuilder();
             tree.get().getPathToNode(id).forEach(i-> sb.append(">").append(i));
 
-            System.out.printf("id:%s, weight:%d %s\n", id, tree.get().getWeight(id), sb.toString());
+            System.out.printf("%s id:%s, weight:%d %s\n", point, id, tree.get().getWeight(id), sb.toString());
         });
 
         grid.addListener(e->{
