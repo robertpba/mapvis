@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 // TODO: not thread-safe
 public class MPTree<T> implements TreeModel<T> {
 
-    static public class MPTreeNode<T> {
+    static class MPTreeNode<T> {
         public int left;
         public int right;
         public int depth;
@@ -35,9 +35,8 @@ public class MPTree<T> implements TreeModel<T> {
     @Override
     public Set<T> getChildren(T obj){
         checkDirty();
-        Set<T> set = o2n.get(obj).children.stream().map(n -> n.element)
+        return o2n.get(obj).children.stream().map(n -> n.element)
                 .collect(Collectors.toSet());
-        return set;
     }
     @Override
     public T getParent(T node){
@@ -49,6 +48,74 @@ public class MPTree<T> implements TreeModel<T> {
         checkDirty();
         return Collections.unmodifiableSet(o2n.keySet());
     }
+    @Override
+    public T getRoot() {
+        checkDirty();
+        if (root == null)
+            return null;
+        return root.element;
+    }
+    @Override
+    public int getDepth(T elem){
+        checkDirty();
+        MPTreeNode<T> node = o2n.get(elem);
+        return node.depth;
+    }
+    @Override
+    public int getWeight(T elem){
+        checkDirty();
+        MPTreeNode<T> node = o2n.get(elem);
+        return node.weight;
+    }
+    @Override
+    public Set<T> getLeaves(){
+        checkDirty();
+        return Collections.unmodifiableSet(leaves);
+    }
+    // lowest common ancestor
+    @Override
+    public T getLCA(T o1, T o2){
+        checkDirty();
+        MPTreeNode<T> n1 = o2n.get(o1);
+        MPTreeNode<T> n2 = o2n.get(o2);
+        MPTreeNode<T> lca = getLCA(n1, n2);
+        if (lca != null)
+            return lca.element;
+        return null;
+    }
+    @Override
+    public List<T> getPathToNode(T elem){
+        checkDirty();
+        ArrayList<T> list = new ArrayList<>();
+        MPTreeNode<T> node = o2n.get(elem);
+        list.add(elem);
+
+        while (node.parent != null){
+            node = node.parent;
+            list.add(node.element);
+        }
+
+        Collections.reverse(list);
+        return list;
+    }
+    @Override
+    public boolean isAncestorOf(T ancestor, T decedent){
+        checkDirty();
+        MPTreeNode<T> na = o2n.get(ancestor);
+        MPTreeNode<T> nd = o2n.get(decedent);
+        return na != null && nd != null &&
+                na.left < nd.left && na.right > nd.right;
+
+    }
+    @Override
+    public boolean isSibling(T o1, T o2){
+        checkDirty();
+        MPTreeNode<T> n1 = o2n.get(o1);
+        MPTreeNode<T> n2 = o2n.get(o2);
+        return n1.parent == n2.parent;
+    }
+
+
 
     public void setRoot(T obj){
         // TODO: what if the root is already in the tree
@@ -82,25 +149,9 @@ public class MPTree<T> implements TreeModel<T> {
         markDirty();
     }
 
-    @Override
-    public T getRoot() {
-        checkDirty();
-        if (root == null)
-            return null;
-        return root.element;
-    }
-
-
-    // recalculates all cached information after data changed
-    public void refresh(){
-
-        populate(1, 0, root);
-        refreshLeafCache();
-    }
-
     // recalculate the left and right value of all nodes.
     /// @return: right
-    public void populate(int left, int depth, MPTreeNode<T> node){
+    void populate(int left, int depth, MPTreeNode<T> node){
         node.left = left;
         node.depth = depth;
         left ++;
@@ -119,34 +170,15 @@ public class MPTree<T> implements TreeModel<T> {
         }
         node.right = left;
     }
-
-    @Override
-    public int getDepth(T elem){
-        checkDirty();
-        MPTreeNode<T> node = o2n.get(elem);
-        return node.depth;
-    }
-
-    @Override
-    public int getWeight(T elem){
-        checkDirty();
-        MPTreeNode<T> node = o2n.get(elem);
-        return node.weight;
-    }
-
-
     //public  T root;
-    private Set<T> leaves = new HashSet<>();
-    @Override
-    public Set<T> getLeaves(){
-        checkDirty();
-        return Collections.unmodifiableSet(leaves);
-    }
-    private void refreshLeafCache(){
+    Set<T> leaves = new HashSet<>();
+
+    void refreshLeafCache(){
         leaves.clear();
         refreshLeafCache(root);
     }
-    private void refreshLeafCache(MPTreeNode<T> node){
+
+    void refreshLeafCache(MPTreeNode<T> node){
         if (node.children.size() == 0)
             leaves.add(node.element);
         else {
@@ -154,59 +186,12 @@ public class MPTree<T> implements TreeModel<T> {
         }
     }
 
-    // lowest common ancestor
-    @Override
-    public T getLCA(T o1, T o2){
-        checkDirty();
-        MPTreeNode<T> n1 = o2n.get(o1);
-        MPTreeNode<T> n2 = o2n.get(o2);
-        MPTreeNode<T> lca = getLCA(n1, n2);
-        if (lca != null)
-            return lca.element;
-        return null;
-    }
-
-    private MPTreeNode<T> getLCA(MPTreeNode<T> n1, MPTreeNode<T> n2) {
+    MPTreeNode<T> getLCA(MPTreeNode<T> n1, MPTreeNode<T> n2) {
         if (n1 == null)
             return null;
         if (n1.left < n2.left && n1.right > n2.right) {
             return n1;
         }
         return getLCA(n1.parent, n2);
-    }
-
-    @Override
-    public List<T> getPathToNode(T elem){
-        checkDirty();
-        ArrayList<T> list = new ArrayList<>();
-        MPTreeNode<T> node = o2n.get(elem);
-        list.add(elem);
-
-        while (node.parent != null){
-            node = node.parent;
-            list.add(node.element);
-        }
-
-        Collections.reverse(list);
-        return list;
-    }
-    @Override
-    public boolean isAncestorOf(T ancestor, T decedent){
-        checkDirty();
-        MPTreeNode<T> na = o2n.get(ancestor);
-        MPTreeNode<T> nd = o2n.get(decedent);
-        if (na == null)
-            return false;
-        if (nd == null)
-            return false;
-
-        return na.left < nd.left && na.right > nd.right;
-    }
-    @Override
-    public boolean isSibling(T o1, T o2){
-        checkDirty();
-        MPTreeNode<T> n1 = o2n.get(o1);
-        MPTreeNode<T> n2 = o2n.get(o2);
-        return n1.parent == n2.parent;
     }
 }
