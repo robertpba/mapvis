@@ -98,12 +98,12 @@ public class GridChart extends Parent {
 
     private void applyBorderStyle(Integer o, Hexagon polygon, Dir dir, Line border) {
         Tile<Integer> tn = grid.getNeighbour(polygon.x, polygon.y, dir);
-        if (tn == null || tn.obj == null || o.equals(tn.obj)) {
+        if (tn == null || tn.getObj() == null || o.equals(tn.getObj())) {
             border.setVisible(false);
             return;
         }
 
-        Integer lca = tree.getLCA(o, tn.obj);
+        Integer lca = tree.getLCA(o, tn.getObj());
         if (lca == null)
             border.setVisible(false);
         else {

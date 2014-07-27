@@ -92,8 +92,8 @@ class HexagonRender {
 
     private void applyBorderStyle(GraphicsContext g,Integer o, int x, int y, Dir dir) {
         Tile<Integer> tn = view.grid.getNeighbour(x, y, dir);
-        if (tn == null || tn.obj == null || o.equals(tn.obj)) return;
-        Integer lca = view.tree.getLCA(o, tn.obj);
+        if (tn == null || tn.getObj() == null || o.equals(tn.getObj())) return;
+        Integer lca = view.tree.getLCA(o, tn.getObj());
         if (lca == null) return;
 
         int d = view.tree.getDepth(lca);

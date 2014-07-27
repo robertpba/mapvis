@@ -1,8 +1,9 @@
 package mapvis.grid;
 
 public class Tile<T> {
-    public int x;
-    public int y;
+    int x;
+    int y;
+    T obj;
 
     public int getX() {
         return x;
@@ -22,9 +23,6 @@ public class Tile<T> {
         this.y = y;
         this.obj = obj;
     }
-
-    public T obj;
-
 
     @Override
     public boolean equals(Object o) {
