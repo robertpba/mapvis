@@ -35,5 +35,7 @@ public class TreeTableViewModelAdapter {
         public int getId() { return nid; }
 
         public int getSize() { return tree.getWeight(nid); }
+
+        public int getDepth() { return tree.getDepth(nid); }
     }
 }

@@ -7,11 +7,9 @@ import mapvis.grid.Dir;
 import mapvis.grid.Tile;
 
 class HexagonRender {
-
     HexagonalTilingView view;
 
     final double sideLength;
-
 
     final double COS30 = Math.cos(Math.toRadians(30));
     final double[] points;
@@ -50,7 +48,7 @@ class HexagonRender {
     }
 
     public void drawHexagon(GraphicsContext g, int x, int y){
-        Integer o = view.grid.get(x, y);
+        Integer o = view.getGrid().get(x, y);
         g.setFill(view.getColorMap().apply(o));
         fill(g);
     }
@@ -79,7 +77,7 @@ class HexagonRender {
     }
 
     public void drawBorders(GraphicsContext g,int x, int y) {
-        Integer o = view.grid.get(x, y);
+        Integer o = view.getGrid().get(x, y);
 
         g.setLineCap(StrokeLineCap.ROUND);
         applyBorderStyle(g, o, x, y, Dir.N);
@@ -91,12 +89,12 @@ class HexagonRender {
     }
 
     private void applyBorderStyle(GraphicsContext g,Integer o, int x, int y, Dir dir) {
-        Tile<Integer> tn = view.grid.getNeighbour(x, y, dir);
+        Tile<Integer> tn = view.getGrid().getNeighbour(x, y, dir);
         if (tn == null || tn.getObj() == null || o.equals(tn.getObj())) return;
-        Integer lca = view.tree.getLCA(o, tn.getObj());
+        Integer lca = view.getTree().getLCA(o, tn.getObj());
         if (lca == null) return;
 
-        int d = view.tree.getDepth(lca);
+        int d = view.getTree().getDepth(lca);
         g.setStroke(Color.BLACK);
         g.setLineWidth((4.0 - d)*(4.0 - d)/2);
 

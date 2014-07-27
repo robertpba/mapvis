@@ -107,7 +107,6 @@ public class MPTree<T> implements TreeModel<T> {
         MPTreeNode<T> nd = o2n.get(decedent);
         return na != null && nd != null &&
                 na.left < nd.left && na.right > nd.right;
-
     }
     @Override
     public boolean isSibling(T o1, T o2){
@@ -116,8 +115,6 @@ public class MPTree<T> implements TreeModel<T> {
         MPTreeNode<T> n2 = o2n.get(o2);
         return n1.parent == n2.parent;
     }
-
-
 
     public void setRoot(T obj){
         // TODO: what if the root is already in the tree

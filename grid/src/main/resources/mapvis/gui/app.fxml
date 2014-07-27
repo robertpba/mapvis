@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
-
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.cell.*?>
+<?import mapvis.grid.jfx.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import mapvis.grid.jfx.HexagonalTilingView?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="mapvis.gui.AppController">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.AppController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Data">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Generate"/>
+                        <MenuItem mnemonicParsing="false" text="Generate" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Model">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Start"/>
+                        <MenuItem mnemonicParsing="false" text="Start" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
+                        <MenuItem mnemonicParsing="false" text="About" />
                     </items>
                 </Menu>
             </menus>
@@ -43,51 +45,26 @@
                 </Tab>
                 <Tab closable="false" text="Canvas">
                     <content>
-                        <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                            <bottom>
-                                <VBox BorderPane.alignment="CENTER">
-                                    <children>
-                                        <Slider fx:id="zoomSlider" blockIncrement="0.1" majorTickUnit="0.05" max="1.0"
-                                                min="0.1" minorTickCount="4" showTickLabels="true" showTickMarks="true"
-                                                snapToTicks="true" value="1.0" BorderPane.alignment="CENTER"/>
-                                        <HBox>
-                                            <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[ "/>
-                                                <Text fx:id="originX" strokeType="OUTSIDE" strokeWidth="0.0" text="x"
-                                                      BorderPane.alignment="CENTER"/>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" , "/>
-                                                <Text fx:id="originY" strokeType="OUTSIDE" strokeWidth="0.0"
-                                                      text="y"/>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" ]">
-                                                    <HBox.margin>
-                                                        <Insets/>
-                                                    </HBox.margin>
-                                                </Text>
-                                                <Button mnemonicParsing="false" onAction="#reset" text="Reset"/>
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
-                            </bottom>
-                            <center>
-                                <HexagonalTilingView fx:id="chart" BorderPane.alignment="CENTER">
-                                </HexagonalTilingView>
-                            </center>
-                        </BorderPane>
+                        <fx:include fx:id="chart" source="chart.fxml" />
                     </content>
                 </Tab>
                 <Tab closable="false" text="Nodes">
                     <content>
                         <TreeTableView fx:id="treeTableView" prefHeight="200.0" prefWidth="200.0">
                             <columns>
-                                <TreeTableColumn minWidth="50.0" prefWidth="145.0" text="ID">
+                                <TreeTableColumn minWidth="50.0" prefWidth="110.0" text="ID">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="id"/>
+                                        <TreeItemPropertyValueFactory property="id" />
                                     </cellValueFactory>
                                 </TreeTableColumn>
-                                <TreeTableColumn minWidth="0.0" prefWidth="154.0" text="Size">
+                        <TreeTableColumn minWidth="45.0" prefWidth="47.0" text="Level">
+                           <cellValueFactory>
+                              <TreeItemPropertyValueFactory property="depth" />
+                           </cellValueFactory>
+                        </TreeTableColumn>
+                                <TreeTableColumn minWidth="0.0" prefWidth="289.0" text="Size">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="size"/>
+                                        <TreeItemPropertyValueFactory property="size" />
                                     </cellValueFactory>
                                 </TreeTableColumn>
                             </columns>

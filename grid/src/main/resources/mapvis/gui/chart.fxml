@@ -1,0 +1,38 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+<?import mapvis.grid.jfx.HexagonalTilingView?>
+<?import java.awt.Insets?>
+<BorderPane
+        xmlns="http://javafx.com/javafx/8"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="mapvis.gui.ChartController"
+    maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+    <bottom>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <Slider fx:id="zoomSlider" blockIncrement="0.1" majorTickUnit="0.05" max="1.0" min="0.1" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" BorderPane.alignment="CENTER" />
+                <HBox>
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[ " />
+                        <Text fx:id="originX" strokeType="OUTSIDE" strokeWidth="0.0" text="x" BorderPane.alignment="CENTER" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" , " />
+                        <Text fx:id="originY" strokeType="OUTSIDE" strokeWidth="0.0" text="y" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" ]">
+                            <HBox.margin>
+                            </HBox.margin>
+                        </Text>
+                        <Button mnemonicParsing="false" onAction="#reset" text="Reset" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
+    <center>
+        <HexagonalTilingView fx:id="chart" BorderPane.alignment="CENTER">
+        </HexagonalTilingView>
+    </center>
+</BorderPane>

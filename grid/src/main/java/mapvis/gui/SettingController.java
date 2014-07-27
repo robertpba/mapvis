@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import mapvis.Impl.TreeModel;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
+import mapvis.grid.Grid;
 import mapvis.grid.HashMapGrid;
 import mapvis.grid.jfx.HexagonalTilingView;
 import utils.RandomTreeGenerator;
@@ -33,7 +34,7 @@ public class SettingController {
     public TextArea infoArea;
 
     public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<HashMapGrid<Integer>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<CoastCache<Integer>> cache = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Integer>> method1 = new SimpleObjectProperty<>();
     public ObjectProperty<Function<Object, Color>> colorMap = new SimpleObjectProperty<>();

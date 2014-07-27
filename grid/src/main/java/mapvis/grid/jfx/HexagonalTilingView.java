@@ -54,8 +54,6 @@ public class HexagonalTilingView extends Pane {
     static final double COS30 = Math.cos(Math.toRadians(30));
     static final double SideLength = 10;
 
-    public Grid<Integer> grid;
-    public TreeModel<Integer> tree;
 
     public Point2D hexagonalToPlain(int x, int y){
         double cx = x * 3 * SideLength / 2;
@@ -89,7 +87,7 @@ public class HexagonalTilingView extends Pane {
     }
 
     public void updateHexagons(){
-        if (grid == null)
+        if (getGrid() == null)
             return;
 
         //canvas = new Canvas(getWidth(),getHeight());
@@ -113,7 +111,7 @@ public class HexagonalTilingView extends Pane {
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
 
-        grid.foreach(t->{
+        grid.get().foreach(t->{
             if (t.getX() > tl.getX()
                 && t.getX() < br.getX()
                 && t.getY() > tl.getY()
@@ -138,6 +136,15 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
+    private ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty();
+    public ObjectProperty<Grid<Integer>> gridProperty() { return this.grid; }
+    public final Grid<Integer> getGrid() { return this.gridProperty().get(); }
+    public final void setGrid(Grid<Integer> colormap) { this.gridProperty().set(colormap); }
+
+    private ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty();
+    public ObjectProperty<TreeModel<Integer>> treeProperty() { return this.tree; }
+    public final TreeModel<Integer> getTree() { return this.treeProperty().get(); }
+    public final void setTree(TreeModel<Integer> colormap) { this.treeProperty().set(colormap); }
 
     private ObjectProperty<Function<Object, Color>> colorMap = new SimpleObjectProperty();
     public ObjectProperty<Function<Object, Color>> colorMapProperty() { return this.colorMap; }
