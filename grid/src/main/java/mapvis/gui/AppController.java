@@ -1,8 +1,5 @@
 package mapvis.gui;
 
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,7 +9,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 import utils.RandomTreeGenerator;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
@@ -25,31 +21,29 @@ import java.util.*;
 
 
 public class AppController implements Initializable {
-
     @FXML
     public HexagonalTilingView chart;
-
 
     @FXML
     public Slider zoomSlider;
 
     @FXML
-    public Text panFactorX;
+    public Text originX;
 
     @FXML
-    public Text panFactorY;
+    public Text originY;
 
     @FXML
-    public TreeTableView<Integer> treeTableView;
+    public TreeTableView<TreeTableViewModelAdapter.Node> treeTableView;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         zoomSlider.valueProperty()
                 .bindBidirectional(chart.zoomProperty());
-        panFactorX.textProperty()
+        originX.textProperty()
                 .bind(chart.originXProperty().asString());
-        panFactorY.textProperty()
+        originY.textProperty()
                 .bind(chart.originXProperty().asString());
 
         chart.setOnMouseClicked(e -> {
@@ -64,33 +58,7 @@ public class AppController implements Initializable {
 
             System.out.printf("id:%s, weight:%d %s\n", id, tree.getWeight(id), sb.toString());
         });
-
-        for (TreeTableColumn column : treeTableView.getColumns()) {
-            if (column.getText().equals("ID")) {
-                column.setCellValueFactory(
-                    new Callback<TreeTableColumn.CellDataFeatures<Integer, ?>, ObservableValue<?>>() {
-                    @Override
-                    public ObservableValue<?> call(TreeTableColumn.CellDataFeatures<Integer, ?> param) {
-                        return new ReadOnlyIntegerWrapper(param.getValue().getValue());
-                    }
-                });
-            } else if (column.getText().equals("Size")) {
-                column.setCellValueFactory(
-                        new Callback<TreeTableColumn.CellDataFeatures<Integer, ?>, ObservableValue<?>>() {
-                            @Override
-                            public ObservableValue<?> call(TreeTableColumn.CellDataFeatures<Integer, ?> param) {
-                                return new ReadOnlyIntegerWrapper(tree.getWeight(param.getValue().getValue()));
-                            }
-                        });
-            } else {
-                column.setCellValueFactory( p -> new ReadOnlyStringWrapper(""));
-            }
-
-
-        }
     }
-
-
 
     public TreeModel<Integer> tree;
     public HashMapGrid<Integer> grid;
@@ -138,19 +106,10 @@ public class AppController implements Initializable {
         chart.tree = tree;
         chart.updateHexagons();
 
-        TreeItem<Integer> rootItem = translateTree(tree.getRoot());
-        rootItem.setExpanded(true);
-        treeTableView.setRoot(rootItem);
-    }
-
-
-    private TreeItem<Integer> translateTree(Integer p){
-        TreeItem<Integer> item = new TreeItem<>(p);
-
-        for (Integer integer : tree.getChildren(p)) {
-            item.getChildren().add(translateTree(integer));
-        }
-        return item;
+        TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree);
+        TreeItem<TreeTableViewModelAdapter.Node> root = adapter.getRoot();
+        root.setExpanded(true);
+        treeTableView.setRoot(root);
     }
 
     @FXML
