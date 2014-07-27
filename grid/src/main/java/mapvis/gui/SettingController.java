@@ -41,7 +41,6 @@ public class SettingController implements Initializable {
     public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<CoastCache<Integer>> cache = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Integer>> method1 = new SimpleObjectProperty<>();
-    public StringProperty colorscheme = new SimpleStringProperty();
 
     public HexagonalTilingView chart;
 
@@ -50,26 +49,6 @@ public class SettingController implements Initializable {
 
     }
 
-    @FXML
-    public void onChooseRandomColor(ActionEvent event){
-        colorscheme.set("random");
-    }
-    @FXML
-    public void onChooseLevel1(ActionEvent event){
-        colorscheme.set("level1");
-    }
-    @FXML
-    public void onChooseLevel2(ActionEvent event){
-        colorscheme.set("level2");
-    }
-    @FXML
-    public void onChooseLevel3(ActionEvent event){
-        colorscheme.set("level3");
-    }
-    @FXML
-    public void onChooseLevel4(ActionEvent event){
-        colorscheme.set("level4");
-    }
 
     @FXML
     public void begin(ActionEvent event) {

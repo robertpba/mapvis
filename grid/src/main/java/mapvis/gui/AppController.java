@@ -39,7 +39,9 @@ public class AppController implements Initializable {
 
         ObjectBinding db = new ObjectBinding() {
             {
-                super.bind(settingController.colorscheme, tree, grid);
+                super.bind(chartController.levelChoiceBox.valueProperty(),
+                        chartController.colorPicker.valueProperty(),
+                        tree, grid);
             }
             @Override
             protected Object computeValue() {
@@ -48,22 +50,10 @@ public class AppController implements Initializable {
                 if (grid.get() == null)
                     grid.set(new HashMapGrid<>());
 
-                String colorscheme = settingController.colorscheme.get();
-                if (colorscheme == null)
-                    return new RandomColorStyler<>(tree.get(), grid.get(), 1000, 1);
-                switch (colorscheme){
-                    case "level1":
-                        return new RandomColorStyler<>(tree.get(), grid.get(), 1, 1);
-                    case "level2":
-                        return new RandomColorStyler<>(tree.get(), grid.get(), 2, 1);
-                    case "level3":
-                        return new RandomColorStyler<>(tree.get(), grid.get(), 3, 1);
-                    case "level4":
-                        return new RandomColorStyler<>(tree.get(), grid.get(), 4, 1);
-                    case "random" :
-                    default:
-                        return new RandomColorStyler<>(tree.get(), grid.get(), 1000, 1);
-                }
+                return new RandomColorStyler<>(tree.get(), grid.get(),
+                        chartController.levelChoiceBox.valueProperty().get(),
+                        chartController.colorPicker.valueProperty().get(),
+                        1);
             }
         };
         //tileStyler.bind(db);

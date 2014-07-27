@@ -9,5 +9,6 @@ public interface TileStyler<T> {
     Color getBorderColor(int x, int y, Dir dir);
     boolean isVisible(int x, int y);
     Color getColor(int x, int y);
+    Color getBackground();
 
 }

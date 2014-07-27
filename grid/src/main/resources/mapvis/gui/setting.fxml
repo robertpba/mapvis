@@ -36,19 +36,6 @@
                 <Label text="Weight:" GridPane.rowIndex="2" />
                 <Label text="Seed:" GridPane.rowIndex="3" />
                 <TextField fx:id="seedField" text="1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <children>
-                  <RadioButton mnemonicParsing="false" onAction="#onChooseRandomColor" selected="true" text="Random">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="ColorMethod" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" onAction="#onChooseLevel1" text="Level 1" toggleGroup="$ColorMethod" />
-                  <RadioButton mnemonicParsing="false" onAction="#onChooseLevel2" text="Level 2" toggleGroup="$ColorMethod" />
-                  <RadioButton mnemonicParsing="false" onAction="#onChooseLevel3" text="Level 3" toggleGroup="$ColorMethod" />
-                  <RadioButton mnemonicParsing="false" onAction="#onChooseLevel4" text="Level 4" toggleGroup="$ColorMethod" />
-               </children>
-            </FlowPane>
             <Label text="Color:" GridPane.rowIndex="4" />
             </children>
         </GridPane>

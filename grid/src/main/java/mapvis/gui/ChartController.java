@@ -2,10 +2,14 @@ package mapvis.gui;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -29,6 +33,12 @@ public class ChartController implements Initializable  {
 
     @FXML
     public Text originY;
+
+    @FXML
+    public ChoiceBox<Integer> levelChoiceBox;
+    @FXML
+    public ColorPicker colorPicker;
+
 
     public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
@@ -67,6 +77,30 @@ public class ChartController implements Initializable  {
     public void reset(ActionEvent event) {
         chart.zoomTo(1.0);
         chart.scrollTo(0,0);
+    }
+
+
+    public StringProperty colorscheme = new SimpleStringProperty();
+
+    @FXML
+    public void onChooseRandomColor(ActionEvent event){
+        colorscheme.set("random");
+    }
+    @FXML
+    public void onChooseLevel1(ActionEvent event){
+        colorscheme.set("level1");
+    }
+    @FXML
+    public void onChooseLevel2(ActionEvent event){
+        colorscheme.set("level2");
+    }
+    @FXML
+    public void onChooseLevel3(ActionEvent event){
+        colorscheme.set("level3");
+    }
+    @FXML
+    public void onChooseLevel4(ActionEvent event){
+        colorscheme.set("level4");
     }
 
 }

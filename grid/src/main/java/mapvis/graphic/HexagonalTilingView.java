@@ -96,7 +96,8 @@ public class HexagonalTilingView extends Pane {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
 
-        g.clearRect(0,0,canvas.getWidth(), canvas.getHeight());
+        g.setFill(styler.get().getBackground());
+        g.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
         //Rectangle2D rect = viewport.get();
 
         Bounds rect = getLayoutBounds();

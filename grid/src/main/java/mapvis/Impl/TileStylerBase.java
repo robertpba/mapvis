@@ -90,6 +90,11 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return getColorByValue(c.v);
     }
 
+    @Override
+    public Color getBackground() {
+        return Color.AQUAMARINE;
+    }
+
     TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
         if (cache.x == x && cache.y == y)
