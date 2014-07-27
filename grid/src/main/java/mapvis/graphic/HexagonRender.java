@@ -3,6 +3,7 @@ package mapvis.graphic;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
+import mapvis.Impl.RandomColorStyler;
 import mapvis.grid.Dir;
 
 class HexagonRender {
@@ -48,6 +49,7 @@ class HexagonRender {
 
     public void drawHexagon(GraphicsContext g,int x, int y) {
         TileStyler<Integer> styler = view.getStyler();
+        System.out.println(((RandomColorStyler)styler).level);
 
         if (!styler.isVisible(x,y))
             return;

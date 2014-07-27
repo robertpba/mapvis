@@ -2,10 +2,14 @@ package mapvis.gui;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import mapvis.Impl.RandomColorStyler;
 import mapvis.Impl.TileStylerBase;
@@ -18,12 +22,10 @@ import mapvis.Impl.HashMapGrid;
 import mapvis.graphic.HexagonalTilingView;
 import utils.RandomTreeGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.net.URL;
+import java.util.*;
 
-public class SettingController {
+public class SettingController implements Initializable {
     @FXML
     public TextField weightField;
     @FXML
@@ -39,10 +41,35 @@ public class SettingController {
     public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<CoastCache<Integer>> cache = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Integer>> method1 = new SimpleObjectProperty<>();
-    public ObjectProperty<TileStyler<Integer>> tileStyler = new SimpleObjectProperty<>();
+    public StringProperty colorscheme = new SimpleStringProperty();
 
     public HexagonalTilingView chart;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    @FXML
+    public void onChooseRandomColor(ActionEvent event){
+        colorscheme.set("random");
+    }
+    @FXML
+    public void onChooseLevel1(ActionEvent event){
+        colorscheme.set("level1");
+    }
+    @FXML
+    public void onChooseLevel2(ActionEvent event){
+        colorscheme.set("level2");
+    }
+    @FXML
+    public void onChooseLevel3(ActionEvent event){
+        colorscheme.set("level3");
+    }
+    @FXML
+    public void onChooseLevel4(ActionEvent event){
+        colorscheme.set("level4");
+    }
 
     @FXML
     public void begin(ActionEvent event) {
@@ -79,7 +106,6 @@ public class SettingController {
         Set<Integer> leaves = tree.get().getLeaves();
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
 
-        tileStyler.set(new RandomColorStyler<>(tree.get(), grid.get(), 1));
     }
 
 

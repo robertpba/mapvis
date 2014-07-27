@@ -1,5 +1,6 @@
 package mapvis.graphic;
 
+import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -46,6 +47,7 @@ public class HexagonalTilingView extends Pane {
         originX.addListener(this::onOriginXChange);
         originY.addListener(this::onOriginYChange);
         zoom.addListener(this::onZoomChange);
+        styler.addListener(this::onStylerChange);
 
         updateHexagons();
     }
@@ -219,6 +221,10 @@ public class HexagonalTilingView extends Pane {
     }
     void onOriginYChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         translateTransform = Affine.translate(originX.get(), newValue.doubleValue());
+        updateHexagons();
+    }
+    void onStylerChange(ObservableValue<? extends TileStyler<Integer>> observable,
+                        TileStyler<Integer> oldValue, TileStyler<Integer> newValue){
         updateHexagons();
     }
 

@@ -120,7 +120,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         T lca = getTree().getLCA(t, tn.getObj());
         if (lca == null) return 0;
 
-        return getTree().getDepth(lca);
+        return getTree().getDepth(lca) + 1;
     }
 
     static class TileCache<T> {

@@ -32,7 +32,6 @@ public class ChartController implements Initializable  {
 
     public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<Function<Object, Color>> colorMap = new SimpleObjectProperty<>();
 
 
     @Override
