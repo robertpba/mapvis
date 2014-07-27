@@ -106,7 +106,7 @@ class HexagonRender {
             case NW: borderNW(g); return;
             case S: borderS(g); return;
             case SW: borderSW(g); return;
-            case SE: borderSE(g); return;
+            case SE: borderSE(g);
         }
 
     }
