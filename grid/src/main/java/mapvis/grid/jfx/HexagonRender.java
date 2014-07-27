@@ -51,7 +51,7 @@ class HexagonRender {
 
     public void drawHexagon(GraphicsContext g, int x, int y){
         Integer o = view.grid.get(x, y);
-        g.setFill(view.colorMap.apply(o));
+        g.setFill(view.getColorMap().apply(o));
         fill(g);
     }
 

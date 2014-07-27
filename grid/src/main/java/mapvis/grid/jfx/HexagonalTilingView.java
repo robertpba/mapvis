@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.grid.Grid;
@@ -138,7 +139,11 @@ public class HexagonalTilingView extends Pane {
     }
 
 
-    public Function<Object, javafx.scene.paint.Color> colorMap;
+    private ObjectProperty<Function<Object, Color>> colorMap = new SimpleObjectProperty();
+    public ObjectProperty<Function<Object, Color>> colorMapProperty() { return this.colorMap; }
+    public final Function<Object, Color> getColorMap() { return this.colorMapProperty().get(); }
+    public final void setColorMap(Function<Object, Color> colormap) { this.colorMapProperty().set(colormap); }
+
 
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     public DoubleProperty zoomProperty() { return this.zoom; }
