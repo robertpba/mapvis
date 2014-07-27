@@ -4,14 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.testng.Assert.*;
 
-public class MPTTTest {
+public class MPTreeTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -21,26 +20,24 @@ public class MPTTTest {
 
     @Test
     public void testGetNullRoot() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        TreeModel<Integer> tree = new MPTree<>();
         Assert.assertEquals(tree.getRoot(), null);
     }
 
     @Test
     public void testSetRoot() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        MPTree<Integer> tree = new MPTree<>();
         tree.setRoot(1);
         Assert.assertEquals(tree.getRoot(), (Integer)1);
     }
 
     @Test
     public void testGetPath() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        MPTree<Integer> tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
         tree.addChild(2, 5, 0);
-
-        tree.refresh();
 
         List<Integer> list = tree.getPathToNode(5);
 
@@ -52,13 +49,11 @@ public class MPTTTest {
 
     @Test
     public void testGetDepth() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        MPTree<Integer> tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
         tree.addChild(2, 5, 0);
-
-        tree.refresh();
 
         assertEquals(tree.getDepth(1), 0);
         assertEquals(tree.getDepth(2), 1);
@@ -68,7 +63,7 @@ public class MPTTTest {
 
     @Test
     public void testAddChild() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        MPTree<Integer> tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
@@ -90,13 +85,11 @@ public class MPTTTest {
 
     @Test
     public void testRefresh() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        MPTree<Integer> tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
         tree.addChild(2, 5, 0);
-
-        tree.refresh();
 
         Set<Integer> leaves = tree.getLeaves();
         Set<Integer> expected = new HashSet<>();
@@ -108,13 +101,11 @@ public class MPTTTest {
 
     @Test
     public void testGetLCA() throws Exception {
-        MPTT<Integer> tree = new MPTT<>();
+        MPTree<Integer> tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
         tree.addChild(2, 5, 0);
-
-        tree.refresh();
 
         assertEquals(tree.getLCA(2, 5), (Integer)2);
         assertEquals(tree.getLCA(3, 5), (Integer)1);

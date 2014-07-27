@@ -2,20 +2,18 @@ package mapvis.algo;
 
 import mapvis.grid.Grid;
 import mapvis.grid.HashMapGrid;
-import mapvis.tree.MPTT;
+import mapvis.tree.MPTree;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
 public class Method1Test {
-    private MPTT<Integer> tree;
+    private MPTree<Integer> tree;
     private CoastCache<Integer> cache;
     private Grid<Integer> grid;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        tree = new MPTT<>();
+        tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 10);
         tree.addChild(1, 3, 10);
@@ -27,7 +25,6 @@ public class Method1Test {
         //    |
         //    5
 
-        tree.refresh();
 
         grid = new HashMapGrid<>();
         cache = new CoastCache<>(grid, tree);

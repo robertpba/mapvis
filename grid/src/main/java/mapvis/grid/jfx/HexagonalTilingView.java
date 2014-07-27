@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.grid.Grid;
-import mapvis.tree.MPTT;
+import mapvis.tree.TreeModel;
 
 import java.util.List;
 import java.util.function.Function;
@@ -54,7 +54,7 @@ public class HexagonalTilingView extends Pane {
     static final double SideLength = 10;
 
     public Grid<Integer> grid;
-    public MPTT<Integer> tree;
+    public TreeModel<Integer> tree;
 
     public Point2D hexagonalToPlain(int x, int y){
         double cx = x * 3 * SideLength / 2;

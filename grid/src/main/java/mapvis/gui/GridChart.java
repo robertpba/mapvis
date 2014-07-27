@@ -10,7 +10,7 @@ import mapvis.grid.Dir;
 import mapvis.grid.Grid;
 import mapvis.grid.Pos;
 import mapvis.grid.Tile;
-import mapvis.tree.MPTT;
+import mapvis.tree.TreeModel;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class GridChart extends Parent {
     static final double SideLength = 10;
 
     public Grid<Integer> grid;
-    public MPTT<Integer> tree;
+    public TreeModel<Integer> tree;
 
     public Point2D toChartCoordinate(int x, int y){
         double cx = x * 3 * SideLength / 2;

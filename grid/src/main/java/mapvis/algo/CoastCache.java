@@ -2,7 +2,7 @@ package mapvis.algo;
 
 import mapvis.grid.Grid;
 import mapvis.grid.Tile;
-import mapvis.tree.MPTT;
+import mapvis.tree.TreeModel;
 
 import java.util.*;
 
@@ -12,9 +12,9 @@ public class CoastCache<T> {
     Map<T, Set<Tile<T>>> coast = new HashMap<>();
 
     public Grid<T> grid;
-    public MPTT<T> tree;
+    public TreeModel<T> tree;
 
-    public CoastCache(Grid<T> grid, MPTT<T> tree){
+    public CoastCache(Grid<T> grid, TreeModel<T> tree){
 
         this.grid = grid;
         this.tree = tree;

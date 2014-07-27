@@ -8,14 +8,14 @@ import javafx.stage.Stage;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
 import mapvis.grid.Grid;
-import mapvis.tree.MPTT;
+import mapvis.tree.TreeModel;
 
 import java.awt.*;
 import java.net.URL;
 import java.util.Map;
 
 public class App extends Application {
-    static MPTT<Integer> tree;
+    static TreeModel<Integer> tree;
     static CoastCache<Integer> cache;
     static Grid<Integer> grid;
     private Map<Integer, Color> colormap;

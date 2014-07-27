@@ -11,5 +11,4 @@ public interface Grid<T> {
     Set<Tile<T>> getNeighbours(int x, int y);
 
     void foreach(Consumer<Tile<T>> consumer);
-
 }

@@ -18,7 +18,8 @@ import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
 import mapvis.grid.HashMapGrid;
 import mapvis.grid.jfx.HexagonalTilingView;
-import mapvis.tree.MPTT;
+import mapvis.tree.MPTree;
+import mapvis.tree.TreeModel;
 
 import java.net.URL;
 import java.util.*;
@@ -92,7 +93,7 @@ public class AppController implements Initializable {
 
 
 
-    public MPTT<Integer> tree;
+    public TreeModel<Integer> tree;
     public HashMapGrid<Integer> grid;
     public CoastCache<Integer> cache;
     public Method1<Integer>  method1;

@@ -1,14 +1,12 @@
 package mapvis;
 
-import mapvis.tree.MPTT;
+import mapvis.tree.TreeModel;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 public class RandomDataTest {
 
     @Test
     public void testGetTree() throws Exception {
-        MPTT<Integer> tree = RandomData.getTree();
+        TreeModel<Integer> tree = RandomData.getTree();
     }
 }

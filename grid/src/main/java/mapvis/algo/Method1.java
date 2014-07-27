@@ -2,7 +2,7 @@ package mapvis.algo;
 
 import mapvis.grid.Grid;
 import mapvis.grid.Tile;
-import mapvis.tree.MPTT;
+import mapvis.tree.TreeModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,12 +10,12 @@ import java.util.Random;
 import java.util.Set;
 
 public class Method1<T> {
-    public MPTT<T> tree;
+    public TreeModel<T> tree;
     public CoastCache<T> cache;
     public Grid<T> grid;
     private Random random = new Random(1);
 
-    public Method1(MPTT<T> tree, CoastCache<T> cache, Grid<T> grid) {
+    public Method1(TreeModel<T> tree, CoastCache<T> cache, Grid<T> grid) {
         this.tree = tree;
         this.cache = cache;
         this.grid = grid;

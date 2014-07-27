@@ -3,7 +3,8 @@ package mapvis.algo;
 import mapvis.grid.Grid;
 import mapvis.grid.HashMapGrid;
 import mapvis.grid.Tile;
-import mapvis.tree.MPTT;
+import mapvis.tree.MPTree;
+import mapvis.tree.TreeModel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -12,13 +13,13 @@ import java.util.Set;
 import static org.testng.Assert.*;
 
 public class CoastCacheTest {
-    private MPTT<Integer> tree;
+    private MPTree<Integer> tree;
     private CoastCache<Integer> cache;
     private Grid<Integer> grid;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        tree = new MPTT<>();
+        tree = new MPTree<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
@@ -30,7 +31,6 @@ public class CoastCacheTest {
         //    |
         //    5
 
-        tree.refresh();
 
         grid = new HashMapGrid<>();
         cache = new CoastCache<>(grid, tree);

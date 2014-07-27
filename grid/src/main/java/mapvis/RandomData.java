@@ -1,6 +1,7 @@
 package mapvis;
 
-import mapvis.tree.MPTT;
+import mapvis.tree.MPTree;
+import mapvis.tree.TreeModel;
 
 import java.util.Random;
 
@@ -8,15 +9,14 @@ public class RandomData {
     public static Random rn = new Random(1);
     static int lastId = 0;
 
-    public static MPTT<Integer> getTree(){
-        MPTT<Integer> mptt = new MPTT<>();
-        mptt.setRoot(lastId = 0);
-        getTree(mptt, 0, 0, 2, 10, 100);
-        mptt.refresh();
-        return mptt;
+    public static TreeModel<Integer> getTree(){
+        MPTree<Integer> mptree = new MPTree<>();
+        mptree.setRoot(lastId = 0);
+        getTree(mptree, 0, 0, 2, 10, 100);
+        return mptree;
     }
 
-    static void getTree(MPTT<Integer> tree, Integer node, int level, int maxLevel, int span, int weight){
+    static void getTree(MPTree<Integer> tree, Integer node, int level, int maxLevel, int span, int weight){
         if (level > maxLevel)
             return ;
 
@@ -28,11 +28,10 @@ public class RandomData {
             getTree(tree, cid, level+1, maxLevel, span, weight);
         }
     }
-    public static MPTT<Integer> getTree(int level, int span, int weight){
-        MPTT<Integer> mptt = new MPTT<>();
-        mptt.setRoot(lastId = 0);
-        getTree(mptt, 0, 0, level, span, weight);
-        mptt.refresh();
-        return mptt;
+    public static MPTree<Integer> getTree(int level, int span, int weight){
+        MPTree<Integer> mptree = new MPTree<>();
+        mptree.setRoot(lastId = 0);
+        getTree(mptree, 0, 0, level, span, weight);
+        return mptree;
     }
 }

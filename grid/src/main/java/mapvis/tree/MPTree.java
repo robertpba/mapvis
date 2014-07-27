@@ -4,35 +4,49 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 // TODO: not thread-safe
-public class MPTT<T> {
+public class MPTree<T> implements TreeModel<T> {
 
-    static public class MPTTNode<T> {
+    static public class MPTreeNode<T> {
         public int left;
         public int right;
         public int depth;
         public int weight;
         public T element;
 
-        public MPTTNode<T> parent;
-        public List<MPTTNode<T>> children = new ArrayList<>();
+        public MPTreeNode<T> parent;
+        public List<MPTreeNode<T>> children = new ArrayList<>();
+    }
+    boolean dirty = false;
+    void checkDirty(){
+        if (dirty) {
+            populate(1, 0, root);
+            refreshLeafCache();
+            dirty = false;
+        }
+    }
+    void markDirty(){
+        dirty = true;
     }
 
-    public MPTTNode<T> root;
+    public MPTreeNode<T> root;
     // object to node mapping
-    private Map<T, MPTTNode<T>> o2n = new HashMap<>();
+    private Map<T, MPTreeNode<T>> o2n = new HashMap<>();
 
-
+    @Override
     public Set<T> getChildren(T obj){
+        checkDirty();
         Set<T> set = o2n.get(obj).children.stream().map(n -> n.element)
                 .collect(Collectors.toSet());
         return set;
     }
-
+    @Override
     public T getParent(T node){
+        checkDirty();
         return o2n.get(node).parent.element;
     }
-
+    @Override
     public Set<T> getNodes(){
+        checkDirty();
         return Collections.unmodifiableSet(o2n.keySet());
     }
 
@@ -41,12 +55,13 @@ public class MPTT<T> {
         if (o2n.containsKey(obj))
             throw new RuntimeException("the child already exists");
         if (root == null) {
-            this.root = new MPTTNode<>();
+            this.root = new MPTreeNode<>();
             this.root.element = obj;
         }
         else
             throw new RuntimeException("can't change the root");
         o2n.put(obj, root);
+        markDirty();
     }
 
     public void addChild(T parent, T child, int weight){
@@ -55,18 +70,21 @@ public class MPTT<T> {
         if (!o2n.containsKey(parent))
             throw new RuntimeException("the parent doesn't exist");
 
-        MPTTNode<T> nParent = o2n.get(parent);
+        MPTreeNode<T> nParent = o2n.get(parent);
 
-        MPTTNode<T> nChild = new MPTTNode<>();
+        MPTreeNode<T> nChild = new MPTreeNode<>();
         nChild.element = child;
         nChild.weight  = weight;
         nParent.children.add(nChild);
         nChild.parent = nParent;
 
         o2n.put(child, nChild);
+        markDirty();
     }
 
+    @Override
     public T getRoot() {
+        checkDirty();
         if (root == null)
             return null;
         return root.element;
@@ -75,13 +93,14 @@ public class MPTT<T> {
 
     // recalculates all cached information after data changed
     public void refresh(){
+
         populate(1, 0, root);
         refreshLeafCache();
     }
 
     // recalculate the left and right value of all nodes.
     /// @return: right
-    public void populate(int left, int depth, MPTTNode<T> node){
+    public void populate(int left, int depth, MPTreeNode<T> node){
         node.left = left;
         node.depth = depth;
         left ++;
@@ -93,7 +112,7 @@ public class MPTT<T> {
 
         node.weight = 0;
 
-        for (MPTTNode<T> child : node.children) {
+        for (MPTreeNode<T> child : node.children) {
             populate(left, depth + 1, child);
             node.weight += child.weight;
             left = child.right + 1;
@@ -101,27 +120,33 @@ public class MPTT<T> {
         node.right = left;
     }
 
+    @Override
     public int getDepth(T elem){
-        MPTTNode<T> node = o2n.get(elem);
+        checkDirty();
+        MPTreeNode<T> node = o2n.get(elem);
         return node.depth;
     }
 
+    @Override
     public int getWeight(T elem){
-        MPTTNode<T> node = o2n.get(elem);
+        checkDirty();
+        MPTreeNode<T> node = o2n.get(elem);
         return node.weight;
     }
 
 
     //public  T root;
     private Set<T> leaves = new HashSet<>();
+    @Override
     public Set<T> getLeaves(){
+        checkDirty();
         return Collections.unmodifiableSet(leaves);
     }
     private void refreshLeafCache(){
         leaves.clear();
         refreshLeafCache(root);
     }
-    private void refreshLeafCache(MPTTNode<T> node){
+    private void refreshLeafCache(MPTreeNode<T> node){
         if (node.children.size() == 0)
             leaves.add(node.element);
         else {
@@ -130,16 +155,18 @@ public class MPTT<T> {
     }
 
     // lowest common ancestor
+    @Override
     public T getLCA(T o1, T o2){
-        MPTTNode<T> n1 = o2n.get(o1);
-        MPTTNode<T> n2 = o2n.get(o2);
-        MPTTNode<T> lca = getLCA(n1, n2);
+        checkDirty();
+        MPTreeNode<T> n1 = o2n.get(o1);
+        MPTreeNode<T> n2 = o2n.get(o2);
+        MPTreeNode<T> lca = getLCA(n1, n2);
         if (lca != null)
             return lca.element;
         return null;
     }
 
-    private MPTTNode<T> getLCA(MPTTNode<T> n1, MPTTNode<T> n2) {
+    private MPTreeNode<T> getLCA(MPTreeNode<T> n1, MPTreeNode<T> n2) {
         if (n1 == null)
             return null;
         if (n1.left < n2.left && n1.right > n2.right) {
@@ -148,9 +175,11 @@ public class MPTT<T> {
         return getLCA(n1.parent, n2);
     }
 
+    @Override
     public List<T> getPathToNode(T elem){
+        checkDirty();
         ArrayList<T> list = new ArrayList<>();
-        MPTTNode<T> node = o2n.get(elem);
+        MPTreeNode<T> node = o2n.get(elem);
         list.add(elem);
 
         while (node.parent != null){
@@ -161,10 +190,11 @@ public class MPTT<T> {
         Collections.reverse(list);
         return list;
     }
-
+    @Override
     public boolean isAncestorOf(T ancestor, T decedent){
-        MPTTNode<T> na = o2n.get(ancestor);
-        MPTTNode<T> nd = o2n.get(decedent);
+        checkDirty();
+        MPTreeNode<T> na = o2n.get(ancestor);
+        MPTreeNode<T> nd = o2n.get(decedent);
         if (na == null)
             return false;
         if (nd == null)
@@ -172,9 +202,11 @@ public class MPTT<T> {
 
         return na.left < nd.left && na.right > nd.right;
     }
+    @Override
     public boolean isSibling(T o1, T o2){
-        MPTTNode<T> n1 = o2n.get(o1);
-        MPTTNode<T> n2 = o2n.get(o2);
+        checkDirty();
+        MPTreeNode<T> n1 = o2n.get(o1);
+        MPTreeNode<T> n2 = o2n.get(o2);
         return n1.parent == n2.parent;
     }
 }
