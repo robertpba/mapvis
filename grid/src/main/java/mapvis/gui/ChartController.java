@@ -7,13 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TreeItem;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import mapvis.Impl.TreeModel;
 import mapvis.grid.Grid;
-import mapvis.grid.HashMapGrid;
-import mapvis.grid.jfx.HexagonalTilingView;
+import mapvis.graphic.HexagonalTilingView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,8 +44,6 @@ public class ChartController implements Initializable  {
         originY.textProperty()
                 .bind(chart.originXProperty().asString());
 
-        colorMap.bindBidirectional(chart.colorMapProperty());
-        tree.bindBidirectional(chart.treeProperty());
         grid.bindBidirectional(chart.gridProperty());
 
         chart.setOnMouseClicked(e -> {

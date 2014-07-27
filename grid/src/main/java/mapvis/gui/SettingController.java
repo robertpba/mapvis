@@ -7,19 +7,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import mapvis.Impl.TileStylerImpl;
 import mapvis.Impl.TreeModel;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
+import mapvis.graphic.TileStyler;
 import mapvis.grid.Grid;
-import mapvis.grid.HashMapGrid;
-import mapvis.grid.jfx.HexagonalTilingView;
+import mapvis.Impl.HashMapGrid;
+import mapvis.graphic.HexagonalTilingView;
 import utils.RandomTreeGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 public class SettingController {
     @FXML
@@ -37,7 +38,7 @@ public class SettingController {
     public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<CoastCache<Integer>> cache = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Integer>> method1 = new SimpleObjectProperty<>();
-    public ObjectProperty<Function<Object, Color>> colorMap = new SimpleObjectProperty<>();
+    public ObjectProperty<TileStyler<Integer>> tileStyler = new SimpleObjectProperty<>();
 
     public HexagonalTilingView chart;
 
@@ -78,11 +79,16 @@ public class SettingController {
         Random rand = new Random(seed);
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
 
+        tileStyler.set(new TileStylerImpl<Integer>(tree.get(), grid.get()){
+            @Override
+            protected Color getColorByValue(Integer v) {
+                return map.get(v);
+            }
+        });
+
         for (Integer leaf : leaves) {
             map.put(leaf, new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
         }
-
-        colorMap.set(map::get);
     }
 
 

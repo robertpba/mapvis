@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Button?>
-<?import mapvis.grid.jfx.HexagonalTilingView?>
+<?import mapvis.graphic.HexagonalTilingView?>
 <?import java.awt.Insets?>
 <BorderPane
         xmlns="http://javafx.com/javafx/8"

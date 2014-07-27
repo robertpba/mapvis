@@ -1,4 +1,9 @@
-package mapvis.grid;
+package mapvis.Impl;
+
+import mapvis.grid.Dir;
+import mapvis.grid.Grid;
+import mapvis.grid.Pos;
+import mapvis.grid.Tile;
 
 import java.util.HashMap;
 import java.util.HashSet;

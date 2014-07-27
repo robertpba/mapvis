@@ -10,7 +10,7 @@
 <?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import mapvis.grid.jfx.HexagonalTilingView?>
+<?import mapvis.graphic.HexagonalTilingView?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.AppController">
     <top>

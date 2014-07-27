@@ -1,4 +1,4 @@
-package mapvis.grid.jfx;
+package mapvis.graphic;
 
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
@@ -111,11 +111,13 @@ public class HexagonalTilingView extends Pane {
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
 
-        grid.get().foreach(t->{
+
+
+        grid.get().foreach(t -> {
             if (t.getX() > tl.getX()
-                && t.getX() < br.getX()
-                && t.getY() > tl.getY()
-                && t.getY() < br.getY())
+                    && t.getX() < br.getX()
+                    && t.getY() > tl.getY()
+                    && t.getY() < br.getY())
 
                 updateHexagon(t.getX(), t.getY(), g);
         });
@@ -131,7 +133,6 @@ public class HexagonalTilingView extends Pane {
         g.translate(point2D.getX(), point2D.getY());
 
         render.drawHexagon(g,x,y);
-        render.drawBorders(g,x,y);
 
         g.restore();
     }
@@ -141,16 +142,10 @@ public class HexagonalTilingView extends Pane {
     public final Grid<Integer> getGrid() { return this.gridProperty().get(); }
     public final void setGrid(Grid<Integer> colormap) { this.gridProperty().set(colormap); }
 
-    private ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty();
-    public ObjectProperty<TreeModel<Integer>> treeProperty() { return this.tree; }
-    public final TreeModel<Integer> getTree() { return this.treeProperty().get(); }
-    public final void setTree(TreeModel<Integer> colormap) { this.treeProperty().set(colormap); }
-
-    private ObjectProperty<Function<Object, Color>> colorMap = new SimpleObjectProperty();
-    public ObjectProperty<Function<Object, Color>> colorMapProperty() { return this.colorMap; }
-    public final Function<Object, Color> getColorMap() { return this.colorMapProperty().get(); }
-    public final void setColorMap(Function<Object, Color> colormap) { this.colorMapProperty().set(colormap); }
-
+    private ObjectProperty<TileStyler<Integer>> styler = new SimpleObjectProperty();
+    public ObjectProperty<TileStyler<Integer>> stylerProperty() { return this.styler; }
+    public final TileStyler<Integer> getStyler() { return this.stylerProperty().get(); }
+    public final void setStyler(TileStyler<Integer> colormap) { this.stylerProperty().set(colormap); }
 
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     public DoubleProperty zoomProperty() { return this.zoom; }
@@ -166,80 +161,6 @@ public class HexagonalTilingView extends Pane {
     public DoubleProperty originYProperty() { return this.originY; }
     public final double getOriginY() { return this.originYProperty().get(); }
     public final void setOriginY(double y) { this.originYProperty().set(y); }
-
-
-    private final class ChildNodeProperty extends ObjectPropertyBase<Node> {
-        private Node oldValue = null;
-        private final String propertyName;
-        private boolean isBeingInvalidated;
-
-        ChildNodeProperty(String propertyName) {
-            this.propertyName = propertyName;
-            getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> {
-                if (oldValue == null || isBeingInvalidated) {
-                    return;
-                }
-                while (c.next()) {
-                    if (c.wasRemoved()) {
-                        List<? extends Node> removed = c.getRemoved();
-                        // Do not remove again in invalidated
-                        removed.stream()
-                                .filter(aRemoved -> aRemoved == oldValue)
-                                .forEach(aRemoved -> {
-                                    oldValue = null; // Do not remove again in invalidated
-                                    set(null);
-                                });
-                    }
-                }
-            });
-        }
-
-        @Override
-        protected void invalidated() {
-            final List<Node> children = getChildren();
-
-            isBeingInvalidated = true;
-            try {
-                if (oldValue != null) {
-                    children.remove(oldValue);
-                }
-
-                final Node _value = get();
-                this.oldValue = _value;
-
-                if (_value != null) {
-                    children.add(_value);
-                }
-            } finally {
-                isBeingInvalidated = false;
-            }
-        }
-
-        @Override
-        public Object getBean() {
-            return HexagonalTilingView.this;
-        }
-
-        @Override
-        public String getName() {
-            return propertyName;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public void zoom(double scale){

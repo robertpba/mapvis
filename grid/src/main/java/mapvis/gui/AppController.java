@@ -8,7 +8,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import mapvis.Impl.TreeModel;
 import mapvis.grid.Grid;
-import mapvis.grid.HashMapGrid;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,8 +31,7 @@ public class AppController implements Initializable {
         tree.bindBidirectional(chartController.tree);
         grid.bindBidirectional(chartController.grid);
 
-
-        chartController.colorMap.bindBidirectional(settingController.colorMap);
+        chartController.chart.stylerProperty().bindBidirectional(settingController.tileStyler);
 
         settingController.chart = chartController.chart;
 
@@ -43,7 +41,6 @@ public class AppController implements Initializable {
             root.setExpanded(true);
             treeTableView.setRoot(root);
         });
-
     }
 
     public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
