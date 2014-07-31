@@ -6,10 +6,14 @@ import mapvis.grid.Tile;
 import mapvis.tree.MPTree;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.collections.Sets;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 public class CoastCacheTest {
     private MPTree<Integer> tree;
@@ -38,31 +42,37 @@ public class CoastCacheTest {
     @Test
     public void testInsertAffect1() throws Exception {
         grid.put(2,4, 3);
-        cache.insertAffect(2, 4, 3);
-        Set<Tile<Integer>> set = cache.getCoast(3);
-        assertEquals(set.size(), 1);
+        cache.insert(2, 4, 3);
+        Set<Tile<Integer>> edges = cache.getEdge(3);
 
-        set = cache.getCoast(1);
-        assertEquals(set.size(), 1);
+        List<Tile<Integer>> expected = Arrays.asList(new Tile<>(2, 4, 3));
+
+        assertEquals(edges, expected);
+
+        edges = cache.getEdge(1);
+        assertEquals(edges, expected);
     }
 
     @Test
     public void testInsertAffect2() throws Exception {
         grid.put(2,4, 5);
-        cache.insertAffect(2, 4, 5);
-        Set<Tile<Integer>> set = cache.getCoast(5);
-        assertEquals(set.size(), 1);
+        cache.insert(2, 4, 5);
 
-        set = cache.getCoast(2);
-        assertEquals(set.size(), 1);
+        List<Tile<Integer>> expected = Arrays.asList(new Tile<>(2, 4, 3));
 
-        set = cache.getCoast(1);
-        assertEquals(set.size(), 1);
+        Set<Tile<Integer>> set = cache.getEdge(5);
+        assertEquals(set, expected);
 
-        set = cache.getCoast(5);
-        assertEquals(set.size(), 1);
+        set = cache.getEdge(2);
+        assertEquals(set, expected);
 
-        set = cache.getCoast(3);
+        set = cache.getEdge(1);
+        assertEquals(set, expected);
+
+        set = cache.getEdge(5);
+        assertEquals(set, expected);
+
+        set = cache.getEdge(3);
         assertEquals(set.size(), 0);
     }
 
@@ -70,10 +80,10 @@ public class CoastCacheTest {
     @Test
     public void testInsertAffect3() throws Exception {
         grid.put(2,4, 5);
-        cache.insertAffect(2, 4, 5);
+        cache.insert(2, 4, 5);
 
         grid.put(2,5, 2);
-        cache.insertAffect(2, 5, 2);
+        cache.insert(2, 5, 2);
 
         //       <2,4,"5">
         // <1,4>           <3,4>
@@ -81,17 +91,68 @@ public class CoastCacheTest {
 
         Set<Tile<Integer>> set;
 
-        set = cache.getCoast(5);
+        set = cache.getEdge(5);
         assertEquals(set.size(), 1);
+
         assertTrue(set.contains(new Tile<>(2, 4, 5)));
 
-        set = cache.getCoast(2);
+        set = cache.getEdge(2);
         assertEquals(set.size(), 2);
         assertTrue(set.contains(new Tile<>(2, 4, 5)));
         assertTrue(set.contains(new Tile<>(2, 5, 2)));
 
-        set = cache.getCoast(3);
+        set = cache.getEdge(3);
         assertEquals(set.size(), 0);
     }
+
+
+
+    @Test
+    public void testInsertWater1() throws Exception {
+        grid.put(2,4, 3);
+        cache.insert(2, 4, 3);
+        Set<Tile<Integer>> waters = cache.getWaters(3);
+
+        Set<Tile<Integer>> expected = Sets.newHashSet(Arrays.asList(
+                new Tile<>(2, 3, null),
+                new Tile<>(2, 5, null),
+                new Tile<>(1, 3, null),
+                new Tile<>(1, 4, null),
+                new Tile<>(3, 3, null),
+                new Tile<>(3, 4, null)
+        ));
+
+        assertEquals(waters, expected);
+
+        //waters = cache.getEdge(1);
+        //assertEquals(waters, expected);
+    }
+
+    @Test
+    public void testInsertWater2() throws Exception {
+        grid.put(2,4, 3);
+        cache.insert(2, 4, 3);
+        grid.put(2,3, 3);
+        cache.insert(2, 3, 3);
+        Set<Tile<Integer>> waters = cache.getWaters(3);
+
+        Set<Tile<Integer>> expected = Sets.newHashSet(Arrays.asList(
+                new Tile<>(2, 2, null),
+                new Tile<>(2, 5, null),
+                new Tile<>(1, 2, null),
+                new Tile<>(1, 3, null),
+                new Tile<>(1, 4, null),
+                new Tile<>(3, 2, null),
+                new Tile<>(3, 3, null),
+                new Tile<>(3, 4, null)
+        ));
+
+        assertEquals(waters, expected);
+
+        //waters = cache.getEdge(1);
+        //assertEquals(waters, expected);
+    }
+
+
 
 }

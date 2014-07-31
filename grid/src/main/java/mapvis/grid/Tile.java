@@ -31,7 +31,7 @@ public class Tile<T> {
 
         if (x != tile.x) return false;
         if (y != tile.y) return false;
-        if (obj != null ? !obj.equals(tile.obj) : tile.obj != null) return false;
+        //if (obj != null ? !obj.equals(tile.obj) : tile.obj != null) return false;
 
         return true;
     }
@@ -40,7 +40,7 @@ public class Tile<T> {
     public int hashCode() {
         int result = x;
         result = 31 * result + y;
-        result = 31 * result + (obj != null ? obj.hashCode() : 0);
+        //result = 31 * result + (obj != null ? obj.hashCode() : 0);
         return result;
     }
 

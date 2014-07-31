@@ -4,10 +4,8 @@ import mapvis.grid.Grid;
 import mapvis.grid.Tile;
 import mapvis.Impl.TreeModel;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Method1<T> {
     public TreeModel<T> tree;
@@ -37,7 +35,7 @@ public class Method1<T> {
             Tile<T> tile = nextAvailablePlace(o);
 
             grid.put(tile.getX(), tile.getY(), o);
-            cache.insertAffect(tile.getX(), tile.getY(), o);
+            cache.insert(tile.getX(), tile.getY(), o);
         }
     }
 
@@ -51,24 +49,21 @@ public class Method1<T> {
 
         for (T node : nodes) {
             o = node;
-            Set<Tile<T>> coast = cache.getCoast(o);
-            if (coast.size() == 0) {
+            Set<Tile<T>> waters = cache.getWaters(o);
 
+
+
+            if (waters.size() == 0) {
                 if (cache.getEdge(o).size() > 0)
                     System.out.printf("Insufficient space: %s\n", o.toString());
-
                 continue;
             }
             @SuppressWarnings("unchecked")
-            Tile<T>[] array = coast.toArray(new Tile[coast.size()]);
-            int size = coast.size();
-
+            Tile<T>[] array = waters.toArray(new Tile[waters.size()]);
+            int size = waters.size();
 
             int item = random.nextInt(size); // In real life, the Random object should be rather more shared than this
-
             tile = array[item];
-            Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
-            tile = neighbours.stream().filter(t -> t.getObj() == null).findFirst().get();
             break;
         }
         if (tile == null) {
@@ -76,6 +71,9 @@ public class Method1<T> {
         }
         return tile;
     }
+
+
+
 
 
 
