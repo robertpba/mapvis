@@ -9,7 +9,6 @@ import java.util.*;
 public class CoastCache<T> {
 
     Map<T, Set<Tile<T>>> edge = new HashMap<>();
-    Map<T, Set<Tile<T>>> coast = new HashMap<>();
     Map<T, Set<Tile<T>>> waters = new HashMap<>();
 
     public Grid<T> grid;
@@ -72,8 +71,6 @@ public class CoastCache<T> {
 
     public void remove(int x, int y, T o){
         Tile<T> t = grid.getTile(x, y);
-
-        List<T> pathToNode = tree.getPathToNode(t.getObj());
 
         Set<Tile<T>> neighbours = grid.getNeighbours(x, y);
 
