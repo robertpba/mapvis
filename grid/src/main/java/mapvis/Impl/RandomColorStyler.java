@@ -1,12 +1,12 @@
 package mapvis.Impl;
 
 import javafx.scene.paint.Color;
-import mapvis.grid.Grid;
+import mapvis.models.TreeModel;
+import mapvis.models.Grid;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class RandomColorStyler<T> extends TileStylerBase<T> {
     public int level;

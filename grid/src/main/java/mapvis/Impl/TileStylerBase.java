@@ -1,11 +1,11 @@
 package mapvis.Impl;
 
 import javafx.scene.paint.Color;
-import mapvis.Impl.TreeModel;
+import mapvis.models.TreeModel;
 import mapvis.graphic.TileStyler;
-import mapvis.grid.Dir;
-import mapvis.grid.Grid;
-import mapvis.grid.Tile;
+import mapvis.models.Dir;
+import mapvis.models.Grid;
+import mapvis.models.Tile;
 
 public class TileStylerBase<T> implements TileStyler<T> {
     TreeModel<T> tree;

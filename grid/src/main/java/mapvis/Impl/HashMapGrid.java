@@ -1,9 +1,9 @@
 package mapvis.Impl;
 
-import mapvis.grid.Dir;
-import mapvis.grid.Grid;
-import mapvis.grid.Pos;
-import mapvis.grid.Tile;
+import mapvis.models.Dir;
+import mapvis.models.Grid;
+import mapvis.models.Pos;
+import mapvis.models.Tile;
 
 import java.util.HashMap;
 import java.util.HashSet;

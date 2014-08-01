@@ -1,7 +1,7 @@
 package mapvis.gui;
 
 import javafx.scene.control.TreeItem;
-import mapvis.Impl.TreeModel;
+import mapvis.models.TreeModel;
 
 public class TreeTableViewModelAdapter {
     TreeModel<Integer> tree;

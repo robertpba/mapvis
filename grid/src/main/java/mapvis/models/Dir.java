@@ -1,4 +1,4 @@
-package mapvis.grid;
+package mapvis.models;
 
 public enum Dir {
       N,

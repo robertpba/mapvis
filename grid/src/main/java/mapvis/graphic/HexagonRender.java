@@ -1,10 +1,8 @@
 package mapvis.graphic;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
-import mapvis.Impl.RandomColorStyler;
-import mapvis.grid.Dir;
+import mapvis.models.Dir;
 
 class HexagonRender {
     HexagonalTilingView view;

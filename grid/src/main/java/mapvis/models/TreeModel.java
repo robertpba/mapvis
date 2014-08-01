@@ -1,4 +1,4 @@
-package mapvis.Impl;
+package mapvis.models;
 
 import java.util.List;
 import java.util.Set;

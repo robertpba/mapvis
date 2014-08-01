@@ -1,6 +1,6 @@
 package mapvis.liquidvis.util;
 
-import mapvis.common.algorithm.CircleOverlapRemoval;
+import mapvis.commons.algorithm.CircleOverlapRemoval;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;

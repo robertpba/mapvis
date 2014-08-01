@@ -10,7 +10,7 @@ import mapvis.liquidvis.model.event.VertexMoved;
 import java.awt.geom.Point2D;
 import java.util.*;
 
-import static mapvis.common.PointExtension.*;
+import static mapvis.commons.PointExtension.*;
 
 public class Method3<T> {
 

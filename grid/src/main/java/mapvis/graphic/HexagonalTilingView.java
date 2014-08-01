@@ -1,25 +1,17 @@
 package mapvis.graphic;
 
-import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
-import mapvis.grid.Grid;
-import mapvis.Impl.TreeModel;
-
-import java.util.List;
-import java.util.function.Function;
+import mapvis.models.Grid;
 
 public class HexagonalTilingView extends Pane {
 

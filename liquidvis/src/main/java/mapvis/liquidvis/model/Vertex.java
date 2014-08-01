@@ -1,7 +1,5 @@
 package mapvis.liquidvis.model;
 
-import mapvis.common.PointExtension;
-
 import java.awt.geom.Point2D;
 
 public class Vertex {

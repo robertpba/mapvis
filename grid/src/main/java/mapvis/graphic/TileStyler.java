@@ -1,7 +1,7 @@
 package mapvis.graphic;
 
 import javafx.scene.paint.Color;
-import mapvis.grid.Dir;
+import mapvis.models.Dir;
 
 public interface TileStyler<T> {
     boolean isBorderVisible(int x, int y, Dir dir);

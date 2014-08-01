@@ -1,13 +1,12 @@
 package mapvis.algo;
 
-import mapvis.grid.Grid;
-import mapvis.grid.Tile;
-import mapvis.Impl.TreeModel;
+import mapvis.models.Grid;
+import mapvis.models.Tile;
+import mapvis.models.TreeModel;
 
 import java.util.*;
 
 public class CoastCache<T> {
-
     Map<T, Set<Tile<T>>> edge = new HashMap<>();
     Map<T, Set<Tile<T>>> waters = new HashMap<>();
 

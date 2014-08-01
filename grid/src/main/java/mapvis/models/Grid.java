@@ -1,4 +1,4 @@
-package mapvis.grid;
+package mapvis.models;
 
 import java.util.Set;
 import java.util.function.Consumer;

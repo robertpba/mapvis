@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static mapvis.common.PointExtension.*;
+import static mapvis.commons.PointExtension.*;
 
 public class Method2 {
     public MapModel model;

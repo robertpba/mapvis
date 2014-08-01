@@ -1,4 +1,4 @@
-package mapvis.grid;
+package mapvis.models;
 
 public class Pos {
     int x;

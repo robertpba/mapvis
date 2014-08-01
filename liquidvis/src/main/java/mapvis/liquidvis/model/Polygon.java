@@ -2,7 +2,7 @@ package mapvis.liquidvis.model;
 
 import java.awt.geom.Point2D;
 
-import static mapvis.common.PointExtension.*;
+import static mapvis.commons.PointExtension.*;
 
 public class Polygon {
     public Object node;

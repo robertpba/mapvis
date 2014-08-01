@@ -1,9 +1,9 @@
 package mapvis.algo;
 
-import mapvis.grid.Grid;
+import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
-import mapvis.grid.Tile;
-import mapvis.tree.MPTree;
+import mapvis.models.Tile;
+import mapvis.Impl.MPTree;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.collections.Sets;

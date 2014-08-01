@@ -1,6 +1,6 @@
 package mapvis.liquidvis.gui.actions;
 
-import mapvis.common.algorithm.FTAOverlapRemoval;
+import mapvis.commons.algorithm.FTAOverlapRemoval;
 import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.*;
 

@@ -1,7 +1,6 @@
 package utils;
 
-import mapvis.tree.MPTree;
-import mapvis.Impl.TreeModel;
+import mapvis.Impl.MPTree;
 
 import java.util.Random;
 

@@ -1,6 +1,5 @@
 package mapvis;
 
-import mapvis.Impl.TreeModel;
 import org.testng.annotations.Test;
 
 public class RandomTreeGeneratorTest {

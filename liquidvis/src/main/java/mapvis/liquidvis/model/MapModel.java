@@ -1,6 +1,6 @@
 package mapvis.liquidvis.model;
 
-import mapvis.common.SpatialIndex;
+import mapvis.commons.SpatialIndex;
 import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.event.*;
 import mapvis.liquidvis.model.handler.*;
@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static mapvis.common.PointExtension.*;
+import static mapvis.commons.PointExtension.*;
 
 public class MapModel<V> {
     public int iteration = 0;

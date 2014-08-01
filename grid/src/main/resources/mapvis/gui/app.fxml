@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.cell.*?>
-<?import mapvis.grid.jfx.*?>
+<?import mapvis.models.jfx.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>

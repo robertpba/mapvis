@@ -11,15 +11,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import mapvis.Impl.TreeModel;
-import mapvis.grid.Grid;
+import mapvis.models.TreeModel;
+import mapvis.models.Grid;
 import mapvis.graphic.HexagonalTilingView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 public class ChartController implements Initializable  {
     @FXML

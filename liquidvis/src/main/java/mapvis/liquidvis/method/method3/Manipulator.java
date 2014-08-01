@@ -5,7 +5,7 @@ import mapvis.liquidvis.model.event.VertexMoved;
 
 import java.awt.geom.Point2D;
 
-import static mapvis.common.PointExtension.*;
+import static mapvis.commons.PointExtension.*;
 
 public class Manipulator  {
     private MapModel model;

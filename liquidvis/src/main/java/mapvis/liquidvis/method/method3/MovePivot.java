@@ -9,7 +9,7 @@ import mapvis.liquidvis.model.handler.ModelEventListener;
 
 import java.awt.geom.Point2D;
 
-import static mapvis.common.PointExtension.*;
+import static mapvis.commons.PointExtension.*;
 
 public class MovePivot implements ModelEventListener {
 
