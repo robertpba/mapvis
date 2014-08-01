@@ -2,13 +2,7 @@ rootProject.name = 'mapvis'
 
 include 'patrick'
 
-include 'plainmapper'
-
 include 'liquidvis'
-
-include 'utility'
-
-include 'preprocessing'
 
 include 'vistools'
 
