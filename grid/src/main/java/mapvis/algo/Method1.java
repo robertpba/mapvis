@@ -36,7 +36,7 @@ public class Method1<T> {
         while (count-->0) {
             Tile<T> tile = nextAvailablePlace(o);
 
-            grid.put(tile.getX(), tile.getY(), o);
+            grid.putItem(tile.getX(), tile.getY(), o);
             cache.insert(tile.getX(), tile.getY(), o);
         }
     }
@@ -73,7 +73,7 @@ public class Method1<T> {
 
     private int score(Tile<T> tile){
         Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
-        long n = neighbours.stream().filter(t->t.getObj() != null)
+        long n = neighbours.stream().filter(t->t.getItem() != null)
                 .count();
         return (int)Math.pow(6, n);
     }

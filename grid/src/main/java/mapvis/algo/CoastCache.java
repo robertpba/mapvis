@@ -23,16 +23,16 @@ public class CoastCache<T> {
     public void insert(int x, int y, T o){
         Tile<T> t = grid.getTile(x, y);
 
-        List<T> pathToNode = tree.getPathToNode(t.getObj());
+        List<T> pathToNode = tree.getPathToNode(t.getItem());
 
         Set<Tile<T>> neighbours = grid.getNeighbours(x, y);
 
         updateEdge(t);
         for (Tile<T> tile : neighbours) {
-            if (tile.getObj() == null){
+            if (tile.getItem() == null){
                 addWaters(pathToNode, tile);
             } else {
-                removeWaters(tile.getObj(), t);
+                removeWaters(tile.getItem(), t);
                 updateEdge(tile);
             }
         }
@@ -51,12 +51,12 @@ public class CoastCache<T> {
         }
     }
     void updateEdge(Tile<T> t){
-        List<T> nodes = tree.getPathToNode(t.getObj());
+        List<T> nodes = tree.getPathToNode(t.getItem());
         Set<Tile<T>> neighbours = grid.getNeighbours(t.getX(), t.getY());
 
         for (T node : nodes) {
             boolean isEdge = !neighbours.stream()
-                    .allMatch(n -> tree.isAncestorOf(node, n.getObj()));
+                    .allMatch(n -> tree.isAncestorOf(node, n.getItem()));
 
             Set<Tile<T>> el = getEdgeList(node);
 
@@ -75,10 +75,10 @@ public class CoastCache<T> {
 
         updateEdge(t);
         for (Tile<T> tile : neighbours) {
-            if (tile.getObj() == null){
+            if (tile.getItem() == null){
                 removeWaters(o, tile);
             } else {
-                addWaters(tree.getPathToNode(tile.getObj()), t);
+                addWaters(tree.getPathToNode(tile.getItem()), t);
                 updateEdge(tile);
             }
         }

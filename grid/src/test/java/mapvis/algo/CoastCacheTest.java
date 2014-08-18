@@ -41,7 +41,7 @@ public class CoastCacheTest {
 
     @Test
     public void testInsertAffect1() throws Exception {
-        grid.put(2,4, 3);
+        grid.putItem(2, 4, 3);
         cache.insert(2, 4, 3);
         Set<Tile<Integer>> edges = cache.getEdge(3);
 
@@ -55,7 +55,7 @@ public class CoastCacheTest {
 
     @Test
     public void testInsertAffect2() throws Exception {
-        grid.put(2,4, 5);
+        grid.putItem(2, 4, 5);
         cache.insert(2, 4, 5);
 
         List<Tile<Integer>> expected = Arrays.asList(new Tile<>(2, 4, 3));
@@ -79,10 +79,10 @@ public class CoastCacheTest {
 
     @Test
     public void testInsertAffect3() throws Exception {
-        grid.put(2,4, 5);
+        grid.putItem(2, 4, 5);
         cache.insert(2, 4, 5);
 
-        grid.put(2,5, 2);
+        grid.putItem(2, 5, 2);
         cache.insert(2, 5, 2);
 
         //       <2,4,"5">
@@ -109,7 +109,7 @@ public class CoastCacheTest {
 
     @Test
     public void testInsertWater1() throws Exception {
-        grid.put(2,4, 3);
+        grid.putItem(2, 4, 3);
         cache.insert(2, 4, 3);
         Set<Tile<Integer>> waters = cache.getWaters(3);
 
@@ -130,9 +130,9 @@ public class CoastCacheTest {
 
     @Test
     public void testInsertWater2() throws Exception {
-        grid.put(2,4, 3);
+        grid.putItem(2, 4, 3);
         cache.insert(2, 4, 3);
-        grid.put(2,3, 3);
+        grid.putItem(2, 3, 3);
         cache.insert(2, 3, 3);
         Set<Tile<Integer>> waters = cache.getWaters(3);
 

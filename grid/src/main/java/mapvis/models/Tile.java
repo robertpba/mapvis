@@ -3,7 +3,7 @@ package mapvis.models;
 public class Tile<T> {
     int x;
     int y;
-    T obj;
+    T item;
     int tag;
 
     Pos pos;
@@ -18,30 +18,27 @@ public class Tile<T> {
     public int getY() {
         return y;
     }
-    public T getObj() {
-        return obj;
+    public T getItem() {
+        return item;
     }
 
     public Pos getPos(){ return pos; }
 
     public boolean isEmpty(){return tag == EMPTY;}
 
-    public Tile(int x, int y){
-        this(x,y,null, EMPTY);
-    }
+    public Tile(int x, int y){ this(new Pos(x,y), null, EMPTY); }
+    public Tile(int x, int y, T item) { this (new Pos(x,y), item, LAND); }
+    public Tile(int x, int y, T item, int tag){ this (new Pos(x,y), item, tag); }
 
-    public Tile(int x, int y, T obj) {
-        this(x, y, obj, LAND);
-    }
-
-    public Tile(int x, int y, T obj, int tag){
-        this.x = x;
-        this.y = y;
-        this.pos = new Pos(x,y);
-        this.obj = obj;
+    public Tile(Pos pos) { this(pos, null, EMPTY); }
+    public Tile(Pos pos, T item) { this(pos, item, EMPTY); }
+    public Tile(Pos pos, T item, int tag){
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.pos = pos;
+        this.item = item;
         this.tag = tag;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -52,7 +49,7 @@ public class Tile<T> {
 
         if (x != tile.x) return false;
         if (y != tile.y) return false;
-        //if (obj != null ? !obj.equals(tile.obj) : tile.obj != null) return false;
+        //if (item != null ? !item.equals(tile.item) : tile.item != null) return false;
 
         return true;
     }
@@ -61,7 +58,7 @@ public class Tile<T> {
     public int hashCode() {
         int result = x;
         result = 31 * result + y;
-        //result = 31 * result + (obj != null ? obj.hashCode() : 0);
+        //result = 31 * result + (item != null ? item.hashCode() : 0);
         return result;
     }
 

@@ -20,16 +20,11 @@ public class HashMapGrid<T> implements Grid<T> {
         map.put(tile.getPos(), tile);
     }
 
-    @Override
-    @Deprecated
-    public T get(int x, int y) {
-        return map.get(new Pos(x, y)).getObj();
-    }
 
     @Override
-    public Tile<T> getTile(int x, int y) {
-        Tile<T> t = map.get(new Pos(x,y));
-        if (t == null) return new Tile<T>(x,y);
+    public Tile<T> getTile(Pos pos) {
+        Tile<T> t = map.get(pos);
+        if (t == null) return new Tile<>(pos);
         else return t;
     }
 

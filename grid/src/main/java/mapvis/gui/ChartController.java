@@ -56,7 +56,7 @@ public class ChartController implements Initializable  {
         chart.setOnMouseClicked(e -> {
             Point2D pl = chart.localToPlane(e.getX(), e.getY());
             Point2D point = chart.planeToHexagonal(pl.getX(), pl.getY());
-            Integer id = grid.get().get((int)point.getX(), (int)point.getY());
+            Integer id = grid.get().getItem((int) point.getX(), (int) point.getY());
             if (id == null)
                 return;
 

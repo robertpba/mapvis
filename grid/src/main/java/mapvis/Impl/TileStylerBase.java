@@ -102,7 +102,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         cache.x = x;
         cache.y = y;
 
-        T t = getGrid().get(x, y);
+        T t = getGrid().getItem(x, y);
         if (t == null)
             cache.v = null;
         cache.v = t;
@@ -118,11 +118,11 @@ public class TileStylerBase<T> implements TileStyler<T> {
     }
 
     int calcLevel(int x, int y, Dir dir){
-        T t = getGrid().get(x, y);
+        T t = getGrid().getItem(x, y);
         Tile<T> tn = getGrid().getNeighbour(x, y, dir);
-        if (t == null || tn == null || tn.getObj() == null || t.equals(tn.getObj()))
+        if (t == null || tn == null || tn.getItem() == null || t.equals(tn.getItem()))
             return 0;
-        T lca = getTree().getLCA(t, tn.getObj());
+        T lca = getTree().getLCA(t, tn.getItem());
         if (lca == null) return 0;
 
         return getTree().getDepth(lca) + 1;
