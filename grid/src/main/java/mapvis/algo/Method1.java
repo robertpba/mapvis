@@ -6,7 +6,6 @@ import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
 import mapvis.models.TreeModel;
-import sun.invoke.empty.Empty;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class Method1<T> {
     public Method1(TreeModel<T> tree, Grid<T> grid) {
         this.tree = tree;
         this.grid = grid;
-        this.cache = new CoastCache<T>(grid, tree);
+        this.cache = new CoastCache<>(grid, tree);
     }
 
     public void Begin(){
@@ -29,13 +28,37 @@ public class Method1<T> {
 
     public void recursive(T o){
         Set<T> children = tree.getChildren(o);
+
         if (children.size() > 0) {
             children.forEach(this::recursive);
+            int level = tree.getDepth(o);
+
+            if (level == 1)
+            addPadding(o,10);
+
+
             return;
         }
 
         allocate(o);
     }
+
+    private void addPadding(T o, int i) {
+        while (i-->0) {
+            List<Tile<T>> list = cache.getEdge(o).stream()
+                    .flatMap(t -> grid.getNeighbours(t.getX(), t.getY()).stream())
+                    .filter(t -> t.getItem() == null)
+                    .distinct()
+                    .collect(Collectors.toList());
+            list.forEach(t -> {
+                Tile<T> tile = new Tile<>(t.getPos(), o, Tile.SEA);
+                grid.putTile(tile);
+                cache.insert(tile.getX(), tile.getY(), o);
+            });
+        }
+
+    }
+
 
     public void allocate(T o){
         ArrayList<Tile<T>> rollback = new ArrayList<>();
@@ -99,35 +122,6 @@ public class Method1<T> {
         }
 
         return new Pos(0, 0);
-    }
-
-    public Tile<T> nextAvailablePlace(T o){
-        List<T> nodes = tree.getPathToNode(o);
-        Collections.reverse(nodes);
-
-        Tile<T> tile = null;
-
-        for (T node : nodes) {
-            o = node;
-            Set<Tile<T>> waters = cache.getWaters(o);
-
-            if (waters.size() == 0) {
-                if (cache.getEdge(o).size() > 0)
-                    System.out.printf("Insufficient space: %s\n", o.toString());
-                continue;
-            }
-
-            List<Tuple2<Integer, Tile<T>>> list = waters.stream().map(t -> new Tuple2<>(score(t), t))
-                    .sorted(Comparator.comparing(t -> t.first))
-                    .collect(Collectors.toList());
-
-            tile = RandomHelper.weightedRandom(list, random);
-            break;
-        }
-        if (tile == null) {
-            return new Tile<>(0, 0, null);
-        }
-        return tile;
     }
 
     private int score(Tile<T> tile){

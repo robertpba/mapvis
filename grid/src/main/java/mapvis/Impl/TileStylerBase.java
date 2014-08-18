@@ -81,7 +81,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
     @Override
     public boolean isVisible(int x, int y) {
         TileCache c = getCache(x, y);
-        return c.v != null;
+        return c.t != Tile.SEA && c.v != null;
     }
 
     @Override
@@ -97,15 +97,20 @@ public class TileStylerBase<T> implements TileStyler<T> {
 
     TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
-        if (cache.x == x && cache.y == y)
+        Tile<T> tile = grid.getTile(x, y);
+        if (cache.x == x && cache.y == y && cache.t == tile.getTag())
             return cache;
+
         cache.x = x;
         cache.y = y;
+        cache.t = tile.getTag();
 
         T t = getGrid().getItem(x, y);
+
         if (t == null)
             cache.v = null;
-        cache.v = t;
+        else
+            cache.v = t;
 
         cache.borderN = calcLevel(x, y, Dir.N);
         cache.borderS = calcLevel(x, y, Dir.S);
@@ -118,11 +123,17 @@ public class TileStylerBase<T> implements TileStyler<T> {
     }
 
     int calcLevel(int x, int y, Dir dir){
-        T t = getGrid().getItem(x, y);
+        Tile<T> t = getGrid().getTile(x, y);
         Tile<T> tn = getGrid().getNeighbour(x, y, dir);
-        if (t == null || tn == null || tn.getItem() == null || t.equals(tn.getItem()))
+        if (t.getItem() == null || tn.getItem() == null || t.getItem() == tn.getItem())
             return 0;
-        T lca = getTree().getLCA(t, tn.getItem());
+        if (t.getTag() == Tile.SEA)
+            return 0;
+        if (tn.getTag() == Tile.SEA)
+            return 0;
+
+
+        T lca = getTree().getLCA(t.getItem(), tn.getItem());
         if (lca == null) return 0;
 
         return getTree().getDepth(lca) + 1;
@@ -132,6 +143,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         public T v;
         public int x;
         public int y;
+        public int t;
 
         public int borderN;
         public int borderS;

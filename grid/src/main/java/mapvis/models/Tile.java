@@ -8,9 +8,9 @@ public class Tile<T> {
 
     Pos pos;
 
-    final static int EMPTY = -1;
-    final static int LAND = 0;
-    final static int SEA = 1;  // territorial sea
+    public final static int EMPTY = -1;
+    public final static int LAND = 0;
+    public final static int SEA = 1;  // territorial sea
 
     public int getX() {
         return x;
@@ -21,6 +21,7 @@ public class Tile<T> {
     public T getItem() {
         return item;
     }
+    public int getTag(){ return tag; }
 
     public Pos getPos(){ return pos; }
 

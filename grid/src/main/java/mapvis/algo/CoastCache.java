@@ -14,11 +14,9 @@ public class CoastCache<T> {
     public TreeModel<T> tree;
 
     public CoastCache(Grid<T> grid, TreeModel<T> tree){
-
         this.grid = grid;
         this.tree = tree;
     }
-
 
     public void insert(int x, int y, T o){
         Tile<T> t = grid.getTile(x, y);
