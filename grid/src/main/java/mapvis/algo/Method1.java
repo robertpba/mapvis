@@ -15,10 +15,10 @@ public class Method1<T> {
     public Grid<T> grid;
     private Random random = new Random(1);
 
-    public Method1(TreeModel<T> tree, CoastCache<T> cache, Grid<T> grid) {
+    public Method1(TreeModel<T> tree, Grid<T> grid) {
         this.tree = tree;
-        this.cache = cache;
         this.grid = grid;
+        this.cache = new CoastCache<T>(grid, tree);
     }
 
     public void Begin(){

@@ -32,7 +32,7 @@ public class Method1Test {
 
     @Test
     public void testBegin() throws Exception {
-        Method1<Integer> method1 = new Method1<>(tree, cache, grid);
+        Method1<Integer> method1 = new Method1<>(tree, grid);
         method1.Begin();
 
     }

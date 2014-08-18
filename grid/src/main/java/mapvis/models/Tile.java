@@ -4,6 +4,13 @@ public class Tile<T> {
     int x;
     int y;
     T obj;
+    int tag;
+
+    Pos pos;
+
+    final static int EMPTY = -1;
+    final static int LAND = 0;
+    final static int SEA = 1;  // territorial sea
 
     public int getX() {
         return x;
@@ -15,12 +22,26 @@ public class Tile<T> {
         return obj;
     }
 
-    public Tile(int x, int y, T obj) {
+    public Pos getPos(){ return pos; }
 
+    public boolean isEmpty(){return tag == EMPTY;}
+
+    public Tile(int x, int y){
+        this(x,y,null, EMPTY);
+    }
+
+    public Tile(int x, int y, T obj) {
+        this(x, y, obj, LAND);
+    }
+
+    public Tile(int x, int y, T obj, int tag){
         this.x = x;
         this.y = y;
+        this.pos = new Pos(x,y);
         this.obj = obj;
+        this.tag = tag;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -32,7 +32,6 @@ public class SettingController implements Initializable {
 
     public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<CoastCache<Integer>> cache = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Integer>> method1 = new SimpleObjectProperty<>();
 
     public HexagonalTilingView chart;
@@ -72,8 +71,7 @@ public class SettingController implements Initializable {
         RandomTreeGenerator gen = new RandomTreeGenerator(seed);
         tree.set(gen.getTree(depth, span, weight));
         grid.set(new HashMapGrid<>());
-        cache.set(new CoastCache<>(grid.get(), tree.get()));
-        method1.set(new Method1<>(tree.get(), cache.get(), grid.get()));
+        method1.set(new Method1<>(tree.get(), grid.get()));
 
         Set<Integer> leaves = tree.get().getLeaves();
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
