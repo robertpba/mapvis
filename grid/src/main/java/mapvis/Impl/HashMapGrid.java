@@ -13,21 +13,24 @@ import java.util.function.Consumer;
 
 public class HashMapGrid<T> implements Grid<T> {
 
-    Map<Pos, T> map = new HashMap<>();
+    Map<Pos, Tile<T>> map = new HashMap<>();
 
     @Override
-    public void put(int x, int y, T obj) {
-        map.put(new Pos(x, y), obj);
+    public void putTile(Tile<T> tile) {
+        map.put(tile.getPos(), tile);
     }
 
     @Override
+    @Deprecated
     public T get(int x, int y) {
-        return map.get(new Pos(x, y));
+        return map.get(new Pos(x, y)).getObj();
     }
 
     @Override
     public Tile<T> getTile(int x, int y) {
-        return new Tile<>(x, y, map.get(new Pos(x, y)));
+        Tile<T> t = map.get(new Pos(x,y));
+        if (t == null) return new Tile<T>(x,y);
+        else return t;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class HashMapGrid<T> implements Grid<T> {
             }
         }
 
-        return new Tile<>(nx, ny, map.get(new Pos(nx, ny)));
+        return getTile(nx, ny);
     }
 
     @Override
@@ -86,11 +89,9 @@ public class HashMapGrid<T> implements Grid<T> {
 
     @Override
     public void foreach(Consumer<Tile<T>> consumer) {
-        for (Map.Entry<Pos, T> entry : map.entrySet()) {
+        for (Map.Entry<Pos, Tile<T>> entry : map.entrySet()) {
             if (entry.getValue() != null)
-                consumer.accept(new Tile<>(entry.getKey().getX(),
-                        entry.getKey().getY(),
-                        entry.getValue()));
+                consumer.accept(entry.getValue());
         }
     }
 
