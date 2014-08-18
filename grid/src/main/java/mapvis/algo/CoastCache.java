@@ -73,7 +73,7 @@ public class CoastCache<T> {
 
         Set<Tile<T>> neighbours = grid.getNeighbours(x, y);
 
-        updateEdge(t);
+        //updateEdge(t);
         for (Tile<T> tile : neighbours) {
             if (tile.getItem() == null){
                 removeWaters(o, tile);
