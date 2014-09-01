@@ -43,6 +43,7 @@
             <children>
                 <Button mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
                 <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
+            <Button mnemonicParsing="false" onAction="#loadFile" text="Load File" />
             </children>
         </HBox>
         <TextArea fx:id="infoArea" editable="false" />

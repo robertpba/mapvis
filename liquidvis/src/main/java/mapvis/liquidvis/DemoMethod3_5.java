@@ -58,7 +58,7 @@ public class DemoMethod3_5 {
             Node child = graph.getEdgeTarget(edge);
             tree.addChild(parent, child);
             addChildrenToTree(graph, tree, child);
-        };
+        }
     }
 
 

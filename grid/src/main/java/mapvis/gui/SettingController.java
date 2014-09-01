@@ -14,7 +14,9 @@ import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
 import mapvis.graphic.HexagonalTilingView;
 import utils.RandomTreeGenerator;
+import utils.TreeLoader;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 
@@ -78,5 +80,18 @@ public class SettingController implements Initializable {
 
     }
 
+    @FXML
+    public void loadFile(ActionEvent event) throws FileNotFoundException {
+        TreeLoader loader = new TreeLoader();
+        loader.load("data/simple.txt");
+        TreeModel<Integer> treemodel = loader.convertToTreeModel();
+        tree.set(treemodel);
+        grid.set(new HashMapGrid<>());
+        method1.set(new Method1<>(tree.get(), grid.get()));
+
+        Set<Integer> leaves = tree.get().getLeaves();
+        infoArea.setText(String.format("%d leaves\n", leaves.size()));
+
+    }
 
 }
