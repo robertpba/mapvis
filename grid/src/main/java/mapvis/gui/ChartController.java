@@ -4,18 +4,24 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
+import javafx.scene.image.WritableImage;
 import javafx.scene.text.Text;
 import mapvis.models.TreeModel;
 import mapvis.models.Grid;
 import mapvis.graphic.HexagonalTilingView;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -75,6 +81,11 @@ public class ChartController implements Initializable  {
     public void reset(ActionEvent event) {
         chart.zoomTo(1.0);
         chart.scrollTo(0,0);
+    }
+
+    @FXML
+    public void save(ActionEvent event) throws IOException {
+        chart.save("CanvasImage.png");
     }
 
 

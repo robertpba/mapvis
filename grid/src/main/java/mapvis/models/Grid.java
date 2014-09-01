@@ -22,4 +22,12 @@ public interface Grid<T> {
     default T getItem(int x, int y){
         return getTile(x,y).getItem();
     }
+
+
+    int getMinX();
+    int getMaxX();
+    int getMaxY();
+    int getMinY();
+
+
 }

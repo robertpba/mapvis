@@ -15,9 +15,35 @@ public class HashMapGrid<T> implements Grid<T> {
 
     Map<Pos, Tile<T>> map = new HashMap<>();
 
+    int minX;
+    int minY;
+    int maxX;
+    int maxY;
+
+    @Override
+    public int getMinY() {
+        return minY;
+    }
+    @Override
+    public int getMinX() {
+        return minX;
+    }
+    @Override
+    public int getMaxX(){
+        return maxX;
+    }
+    @Override
+    public int getMaxY(){
+        return maxY;
+    }
+
     @Override
     public void putTile(Tile<T> tile) {
         map.put(tile.getPos(), tile);
+        minX = Math.min(minX, tile.getX());
+        maxX = Math.max(maxX, tile.getX());
+        minY = Math.min(minY, tile.getY());
+        maxY = Math.max(maxY, tile.getY());
     }
 
 

@@ -49,6 +49,7 @@
                            </toggleGroup>
                         </RadioButton>
                         <RadioButton mnemonicParsing="false" onAction="#onChooseRamp" text="Ramp" toggleGroup="$colorSchemeGroup" />
+                        <Button mnemonicParsing="false" onAction="#save" text="save" />
                             </children>
                         </FlowPane>
                     </children>

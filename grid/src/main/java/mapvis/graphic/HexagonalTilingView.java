@@ -2,10 +2,12 @@ package mapvis.graphic;
 
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -13,12 +15,17 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.models.Grid;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+
 public class HexagonalTilingView extends Pane {
 
     public final HexagonRender render;
     Canvas canvas;
 
     public HexagonalTilingView(){
+
         super();
         setPrefHeight(1000);
         setPrefWidth(1000);
@@ -83,7 +90,6 @@ public class HexagonalTilingView extends Pane {
     public void updateHexagons(){
         if (getGrid() == null)
             return;
-
         //canvas = new Canvas(getWidth(),getHeight());
 
         GraphicsContext g = canvas.getGraphicsContext2D();
@@ -121,6 +127,68 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
+    public void save(String filename) throws IOException {
+        if (getGrid() == null)
+            return;
+
+        int margin = 2;
+
+        int minx = grid.get().getMinX() - margin;
+        int miny = grid.get().getMinY() - margin;
+        int maxx = grid.get().getMaxX() + margin;
+        int maxy = grid.get().getMaxY() + margin;
+
+        System.out.printf("h x[%d:%d] y:[%d:%d]\n",
+                minx, maxx, miny, maxy);
+
+        Point2D topleft = hexagonalToPlain(minx, miny);
+        Point2D botright = hexagonalToPlain(maxx, maxy);
+
+        System.out.printf("p x[%d:%d] y:[%d:%d]\n",
+                (int)topleft.getX(), (int)botright.getX(),
+                (int)topleft.getY(), (int)botright.getY());
+
+        double scale = 1.0/6;
+        double w = (botright.getX()-topleft.getX())*scale;
+        double h = (botright.getY()-topleft.getY())*scale;
+
+        Canvas c1 = new Canvas(w, h);
+        GraphicsContext g = c1.getGraphicsContext2D();
+        g.setFill(styler.get().getBackground());
+        g.fillRect(0, 0, w, h);
+
+        System.out.printf("w:%d, h:%d, xy[%d:%d]\n",(int)w, (int)h,
+                (int)(topleft.getX()),
+                (int)(topleft.getY())
+
+        );
+        g.save();
+
+        g.scale(scale, scale);
+        g.translate(-topleft.getX(), -topleft.getY());
+
+        grid.get().foreach(t -> {
+            if (t.getX() >= minx
+                    && t.getX() <= maxx
+                    && t.getY() >= miny
+                    && t.getY() <= maxy)
+
+                updateHexagon(t.getX(), t.getY(), g);
+        });
+
+
+        WritableImage wim = new WritableImage((int)w, (int)h);
+        c1.snapshot(null, wim);
+        File file = new File(filename);
+
+        ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
+
+
+        g.restore();
+    }
+
+
+
     private void updateHexagon(int x, int y, GraphicsContext g) {
 
         g.save();
@@ -132,12 +200,12 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-    private ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty();
+    private ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Integer>> gridProperty() { return this.grid; }
     public final Grid<Integer> getGrid() { return this.gridProperty().get(); }
     public final void setGrid(Grid<Integer> colormap) { this.gridProperty().set(colormap); }
 
-    private ObjectProperty<TileStyler<Integer>> styler = new SimpleObjectProperty();
+    private ObjectProperty<TileStyler<Integer>> styler = new SimpleObjectProperty<>();
     public ObjectProperty<TileStyler<Integer>> stylerProperty() { return this.styler; }
     public final TileStyler<Integer> getStyler() { return this.stylerProperty().get(); }
     public final void setStyler(TileStyler<Integer> colormap) { this.stylerProperty().set(colormap); }
