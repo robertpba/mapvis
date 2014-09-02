@@ -5,23 +5,25 @@
 <?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.AppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="mapvis.gui.AppController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Data">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Generate" />
+                        <MenuItem mnemonicParsing="false" text="Generate"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Model">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Start" />
+                        <MenuItem mnemonicParsing="false" text="Start"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" text="About"/>
                     </items>
                 </Menu>
             </menus>
@@ -33,12 +35,12 @@
             <tabs>
                 <Tab closable="false" text="Config">
                     <content>
-                        <fx:include fx:id="setting" source="setting.fxml" />
+                        <fx:include fx:id="setting" source="setting.fxml"/>
                     </content>
                 </Tab>
                 <Tab closable="false" text="Canvas">
                     <content>
-                        <fx:include fx:id="chart" source="chart.fxml" />
+                        <fx:include fx:id="chart" source="chart.fxml"/>
                     </content>
                 </Tab>
                 <Tab closable="false" text="Nodes">
@@ -47,21 +49,27 @@
                             <columns>
                                 <TreeTableColumn minWidth="50.0" prefWidth="110.0" text="ID">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="id" />
+                                        <TreeItemPropertyValueFactory property="id"/>
                                     </cellValueFactory>
                                 </TreeTableColumn>
-                        <TreeTableColumn minWidth="45.0" prefWidth="47.0" text="Level">
-                           <cellValueFactory>
-                              <TreeItemPropertyValueFactory property="depth" />
-                           </cellValueFactory>
-                        </TreeTableColumn>
-                                <TreeTableColumn minWidth="0.0" prefWidth="289.0" text="Size">
+                                <TreeTableColumn minWidth="45.0" prefWidth="47.0" text="Level">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="size" />
+                                        <TreeItemPropertyValueFactory property="level"/>
+                                    </cellValueFactory>
+                                </TreeTableColumn>
+                                <TreeTableColumn minWidth="0.0" prefWidth="89.0" text="Size">
+                                    <cellValueFactory>
+                                        <TreeItemPropertyValueFactory property="figure"/>
+                                    </cellValueFactory>
+                                </TreeTableColumn>
+                                <TreeTableColumn minWidth="0.0" prefWidth="200.0" text="name">
+                                    <cellValueFactory>
+                                        <TreeItemPropertyValueFactory property="name"/>
                                     </cellValueFactory>
                                 </TreeTableColumn>
                             </columns>
                         </TreeTableView>
+
                     </content>
                 </Tab>
             </tabs>

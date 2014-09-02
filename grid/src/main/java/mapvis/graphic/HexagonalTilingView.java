@@ -1,5 +1,6 @@
 package mapvis.graphic;
 
+import com.sun.org.apache.bcel.internal.generic.LAND;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -14,6 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.models.Grid;
+import mapvis.models.Tile;
+import utils.Node;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -112,14 +115,11 @@ public class HexagonalTilingView extends Pane {
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
 
-
-
         grid.get().foreach(t -> {
             if (t.getX() > tl.getX()
                     && t.getX() < br.getX()
                     && t.getY() > tl.getY()
                     && t.getY() < br.getY())
-
                 updateHexagon(t.getX(), t.getY(), g);
         });
 
@@ -200,15 +200,15 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-    private ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Integer>> gridProperty() { return this.grid; }
-    public final Grid<Integer> getGrid() { return this.gridProperty().get(); }
-    public final void setGrid(Grid<Integer> colormap) { this.gridProperty().set(colormap); }
+    private ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Node>> gridProperty() { return this.grid; }
+    public final Grid<Node> getGrid() { return this.gridProperty().get(); }
+    public final void setGrid(Grid<Node> colormap) { this.gridProperty().set(colormap); }
 
-    private ObjectProperty<TileStyler<Integer>> styler = new SimpleObjectProperty<>();
-    public ObjectProperty<TileStyler<Integer>> stylerProperty() { return this.styler; }
-    public final TileStyler<Integer> getStyler() { return this.stylerProperty().get(); }
-    public final void setStyler(TileStyler<Integer> colormap) { this.stylerProperty().set(colormap); }
+    private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
+    public ObjectProperty<TileStyler<Node>> stylerProperty() { return this.styler; }
+    public final TileStyler<Node> getStyler() { return this.stylerProperty().get(); }
+    public final void setStyler(TileStyler<Node> colormap) { this.stylerProperty().set(colormap); }
 
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     public DoubleProperty zoomProperty() { return this.zoom; }
@@ -284,8 +284,8 @@ public class HexagonalTilingView extends Pane {
         translateTransform = Affine.translate(originX.get(), newValue.doubleValue());
         updateHexagons();
     }
-    void onStylerChange(ObservableValue<? extends TileStyler<Integer>> observable,
-                        TileStyler<Integer> oldValue, TileStyler<Integer> newValue){
+    void onStylerChange(ObservableValue<? extends TileStyler<Node>> observable,
+                        TileStyler<Node> oldValue, TileStyler<Node> newValue){
         updateHexagons();
     }
 

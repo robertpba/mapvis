@@ -13,6 +13,7 @@ import mapvis.algo.Method1;
 import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
 import mapvis.graphic.HexagonalTilingView;
+import utils.Node;
 import utils.RandomTreeGenerator;
 import utils.TreeLoader;
 
@@ -32,9 +33,9 @@ public class SettingController implements Initializable {
     @FXML
     public TextArea infoArea;
 
-    public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<Method1<Integer>> method1 = new SimpleObjectProperty<>();
+    public ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
 
     public HexagonalTilingView chart;
 
@@ -75,7 +76,7 @@ public class SettingController implements Initializable {
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 
-        Set<Integer> leaves = tree.get().getLeaves();
+        Set<Node> leaves = tree.get().getLeaves();
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
 
     }
@@ -84,12 +85,12 @@ public class SettingController implements Initializable {
     public void loadFile(ActionEvent event) throws FileNotFoundException {
         TreeLoader loader = new TreeLoader();
         loader.load("data/simple.txt");
-        TreeModel<Integer> treemodel = loader.convertToTreeModel();
+        TreeModel<Node> treemodel = loader.convertToTreeModel();
         tree.set(treemodel);
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 
-        Set<Integer> leaves = tree.get().getLeaves();
+        Set<Node> leaves = tree.get().getLeaves();
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
 
     }

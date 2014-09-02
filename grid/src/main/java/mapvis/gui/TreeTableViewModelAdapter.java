@@ -2,40 +2,27 @@ package mapvis.gui;
 
 import javafx.scene.control.TreeItem;
 import mapvis.models.TreeModel;
+import utils.Node;
 
 public class TreeTableViewModelAdapter {
-    TreeModel<Integer> tree;
+    TreeModel<utils.Node> tree;
 
-    public TreeTableViewModelAdapter(TreeModel<Integer> tree){
+    public TreeTableViewModelAdapter(TreeModel<utils.Node> tree){
         this.tree = tree;
     }
 
-    public TreeItem<Node> getRoot(){
-        TreeItem<Node> root = translateTree(tree.getRoot());
+    public TreeItem<utils.Node> getRoot(){
+
+        TreeItem<utils.Node> root = translateTree(tree.getRoot());
         return root;
     }
 
-    private TreeItem<Node> translateTree(Integer p){
-        Node model = new Node(p);
-        TreeItem<Node> item = new TreeItem<>(model);
+    private TreeItem<utils.Node> translateTree(utils.Node p){
+        TreeItem<utils.Node> item = new TreeItem<>(p);
 
-        for (Integer integer : tree.getChildren(p)) {
-            item.getChildren().add(translateTree(integer));
+        for (utils.Node child : tree.getChildren(p)) {
+            item.getChildren().add(translateTree(child));
         }
         return item;
-    }
-
-    public class Node {
-        private final int nid;
-
-        public Node(int nid){
-            this.nid = nid;
-        }
-
-        public int getId() { return nid; }
-
-        public int getSize() { return tree.getWeight(nid); }
-
-        public int getDepth() { return tree.getDepth(nid); }
     }
 }

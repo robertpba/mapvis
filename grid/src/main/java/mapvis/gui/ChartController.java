@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import mapvis.models.TreeModel;
 import mapvis.models.Grid;
 import mapvis.graphic.HexagonalTilingView;
+import utils.Node;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -44,8 +45,8 @@ public class ChartController implements Initializable  {
     public ColorPicker colorPicker;
 
 
-    public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
 
 
     @Override
@@ -62,14 +63,14 @@ public class ChartController implements Initializable  {
         chart.setOnMouseClicked(e -> {
             Point2D pl = chart.localToPlane(e.getX(), e.getY());
             Point2D point = chart.planeToHexagonal(pl.getX(), pl.getY());
-            Integer id = grid.get().getItem((int) point.getX(), (int) point.getY());
-            if (id == null)
+            Node node = grid.get().getItem((int) point.getX(), (int) point.getY());
+            if (node == null)
                 return;
 
             StringBuilder sb = new StringBuilder();
-            tree.get().getPathToNode(id).forEach(i-> sb.append(">").append(i));
+            tree.get().getPathToNode(node).forEach(i-> sb.append(">").append(i.name));
 
-            System.out.printf("%s id:%s, weight:%d %s\n", point, id, tree.get().getWeight(id), sb.toString());
+            System.out.printf("%s node:%s, weight:%d %s\n", point, node.name, tree.get().getWeight(node), sb.toString());
         });
 
         grid.addListener(e->{

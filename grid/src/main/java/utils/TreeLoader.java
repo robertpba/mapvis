@@ -81,7 +81,7 @@ public class TreeLoader {
                 Node dummy = new Node();
                 dummy.id = ++lastId;
                 dummy.level = node.level + 1;
-                dummy.figure = node.figure;
+                dummy.figure = node.figure/5;
                 dummy.name = node.name;
                 dummy.parent = node;
                 node.children.add(dummy);
@@ -104,24 +104,24 @@ public class TreeLoader {
         node.children = children;
     }
 
-    public TreeModel<Integer> convertToTreeModel(){
+    public TreeModel<Node> convertToTreeModel(){
 
-        MPTree<Integer> tree = new MPTree<>();
+        MPTree<Node> tree = new MPTree<>();
 
         generateDummyNode(root);
         prune(root, 3, 5);
 
-        tree.setRoot(root.id);
+        tree.setRoot(root);
         translateTreeModel(tree, root);
 
         return tree;
     }
 
-    void translateTreeModel(MPTree<Integer> tree, Node node) {
+    void translateTreeModel(MPTree<Node> tree, Node node) {
         if (node.children.size() > 0) {
             for (Node child : node.children) {
                 System.out.printf("%d > %d @ %d\n", node.id, child.id, (int) node.figure);
-                tree.addChild(node.id, child.id, (int) child.figure);
+                tree.addChild(node, child, (int) child.figure);
                 translateTreeModel(tree, child);
             }
         }

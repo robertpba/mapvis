@@ -14,6 +14,7 @@ import mapvis.models.TreeModel;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;
 import mapvis.Impl.MPTree;
+import utils.Node;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
 public class AppController implements Initializable {
 
     @FXML
-    public TreeTableView<TreeTableViewModelAdapter.Node> treeTableView;
+    public TreeTableView<Node> treeTableView;
 
     @FXML
     public SettingController settingController;
@@ -75,7 +76,7 @@ public class AppController implements Initializable {
 
         tree.addListener((v, o, n)-> {
             TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree.get());
-            TreeItem<TreeTableViewModelAdapter.Node> root = adapter.getRoot();
+            TreeItem<Node> root = adapter.getRoot();
             root.setExpanded(true);
             treeTableView.setRoot(root);
         });
@@ -83,9 +84,9 @@ public class AppController implements Initializable {
 
     }
 
-    public ObjectProperty<TreeModel<Integer>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Integer>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<TileStyler<Integer>> tileStyler = new SimpleObjectProperty<>();
+    public ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<TileStyler<Node>> tileStyler = new SimpleObjectProperty<>();
 
 
 

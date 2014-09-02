@@ -16,24 +16,27 @@ public class RandomTreeGenerator {
     static Random rn;
     int lastId = 0;
 
-    void getTree(MPTree<Integer> tree, Integer node, int level, int maxLevel, int span, int weight){
+    void getTree(MPTree<Node> tree, Node node, int level, int maxLevel, int span, int weight){
         if (level > maxLevel)
             return ;
 
         int n = rn.nextInt(span);
 
         while (n-- > 0){
-            int cid = ++lastId;
-            tree.addChild(node, cid, rn.nextInt(weight));
-            getTree(tree, cid, level+1, maxLevel, span, weight);
+            Node child = new Node();
+            child.id = ++lastId;
+            tree.addChild(node,  child, rn.nextInt(weight));
+            getTree(tree, child, level+1, maxLevel, span, weight);
         }
     }
-    public MPTree<Integer> getTree(int level, int span, int weight){
+    public MPTree<Node> getTree(int level, int span, int weight){
         rn.setSeed(seed);
         lastId = 0;
-        MPTree<Integer> mptree = new MPTree<>();
-        mptree.setRoot(lastId = 0);
-        getTree(mptree, 0, 0, level, span, weight);
+        MPTree<Node> mptree = new MPTree<>();
+        Node child = new Node();
+        child.id = 0;
+        mptree.setRoot(child);
+        getTree(mptree, child, 0, level, span, weight);
         return mptree;
     }
 }
