@@ -32,7 +32,7 @@ public class Tile<T> {
     public Tile(int x, int y, T item, int tag){ this (new Pos(x,y), item, tag); }
 
     public Tile(Pos pos) { this(pos, null, EMPTY); }
-    public Tile(Pos pos, T item) { this(pos, item, EMPTY); }
+    public Tile(Pos pos, T item) { this(pos, item, LAND); }
     public Tile(Pos pos, T item, int tag){
         this.x = pos.getX();
         this.y = pos.getY();

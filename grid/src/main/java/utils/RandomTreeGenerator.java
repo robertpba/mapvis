@@ -25,7 +25,11 @@ public class RandomTreeGenerator {
         while (n-- > 0){
             Node child = new Node();
             child.id = ++lastId;
+            child.name = Integer.toString(child.id);
             tree.addChild(node,  child, rn.nextInt(weight));
+            node.children.add(child);
+            child.parent = node;
+
             getTree(tree, child, level+1, maxLevel, span, weight);
         }
     }
@@ -35,6 +39,7 @@ public class RandomTreeGenerator {
         MPTree<Node> mptree = new MPTree<>();
         Node child = new Node();
         child.id = 0;
+        child.name = "root";
         mptree.setRoot(child);
         getTree(mptree, child, 0, level, span, weight);
         return mptree;

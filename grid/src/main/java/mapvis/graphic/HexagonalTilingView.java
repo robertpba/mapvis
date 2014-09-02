@@ -12,15 +12,21 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.models.Grid;
+import mapvis.models.Pos;
 import mapvis.models.Tile;
+import mapvis.models.TreeModel;
 import utils.Node;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HexagonalTilingView extends Pane {
 
@@ -115,17 +121,91 @@ public class HexagonalTilingView extends Pane {
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
 
+        List<Tile<Node>> tiles = new ArrayList<>();
+
+
         grid.get().foreach(t -> {
             if (t.getX() > tl.getX()
                     && t.getX() < br.getX()
                     && t.getY() > tl.getY()
                     && t.getY() < br.getY())
                 updateHexagon(t.getX(), t.getY(), g);
+
+            if (t.getItem() != null && t.getTag() == Tile.LAND)
+                tiles.add(t);
         });
+
+        Map<Node, Pos> posmap = mapLabelPos(tiles);
+        drawLabels(posmap, g);
 
         //getChildren().setAll(canvas);
         g.restore();
     }
+
+    void drawLabels(Map<Node, Pos> posmap, GraphicsContext g){
+        for (Map.Entry<Node, Pos> entry : posmap.entrySet()) {
+            Node node = entry.getKey();
+            Pos pos = entry.getValue();
+            Point2D point2D = hexagonalToPlain(pos.getX(), pos.getY());
+            //System.out.printf("%s\n", node.name);
+            int level = tree.get().getDepth(node);
+            if (level == 0)
+                continue;
+
+            if (level == 1)
+                g.setFont(new Font(80));
+            else if (level == 2)
+                g.setFont(new Font(42));
+//            else if (level == 3)
+//                g.setFont(new Font(28));
+            else
+                continue;
+
+            g.setFill(Color.BLACK);
+            g.fillText(node.getName(), point2D.getX(), point2D.getY());
+        }
+    }
+
+
+    Map<Node, Pos> mapLabelPos(Collection<Tile<Node>> tiles){
+        Map<Node, List<Pos>> map = new HashMap<>();
+
+        for (Tile<Node> tile : tiles) {
+            Node item = tile.getItem();
+            if (item == null || tile.getTag() != Tile.LAND)
+                continue;
+            List<Node> pathToNode = tree.get().getPathToNode(item);
+
+            for (Node node : pathToNode) {
+                List<Pos> poslist = map.get(node);
+                if (poslist == null)
+                    map.put(node, poslist= new ArrayList<>());
+
+                poslist.add(tile.getPos());
+            }
+
+        }
+
+        Map<Node, Pos> posmap= new HashMap<>();
+
+        for (Map.Entry<Node, List<Pos>> entry : map.entrySet()) {
+            int x=0; int y=0; int n=0;
+
+            for (Pos pos : entry.getValue()) {
+                x+=pos.getX();
+                y+=pos.getY();
+                n++;
+            }
+
+            Pos pos = new Pos(x/n,y/n);
+            posmap.put(entry.getKey(), pos);
+        }
+
+        return  posmap;
+    }
+
+
+
 
     public void save(String filename) throws IOException {
         if (getGrid() == null)
@@ -167,14 +247,22 @@ public class HexagonalTilingView extends Pane {
         g.scale(scale, scale);
         g.translate(-topleft.getX(), -topleft.getY());
 
+        List<Tile<Node>> tiles = new ArrayList<>();
+
         grid.get().foreach(t -> {
             if (t.getX() >= minx
                     && t.getX() <= maxx
                     && t.getY() >= miny
                     && t.getY() <= maxy)
 
-                updateHexagon(t.getX(), t.getY(), g);
+            updateHexagon(t.getX(), t.getY(), g);
+
+            if (t.getItem() != null && t.getTag() == Tile.LAND)
+                tiles.add(t);
         });
+
+        Map<Node, Pos> posmap = mapLabelPos(tiles);
+        drawLabels(posmap, g);
 
 
         WritableImage wim = new WritableImage((int)w, (int)h);
@@ -203,12 +291,17 @@ public class HexagonalTilingView extends Pane {
     private ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> gridProperty() { return this.grid; }
     public final Grid<Node> getGrid() { return this.gridProperty().get(); }
-    public final void setGrid(Grid<Node> colormap) { this.gridProperty().set(colormap); }
+    public final void setGrid(Grid<Node> grid) { this.gridProperty().set(grid); }
+
+    private ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<TreeModel<Node>> treeProperty() { return this.tree; }
+    public final TreeModel<Node> getTree() { return this.treeProperty().get(); }
+    public final void setTree(TreeModel<Node> tree) { this.treeProperty().set(tree); }
 
     private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
     public ObjectProperty<TileStyler<Node>> stylerProperty() { return this.styler; }
     public final TileStyler<Node> getStyler() { return this.stylerProperty().get(); }
-    public final void setStyler(TileStyler<Node> colormap) { this.stylerProperty().set(colormap); }
+    public final void setStyler(TileStyler<Node> styler) { this.stylerProperty().set(styler); }
 
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     public DoubleProperty zoomProperty() { return this.zoom; }

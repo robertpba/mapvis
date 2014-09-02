@@ -59,6 +59,7 @@ public class ChartController implements Initializable  {
                 .bind(chart.originXProperty().asString());
 
         grid.bindBidirectional(chart.gridProperty());
+        tree.bindBidirectional(chart.treeProperty());
 
         chart.setOnMouseClicked(e -> {
             Point2D pl = chart.localToPlane(e.getX(), e.getY());

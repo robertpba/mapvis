@@ -1,5 +1,6 @@
 package mapvis.models;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -10,6 +11,8 @@ public interface Grid<T> {
     Set<Tile<T>> getNeighbours(int x, int y);
 
     void foreach(Consumer<Tile<T>> consumer);
+    public Collection<Tile<T>> allTiles();
+
 
     default Tile<T> getTile(int x, int y){ return getTile(new Pos(x,y));}
 

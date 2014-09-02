@@ -5,10 +5,7 @@ import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class HashMapGrid<T> implements Grid<T> {
@@ -116,4 +113,8 @@ public class HashMapGrid<T> implements Grid<T> {
         }
     }
 
+    @Override
+    public Collection<Tile<T>> allTiles(){
+        return map.values();
+    }
 }
