@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    int level;
-    String label;
-    String type;
-    int size;
-    List<Node> children = new ArrayList<>();
+    static int nextId = 0;
+
+    public int id = nextId++;
+    public int level;
+    public String label;
+    public String type;
+    public int size;
+    public List<Node> children = new ArrayList<>();
 }

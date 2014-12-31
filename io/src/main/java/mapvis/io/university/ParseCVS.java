@@ -54,12 +54,12 @@ public class ParseCVS {
             Major major = null;
             while ((major = beanReader.read(Major.class, header, processors)) != null) {
                 majors.add(major);
-                System.out.printf("%-40s %-30s %-60s %-10s %d",
-                        major.getFaculty().replaceFirst("Faculty of ",""),
-                        major.getDepartment()==null?"":major.getDepartment().replaceFirst("Department of ",""),
-                        major.getProgram(), major.getMajor(),
-                        major.getTotal());
-                System.out.println();
+//                System.out.printf("%-40s %-30s %-60s %-10s %d",
+//                        major.getFaculty().replaceFirst("Faculty of ",""),
+//                        major.getDepartment()==null?"":major.getDepartment().replaceFirst("Department of ",""),
+//                        major.getProgram(), major.getMajor(),
+//                        major.getTotal());
+//                System.out.println();
             }
         } catch (FileNotFoundException ex) {
             System.err.println("Could not find the CSV file: " + ex);

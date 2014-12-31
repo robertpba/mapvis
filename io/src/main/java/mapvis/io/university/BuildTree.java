@@ -61,8 +61,18 @@ public class BuildTree {
             department.children.add(major);
        });
 
+        populateSize(root);
         return  root;
     }
+
+    static void populateSize(Node node){
+        for (Node child : node.children) {
+            populateSize(child);
+        }
+        if (!node.children.isEmpty())
+            node.size = node.children.stream().mapToInt(c->c.size).sum();
+    }
+
 
     public static void main(String[] args) throws IOException {
         List<Major> majors = readCSVFile("data/Student numbers.csv");
