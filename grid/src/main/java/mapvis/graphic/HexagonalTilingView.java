@@ -228,7 +228,7 @@ public class HexagonalTilingView extends Pane {
                 (int)topleft.getX(), (int)botright.getX(),
                 (int)topleft.getY(), (int)botright.getY());
 
-        double scale = 1.0/6;
+        double scale = 1.0;
         double w = (botright.getX()-topleft.getX())*scale;
         double h = (botright.getY()-topleft.getY())*scale;
 
@@ -262,7 +262,7 @@ public class HexagonalTilingView extends Pane {
         });
 
         Map<Node, Pos> posmap = mapLabelPos(tiles);
-        drawLabels(posmap, g);
+        //drawLabels(posmap, g);
 
 
         WritableImage wim = new WritableImage((int)w, (int)h);

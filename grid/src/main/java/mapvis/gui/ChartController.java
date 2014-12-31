@@ -87,7 +87,14 @@ public class ChartController implements Initializable  {
 
     @FXML
     public void save(ActionEvent event) throws IOException {
+
+        long startTime = System.currentTimeMillis();
         chart.save("CanvasImage.png");
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.printf("sav: %d",estimatedTime);
+
+
+
     }
 
 

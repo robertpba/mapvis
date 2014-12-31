@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import mapvis.Impl.MPTree;
 import mapvis.models.TreeModel;
 import mapvis.algo.CoastCache;
 import mapvis.algo.Method1;
@@ -47,7 +48,15 @@ public class SettingController implements Initializable {
 
     @FXML
     public void begin(ActionEvent event) {
+
+        long startTime = System.currentTimeMillis();
+
         method1.get().Begin();
+
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.printf("mm: %d",estimatedTime);
+
+
         chart.updateHexagons();
     }
 
@@ -72,7 +81,16 @@ public class SettingController implements Initializable {
         catch (NumberFormatException ignored) {  }
 
         RandomTreeGenerator gen = new RandomTreeGenerator(seed);
-        tree.set(gen.getTree(depth, span, weight));
+        MPTree<Node> genTree = gen.getTree(depth, span, weight);
+
+        long startTime = System.currentTimeMillis();
+        tree.set(genTree);
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.printf("gen: %d",estimatedTime);
+
+
+
+
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 

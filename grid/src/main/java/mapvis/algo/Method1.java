@@ -34,7 +34,7 @@ public class Method1<T> {
             int level = tree.getDepth(o);
 
             //if (level == 1)
-            //addPadding(o,10);
+            //addPadding(o,5);
 
 
             return;
@@ -128,6 +128,6 @@ public class Method1<T> {
         Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
         long n = neighbours.stream().filter(t->t.getItem() != null)
                 .count();
-        return (int)Math.pow(4, n);
+        return (int)Math.pow(3, n);
     }
 }
