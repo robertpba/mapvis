@@ -1,0 +1,12 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+dependencies {
+    testCompile 'org.testng:testng:6.8.8'
+    compile 'org.prefuse:prefuse:beta-20071021'
+    compile 'org.apache.directory.studio:org.apache.commons.collections:3.2.1'
+    compile 'net.sf.supercsv:super-csv:2.2.0'
+    compile 'org.jgrapht:jgrapht-core:0.9.0'
+}
