@@ -12,9 +12,11 @@ import java.awt.print.Book;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParseCVS {
-    static void readCSVFile(String csvFileName) throws IOException {
+    public static List<Major> readCSVFile(String csvFileName) throws IOException {
         ICsvBeanReader beanReader = null;
         CellProcessor[] processors = new CellProcessor[] {
                 new NotNull(),  // Course/Programme: Doctoral, Master, etc.
@@ -42,6 +44,8 @@ public class ParseCVS {
                 null,
                 "Total"};
 
+        List<Major> majors=new ArrayList<>();
+
         try {
             beanReader = new CsvBeanReader(new FileReader(csvFileName),
                     CsvPreference.EXCEL_PREFERENCE);
@@ -49,8 +53,10 @@ public class ParseCVS {
 
             Major major = null;
             while ((major = beanReader.read(Major.class, header, processors)) != null) {
-                System.out.printf("%s %-30s %-30s %-20s %d",
-                        major.getFaculty(), major.getDepartment(),
+                majors.add(major);
+                System.out.printf("%-40s %-30s %-60s %-10s %d",
+                        major.getFaculty().replaceFirst("Faculty of ",""),
+                        major.getDepartment()==null?"":major.getDepartment().replaceFirst("Department of ",""),
                         major.getProgram(), major.getMajor(),
                         major.getTotal());
                 System.out.println();
@@ -68,6 +74,7 @@ public class ParseCVS {
                 }
             }
         }
+        return majors;
     }
 
     static public void main(String[] args) throws IOException {
