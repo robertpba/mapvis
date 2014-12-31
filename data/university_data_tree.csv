@@ -1,0 +1,171 @@
+id,level,label,parentid,size
+0,0,University,-1,9088
+8,1,Institute of Chinese Medical Sciences,0,247
+58,2,,8,247
+59,3,(D)Biomedical Sciences,58,88
+108,3,(M)Chinese Medicinal Science,58,64
+109,3,(M)Medicinal Administration,58,63
+169,3,(B)Biomedical Sciences,58,32
+3,1,Faculty of Education,0,533
+24,2,,3,533
+25,3,(D)Education,24,14
+110,3,(P)Postgraduate Certificate in Education,24,8
+111,3,(P)Postgraduate Certificate in Education,24,19
+143,3,(B)Chinese,24,121
+144,3,(B)English,24,106
+145,3,(B)Mathematics,24,18
+146,3,(B)Pre-Primary Education,24,117
+147,3,(B)Primary Education,24,130
+2,1,Faculty of Business Administration,0,2030
+19,2,,2,343
+20,3,(D)Business Administration,19,27
+21,3,(D)Database Management and Information System,19,1
+22,3,(D)Economics,19,1
+23,3,(D)Strategic Management,19,2
+124,3,(B)Business Administration,19,312
+125,2,Department of Accounting and Information Management,2,444
+126,3,(B)Accounting,125,381
+127,3,(B)Business Information System,125,1
+128,3,(B)Electronic Business,125,62
+129,2,Department of Finance and Business Economics,2,432
+130,3,(B)Business Economics,129,90
+131,3,(B)Economics and International Finance,129,4
+132,3,(B)Financial Controllership,129,63
+133,3,(B)Finance,129,1
+134,3,(B)Finance,129,274
+135,2,Department of Management and Marketing,2,811
+136,3,(B)Global Business Management,135,118
+137,3,(B)Gaming Management,135,1
+138,3,(B)Human Resources Management,135,226
+139,3,(B)Management,135,1
+140,3,(B)Marketing,135,190
+141,3,(B)Gaming and Hospitality Management,135,66
+142,3,(B)Hospitality and Gaming Management,135,209
+1,1,Faculty of Arts and Humanities,0,1978
+9,2,Department of Chinese,1,388
+10,3,(D)Linguistics/Linguistics,9,16
+11,3,(D)Literary Studies/Literary Studies,9,27
+60,3,(M)Chinese Studies in Literature Studies,9,4
+61,3,(M)Chinese Linguistics,9,39
+62,3,(M)Chinese Literature,9,69
+115,3,(B)Chinese Language and Literature,9,61
+116,3,(B)Chinese Language and Literature,9,172
+12,2,Department of English,1,473
+13,3,(D)Linguistics/Linguistics,12,14
+14,3,(D)Literary Studies,12,5
+15,3,(D)Philosophy and Religious Studies,12,6
+63,3,(M)Applied English,12,5
+64,3,(M)English Studies,12,91
+65,3,(M)Translation Studies,12,114
+117,3,(B)English Studies,12,54
+118,3,(B)English Studies,12,184
+16,2,Department of Portuguese,1,325
+17,3,(D)Linguistics/Linguistics,16,7
+18,3,(D)Literary Studies,16,2
+66,3,(M)Portuguese Language and Culture,16,32
+122,3,(B)Portuguese Studies,16,70
+123,3,(B)Portuguese Studies,16,214
+67,2,Faculty of Business Administration,1,409
+68,3,(M)Business Administration,67,183
+69,3,(M)Accounting,67,102
+70,3,(M)Finance,67,71
+71,3,(M)International Integrated Resort Management,67,53
+72,2,Faculty of Education,1,203
+73,3,(M)Curriculum and Instruction,72,65
+74,3,(M)Educational Administration,72,26
+75,3,(M)Early Childhood Education and Child Development,72,12
+76,3,(M)Early Childhood Education and Human Development,72,17
+77,3,(M)Educational Psychology,72,22
+78,3,(M)Physical Education and Sport Studies,72,45
+79,3,(M)School Counseling,72,16
+119,2,Centre for Japanese Studies,1,180
+120,3,(B)Japanese Studies,119,137
+121,3,(B)Japanese Studies,119,43
+7,1,Faculty of Social Sciences,0,1960
+45,2,Department of Communication,7,506
+46,3,(D)Communication,45,18
+100,3,(M)Communication and New Media,45,79
+160,3,(B)English Studies,45,65
+161,3,(B)Communication,45,295
+162,3,(B)Journalism and Public Communication,45,49
+47,2,Department of Economics,7,308
+48,3,(D)Economics,47,4
+101,3,(M)Economics,47,47
+163,3,(B)Economics,47,257
+49,2,Department of Government and Public Administration,7,589
+50,3,(D)Public Administration,49,8
+51,3,(D)Political Science,49,10
+102,3,(M)International Relations and Public Policy,49,74
+103,3,(M)European Studies,49,59
+104,3,(M)Public Administration,49,136
+164,3,(B)Public Administration,49,2
+165,3,(B)Government and Public Administration,49,300
+52,2,Department of History,7,172
+53,3,(D)History,52,14
+105,3,(M)History,52,44
+166,3,(B)History,52,114
+54,2,Department of Psychology,7,181
+55,3,(D)Psychology,54,11
+106,3,(M)Clinical Psychology,54,15
+167,3,(B)Psychology,54,155
+56,2,Department of Sociology,7,204
+57,3,(D)Sociology,56,15
+107,3,(M)Criminology,56,49
+168,3,(B)Sociology,56,140
+5,1,Faculty of Law,0,896
+28,2,,5,896
+29,3,(D)Law,28,48
+30,3,(D)Enterprise Juridical Sciences,28,1
+31,3,(D)Comparative Juridical Sciences,28,1
+32,3,(D)Private Juridical Sciences,28,2
+33,3,(D)Public or Political Juridical Sciences,28,2
+80,3,(M)Juridical Sciences in Chinese Language,28,106
+81,3,(M)Juridical - Political Sciences in Chinese Language,28,4
+82,3,(M)International Business Law,28,87
+83,3,(M)Master Of Law In English Language,28,1
+84,3,(M)Comparative Law,28,5
+85,3,(M)European Union Law,28,14
+86,3,(M)International Law,28,36
+87,3,(M)Juridical Sciences,28,21
+88,3,"(M)Chinese Language - Constitutional Law, Basic Law and Administrative Law",28,11
+89,3,(M)Chinese Language - Comparative Civil Law,28,19
+90,3,(M)Chinese Language - International Commercial Law,28,12
+91,3,(M)Chinese Language - Comparative Criminal Law,28,19
+112,3,(P)Postgraduate Certificate in Law in Chinese Language,28,9
+113,3,(P)Postgraduate Programme in International Business Law,28,2
+114,3,(P)Introduction to Macau Law,28,68
+148,3,(B)Law in Chinese Language,28,4
+149,3,(B)Law in Chinese Language,28,1
+150,3,(B)Law,28,150
+151,3,(B)Law,28,199
+152,3,(B)Law,28,74
+4,1,Faculty of Health Sciences,0,1
+26,2,,4,1
+27,3,(D)Biomedical Sciences,26,1
+6,1,Faculty of Science and Technology,0,1443
+34,2,Department of Civil and Environmental Engineering,6,268
+35,3,(D)Civil Engineering,34,10
+92,3,(M)Civil Engineering,34,75
+153,3,(B)Civil Engineering,34,183
+36,2,Department of Computer and Information Science,6,405
+37,3,(D)Software Engineering,36,48
+93,3,(M)E-Commerce Technology,36,48
+94,3,(M)E-Commerce Technology,36,38
+95,3,(M)Software Engineering,36,92
+157,3,(B)Computer Science,36,138
+158,3,(B)Software Engineering,36,41
+38,2,Department of Electrical and Computer Engineering,6,284
+39,3,(D)Electrical and Electronics Engineering,38,23
+40,3,(D)Electrical and Computer Engineering,38,17
+96,3,(M)Electrical and Electronics Engineering,38,42
+97,3,(M)Electrical and Computer Engineering,38,39
+154,3,(B)Electrical and Computer Engineering,38,129
+155,3,(B)Electrical and Electronics Engineering,38,34
+41,2,Department of Electromechanical Engineering,6,304
+42,3,(D)Electromechanical Engineering,41,18
+98,3,(M)Electromechanical Engineering,41,105
+156,3,(B)Electromechanical Engineering,41,181
+43,2,Department of Mathematics,6,182
+44,3,(D)Mathematics,43,19
+99,3,(M)Mathematics,43,52
+159,3,(B)Mathematics,43,111

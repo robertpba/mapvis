@@ -6,4 +6,8 @@ version = '1.1.1'
 
 dependencies {
     testCompile 'org.testng:testng:6.8.8'
+
+    compile 'net.sf.supercsv:super-csv:2.2.0'
+
+    compile project(":grid")
 }

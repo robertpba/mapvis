@@ -17,6 +17,7 @@ import mapvis.graphic.HexagonalTilingView;
 import utils.Node;
 import utils.RandomTreeGenerator;
 import utils.TreeLoader;
+import utils.TreeLoader2;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -101,8 +102,11 @@ public class SettingController implements Initializable {
 
     @FXML
     public void loadFile(ActionEvent event) throws FileNotFoundException {
-        TreeLoader loader = new TreeLoader();
-        loader.load("data/simple.txt");
+        //TreeLoader loader = new TreeLoader();
+        //loader.load("data/simple.txt");
+
+        TreeLoader2 loader = new TreeLoader2();
+        loader.load("data/university_data_tree.csv");
         TreeModel<Node> treemodel = loader.convertToTreeModel();
         tree.set(treemodel);
         grid.set(new HashMapGrid<>());
