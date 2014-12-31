@@ -76,7 +76,11 @@ function init(){
     //Add the name of the node in the correponding label
     //This method is called once, on label creation.
     onCreateLabel: function(domElement, node){
-        domElement.innerHTML = node.name;
+
+
+        //domElement.innerHTML = node.name;
+        domElement.innerHTML = "";
+
         var style = domElement.style;
         style.display = '';
         style.border = '1px solid transparent';
