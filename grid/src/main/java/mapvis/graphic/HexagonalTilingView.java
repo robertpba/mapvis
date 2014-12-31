@@ -156,8 +156,8 @@ public class HexagonalTilingView extends Pane {
                 g.setFont(new Font(80));
             else if (level == 2)
                 g.setFont(new Font(42));
-//            else if (level == 3)
-//                g.setFont(new Font(28));
+            else if (level == 3)
+                g.setFont(new Font(28));
             else
                 continue;
 

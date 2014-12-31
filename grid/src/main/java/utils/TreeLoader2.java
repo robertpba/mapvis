@@ -44,7 +44,7 @@ public class TreeLoader2 {
                 Node node = new Node();
                 node.id     = Integer.parseInt((String) map.get("id"));
                 node.level  = Integer.parseInt((String) map.get("level"));
-                node.name   = (String) map.get("label");
+                node.name   =  map.get("label") == null?"":(String)map.get("label");
                 node.figure = Integer.parseInt((String)  map.get("size"));
                 int pid = Integer.parseInt((String) map.get("parentid"));
 
