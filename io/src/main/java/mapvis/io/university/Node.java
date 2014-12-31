@@ -8,8 +8,15 @@ public class Node {
 
     public int id = nextId++;
     public int level;
+
+    public String program;
+
     public String label;
     public String type;
+
+
+
+
     public int size;
     public List<Node> children = new ArrayList<>();
 }
