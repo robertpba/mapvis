@@ -1,21 +1,18 @@
 package utils;
 
-import mapvis.Impl.MPTree;
-import mapvis.models.TreeModel;
-import org.supercsv.cellprocessor.*;
+import mapvis.common.datatype.MPTreeImp;
+import mapvis.common.datatype.Tree2;
+
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.constraint.UniqueHashCode;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.CsvMapReader;
-import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TreeLoader2 {
@@ -83,9 +80,9 @@ public class TreeLoader2 {
         }
     }
 
-    public TreeModel<Node> convertToTreeModel(){
+    public Tree2<Node> convertToTreeModel(){
 
-        MPTree<Node> tree = new MPTree<>();
+        MPTreeImp<Node> tree = new MPTreeImp<>();
 
         tree.setRoot(root);
         translateTreeModel(tree, root);
@@ -93,7 +90,7 @@ public class TreeLoader2 {
         return tree;
     }
 
-    void translateTreeModel(MPTree<Node> tree, Node node) {
+    void translateTreeModel(MPTreeImp<Node> tree, Node node) {
         if (node.children.size() > 0) {
             for (Node child : node.children) {
                 System.out.printf("%d > %d @ %d\n", node.id, child.id, (int) node.figure);

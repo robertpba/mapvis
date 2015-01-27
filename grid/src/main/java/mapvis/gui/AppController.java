@@ -10,10 +10,10 @@ import javafx.scene.control.TreeTableView;
 import mapvis.Impl.HashMapGrid;
 import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.Tree2;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;
-import mapvis.Impl.MPTree;
+import mapvis.common.datatype.MPTreeImp;
 import utils.Node;
 
 import java.net.URL;
@@ -48,7 +48,7 @@ public class AppController implements Initializable {
             @Override
             protected Object computeValue() {
                 if (tree.get() == null)
-                    tree.set(new MPTree<>());
+                    tree.set(new MPTreeImp<>());
                 if (grid.get() == null)
                     grid.set(new HashMapGrid<>());
 
@@ -84,7 +84,7 @@ public class AppController implements Initializable {
 
     }
 
-    public ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<TileStyler<Node>> tileStyler = new SimpleObjectProperty<>();
 

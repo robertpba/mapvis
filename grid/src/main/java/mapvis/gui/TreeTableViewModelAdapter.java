@@ -1,13 +1,13 @@
 package mapvis.gui;
 
 import javafx.scene.control.TreeItem;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.Tree2;
 import utils.Node;
 
 public class TreeTableViewModelAdapter {
-    TreeModel<utils.Node> tree;
+    Tree2<Node> tree;
 
-    public TreeTableViewModelAdapter(TreeModel<utils.Node> tree){
+    public TreeTableViewModelAdapter(Tree2<Node> tree){
         this.tree = tree;
     }
 

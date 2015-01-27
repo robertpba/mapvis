@@ -1,7 +1,7 @@
 package mapvis.Impl;
 
 import javafx.scene.paint.Color;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.Tree2;
 import mapvis.models.Grid;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
     Random rand;
     private Color background;
 
-    public RandomColorStyler(TreeModel<T> tree, Grid<T> grid, int level, Color background, int seed) {
+    public RandomColorStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int seed) {
         super(tree, grid);
         this.background = background;
         this.rand = new Random(seed);
@@ -41,7 +41,7 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
     }
 
 
-    public RandomColorStyler(TreeModel tree, Grid grid) {
+    public RandomColorStyler(Tree2 tree, Grid grid) {
         this(tree, grid, 100, Color.AQUAMARINE, 0);
     }
 

@@ -1,4 +1,4 @@
-package mapvis.commons;
+package mapvis.common.datatype;
 
 public class Tuple2<T1, T2> {
     public T1 first;

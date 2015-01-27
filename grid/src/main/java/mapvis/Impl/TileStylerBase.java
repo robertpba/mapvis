@@ -1,17 +1,17 @@
 package mapvis.Impl;
 
 import javafx.scene.paint.Color;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.Tree2;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
 import mapvis.models.Tile;
 
 public class TileStylerBase<T> implements TileStyler<T> {
-    TreeModel<T> tree;
+    Tree2<T> tree;
     Grid<T>      grid;
 
-    public TileStylerBase(TreeModel<T> tree, Grid<T> grid) {
+    public TileStylerBase(Tree2<T> tree, Grid<T> grid) {
         this.tree = tree;
         this.grid = grid;
     }
@@ -24,11 +24,11 @@ public class TileStylerBase<T> implements TileStyler<T> {
         this.grid = grid;
     }
 
-    public TreeModel<T> getTree() {
+    public Tree2<T> getTree() {
         return tree;
     }
 
-    public void setTree(TreeModel<T> tree) {
+    public void setTree(Tree2<T> tree) {
         this.tree = tree;
     }
 

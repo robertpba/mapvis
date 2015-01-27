@@ -6,6 +6,6 @@ public class RandomTreeGeneratorTest {
 
     @Test
     public void testGetTree() throws Exception {
-        //TreeModel<Integer> tree = RandomData.getTree();
+        //Tree2<Integer> tree = RandomData.getTree();
     }
 }

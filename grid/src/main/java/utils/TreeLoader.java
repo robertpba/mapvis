@@ -1,7 +1,7 @@
 package utils;
 
-import mapvis.Impl.MPTree;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.MPTreeImp;
+import mapvis.common.datatype.Tree2;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,7 +14,7 @@ public class TreeLoader {
     public Node root;
 
     public void load(String file) throws FileNotFoundException {
-        MPTree<Integer> mptree = new MPTree<>();
+        MPTreeImp<Integer> mptree = new MPTreeImp<>();
         mptree.setRoot(lastId = 0);
 
         Map<Integer, ArrayList<Integer>> edges = new HashMap<>();
@@ -104,9 +104,9 @@ public class TreeLoader {
         node.children = children;
     }
 
-    public TreeModel<Node> convertToTreeModel(){
+    public Tree2<Node> convertToTreeModel(){
 
-        MPTree<Node> tree = new MPTree<>();
+        MPTreeImp<Node> tree = new MPTreeImp<>();
 
         generateDummyNode(root);
         prune(root, 3, 5);
@@ -117,7 +117,7 @@ public class TreeLoader {
         return tree;
     }
 
-    void translateTreeModel(MPTree<Node> tree, Node node) {
+    void translateTreeModel(MPTreeImp<Node> tree, Node node) {
         if (node.children.size() > 0) {
             for (Node child : node.children) {
                 System.out.printf("%d > %d @ %d\n", node.id, child.id, (int) node.figure);

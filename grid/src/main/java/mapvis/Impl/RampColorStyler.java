@@ -1,7 +1,7 @@
 package mapvis.Impl;
 
 import javafx.scene.paint.Color;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.Tree2;
 import mapvis.models.Grid;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
     Map<T, Color> map = new HashMap<>();
     private Color background;
 
-    public RampColorStyler(TreeModel<T> tree, Grid<T> grid, int level, Color background) {
+    public RampColorStyler(Tree2<T> tree, Grid<T> grid, int level, Color background) {
         super(tree, grid);
         this.background = background;
         this.level = level;

@@ -7,16 +7,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import mapvis.Impl.MPTree;
-import mapvis.models.TreeModel;
-import mapvis.algo.CoastCache;
+import mapvis.common.datatype.MPTreeImp;
+import mapvis.common.datatype.Tree2;
+
 import mapvis.algo.Method1;
 import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
 import mapvis.graphic.HexagonalTilingView;
 import utils.Node;
 import utils.RandomTreeGenerator;
-import utils.TreeLoader;
 import utils.TreeLoader2;
 
 import java.io.FileNotFoundException;
@@ -35,7 +34,7 @@ public class SettingController implements Initializable {
     @FXML
     public TextArea infoArea;
 
-    public ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
 
@@ -82,7 +81,7 @@ public class SettingController implements Initializable {
         catch (NumberFormatException ignored) {  }
 
         RandomTreeGenerator gen = new RandomTreeGenerator(seed);
-        MPTree<Node> genTree = gen.getTree(depth, span, weight);
+        MPTreeImp<Node> genTree = gen.getTree(depth, span, weight);
 
         long startTime = System.currentTimeMillis();
         tree.set(genTree);
@@ -107,7 +106,7 @@ public class SettingController implements Initializable {
 
         TreeLoader2 loader = new TreeLoader2();
         loader.load("data/university_data_tree.csv");
-        TreeModel<Node> treemodel = loader.convertToTreeModel();
+        Tree2<Node> treemodel = loader.convertToTreeModel();
         tree.set(treemodel);
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));

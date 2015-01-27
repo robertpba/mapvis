@@ -1,6 +1,5 @@
 package mapvis.graphic;
 
-import com.sun.org.apache.bcel.internal.generic.LAND;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -16,17 +15,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
+import mapvis.common.datatype.Tree2;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
-import mapvis.models.TreeModel;
 import utils.Node;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class HexagonalTilingView extends Pane {
 
@@ -293,10 +291,10 @@ public class HexagonalTilingView extends Pane {
     public final Grid<Node> getGrid() { return this.gridProperty().get(); }
     public final void setGrid(Grid<Node> grid) { this.gridProperty().set(grid); }
 
-    private ObjectProperty<TreeModel<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<TreeModel<Node>> treeProperty() { return this.tree; }
-    public final TreeModel<Node> getTree() { return this.treeProperty().get(); }
-    public final void setTree(TreeModel<Node> tree) { this.treeProperty().set(tree); }
+    private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Tree2<Node>> treeProperty() { return this.tree; }
+    public final Tree2<Node> getTree() { return this.treeProperty().get(); }
+    public final void setTree(Tree2<Node> tree) { this.treeProperty().set(tree); }
 
     private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
     public ObjectProperty<TileStyler<Node>> stylerProperty() { return this.styler; }

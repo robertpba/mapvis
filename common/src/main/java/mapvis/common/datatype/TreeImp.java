@@ -1,4 +1,4 @@
-package mapvis.liquidvis.model;
+package mapvis.common.datatype;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package mapvis.tree;
 
-import mapvis.Impl.MPTree;
-import mapvis.models.TreeModel;
+import mapvis.common.datatype.MPTreeImp;
+import mapvis.common.datatype.Tree2;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -22,20 +22,20 @@ public class MPTreeTest {
 
     @Test
     public void testGetNullRoot() throws Exception {
-        TreeModel<Integer> tree = new MPTree<>();
+        Tree2<Integer> tree = new MPTreeImp<>();
         Assert.assertEquals(tree.getRoot(), null);
     }
 
     @Test
     public void testSetRoot() throws Exception {
-        MPTree<Integer> tree = new MPTree<>();
+        MPTreeImp<Integer> tree = new MPTreeImp<>();
         tree.setRoot(1);
         Assert.assertEquals(tree.getRoot(), (Integer)1);
     }
 
     @Test
     public void testGetPath() throws Exception {
-        MPTree<Integer> tree = new MPTree<>();
+        MPTreeImp<Integer> tree = new MPTreeImp<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
@@ -51,7 +51,7 @@ public class MPTreeTest {
 
     @Test
     public void testGetDepth() throws Exception {
-        MPTree<Integer> tree = new MPTree<>();
+        MPTreeImp<Integer> tree = new MPTreeImp<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
@@ -65,7 +65,7 @@ public class MPTreeTest {
 
     @Test
     public void testAddChild() throws Exception {
-        MPTree<Integer> tree = new MPTree<>();
+        MPTreeImp<Integer> tree = new MPTreeImp<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
@@ -87,7 +87,7 @@ public class MPTreeTest {
 
     @Test
     public void testRefresh() throws Exception {
-        MPTree<Integer> tree = new MPTree<>();
+        MPTreeImp<Integer> tree = new MPTreeImp<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);
@@ -103,7 +103,7 @@ public class MPTreeTest {
 
     @Test
     public void testGetLCA() throws Exception {
-        MPTree<Integer> tree = new MPTree<>();
+        MPTreeImp<Integer> tree = new MPTreeImp<>();
         tree.setRoot(1);
         tree.addChild(1, 2, 0);
         tree.addChild(1, 3, 0);

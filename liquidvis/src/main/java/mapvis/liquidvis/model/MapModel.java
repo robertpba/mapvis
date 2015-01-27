@@ -1,5 +1,6 @@
 package mapvis.liquidvis.model;
 
+import mapvis.common.datatype.Tree;
 import mapvis.commons.SpatialIndex;
 import mapvis.liquidvis.gui.RenderAction;
 import mapvis.liquidvis.model.event.*;

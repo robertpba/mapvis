@@ -1,6 +1,6 @@
 package utils;
 
-import mapvis.Impl.MPTree;
+import mapvis.common.datatype.MPTreeImp;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class RandomTreeGenerator {
     static Random rn;
     int lastId = 0;
 
-    void getTree(MPTree<Node> tree, Node node, int level, int maxLevel, int span, int weight){
+    void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
         if (level > maxLevel)
             return ;
 
@@ -33,10 +33,10 @@ public class RandomTreeGenerator {
             getTree(tree, child, level+1, maxLevel, span, weight);
         }
     }
-    public MPTree<Node> getTree(int level, int span, int weight){
+    public MPTreeImp<Node> getTree(int level, int span, int weight){
         rn.setSeed(seed);
         lastId = 0;
-        MPTree<Node> mptree = new MPTree<>();
+        MPTreeImp<Node> mptree = new MPTreeImp<>();
         Node child = new Node();
         child.id = 0;
         child.name = "root";

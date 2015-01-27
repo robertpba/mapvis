@@ -1,12 +1,10 @@
-package mapvis.Impl;
-
-import mapvis.models.TreeModel;
+package mapvis.common.datatype;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 // TODO: not thread-safe
-public class MPTree<T> implements TreeModel<T> {
+public class MPTreeImp<T> implements Tree2<T> {
 
     static class MPTreeNode<T> {
         public int left;

@@ -6,12 +6,11 @@ import mapvis.liquidvis.method.method3.Method3;
 import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.handler.CollectStatistics;
-import mapvis.liquidvis.model.TreeImp;
+import mapvis.common.datatype.TreeImp;
 import mapvis.liquidvis.util.Node;
 import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
 import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.awt.*;
@@ -22,9 +21,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Date;
 import java.util.function.Function;
 

@@ -1,22 +1,22 @@
 package mapvis.algo;
 
+import mapvis.common.datatype.Tree2;
 import mapvis.commons.RandomHelper;
-import mapvis.commons.Tuple2;
+import mapvis.common.datatype.Tuple2;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
-import mapvis.models.TreeModel;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Method1<T> {
-    public TreeModel<T> tree;
+    public Tree2<T> tree;
     public CoastCache<T> cache;
     public Grid<T> grid;
     private Random random = new Random(1);
 
-    public Method1(TreeModel<T> tree, Grid<T> grid) {
+    public Method1(Tree2<T> tree, Grid<T> grid) {
         this.tree = tree;
         this.grid = grid;
         this.cache = new CoastCache<>(grid, tree);
