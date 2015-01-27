@@ -1,137 +1,137 @@
-Program,Faculty,Department,Major,Probationary Year,Year 1,Year 2,Year 3,Year 4,Year 5,Total
-Doctoral,Faculty of Arts and Humanities,Department of Chinese,Linguistics/Linguistics (Chinese) (PLN06 / DLC),7,3,4,2,,,16
-Doctoral,Faculty of Arts and Humanities,Department of Chinese,Literary Studies/Literary Studies (Chinese) (PLS06 / DSC),12,4,6,5,,,27
-Doctoral,Faculty of Arts and Humanities,Department of English,Linguistics/Linguistics (English) (PLN06 / DLE),7,2,4,1,,,14
-Doctoral,Faculty of Arts and Humanities,Department of English,Literary Studies (English) (DSE),5,0,0,0,,,5
-Doctoral,Faculty of Arts and Humanities,Department of English,Philosophy and Religious Studies (DRS),6,0,0,0,,,6
-Doctoral,Faculty of Arts and Humanities,Department of Portuguese,Linguistics/Linguistics (Portuguese) (PLN06 / DLP),4,0,0,3,,,7
-Doctoral,Faculty of Arts and Humanities,Department of Portuguese,Literary Studies (Portuguese) (DSP),1,0,1,0,,,2
-Doctoral,Faculty of Business Administration,,Business Administration (DBA),17,8,2,0,,,27
-Doctoral,Faculty of Business Administration,,Database Management and Information System (PDM06),0,0,1,0,,,1
-Doctoral,Faculty of Business Administration,,Economics (PEC06),0,0,1,0,,,1
-Doctoral,Faculty of Business Administration,,Strategic Management (PSM06),0,0,2,0,,,2
-Doctoral,Faculty of Education,,Education (PED06 / DED),9,2,2,1,,,14
-Doctoral,Faculty of Health Sciences,,Biomedical Sciences (DBM),1,0,0,0,,,1
-Doctoral,Faculty of Law,,Law (DLL),41,5,2,0,,,48
-Doctoral,Faculty of Law,,Enterprise Juridical Sciences (PEJ06),0,0,0,1,,,1
-Doctoral,Faculty of Law,,Comparative Juridical Sciences (PJC06),0,1,0,0,,,1
-Doctoral,Faculty of Law,,Private Juridical Sciences (PPJ06),1,0,1,0,,,2
-Doctoral,Faculty of Law,,Public or Political Juridical Sciences (PSJ06),0,1,1,0,,,2
-Doctoral,Faculty of Science and Technology,Department of Civil and Environmental Engineering,Civil Engineering (DCE),5,2,3,0,,,10
-Doctoral,Faculty of Science and Technology,Department of Computer and Information Science,Software Engineering (PSO06 / DSO),27,6,12,3,,,48
-Doctoral,Faculty of Science and Technology,Department of Electrical and Computer Engineering,Electrical and Electronics Engineering (PEE06 / DEE),1,7,14,1,,,23
-Doctoral,Faculty of Science and Technology,Department of Electrical and Computer Engineering,Electrical and Computer Engineering (DET),17,0,0,0,,,17
-Doctoral,Faculty of Science and Technology,Department of Electromechanical Engineering,Electromechanical Engineering (PEM06 / DEM),10,2,4,2,,,18
-Doctoral,Faculty of Science and Technology,Department of Mathematics,Mathematics (DMT),17,1,0,1,,,19
-Doctoral,Faculty of Social Sciences,Department of Communication,Communication (PCC / DCC),15,1,0,2,,,18
-Doctoral,Faculty of Social Sciences,Department of Economics,Economics (PPE06 / DEC),3,0,0,1,,,4
-Doctoral,Faculty of Social Sciences,Department of Government and Public Administration,Public Administration (PPA / PPA06 / DPA),1,0,0,7,,,8
-Doctoral,Faculty of Social Sciences,Department of Government and Public Administration,Political Science (DPS),4,2,4,0,,,10
-Doctoral,Faculty of Social Sciences,Department of History,History (DHT),4,0,8,2,,,14
-Doctoral,Faculty of Social Sciences,Department of Psychology,Psychology (DPC),6,3,2,0,,,11
-Doctoral,Faculty of Social Sciences,Department of Sociology,Sociology (PSC / DSY),9,3,2,1,,,15
-Doctoral,Institute of Chinese Medical Sciences,,Biomedical Sciences (PBS06 / DBS),63,7,0,18,,,88
-Master,Faculty of Arts and Humanities,Department of Chinese,Chinese Studies in Literature Studies (MCS-LT),,0,4,,,,4
-Master,Faculty of Arts and Humanities,Department of Chinese,Chinese Linguistics (MAH-CLN),,20,19,,,,39
-Master,Faculty of Arts and Humanities,Department of Chinese,Chinese Literature (MAH-CLT),,30,39,,,,69
-Master,Faculty of Arts and Humanities,Department of English,Applied English (MAH-APP),,2,3,,,,5
-Master,Faculty of Arts and Humanities,Department of English,English Studies (MAH-ELS / ENG),,47,44,,,,91
-Master,Faculty of Arts and Humanities,Department of English,Translation Studies (MAH-TRS),,78,36,,,,114
-Master,Faculty of Arts and Humanities,Department of Portuguese,Portuguese Language and Culture (MAH-MPL),,30,2,,,,32
-Master,Faculty of Arts and Humanities,Faculty of Business Administration,Business Administration (MBC),,98,85,,,,183
-Master,Faculty of Arts and Humanities,Faculty of Business Administration,Accounting (MSB-ACN / ACT),,57,45,,,,102
-Master,Faculty of Arts and Humanities,Faculty of Business Administration,Finance (MSB-FAN),,25,46,,,,71
-Master,Faculty of Arts and Humanities,Faculty of Business Administration,International Integrated Resort Management (MSB-IRT),,53,0,,,,53
-Master,Faculty of Arts and Humanities,Faculty of Education,Curriculum and Instruction (MED-CCI / CIN),,19,46,,,,65
-Master,Faculty of Arts and Humanities,Faculty of Education,Educational Administration (MED-EA),,11,15,,,,26
-Master,Faculty of Arts and Humanities,Faculty of Education,Early Childhood Education and Child Development (ECD),,12,0,,,,12
-Master,Faculty of Arts and Humanities,Faculty of Education,Early Childhood Education and Human Development (MED-ECN / ECH),,10,7,,,,17
-Master,Faculty of Arts and Humanities,Faculty of Education,Educational Psychology (MED-EY / EPY),,15,7,,,,22
-Master,Faculty of Arts and Humanities,Faculty of Education,Physical Education and Sport Studies (MED-PES / PSS),,16,29,,,,45
-Master,Faculty of Arts and Humanities,Faculty of Education,School Counseling (MED-SCS),,13,3,,,,16
-Master,Faculty of Law,,Juridical Sciences in Chinese Language (MCL-JC / JDS),,62,44,,,,106
-Master,Faculty of Law,,Juridical - Political Sciences in Chinese Language (MCL-PC),,1,3,,,,4
-Master,Faculty of Law,,International Business Law (MIB),,27,60,,,,87
-Master,Faculty of Law,,Master Of Law In English Language (MLE),,1,0,,,,1
-Master,Faculty of Law,,Comparative Law (MLE-COL),,1,4,,,,5
-Master,Faculty of Law,,European Union Law (MLE-EUL),,4,10,,,,14
-Master,Faculty of Law,,International Law (MLE-INL),,11,25,,,,36
-Master,Faculty of Law,,Juridical Sciences (MLL-JU),,6,15,,,,21
-Master,Faculty of Law,,"Chinese Language - Constitutional Law, Basic Law and Administrative Law (MSL-CBA)",,11,0,,,,11
-Master,Faculty of Law,,Chinese Language - Comparative Civil Law (MSL-CIL),,19,0,,,,19
-Master,Faculty of Law,,Chinese Language - International Commercial Law (MSL-CML),,12,0,,,,12
-Master,Faculty of Law,,Chinese Language - Comparative Criminal Law (MSL-CRL),,19,0,,,,19
-Master,Faculty of Science and Technology,Department of Civil and Environmental Engineering,Civil Engineering (MSC-CV / CVL),,34,5,36,,,75
-Master,Faculty of Science and Technology,Department of Computer and Information Science,E-Commerce Technology (MSC-ECM),,1,3,44,,,48
-Master,Faculty of Science and Technology,Department of Computer and Information Science,E-Commerce Technology (MSC-EMM),,38,0,0,,,38
-Master,Faculty of Science and Technology,Department of Computer and Information Science,Software Engineering (MSC-SO / SOE),,41,9,42,,,92
-Master,Faculty of Science and Technology,Department of Electrical and Computer Engineering,Electrical and Electronics Engineering (MSC-EE),,0,31,11,,,42
-Master,Faculty of Science and Technology,Department of Electrical and Computer Engineering,Electrical and Computer Engineering (MSC-ECT),,39,0,0,,,39
-Master,Faculty of Science and Technology,Department of Electromechanical Engineering,Electromechanical Engineering (MSC-EM / EMG),,52,28,25,,,105
-Master,Faculty of Science and Technology,Department of Mathematics,Mathematics (MST-MAT),,43,9,,,,52
-Master,Faculty of Social Sciences,Department of Communication,Communication and New Media (MASS-CNM),,28,51,,,,79
-Master,Faculty of Social Sciences,Department of Economics,Economics (MSS-ECO),,21,26,,,,47
-Master,Faculty of Social Sciences,Department of Government and Public Administration,International Relations and Public Policy (MASS-IRP),,32,42,,,,74
-Master,Faculty of Social Sciences,Department of Government and Public Administration,European Studies (MASS-EUS / MES),,16,43,,,,59
-Master,Faculty of Social Sciences,Department of Government and Public Administration,Public Administration (MPC),,43,93,,,,136
-Master,Faculty of Social Sciences,Department of History,History (MASS-HIT),,22,22,,,,44
-Master,Faculty of Social Sciences,Department of Psychology,Clinical Psychology (MSS-CPY),,0,15,,,,15
-Master,Faculty of Social Sciences,Department of Sociology,Criminology (MSS-CR),,17,32,,,,49
-Master,Institute of Chinese Medical Sciences,,Chinese Medicinal Science (MCM-CMS),,21,43,,,,64
-Master,Institute of Chinese Medical Sciences,,Medicinal Administration (MCM-MAD),,23,40,,,,63
-Postgraduate Certificate/Diploma,Faculty of Education,,Postgraduate Certificate in Education (Day-Time) (PED),,8,,,,,8
-Postgraduate Certificate/Diploma,Faculty of Education,,Postgraduate Certificate in Education (Evening) (PEE),,19,,,,,19
-Postgraduate Certificate/Diploma,Faculty of Law,,Postgraduate Certificate in Law in Chinese Language (LCL),,9,,,,,9
-Postgraduate Certificate/Diploma,Faculty of Law,,Postgraduate Programme in International Business Law (LIB),,2,,,,,2
-Postgraduate Certificate/Diploma,Faculty of Law,,Introduction to Macau Law (Two-Year) (LML),,25,43,,,,68
-Bachelor,Faculty of Arts and Humanities,Department of Chinese,Chinese Language and Literature (CCH),,0,0,0,61,,61
-Bachelor,Faculty of Arts and Humanities,Department of Chinese,Chinese Language and Literature (CLL11),,58,48,60,6,,172
-Bachelor,Faculty of Arts and Humanities,Department of English,English Studies (ELL),,0,1,0,53,,54
-Bachelor,Faculty of Arts and Humanities,Department of English,English Studies (ENS11),,74,53,54,3,,184
-Bachelor,Faculty of Arts and Humanities,Centre for Japanese Studies,Japanese Studies (JAP11),,52,37,40,8,,137
-Bachelor,Faculty of Arts and Humanities,Centre for Japanese Studies,Japanese Studies (JN),,0,0,1,42,,43
-Bachelor,Faculty of Arts and Humanities,Department of Portuguese,Portuguese Studies (PTS),,0,0,26,44,,70
-Bachelor,Faculty of Arts and Humanities,Department of Portuguese,Portuguese Studies (PTS11),,67,73,69,5,,214
-Bachelor,Faculty of Business Administration,,Business Administration (BBA / GBS11),,229,33,26,24,,312
-Bachelor,Faculty of Business Administration,Department of Accounting and Information Management,Accounting (BSc-ACC / ACC11 / ACC13),,100,84,50,147,,381
-Bachelor,Faculty of Business Administration,Department of Accounting and Information Management,Business Information System (BIS),,,,,1,,1
-Bachelor,Faculty of Business Administration,Department of Accounting and Information Management,Electronic Business (ELB / ELB11),,,15,14,33,,62
-Bachelor,Faculty of Business Administration,Department of Finance and Business Economics,Business Economics (BEC / BEC11),,,28,25,37,,90
-Bachelor,Faculty of Business Administration,Department of Finance and Business Economics,Economics and International Finance (EIF),,,,,4,,4
-Bachelor,Faculty of Business Administration,Department of Finance and Business Economics,Financial Controllership (FIC / FIC11),,,19,16,28,,63
-Bachelor,Faculty of Business Administration,Department of Finance and Business Economics,Finance (FNC),,,,,1,,1
-Bachelor,Faculty of Business Administration,Department of Finance and Business Economics,Finance (BSc-FNS / FNC11),,56,66,48,104,,274
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Global Business Management (GBM / GBM11),,,40,31,47,,118
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Gaming Management (GM),,,,,1,,1
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Human Resources Management (HRM / HRM11),,,53,57,116,,226
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Management (MGM),,,,,1,,1
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Marketing (MKK / MTG / MKG11),,,59,60,71,,190
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Gaming and Hospitality Management (BSc-GHM),,,,1,65,,66
-Bachelor,Faculty of Business Administration,Department of Management and Marketing,Hospitality and Gaming Management (BSc-HGM11),,75,67,64,3,,209
-Bachelor,Faculty of Education,,Chinese (CHN / CHN11),,39,27,9,46,,121
-Bachelor,Faculty of Education,,English (EN / ENN / ENG11),,26,27,26,27,,106
-Bachelor,Faculty of Education,,Mathematics (MMS),,,,,18,,18
-Bachelor,Faculty of Education,,Pre-Primary Education (PPY / PPE11),,40,31,23,23,,117
-Bachelor,Faculty of Education,,Primary Education (PRY / PYE11),,33,35,26,36,,130
-Bachelor,Faculty of Law,,Law in Chinese Language (Evening) (CL),,,,2,2,,4
-Bachelor,Faculty of Law,,Law in Chinese Language (Day-Time) (CLD),,,,,1,,1
-Bachelor,Faculty of Law,,Law (Evening) (BL / BLE11),,49,36,31,34,,150
-Bachelor,Faculty of Law,,Law (Day-Time) (BLD / BLD13),,53,47,48,51,,199
-Bachelor,Faculty of Law,,Law (WA),,14,24,12,13,11,74
-Bachelor,Faculty of Science and Technology,Department of Civil and Environmental Engineering,Civil Engineering (CE / CVE11),,52,37,11,83,,183
-Bachelor,Faculty of Science and Technology,Department of Electrical and Computer Engineering,Electrical and Computer Engineering (ECE11),,42,14,26,47,,129
-Bachelor,Faculty of Science and Technology,Department of Electrical and Computer Engineering,Electrical and Electronics Engineering (EE),,,,3,31,,34
-Bachelor,Faculty of Science and Technology,Department of Electromechanical Engineering,Electromechanical Engineering (EL/ EME11),,53,4,46,78,,181
-Bachelor,Faculty of Science and Technology,Department of Computer and Information Science,Computer Science (CPS11 / CPS13),,54,27,23,34,,138
-Bachelor,Faculty of Science and Technology,Department of Computer and Information Science,Software Engineering (SO),,,,,41,,41
-Bachelor,Faculty of Science and Technology,Department of Mathematics,Mathematics (MTH11),,42,25,19,25,,111
-Bachelor,Faculty of Social Sciences,Department of Communication,English Studies (Communications) (COM),,,,1,64,,65
-Bachelor,Faculty of Social Sciences,Department of Communication,Communication (COM11),,94,95,81,25,,295
-Bachelor,Faculty of Social Sciences,Department of Communication,Journalism and Public Communication (JPC),,,,,49,,49
-Bachelor,Faculty of Social Sciences,Department of Economics,Economics (EC / ECN11),,73,71,61,52,,257
-Bachelor,Faculty of Social Sciences,Department of Government and Public Administration,Public Administration (Day-Time) (PAM),,,,,2,,2
-Bachelor,Faculty of Social Sciences,Department of Government and Public Administration,Government and Public Administration (GPA / GPA11),,86,77,73,64,,300
-Bachelor,Faculty of Social Sciences,Department of History,History (HST / HST11),,35,23,21,35,,114
-Bachelor,Faculty of Social Sciences,Department of Psychology,Psychology (PSY / PSY11),,46,26,27,56,,155
-Bachelor,Faculty of Social Sciences,Department of Sociology,Sociology (SOC / SOC11),,40,25,37,38,,140
-Bachelor,Institute of Chinese Medical Sciences,,Biomedical Sciences (BIO11),,10,14,8,0,,32
+Program,Faculty,Faculty Code,Department,Major,Major Code,Probationary Year,Year 1,Year 2,Year 3,Year 4,Year 5,Total
+Doctoral,Faculty of Arts and Humanities,FAH,Department of Chinese,Linguistics/Linguistics (Chinese) (PLN06 / DLC),DLC,7,3,4,2,,,16
+Doctoral,Faculty of Arts and Humanities,FAH,Department of Chinese,Literary Studies/Literary Studies (Chinese) (PLS06 / DSC),DSC,12,4,6,5,,,27
+Doctoral,Faculty of Arts and Humanities,FAH,Department of English,Linguistics/Linguistics (English) (PLN06 / DLE),DLE,7,2,4,1,,,14
+Doctoral,Faculty of Arts and Humanities,FAH,Department of English,Literary Studies (English) (DSE),DSE,5,0,0,0,,,5
+Doctoral,Faculty of Arts and Humanities,FAH,Department of English,Philosophy and Religious Studies (DRS),DRS,6,0,0,0,,,6
+Doctoral,Faculty of Arts and Humanities,FAH,Department of Portuguese,Linguistics/Linguistics (Portuguese) (PLN06 / DLP),DLP,4,0,0,3,,,7
+Doctoral,Faculty of Arts and Humanities,FAH,Department of Portuguese,Literary Studies (Portuguese) (DSP),DSP,1,0,1,0,,,2
+Doctoral,Faculty of Business Administration,FBA,,Business Administration (DBA),DBA,17,8,2,0,,,27
+Doctoral,Faculty of Business Administration,FBA,,Database Management and Information System (PDM06),PDM06,0,0,1,0,,,1
+Doctoral,Faculty of Business Administration,FBA,,Economics (PEC06),PEC06,0,0,1,0,,,1
+Doctoral,Faculty of Business Administration,FBA,,Strategic Management (PSM06),PSM06,0,0,2,0,,,2
+Doctoral,Faculty of Education,FED,,Education (PED06 / DED),DED,9,2,2,1,,,14
+Doctoral,Faculty of Health Sciences,FHS,,Biomedical Sciences (DBM),DBM,1,0,0,0,,,1
+Doctoral,Faculty of Law,FLL,,Law (DLL),DLL,41,5,2,0,,,48
+Doctoral,Faculty of Law,FLL,,Enterprise Juridical Sciences (PEJ06),PEJ06,0,0,0,1,,,1
+Doctoral,Faculty of Law,FLL,,Comparative Juridical Sciences (PJC06),PJC06,0,1,0,0,,,1
+Doctoral,Faculty of Law,FLL,,Private Juridical Sciences (PPJ06),PPJ06,1,0,1,0,,,2
+Doctoral,Faculty of Law,FLL,,Public or Political Juridical Sciences (PSJ06),PSJ06,0,1,1,0,,,2
+Doctoral,Faculty of Science and Technology,FST,Department of Civil and Environmental Engineering,Civil Engineering (DCE),DCE,5,2,3,0,,,10
+Doctoral,Faculty of Science and Technology,FST,Department of Computer and Information Science,Software Engineering (PSO06 / DSO),DSO,27,6,12,3,,,48
+Doctoral,Faculty of Science and Technology,FST,Department of Electrical and Computer Engineering,Electrical and Electronics Engineering (PEE06 / DEE),DEE,1,7,14,1,,,23
+Doctoral,Faculty of Science and Technology,FST,Department of Electrical and Computer Engineering,Electrical and Computer Engineering (DET),DET,17,0,0,0,,,17
+Doctoral,Faculty of Science and Technology,FST,Department of Electromechanical Engineering,Electromechanical Engineering (PEM06 / DEM),DEM,10,2,4,2,,,18
+Doctoral,Faculty of Science and Technology,FST,Department of Mathematics,Mathematics (DMT),DMT,17,1,0,1,,,19
+Doctoral,Faculty of Social Sciences,FSS,Department of Communication,Communication (PCC / DCC),DCC,15,1,0,2,,,18
+Doctoral,Faculty of Social Sciences,FSS,Department of Economics,Economics (PPE06 / DEC),DEC,3,0,0,1,,,4
+Doctoral,Faculty of Social Sciences,FSS,Department of Government and Public Administration,Public Administration (PPA / PPA06 / DPA),DPA,1,0,0,7,,,8
+Doctoral,Faculty of Social Sciences,FSS,Department of Government and Public Administration,Political Science (DPS),DPS,4,2,4,0,,,10
+Doctoral,Faculty of Social Sciences,FSS,Department of History,History (DHT),DHT,4,0,8,2,,,14
+Doctoral,Faculty of Social Sciences,FSS,Department of Psychology,Psychology (DPC),DPC,6,3,2,0,,,11
+Doctoral,Faculty of Social Sciences,FSS,Department of Sociology,Sociology (PSC / DSY),DSY,9,3,2,1,,,15
+Doctoral,Institute of Chinese Medical Sciences,ICMS,,Biomedical Sciences (PBS06 / DBS),DBS,63,7,0,18,,,88
+Master,Faculty of Arts and Humanities,FAH,Department of Chinese,Chinese Studies in Literature Studies (MCS-LT),MCS-LT,,0,4,,,,4
+Master,Faculty of Arts and Humanities,FAH,Department of Chinese,Chinese Linguistics (MAH-CLN),MAH-CLN,,20,19,,,,39
+Master,Faculty of Arts and Humanities,FAH,Department of Chinese,Chinese Literature (MAH-CLT),MAH-CLT,,30,39,,,,69
+Master,Faculty of Arts and Humanities,FAH,Department of English,Applied English (MAH-APP),MAH-APP,,2,3,,,,5
+Master,Faculty of Arts and Humanities,FAH,Department of English,English Studies (MAH-ELS / ENG),MAH-ELS,,47,44,,,,91
+Master,Faculty of Arts and Humanities,FAH,Department of English,Translation Studies (MAH-TRS),MAH-TRS,,78,36,,,,114
+Master,Faculty of Arts and Humanities,FAH,Department of Portuguese,Portuguese Language and Culture (MAH-MPL),MAH-MPL,,30,2,,,,32
+Master,Faculty of Arts and Humanities,FAH,Faculty of Business Administration,Business Administration (MBC),MBC,,98,85,,,,183
+Master,Faculty of Arts and Humanities,FAH,Faculty of Business Administration,Accounting (MSB-ACN / ACT),MSB-ACN,,57,45,,,,102
+Master,Faculty of Arts and Humanities,FAH,Faculty of Business Administration,Finance (MSB-FAN),MSB-FAN,,25,46,,,,71
+Master,Faculty of Arts and Humanities,FAH,Faculty of Business Administration,International Integrated Resort Management (MSB-IRT),MSB-IRT,,53,0,,,,53
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,Curriculum and Instruction (MED-CCI / CIN),MED-CCI,,19,46,,,,65
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,Educational Administration (MED-EA),MED-EA,,11,15,,,,26
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,Early Childhood Education and Child Development (ECD),ECD,,12,0,,,,12
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,Early Childhood Education and Human Development (MED-ECN / ECH)ECH,MED-ECN,,10,7,,,,17
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,Educational Psychology (MED-EY / EPY),MED-EY,,15,7,,,,22
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,Physical Education and Sport Studies (MED-PES / PSS),MED-PES,,16,29,,,,45
+Master,Faculty of Arts and Humanities,FAH,Faculty of Education,School Counseling (MED-SCS),MED-SCS,,13,3,,,,16
+Master,Faculty of Law,FLL,,Juridical Sciences in Chinese Language (MCL-JC / JDS),MCL-JC,,62,44,,,,106
+Master,Faculty of Law,FLL,,Juridical - Political Sciences in Chinese Language (MCL-PC),MCL-PC,,1,3,,,,4
+Master,Faculty of Law,FLL,,International Business Law (MIB),MIB,,27,60,,,,87
+Master,Faculty of Law,FLL,,Master Of Law In English Language (MLE),MLE,,1,0,,,,1
+Master,Faculty of Law,FLL,,Comparative Law (MLE-COL),MLE-COL,,1,4,,,,5
+Master,Faculty of Law,FLL,,European Union Law (MLE-EUL),MLE-EUL,,4,10,,,,14
+Master,Faculty of Law,FLL,,International Law (MLE-INL),MLE-INL,,11,25,,,,36
+Master,Faculty of Law,FLL,,Juridical Sciences (MLL-JU),MLL-JU,,6,15,,,,21
+Master,Faculty of Law,FLL,,"Chinese Language - Constitutional Law, Basic Law and Administrative Law (MSL-CBA)",MSL-CBA,,11,0,,,,11
+Master,Faculty of Law,FLL,,Chinese Language - Comparative Civil Law (MSL-CIL),MSL-CIL,,19,0,,,,19
+Master,Faculty of Law,FLL,,Chinese Language - International Commercial Law (MSL-CML),MSL-CML,,12,0,,,,12
+Master,Faculty of Law,FLL,,Chinese Language - Comparative Criminal Law (MSL-CRL),MSL-CRL,,19,0,,,,19
+Master,Faculty of Science and Technology,FST,Department of Civil and Environmental Engineering,Civil Engineering (MSC-CV / CVL),MSC-CV,,34,5,36,,,75
+Master,Faculty of Science and Technology,FST,Department of Computer and Information Science,E-Commerce Technology (MSC-ECM),MSC-ECM,,1,3,44,,,48
+Master,Faculty of Science and Technology,FST,Department of Computer and Information Science,E-Commerce Technology (MSC-EMM),MSC-EMM,,38,0,0,,,38
+Master,Faculty of Science and Technology,FST,Department of Computer and Information Science,Software Engineering (MSC-SO / SOE),MSC-SO,,41,9,42,,,92
+Master,Faculty of Science and Technology,FST,Department of Electrical and Computer Engineering,Electrical and Electronics Engineering (MSC-EE),MSC-EE,,0,31,11,,,42
+Master,Faculty of Science and Technology,FST,Department of Electrical and Computer Engineering,Electrical and Computer Engineering (MSC-ECT),MSC-ECT,,39,0,0,,,39
+Master,Faculty of Science and Technology,FST,Department of Electromechanical Engineering,Electromechanical Engineering (MSC-EM / EMG),MSC-EM,,52,28,25,,,105
+Master,Faculty of Science and Technology,FST,Department of Mathematics,Mathematics (MST-MAT),MST-MAT,,43,9,,,,52
+Master,Faculty of Social Sciences,FSS,Department of Communication,Communication and New Media (MASS-CNM),MASS-CNM,,28,51,,,,79
+Master,Faculty of Social Sciences,FSS,Department of Economics,Economics (MSS-ECO),MSS-ECO,,21,26,,,,47
+Master,Faculty of Social Sciences,FSS,Department of Government and Public Administration,International Relations and Public Policy (MASS-IRP),MASS-IRP,,32,42,,,,74
+Master,Faculty of Social Sciences,FSS,Department of Government and Public Administration,European Studies (MASS-EUS / MES),MASS-EUS,,16,43,,,,59
+Master,Faculty of Social Sciences,FSS,Department of Government and Public Administration,Public Administration (MPC),MPC,,43,93,,,,136
+Master,Faculty of Social Sciences,FSS,Department of History,History (MASS-HIT),MASS-HIT,,22,22,,,,44
+Master,Faculty of Social Sciences,FSS,Department of Psychology,Clinical Psychology (MSS-CPY),MSS-CPY,,0,15,,,,15
+Master,Faculty of Social Sciences,FSS,Department of Sociology,Criminology (MSS-CR),MSS-CR,,17,32,,,,49
+Master,Institute of Chinese Medical Sciences,ICMS,,Chinese Medicinal Science (MCM-CMS),MCM-CMS,,21,43,,,,64
+Master,Institute of Chinese Medical Sciences,ICMS,,Medicinal Administration (MCM-MAD),MCM-MAD,,23,40,,,,63
+Postgraduate Certificate/Diploma,Faculty of Education,FED,,Postgraduate Certificate in Education (Day-Time) (PED),PED,,8,,,,,8
+Postgraduate Certificate/Diploma,Faculty of Education,FED,,Postgraduate Certificate in Education (Evening) (PEE),PEE,,19,,,,,19
+Postgraduate Certificate/Diploma,Faculty of Law,FLL,,Postgraduate Certificate in Law in Chinese Language (LCL),LCL,,9,,,,,9
+Postgraduate Certificate/Diploma,Faculty of Law,FLL,,Postgraduate Programme in International Business Law (LIB),LIB,,2,,,,,2
+Postgraduate Certificate/Diploma,Faculty of Law,FLL,,Introduction to Macau Law (Two-Year) (LML),LML,,25,43,,,,68
+Bachelor,Faculty of Arts and Humanities,FAH,Department of Chinese,Chinese Language and Literature (CCH),CCH,,0,0,0,61,,61
+Bachelor,Faculty of Arts and Humanities,FAH,Department of Chinese,Chinese Language and Literature (CLL11),CLL11,,58,48,60,6,,172
+Bachelor,Faculty of Arts and Humanities,FAH,Department of English,English Studies (ELL),ELL,,0,1,0,53,,54
+Bachelor,Faculty of Arts and Humanities,FAH,Department of English,English Studies (ENS11),ENS11,,74,53,54,3,,184
+Bachelor,Faculty of Arts and Humanities,FAH,Centre for Japanese Studies,Japanese Studies (JAP11),JAP11,,52,37,40,8,,137
+Bachelor,Faculty of Arts and Humanities,FAH,Centre for Japanese Studies,Japanese Studies (JN),JN,,0,0,1,42,,43
+Bachelor,Faculty of Arts and Humanities,FAH,Department of Portuguese,Portuguese Studies (PTS),PTS,,0,0,26,44,,70
+Bachelor,Faculty of Arts and Humanities,FAH,Department of Portuguese,Portuguese Studies (PTS11),PTS11,,67,73,69,5,,214
+Bachelor,Faculty of Business Administration,FBA,,Business Administration (BBA / GBS11),BBA,,229,33,26,24,,312
+Bachelor,Faculty of Business Administration,FBA,Department of Accounting and Information Management,Accounting (BSc-ACC / ACC11 / ACC13),BSc-ACC,,100,84,50,147,,381
+Bachelor,Faculty of Business Administration,FBA,Department of Accounting and Information Management,Business Information System (BIS),BIS,,,,,1,,1
+Bachelor,Faculty of Business Administration,FBA,Department of Accounting and Information Management,Electronic Business (ELB / ELB11),ELB,,,15,14,33,,62
+Bachelor,Faculty of Business Administration,FBA,Department of Finance and Business Economics,Business Economics (BEC / BEC11),BEC,,,28,25,37,,90
+Bachelor,Faculty of Business Administration,FBA,Department of Finance and Business Economics,Economics and International Finance (EIF),EIF,,,,,4,,4
+Bachelor,Faculty of Business Administration,FBA,Department of Finance and Business Economics,Financial Controllership (FIC / FIC11),FIC,,,19,16,28,,63
+Bachelor,Faculty of Business Administration,FBA,Department of Finance and Business Economics,Finance (FNC),FNC,,,,,1,,1
+Bachelor,Faculty of Business Administration,FBA,Department of Finance and Business Economics,Finance (BSc-FNS / FNC11),BSc-FNS,,56,66,48,104,,274
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Global Business Management (GBM / GBM11),GBM,,,40,31,47,,118
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Gaming Management (GM),GM,,,,,1,,1
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Human Resources Management (HRM / HRM11),HRM,,,53,57,116,,226
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Management (MGM),MGM,,,,,1,,1
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Marketing (MKK / MTG / MKG11),MKK,,,59,60,71,,190
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Gaming and Hospitality Management (BSc-GHM),BSc-GHM,,,,1,65,,66
+Bachelor,Faculty of Business Administration,FBA,Department of Management and Marketing,Hospitality and Gaming Management (BSc-HGM11),BSc-HGM11,,75,67,64,3,,209
+Bachelor,Faculty of Education,FED,,Chinese (CHN / CHN11),CHN,,39,27,9,46,,121
+Bachelor,Faculty of Education,FED,,English (EN / ENN / ENG11),EN,,26,27,26,27,,106
+Bachelor,Faculty of Education,FED,,Mathematics (MMS),MMS,,,,,18,,18
+Bachelor,Faculty of Education,FED,,Pre-Primary Education (PPY / PPE11),PPY,,40,31,23,23,,117
+Bachelor,Faculty of Education,FED,,Primary Education (PRY / PYE11),PRY,,33,35,26,36,,130
+Bachelor,Faculty of Law,FLL,,Law in Chinese Language (Evening) (CL),CL,,,,2,2,,4
+Bachelor,Faculty of Law,FLL,,Law in Chinese Language (Day-Time) (CLD),CLD,,,,,1,,1
+Bachelor,Faculty of Law,FLL,,Law (Evening) (BL / BLE11),BLE11,,49,36,31,34,,150
+Bachelor,Faculty of Law,FLL,,Law (Day-Time) (BLD / BLD13),BLD13,,53,47,48,51,,199
+Bachelor,Faculty of Law,FLL,,Law (WA),WA,,14,24,12,13,11,74
+Bachelor,Faculty of Science and Technology,FST,Department of Civil and Environmental Engineering,Civil Engineering (CE / CVE11),CE,,52,37,11,83,,183
+Bachelor,Faculty of Science and Technology,FST,Department of Electrical and Computer Engineering,Electrical and Computer Engineering (ECE11),ECE11,,42,14,26,47,,129
+Bachelor,Faculty of Science and Technology,FST,Department of Electrical and Computer Engineering,Electrical and Electronics Engineering (EE),EE,,,,3,31,,34
+Bachelor,Faculty of Science and Technology,FST,Department of Electromechanical Engineering,Electromechanical Engineering (EL/ EME11),EL,,53,4,46,78,,181
+Bachelor,Faculty of Science and Technology,FST,Department of Computer and Information Science,Computer Science (CPS11 / CPS13),CPS13,,54,27,23,34,,138
+Bachelor,Faculty of Science and Technology,FST,Department of Computer and Information Science,Software Engineering (SO),SO,,,,,41,,41
+Bachelor,Faculty of Science and Technology,FST,Department of Mathematics,Mathematics (MTH11),MTH11,,42,25,19,25,,111
+Bachelor,Faculty of Social Sciences,FSS,Department of Communication,English Studies (Communications) (COM),COM,,,,1,64,,65
+Bachelor,Faculty of Social Sciences,FSS,Department of Communication,Communication (COM11),COM11,,94,95,81,25,,295
+Bachelor,Faculty of Social Sciences,FSS,Department of Communication,Journalism and Public Communication (JPC),JPC,,,,,49,,49
+Bachelor,Faculty of Social Sciences,FSS,Department of Economics,Economics (EC / ECN11),EC,,73,71,61,52,,257
+Bachelor,Faculty of Social Sciences,FSS,Department of Government and Public Administration,Public Administration (Day-Time) (PAM),PAM,,,,,2,,2
+Bachelor,Faculty of Social Sciences,FSS,Department of Government and Public Administration,Government and Public Administration (GPA / GPA11),GPA,,86,77,73,64,,300
+Bachelor,Faculty of Social Sciences,FSS,Department of History,History (HST / HST11),HST,,35,23,21,35,,114
+Bachelor,Faculty of Social Sciences,FSS,Department of Psychology,Psychology (PSY / PSY11),PSY,,46,26,27,56,,155
+Bachelor,Faculty of Social Sciences,FSS,Department of Sociology,Sociology (SOC / SOC11),SOC,,40,25,37,38,,140
+Bachelor,Institute of Chinese Medical Sciences,ICMS,,Biomedical Sciences (BIO11),BIO11,,10,14,8,0,,32
