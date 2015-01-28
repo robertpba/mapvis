@@ -13,4 +13,6 @@ dependencies {
     compile project(":vistools")
     compile project(":common")
 
+    compile project(":layouts")
+
 }
