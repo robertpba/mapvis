@@ -1,12 +1,11 @@
 package mapvis.io.random;
 
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.MapNodeImp;
+import mapvis.common.datatype.Node;
 import org.testng.annotations.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import java.util.ArrayList;
-
-import static org.testng.Assert.*;
 
 public class RandomTreeGeneratorTest {
 
@@ -17,10 +16,26 @@ public class RandomTreeGeneratorTest {
         System.out.print( new YamlCfgReader().dump(config));
 
         RandomTreeGenerator generator = new RandomTreeGenerator();
-        MPTreeImp<MapNodeImp> tree = generator.getTree(config);
+        MPTreeImp<Node> tree = generator.getTree(config);
 
         System.out.println(tree);
     }
+
+    @Test
+    public void testGetTree2() throws Exception {
+
+        Config config = getConfig();
+        System.out.print( new YamlCfgReader().dump(config));
+
+        RandomTreeGenerator2 generator = new RandomTreeGenerator2();
+        Node tree = generator.getTree(config);
+
+
+        System.out.println("====");
+        System.out.println( new Yaml().dumpAsMap(tree));
+    }
+
+
 
     Config getConfig(){
         Config config = new Config();

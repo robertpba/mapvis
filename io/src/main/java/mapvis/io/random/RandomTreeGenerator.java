@@ -1,12 +1,11 @@
 package mapvis.io.random;
 
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.MapNodeImp;
+import mapvis.common.datatype.Node;
 
 import java.util.Random;
 
 public class RandomTreeGenerator {
-
     Config config;
     private int nextid;
     private Random rn;
@@ -15,13 +14,13 @@ public class RandomTreeGenerator {
         this.rn = new Random();
     }
 
-    public MPTreeImp<MapNodeImp> getTree(Config config){
+    public MPTreeImp<Node> getTree(Config config){
         this.config = config;
         rn.setSeed(config.seed);
         nextid = 1;
 
-        MPTreeImp<MapNodeImp> mptree = new MPTreeImp<>();
-        MapNodeImp child = new MapNodeImp("0", "root");
+        MPTreeImp<Node> mptree = new MPTreeImp<>();
+        Node child = new Node("0", "root");
 
         mptree.setRoot(child);
         generateChildren(config.levels.get(0), mptree, child, 0);
@@ -29,7 +28,7 @@ public class RandomTreeGenerator {
 
     }
 
-    void generateChildren(LevelCfg levelCfg, MPTreeImp<MapNodeImp> tree, MapNodeImp node, int level){
+    void generateChildren(LevelCfg levelCfg, MPTreeImp<Node> tree, Node node, int level){
         if (level >= config.level_max)
             return ;
 
@@ -38,7 +37,7 @@ public class RandomTreeGenerator {
         levelCfg = config.levels.get(level);
         while (n-- > 0){
             String id = Integer.toString(nextid++);
-            MapNodeImp child = new MapNodeImp(id, id);
+            Node child = new Node(id, id);
             tree.addChild(node, child, getRandomWeight(levelCfg));
             generateChildren(levelCfg, tree, child, level + 1);
         }
