@@ -21,8 +21,10 @@ public class RandomTreeGenerator2 {
         Node root = generateSubTree(0);
         root.setLabel("root");
 
-        return root;
+        RandomColorGenerator colorGenerator = new RandomColorGenerator();
+        colorGenerator.color(root,1);
 
+        return root;
     }
 
     Node generateSubTree(int level) {
@@ -50,12 +52,12 @@ public class RandomTreeGenerator2 {
         return node;
     }
 
-    
     private int getRandomWidth(LevelCfg levelCfg) {
         return levelCfg.width_min + rn.nextInt(levelCfg.width_max - levelCfg.width_min);
     }
     private int getRandomWeight(LevelCfg levelCfg) {
         return levelCfg.weight_min + rn.nextInt(levelCfg.weight_max - levelCfg.weight_min);
     }
+
 
 }
