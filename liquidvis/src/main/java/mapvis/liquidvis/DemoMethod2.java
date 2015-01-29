@@ -1,11 +1,12 @@
 //package mapvis.liquidvis;
 //
+//import mapvis.common.datatype.TreeImp;
 //import mapvis.liquidvis.gui.Observer;
 //import mapvis.liquidvis.method.method2.Method2;
 //import mapvis.liquidvis.model.MapModel;
-//import mapvis.liquidvis.model.Node;
 //import mapvis.liquidvis.model.handler.CollectStatistics;
 //import mapvis.liquidvis.util.LegacySeparateTextFileTreeLoader;
+//import mapvis.liquidvis.util.Node;
 //
 //import java.awt.image.BufferedImage;
 //import java.io.FileNotFoundException;
@@ -38,17 +39,16 @@
 //        loader.root.children = new Node[]{ geography};
 //
 //
-//        MapModel model = new MapModel(loader.root);
+//        MapModel model = new MapModel(TreeImp.from(loader.root));
 //        Method2 method = new Method2(model);
 //
 //        model.listeners.add(new CollectStatistics(model, 10));
 //
 //
 //        BufferedImage image = new BufferedImage(loader.width, loader.height+500, BufferedImage.TYPE_INT_RGB);
-//
-//        Observer observer = new Observer(image, model);
-////        observer.imageUpdater.mapPolygonFillingColor = c ->
-////            colormap((float)interpolate(c.mass - c.area, 0.0, 0.0, 2000.0, 1.0) );
+//                Observer observer = new Observer(image, model);
+//        observer.imageUpdater.mapPolygonFillingColor = c ->
+//            colormap((float)interpolate(c.mass - c.area, 0.0, 0.0, 2000.0, 1.0) );
 //        observer.Start();
 //
 //

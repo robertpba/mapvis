@@ -1,5 +1,8 @@
 package mapvis.liquidvis.util;
 
+import mapvis.common.datatype.NodeUtils;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -133,13 +136,22 @@ public class LegacySeparateTextFileTreeLoader{
     {
         LegacySeparateTextFileTreeLoader loader = new LegacySeparateTextFileTreeLoader();
         try {
-            loader.load("data/finalPointInfo.txt", 
-                    "data/edgeInfo.txt",
-                    "data/categoryName.txt");
+            loader.load("liquidvis/data/finalPointInfo.txt",
+                    "liquidvis/data/edgeInfo.txt",
+                    "liquidvis/data/categoryName.txt");
             
-            printNode ("", loader.root);
-            
-            
+            //printNode ("", loader.root);
+
+
+            Yaml yaml = new Yaml();
+            mapvis.common.datatype.Node nodes1 = convertToNodes(loader.root);
+            NodeUtils.rebuildId(nodes1,0);
+            NodeUtils.populateLevel(nodes1,0);
+            String s = yaml.dumpAsMap(nodes1);
+
+
+            System.out.println(s);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -155,6 +167,27 @@ public class LegacySeparateTextFileTreeLoader{
             printNode(indent+"  ", child);
         }
     }
+
+
+    static mapvis.common.datatype.Node convertToNodes(Node n0){
+        mapvis.common.datatype.Node n1 =
+                new mapvis.common.datatype.Node(
+                        Integer.toString(n0.id), n0.name);
+        n1.setVal("articles", (int)n0.figure);
+        n1.setVal("pageid", n0.pageId);
+        n1.setVal("x", n0.x);
+        n1.setVal("y", n0.y);
+
+        for (Node child : n0.children) {
+            mapvis.common.datatype.Node c1 = convertToNodes(child);
+            n1.getChildren().add(c1);
+        }
+
+        return n1;
+    }
+
+
+
 
 
 }
