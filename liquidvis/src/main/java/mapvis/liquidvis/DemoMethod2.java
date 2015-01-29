@@ -25,8 +25,9 @@ public class DemoMethod2 {
 
     public static void main (String[] args) throws IOException, InterruptedException {
         Yaml yaml = new Yaml();
+        String filename = "liquidvis/data/tree1.yaml";
         Node node = yaml.loadAs(
-                new FileInputStream("liquidvis/data/tree1.yaml"), Node.class);
+                new FileInputStream(filename), Node.class);
 
         MapModel<Node> model = new MapModel<>(TreeImp.from(node), new MapModel.ToInitialValue<Node>() {
             @Override

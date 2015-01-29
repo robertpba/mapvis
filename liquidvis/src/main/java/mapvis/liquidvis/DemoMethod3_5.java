@@ -1,5 +1,8 @@
 package mapvis.liquidvis;
 
+import mapvis.common.datatype.Node;
+import mapvis.common.datatype.NodeUtils;
+import mapvis.commons.algorithm.CircleOverlapRemoval;
 import mapvis.liquidvis.gui.*;
 import mapvis.liquidvis.gui.actions.*;
 import mapvis.liquidvis.method.method3.Method3;
@@ -7,11 +10,9 @@ import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.handler.CollectStatistics;
 import mapvis.common.datatype.TreeImp;
-import mapvis.liquidvis.util.Node;
 import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
+import org.yaml.snakeyaml.Yaml;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,98 +20,69 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
+import java.time.YearMonth;
+import java.util.*;
 import java.util.function.Function;
 
 import static mapvis.vistools.Helper.interpolate;
 
 public class DemoMethod3_5 {
 
-    public static boolean convertToVisibleTree(DirectedGraph<Node, DefaultEdge> oldgraph,
-                                        DirectedGraph<Node, DefaultEdge> newgraph,
-                                        Node node) {
-        if (oldgraph.outDegreeOf(node) == 0){
-            if (node.figure > 0) {
-                newgraph.addVertex(node);
-                return true;
-            }
-            return false;
+    static void refinePoints(Node node, double scale, double tolerance) {
+        //int scale = 8;
+        java.util.List<Node> leaves = NodeUtils.getLeaves(node);
+        for (Node leave : leaves) {
+            double x = (double) leave.getVal("x");
+            double y = (double) leave.getVal("y");
+            double size = (double) leave.getVal("size");
+            leave.setVal("x", (x + 50) * scale);
+            leave.setVal("y", (y + 50) * scale);
+            leave.setVal("size", size * scale * scale);
         }
 
-        newgraph.addVertex(node);
+        //width  = (int)((width + 100)* scale);
+        //height = (int)((height + 100)* scale);
 
-        oldgraph.outgoingEdgesOf(node).stream()
-                .map(t -> oldgraph.getEdgeTarget(t))
-                .filter(v -> convertToVisibleTree(oldgraph, newgraph, v))
-                .forEach(v -> newgraph.addEdge(node, v));
-        return true;
-    }
+        CircleOverlapRemoval<Node> removal = new CircleOverlapRemoval<>(leaves,
+                n -> new Point2D.Double((double)n.getVal("x"), (double)n.getVal("y")),
+                n -> Math.sqrt((double)n.getVal("size") * tolerance / Math.PI));
+        removal.run(1000);
 
-    public static void addChildrenToTree(DirectedGraph<Node, DefaultEdge> graph, TreeImp<Node> tree, Node parent){
-
-        for (DefaultEdge edge : graph.outgoingEdgesOf(parent)) {
-            Node child = graph.getEdgeTarget(edge);
-            tree.addChild(parent, child);
-            addChildrenToTree(graph, tree, child);
+        for (Node n : leaves) {
+            Point2D position = removal.getPosition(n);
+            n.setVal("x", position.getX());
+            n.setVal("y", position.getY());
         }
+
+        NodeUtils.filterBySize(node,0,"size");
     }
 
 
     public static void main (String[] args) throws IOException, InterruptedException {
         PatrickFormatLoader2 loader = new PatrickFormatLoader2();
+        Node node = null;
         try {
-
-            loader.load(
-                    "data/simple.txt",
-                    "data/points.txt");
-            loader.refinePoints(8, 0.81);
+            Yaml yaml = new Yaml();
+            node = yaml.loadAs(new FileInputStream("liquidvis/data/tree3.yaml"), Node.class);
+            refinePoints(node, 8, 0.81);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-//        List<DefaultEdge> edges = new ArrayList<>( loader.graph.outgoingEdgesOf(loader.root));
-//
-//        Node geography = edges.stream()
-//                .map(e -> loader.graph.getEdgeTarget(e))
-//                .filter(n -> n.name.contains("Geography"))
-//                .findFirst().get();
-//
-//        for (DefaultEdge edge : edges) {
-//            if (loader.graph.getEdgeTarget(edge) != geography)
-//                loader.graph.removeEdge(edge);
-//        }
-//
-//        DirectedGraph<Node, DefaultEdge> ngraph = new DefaultDirectedGraph<>(DefaultEdge.class);
-//        convertToVisibleTree(loader.graph, ngraph  ,  loader.root);
-//        loader.graph = ngraph;
-//        PatrickFormatLoader2.printNode(loader, "", loader.root, 9);
-//
-//
-//
-//        Node byCountry = Arrays.stream(geography.children)
-//                .filter(n -> n.name.contains("Geography by country"))
-//                .findFirst().get();
-
-        //geography.children = new Node[] { byCountry };
-
-        //loader.root.children = new Node[]{ geography};
-
-        TreeImp<Node> tree = new TreeImp<>();
-
-        tree.setRoot(loader.root);
-        addChildrenToTree(loader.graph, tree, tree.getRoot());
+        TreeImp<Node> tree = TreeImp.from(node);
 
         MapModel<Node> model = new MapModel<>(tree, new MapModel.ToInitialValue<Node>() {
             @Override
             public Point2D getPosition(Node node) {
-                return new Point2D.Double(node.x, node.y);
+                return new Point2D.Double((double)node.getVal("x"), (double)node.getVal("y"));
             }
 
             @Override
             public double getMass(Node node) {
-                return node.figure * 1.4 * 0.81;
+                return ((double)node.getVal("size")) * 1.4 * 0.81;
             }
         });
         Method3 method = new Method3(model);
@@ -118,7 +90,7 @@ public class DemoMethod3_5 {
         CollectStatistics collectStatistics = new CollectStatistics(model, 100);
         model.listeners.add(collectStatistics);
 
-        BufferedImage image = new BufferedImage(loader.width, loader.height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(8000, 8000, BufferedImage.TYPE_INT_RGB);
 
         Visualization visualization = new Visualization(image, model);
         visualization.backgroundColor = Color.decode("#aaffff");
@@ -137,7 +109,7 @@ public class DemoMethod3_5 {
         };
 
         final Function<Node, Color> colorMap2 = c -> {
-            double v = (c).figure2;
+            double v = (int)c.getVal("articles");
             if (v <= nlevels[1])
                 return colors[1];
             else if (v <= nlevels[2])
@@ -155,7 +127,7 @@ public class DemoMethod3_5 {
         };
 
         model.actions.add(new LevelEncoder<>(model));
-        model.actions.add(new EncodeLabelText<>(model, n->n.name));
+        model.actions.add(new EncodeLabelText<>(model, Node::getLabel));
         model.actions.add(new CreateAreas<>(model));
 
 
@@ -170,7 +142,7 @@ public class DemoMethod3_5 {
         model.actions.add(new LabelRender<Node>(model){
             protected void renderLabel(Graphics2D g, Entry entry){
                 Node element = (Node) entry.element;
-                if (entry.level == 2 && element.name.equals("Engineering")) {
+                if (entry.level == 2 && element.getLabel().equals("Engineering")) {
                     Rectangle2D bounds = entry.label.getBounds();
 
                     entry.label.setPosition(bounds.getX(), bounds.getY() - 250);

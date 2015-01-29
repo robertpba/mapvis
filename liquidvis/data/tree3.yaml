@@ -1,0 +1,5730 @@
+children:
+- children:
+  - children:
+    - children: []
+      data:
+        size: 6536.088684635858
+        level: 3
+        x: 127.0
+        y: 478.0
+        articles: 128
+      id: '3'
+      label: Medicine
+    - children: []
+      data:
+        size: 997.3741140341212
+        level: 3
+        x: 68.0
+        y: 489.0
+        articles: 31
+      id: '4'
+      label: Nutrition
+    - children: []
+      data:
+        size: 730.4826702205295
+        level: 3
+        x: 111.0
+        y: 478.0
+        articles: 11
+      id: '5'
+      label: Care
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 99.0
+        y: 470.0
+        articles: 28
+      id: '6'
+      label: Disability
+    - children: []
+      data:
+        size: 410.4517495885185
+        level: 3
+        x: 67.0
+        y: 468.0
+        articles: 4
+      id: '7'
+      label: Pollution
+    - children: []
+      data:
+        size: 375.9849100917863
+        level: 3
+        x: 123.0
+        y: 491.0
+        articles: 9
+      id: '8'
+      label: Healthcare occupations
+    - children: []
+      data:
+        size: 4316.437759123586
+        level: 3
+        x: 97.0
+        y: 498.0
+        articles: 34
+      id: '9'
+      label: Health problems
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 44.0
+        y: 479.0
+        articles: 9
+      id: '10'
+      label: Sleep
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 76.0
+        y: 466.0
+        articles: 6
+      id: '11'
+      label: Illnesses
+    - children: []
+      data:
+        size: 345.80113821742805
+        level: 3
+        x: 56.0
+        y: 485.0
+        articles: 17
+      id: '12'
+      label: Healthy lifestyle
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 79.0
+        y: 482.0
+        articles: 5
+      id: '13'
+      label: Physiques
+    data:
+      size: 14423.376571674657
+      level: 2
+      x: 92.0
+      y: 484.0
+      articles: 60
+    id: '2'
+    label: Health
+  - children:
+    - children: []
+      data:
+        size: 13987.201139786855
+        level: 3
+        x: 107.0
+        y: 578.0
+        articles: 37
+      id: '15'
+      label: Television
+    - children: []
+      data:
+        size: 514.6643085249788
+        level: 3
+        x: 134.0
+        y: 552.0
+        articles: 30
+      id: '16'
+      label: Optics
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 106.0
+        y: 557.0
+        articles: 12
+      id: '17'
+      label: Machines
+    - children: []
+      data:
+        size: 1328.727973208885
+        level: 3
+        x: 129.0
+        y: 578.0
+        articles: 62
+      id: '18'
+      label: Electronics
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 118.0
+        y: 564.0
+        articles: 12
+      id: '19'
+      label: Display technology
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 84.0
+        y: 549.0
+        articles: 21
+      id: '20'
+      label: Motors
+    - children: []
+      data:
+        size: 20287.91162047049
+        level: 3
+        x: 61.0
+        y: 571.0
+        articles: 15
+      id: '21'
+      label: Systems
+    - children: []
+      data:
+        size: 1344.8275791069254
+        level: 3
+        x: 127.0
+        y: 591.0
+        articles: 13
+      id: '22'
+      label: Telephone
+    - children: []
+      data:
+        size: 356.8556253534439
+        level: 3
+        x: 62.0
+        y: 556.0
+        articles: 5
+      id: '23'
+      label: Optical discs
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 73.0
+        y: 568.0
+        articles: 21
+      id: '24'
+      label: Audio technology
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 135.0
+        y: 563.0
+        articles: 6
+      id: '25'
+      label: Science fiction technology
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 94.0
+        y: 562.0
+        articles: 10
+      id: '26'
+      label: Rail technologies
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 104.0
+        y: 544.0
+        articles: 2
+      id: '27'
+      label: History of technology
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 72.0
+        y: 547.0
+        articles: 1
+      id: '28'
+      label: Innovation
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 94.0
+        y: 550.0
+        articles: 4
+      id: '29'
+      label: Application layer protocols
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 78.0
+        y: 577.0
+        articles: 3
+      id: '30'
+      label: Weather instruments
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 56.0
+        y: 579.0
+        articles: 2
+      id: '31'
+      label: Nanotechnology
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 70.0
+        y: 581.0
+        articles: 4
+      id: '32'
+      label: Science and technology magazines
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 123.0
+        y: 554.0
+        articles: 3
+      id: '33'
+      label: Bionics
+    data:
+      size: 50628.9613694243
+      level: 2
+      x: 91.0
+      y: 577.0
+      articles: 106
+    id: '14'
+    label: Technology
+  - children:
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 105.0
+        y: 514.0
+        articles: 8
+      id: '35'
+      label: Old units of measurement
+    - children: []
+      data:
+        size: 308.9322657046156
+        level: 3
+        x: 81.0
+        y: 525.0
+        articles: 19
+      id: '36'
+      label: SI units
+    - children: []
+      data:
+        size: 333.4432729927273
+        level: 3
+        x: 93.0
+        y: 521.0
+        articles: 24
+      id: '37'
+      label: Imperial units
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 154.0
+        y: 533.0
+        articles: 50
+      id: '38'
+      label: Laboratory equipment
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 141.0
+        y: 536.0
+        articles: 21
+      id: '39'
+      label: Measuring tools
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 109.0
+        y: 540.0
+        articles: 20
+      id: '40'
+      label: Units of time
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 132.0
+        y: 523.0
+        articles: 26
+      id: '41'
+      label: Physical quantity
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 125.0
+        y: 507.0
+        articles: 5
+      id: '42'
+      label: Tests
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 69.0
+        y: 523.0
+        articles: 6
+      id: '43'
+      label: Units of temperature
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 70.0
+        y: 512.0
+        articles: 4
+      id: '44'
+      label: Units of area
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 149.0
+        y: 520.0
+        articles: 6
+      id: '45'
+      label: Laboratory techniques
+    - children: []
+      data:
+        size: 366.8556253534439
+        level: 3
+        x: 81.0
+        y: 508.0
+        articles: 33
+      id: '46'
+      label: Orders of magnitude
+    - children: []
+      data:
+        size: 290.90163589366847
+        level: 3
+        x: 139.0
+        y: 510.0
+        articles: 16
+      id: '47'
+      label: Computing measurement
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 149.0
+        y: 511.0
+        articles: 4
+      id: '48'
+      label: Geodesy
+    data:
+      size: 3379.964302210816
+      level: 2
+      x: 118.0
+      y: 522.0
+      articles: 82
+    id: '34'
+    label: Measurement
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 226.0
+        y: 492.0
+        articles: 40
+      id: '50'
+      label: Water
+    - children: []
+      data:
+        size: 2054.3411120593787
+        level: 3
+        x: 221.0
+        y: 463.0
+        articles: 8
+      id: '51'
+      label: Life
+    - children: []
+      data:
+        size: 276.89144381359193
+        level: 3
+        x: 218.0
+        y: 478.0
+        articles: 14
+      id: '52'
+      label: Force
+    - children: []
+      data:
+        size: 1371.468511954
+        level: 3
+        x: 245.0
+        y: 475.0
+        articles: 18
+      id: '53'
+      label: Parks
+    - children: []
+      data:
+        size: 1837.5079446331126
+        level: 3
+        x: 207.0
+        y: 475.0
+        articles: 22
+      id: '54'
+      label: Earth
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 232.0
+        y: 458.0
+        articles: 2
+      id: '55'
+      label: Natural sciences
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 240.0
+        y: 463.0
+        articles: 6
+      id: '56'
+      label: Natural resources
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 211.0
+        y: 464.0
+        articles: 4
+      id: '57'
+      label: Areas of Outstanding Natural Beauty
+    data:
+      size: 13595.696578975892
+      level: 2
+      x: 233.0
+      y: 478.0
+      articles: 16
+    id: '49'
+    label: Nature
+  - children:
+    - children: []
+      data:
+        size: 333.4432729927273
+        level: 3
+        x: 161.0
+        y: 541.0
+        articles: 24
+      id: '59'
+      label: Physicists
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 195.0
+        y: 536.0
+        articles: 19
+      id: '60'
+      label: Psychologists
+    - children: []
+      data:
+        size: 1410.7815685667008
+        level: 3
+        x: 180.0
+        y: 532.0
+        articles: 17
+      id: '61'
+      label: Chemists
+    - children: []
+      data:
+        size: 3861.164629725656
+        level: 3
+        x: 218.0
+        y: 519.0
+        articles: 8
+      id: '62'
+      label: Biologists
+    - children: []
+      data:
+        size: 1170.8555617919028
+        level: 3
+        x: 218.0
+        y: 531.0
+        articles: 35
+      id: '63'
+      label: Physicians
+    - children: []
+      data:
+        size: 4120.11176260349
+        level: 3
+        x: 169.0
+        y: 507.0
+        articles: 0
+      id: '64'
+      label: Scientists by country
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 166.0
+        y: 517.0
+        articles: 2
+      id: '65'
+      label: Systems scientists
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 163.0
+        y: 511.0
+        articles: 2
+      id: '66'
+      label: Neurologists
+    - children: []
+      data:
+        size: 303.25950111836914
+        level: 3
+        x: 167.0
+        y: 528.0
+        articles: 57
+      id: '67'
+      label: Fellows of the Royal Society
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 191.0
+        y: 523.0
+        articles: 9
+      id: '68'
+      label: Female scientists
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 206.0
+        y: 533.0
+        articles: 7
+      id: '69'
+      label: Ornithologists
+    data:
+      size: 14519.332513985992
+      level: 2
+      x: 201.0
+      y: 523.0
+      articles: 4
+    id: '58'
+    label: Scientists
+  - children:
+    - children: []
+      data:
+        size: 898.1467350550777
+        level: 3
+        x: 286.0
+        y: 477.0
+        articles: 0
+      id: '71'
+      label: Museums by type
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 296.0
+        y: 473.0
+        articles: 3
+      id: '72'
+      label: Smithsonian Institution
+    - children: []
+      data:
+        size: 943.7779897990466
+        level: 3
+        x: 293.0
+        y: 490.0
+        articles: 0
+      id: '73'
+      label: Museums by country
+    data:
+      size: 1957.1917709266004
+      level: 2
+      x: 295.0
+      y: 484.0
+      articles: 18
+    id: '70'
+    label: Museums
+  - children:
+    - children: []
+      data:
+        size: 23472.768306134327
+        level: 3
+        x: 163.0
+        y: 584.0
+        articles: 44
+      id: '75'
+      label: Society
+    - children: []
+      data:
+        size: 2121.8364600015493
+        level: 3
+        x: 145.0
+        y: 581.0
+        articles: 130
+      id: '76'
+      label: Psychology
+    - children: []
+      data:
+        size: 551.6194999129787
+        level: 3
+        x: 150.0
+        y: 565.0
+        articles: 65
+      id: '77'
+      label: Sociology
+    - children: []
+      data:
+        size: 303.25950111836914
+        level: 3
+        x: 137.0
+        y: 560.0
+        articles: 18
+      id: '78'
+      label: Anthropology
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 213.0
+        y: 555.0
+        articles: 20
+      id: '79'
+      label: Marriage
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 174.0
+        y: 557.0
+        articles: 4
+      id: '80'
+      label: Epidemiology
+    - children: []
+      data:
+        size: 333.44327299272743
+        level: 3
+        x: 200.0
+        y: 552.0
+        articles: 11
+      id: '81'
+      label: Intelligence
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 188.0
+        y: 558.0
+        articles: 1
+      id: '82'
+      label: Cultural studies
+    - children: []
+      data:
+        size: 14831.362060598494
+        level: 3
+        x: 182.0
+        y: 566.0
+        articles: 5
+      id: '83'
+      label: Human geography
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 210.0
+        y: 577.0
+        articles: 8
+      id: '84'
+      label: Sustainable development
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 194.0
+        y: 565.0
+        articles: 9
+      id: '85'
+      label: Prostitution
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 195.0
+        y: 577.0
+        articles: 3
+      id: '86'
+      label: Urban studies and planning
+    - children: []
+      data:
+        size: 218.17622692025134
+        level: 3
+        x: 209.0
+        y: 566.0
+        articles: 0
+      id: '87'
+      label: Public administration
+    - children: []
+      data:
+        size: 555.9025675353528
+        level: 3
+        x: 216.0
+        y: 566.0
+        articles: 9
+      id: '88'
+      label: Gender
+    data:
+      size: 67000.59513297012
+      level: 2
+      x: 177.0
+      y: 579.0
+      articles: 60
+    id: '74'
+    label: Social sciences
+  - children:
+    - children: []
+      data:
+        size: 798.7945249050055
+        level: 3
+        x: 56.0
+        y: 629.0
+        articles: 75
+      id: '90'
+      label: Mechanics
+    - children: []
+      data:
+        size: 303.25950111836914
+        level: 3
+        x: 87.0
+        y: 641.0
+        articles: 48
+      id: '91'
+      label: Thermodynamics
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 39.0
+        y: 623.0
+        articles: 11
+      id: '92'
+      label: Mechanical vibrations
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 90.0
+        y: 614.0
+        articles: 21
+      id: '93'
+      label: Engineers
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 90.0
+        y: 626.0
+        articles: 20
+      id: '94'
+      label: Aerospace engineering
+    - children: []
+      data:
+        size: 5357.293468518999
+        level: 3
+        x: 59.0
+        y: 615.0
+        articles: 13
+      id: '95'
+      label: Civil engineering
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 49.0
+        y: 616.0
+        articles: 3
+      id: '96'
+      label: Materials science
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 85.0
+        y: 632.0
+        articles: 1
+      id: '97'
+      label: Institut polytechnique des sciences avancées
+    data:
+      size: 7575.21723513533
+      level: 2
+      x: 72.0
+      y: 630.0
+      articles: 109
+    id: '89'
+    label: Engineering
+  - children: []
+    data:
+      size: 260.7178640193103
+      level: 2
+      x: 280.0
+      y: 522.0
+      articles: 12
+    id: '98'
+    label: Systems theory
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 294.0
+        y: 516.0
+        articles: 2
+      id: '100'
+      label: Space colonization
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 298.0
+        y: 536.0
+        articles: 4
+      id: '101'
+      label: NASA
+    data:
+      size: 4146.692163013948
+      level: 2
+      x: 297.0
+      y: 525.0
+      articles: 12
+    id: '99'
+    label: Space
+  - children: []
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 305.0
+      y: 485.0
+      articles: 4
+    id: '102'
+    label: Forensics
+  - children:
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 256.0
+        y: 500.0
+        articles: 0
+      id: '104'
+      label: Historiography of science
+    data:
+      size: 230.53409214495204
+      level: 2
+      x: 259.0
+      y: 493.0
+      articles: 13
+    id: '103'
+    label: History of science
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 302.0
+        y: 508.0
+        articles: 3
+      id: '106'
+      label: Cheminformatics
+    data:
+      size: 115.26704607247602
+      level: 2
+      x: 311.0
+      y: 507.0
+      articles: 4
+    id: '105'
+    label: Interdisciplinary fields
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 191.0
+        y: 480.0
+        articles: 3
+      id: '108'
+      label: Semiotics
+    data:
+      size: 70183.2330594514
+      level: 2
+      x: 186.0
+      y: 479.0
+      articles: 0
+    id: '107'
+    label: Scientific disciplines
+  - children: []
+    data:
+      size: 297.2624067935765
+      level: 2
+      x: 275.0
+      y: 491.0
+      articles: 17
+    id: '109'
+    label: Science books
+  - children: []
+    data:
+      size: 187.99245504589317
+      level: 2
+      x: 202.0
+      y: 501.0
+      articles: 8
+    id: '110'
+    label: Pseudoscience
+  - children:
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 161.0
+        y: 590.0
+        articles: 3
+      id: '112'
+      label: Royal Society
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 143.0
+        y: 601.0
+        articles: 7
+      id: '113'
+      label: Royal Society of Arts
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 149.0
+        y: 591.0
+        articles: 3
+      id: '114'
+      label: Research methods
+    data:
+      size: 1286.623423072414
+      level: 2
+      x: 160.0
+      y: 601.0
+      articles: 16
+    id: '111'
+    label: Research
+  - children: []
+    data:
+      size: 230.53409214495204
+      level: 2
+      x: 275.0
+      y: 511.0
+      articles: 9
+    id: '115'
+    label: Scientific organizations
+  - children: []
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 255.0
+      y: 522.0
+      articles: 4
+    id: '116'
+    label: Symmetry
+  - children: []
+    data:
+      size: 349.61685278700907
+      level: 2
+      x: 102.0
+      y: 598.0
+      articles: 28
+    id: '117'
+    label: Science-related lists
+  data:
+    size: 258467.31827220804
+    level: 1
+    x: 288.0
+    y: 501.0
+    articles: 33
+  id: '1'
+  label: Science
+- children:
+  - children:
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 300.0
+        y: 331.0
+        articles: 21
+      id: '120'
+      label: Forests
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 284.0
+        y: 314.0
+        articles: 11
+      id: '121'
+      label: Beaches
+    - children: []
+      data:
+        size: 337.72634061510144
+        level: 3
+        x: 274.0
+        y: 341.0
+        articles: 25
+      id: '122'
+      label: Straits
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 265.0
+        y: 314.0
+        articles: 12
+      id: '123'
+      label: Caves
+    - children: []
+      data:
+        size: 967.1903421597631
+        level: 3
+        x: 292.0
+        y: 331.0
+        articles: 0
+      id: '124'
+      label: Landforms by country
+    - children: []
+      data:
+        size: 308.9322657046156
+        level: 3
+        x: 297.0
+        y: 319.0
+        articles: 19
+      id: '125'
+      label: Capes
+    - children: []
+      data:
+        size: 575.0318522736952
+        level: 3
+        x: 262.0
+        y: 327.0
+        articles: 16
+      id: '126'
+      label: Valleys
+    - children: []
+      data:
+        size: 397.03939722780206
+        level: 3
+        x: 256.0
+        y: 314.0
+        articles: 1
+      id: '127'
+      label: Craters
+    data:
+      size: 7760.417804839655
+      level: 2
+      x: 279.0
+      y: 328.0
+      articles: 54
+    id: '119'
+    label: Landforms
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 319.0
+        y: 336.0
+        articles: 2
+      id: '129'
+      label: Bodies of water in North America
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 311.0
+        y: 342.0
+        articles: 8
+      id: '130'
+      label: Waterways
+    - children: []
+      data:
+        size: 324.3139882543849
+        level: 3
+        x: 323.0
+        y: 357.0
+        articles: 22
+      id: '131'
+      label: Bays
+    data:
+      size: 9716.917958227501
+      level: 2
+      x: 323.0
+      y: 345.0
+      articles: 7
+    id: '128'
+    label: Bodies of water
+  - children:
+    - children: []
+      data:
+        size: 2644.2967790121797
+        level: 3
+        x: 292.0
+        y: 351.0
+        articles: 17
+      id: '133'
+      label: World Heritage Sites by country
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 280.0
+        y: 356.0
+        articles: 21
+      id: '134'
+      label: Lists of World Heritage sites
+    data:
+      size: 2963.7298599248306
+      level: 2
+      x: 290.0
+      y: 363.0
+      articles: 5
+    id: '132'
+    label: World Heritage Sites
+  - children: []
+    data:
+      size: 14017.048887592371
+      level: 2
+      x: 383.0
+      y: 363.0
+      articles: 0
+    id: '135'
+    label: Geography by country
+  - children:
+    - children: []
+      data:
+        size: 218.17622692025134
+        level: 3
+        x: 380.0
+        y: 357.0
+        articles: 5
+      id: '137'
+      label: Geography of South America
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 361.0
+        y: 360.0
+        articles: 0
+      id: '138'
+      label: Mountains by continent
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 370.0
+        y: 354.0
+        articles: 6
+      id: '139'
+      label: Geography of Antarctica
+    - children: []
+      data:
+        size: 324.3139882543849
+        level: 3
+        x: 359.0
+        y: 355.0
+        articles: 0
+      id: '140'
+      label: Rivers by continent
+    data:
+      size: 6105.645873121401
+      level: 2
+      x: 364.0
+      y: 354.0
+      articles: 0
+    id: '136'
+    label: Geography by continent
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 363.0
+        y: 332.0
+        articles: 4
+      id: '142'
+      label: Lines of longitude
+    data:
+      size: 363.6270448670856
+      level: 2
+      x: 362.0
+      y: 342.0
+      articles: 13
+    id: '141'
+    label: Cartography
+  - children: []
+    data:
+      size: 204.16603484017483
+      level: 2
+      x: 352.0
+      y: 365.0
+      articles: 7
+    id: '143'
+    label: Hemispheres
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 253.0
+        y: 350.0
+        articles: 3
+      id: '145'
+      label: Regions of Africa
+    - children: []
+      data:
+        size: 3477.265901000122
+        level: 3
+        x: 250.0
+        y: 369.0
+        articles: 8
+      id: '146'
+      label: Divided regions
+    - children: []
+      data:
+        size: 284.13021638002675
+        level: 3
+        x: 239.0
+        y: 358.0
+        articles: 15
+      id: '147'
+      label: Australasia
+    data:
+      size: 4474.640015034243
+      level: 2
+      x: 249.0
+      y: 359.0
+      articles: 4
+    id: '144'
+    label: Regions
+  - children: []
+    data:
+      size: 269.11599188328734
+      level: 2
+      x: 393.0
+      y: 356.0
+      articles: 13
+    id: '148'
+    label: Geographers
+  - children:
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 403.0
+        y: 332.0
+        articles: 5
+      id: '150'
+      label: Phantom islands
+    data:
+      size: 314.313988254385
+      level: 2
+      x: 402.0
+      y: 343.0
+      articles: 7
+    id: '149'
+    label: Fictional locations
+  - children:
+    - children: []
+      data:
+        size: 410.4517495885185
+        level: 3
+        x: 400.0
+        y: 348.0
+        articles: 0
+      id: '152'
+      label: Lists of counties
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 403.0
+        y: 357.0
+        articles: 3
+      id: '153'
+      label: Lists of coordinates
+    data:
+      size: 3484.6428051859607
+      level: 2
+      x: 413.0
+      y: 356.0
+      articles: 10
+    id: '151'
+    label: Geography-related lists
+  - children:
+    - children: []
+      data:
+        size: 572.3754930016564
+        level: 3
+        x: 338.0
+        y: 355.0
+        articles: 3
+      id: '155'
+      label: Protected areas
+    data:
+      size: 5718.595770257462
+      level: 2
+      x: 333.0
+      y: 354.0
+      articles: 0
+    id: '154'
+    label: Places
+  - children: []
+    data:
+      size: 218.17622692025137
+      level: 2
+      x: 369.0
+      y: 329.0
+      articles: 0
+    id: '156'
+    label: Branches of geography
+  - children: []
+    data:
+      size: 115.26704607247602
+      level: 2
+      x: 401.0
+      y: 343.0
+      articles: 3
+    id: '157'
+    label: Exploration
+  - children: []
+    data:
+      size: 241.58857928096782
+      level: 2
+      x: 374.0
+      y: 343.0
+      articles: 10
+    id: '158'
+    label: Ecozones
+  - children: []
+    data:
+      size: 297.2624067935765
+      level: 2
+      x: 383.0
+      y: 371.0
+      articles: 17
+    id: '159'
+    label: Gondwana
+  - children: []
+    data:
+      size: 230.53409214495204
+      level: 2
+      x: 391.0
+      y: 336.0
+      articles: 9
+    id: '160'
+    label: Compass directions
+  data:
+    size: 342233.34995758435
+    level: 1
+    x: 351.0
+    y: 352.0
+    articles: 80
+  id: '118'
+  label: Geography
+- children:
+  - children:
+    - children: []
+      data:
+        size: 387.03939722780206
+        level: 3
+        x: 255.0
+        y: 103.0
+        articles: 40
+      id: '163'
+      label: Time zones
+    - children: []
+      data:
+        size: 1000.8144414881573
+        level: 3
+        x: 301.0
+        y: 96.0
+        articles: 28
+      id: '164'
+      label: Calendars
+    - children: []
+      data:
+        size: 303.25950111836914
+        level: 3
+        x: 292.0
+        y: 113.0
+        articles: 18
+      id: '165'
+      label: Clocks
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 254.0
+        y: 115.0
+        articles: 7
+      id: '166'
+      label: Seasons
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 267.0
+        y: 107.0
+        articles: 8
+      id: '167'
+      label: Parts of a day
+    - children: []
+      data:
+        size: 369.98781576699366
+        level: 3
+        x: 304.0
+        y: 109.0
+        articles: 34
+      id: '168'
+      label: Centuries
+    - children: []
+      data:
+        size: 554.848080399337
+        level: 3
+        x: 266.0
+        y: 88.0
+        articles: 0
+      id: '169'
+      label: Time travel
+    data:
+      size: 3038.2914977610853
+      level: 2
+      x: 279.0
+      y: 102.0
+      articles: 27
+    id: '162'
+    label: Time
+  - children:
+    - children: []
+      data:
+        size: 598.4442046344118
+        level: 3
+        x: 162.0
+        y: 75.0
+        articles: 42
+      id: '171'
+      label: Toys
+    - children: []
+      data:
+        size: 2849.302264922528
+        level: 3
+        x: 117.0
+        y: 48.0
+        articles: 8
+      id: '172'
+      label: Entertainment companies
+    - children: []
+      data:
+        size: 32400.725172940878
+        level: 3
+        x: 148.0
+        y: 64.0
+        articles: 1
+      id: '173'
+      label: Entertainers
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 96.0
+        y: 55.0
+        articles: 8
+      id: '174'
+      label: Celebrities
+    - children: []
+      data:
+        size: 349.61685278700907
+        level: 3
+        x: 102.0
+        y: 67.0
+        articles: 28
+      id: '175'
+      label: Festivals
+    - children: []
+      data:
+        size: 3276.189285107493
+        level: 3
+        x: 155.0
+        y: 45.0
+        articles: 7
+      id: '176'
+      label: Competitions
+    - children: []
+      data:
+        size: 2359.5419466569574
+        level: 3
+        x: 107.0
+        y: 91.0
+        articles: 24
+      id: '177'
+      label: Comedy
+    - children: []
+      data:
+        size: 610.3347168063193
+        level: 3
+        x: 73.0
+        y: 70.0
+        articles: 18
+      id: '178'
+      label: Theme parks
+    - children: []
+      data:
+        size: 941.887477627139
+        level: 3
+        x: 94.0
+        y: 84.0
+        articles: 42
+      id: '179'
+      label: Theater
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 71.0
+        y: 54.0
+        articles: 3
+      id: '180'
+      label: Pyrotechnics
+    - children: []
+      data:
+        size: 269.11599188328734
+        level: 3
+        x: 127.0
+        y: 57.0
+        articles: 6
+      id: '181'
+      label: Beauty pageants
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 155.0
+        y: 62.0
+        articles: 9
+      id: '182'
+      label: Puzzles
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 110.0
+        y: 79.0
+        articles: 9
+      id: '183'
+      label: Tourism
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 76.0
+        y: 80.0
+        articles: 6
+      id: '184'
+      label: Humor
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 80.0
+        y: 58.0
+        articles: 6
+      id: '185'
+      label: Entertainment venues
+    - children: []
+      data:
+        size: 2471.258835278063
+        level: 3
+        x: 89.0
+        y: 48.0
+        articles: 0
+      id: '186'
+      label: Entertainment by country
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 133.0
+        y: 69.0
+        articles: 2
+      id: '187'
+      label: Circuses
+    - children: []
+      data:
+        size: 276.89144381359193
+        level: 3
+        x: 142.0
+        y: 74.0
+        articles: 14
+      id: '188'
+      label: Entertainment occupations
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 132.0
+        y: 47.0
+        articles: 6
+      id: '189'
+      label: Censorship
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 143.0
+        y: 53.0
+        articles: 7
+      id: '190'
+      label: Entertainment-related lists
+    - children: []
+      data:
+        size: 406.1686819661445
+        level: 3
+        x: 154.0
+        y: 52.0
+        articles: 0
+      id: '191'
+      label: Entertainment by year
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 90.0
+        y: 67.0
+        articles: 4
+      id: '192'
+      label: Gambling
+    data:
+      size: 157841.24617410463
+      level: 2
+      x: 122.0
+      y: 69.0
+      articles: 31
+    id: '170'
+    label: Entertainment
+  - children:
+    - children: []
+      data:
+        size: 743.0170209147191
+        level: 3
+        x: 300.0
+        y: 49.0
+        articles: 12
+      id: '194'
+      label: Board games
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 274.0
+        y: 57.0
+        articles: 5
+      id: '195'
+      label: Dice games
+    - children: []
+      data:
+        size: 502.30644330027815
+        level: 3
+        x: 300.0
+        y: 62.0
+        articles: 18
+      id: '196'
+      label: Card games
+    - children: []
+      data:
+        size: 25533.32473276402
+        level: 3
+        x: 262.0
+        y: 54.0
+        articles: 110
+      id: '197'
+      label: Video games
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 275.0
+        y: 45.0
+        articles: 5
+      id: '198'
+      label: Adventure games
+    data:
+      size: 27020.236776259986
+      level: 2
+      x: 287.0
+      y: 58.0
+      articles: 42
+    id: '193'
+    label: Games
+  - children:
+    - children: []
+      data:
+        size: 2522.3930777515952
+        level: 3
+        x: 259.0
+        y: 30.0
+        articles: 28
+      id: '200'
+      label: Musical instruments
+    - children: []
+      data:
+        size: 14169.633745482424
+        level: 3
+        x: 221.0
+        y: 41.0
+        articles: 0
+      id: '201'
+      label: Years in music
+    - children: []
+      data:
+        size: 25489.52325054727
+        level: 3
+        x: 181.0
+        y: 50.0
+        articles: 100
+      id: '202'
+      label: Music genres
+    - children: []
+      data:
+        size: 260.71786401931024
+        level: 3
+        x: 193.0
+        y: 8.0
+        articles: 63
+      id: '203'
+      label: Musical forms
+    - children: []
+      data:
+        size: 915.9952514638728
+        level: 3
+        x: 226.0
+        y: 34.0
+        articles: 27
+      id: '204'
+      label: Music theory
+    - children: []
+      data:
+        size: 491.2519561642623
+        level: 3
+        x: 162.0
+        y: 33.0
+        articles: 10
+      id: '205'
+      label: Musicals
+    - children: []
+      data:
+        size: 284.13021638002675
+        level: 3
+        x: 226.0
+        y: 66.0
+        articles: 15
+      id: '206'
+      label: Musical performance techniques
+    - children: []
+      data:
+        size: 373.0292051477255
+        level: 3
+        x: 252.0
+        y: 43.0
+        articles: 35
+      id: '207'
+      label: Musical terminology
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 262.0
+        y: 56.0
+        articles: 19
+      id: '208'
+      label: Musical notation
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 197.0
+        y: 30.0
+        articles: 2
+      id: '209'
+      label: Musical movements
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 240.0
+        y: 42.0
+        articles: 5
+      id: '210'
+      label: Music education
+    - children: []
+      data:
+        size: 1557.7945084740977
+        level: 3
+        x: 244.0
+        y: 28.0
+        articles: 10
+      id: '211'
+      label: Opera
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 233.0
+        y: 18.0
+        articles: 0
+      id: '212'
+      label: Music events
+    - children: []
+      data:
+        size: 387.0393972278021
+        level: 3
+        x: 243.0
+        y: 16.0
+        articles: 21
+      id: '213'
+      label: Music festivals
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 235.0
+        y: 31.0
+        articles: 2
+      id: '214'
+      label: Music videos and DVDs
+    - children: []
+      data:
+        size: 356.8556253534439
+        level: 3
+        x: 213.0
+        y: 36.0
+        articles: 0
+      id: '215'
+      label: Music history
+    - children: []
+      data:
+        size: 25332.073515743537
+        level: 3
+        x: 215.0
+        y: 23.0
+        articles: 4
+      id: '216'
+      label: Compositions
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 209.0
+        y: 10.0
+        articles: 6
+      id: '217'
+      label: Music technology
+    - children: []
+      data:
+        size: 27618.99725712266
+        level: 3
+        x: 212.0
+        y: 59.0
+        articles: 4
+      id: '218'
+      label: Music by nationality
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 227.0
+        y: 20.0
+        articles: 6
+      id: '219'
+      label: Concerts
+    - children: []
+      data:
+        size: 27017.76048156653
+        level: 3
+        x: 189.0
+        y: 16.0
+        articles: 1
+      id: '220'
+      label: Musical entertainers
+    - children: []
+      data:
+        size: 605.2156241480534
+        level: 3
+        x: 221.0
+        y: 21.0
+        articles: 1
+      id: '221'
+      label: Music venues
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 256.0
+        y: 18.0
+        articles: 9
+      id: '222'
+      label: Music video games
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 245.0
+        y: 54.0
+        articles: 4
+      id: '223'
+      label: Vocal music
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 235.0
+        y: 16.0
+        articles: 1
+      id: '224'
+      label: Music companies
+    - children: []
+      data:
+        size: 636.7027741110967
+        level: 3
+        x: 175.0
+        y: 25.0
+        articles: 24
+      id: '225'
+      label: Music industry
+    - children: []
+      data:
+        size: 792.3300775274198
+        level: 3
+        x: 194.0
+        y: 41.0
+        articles: 10
+      id: '226'
+      label: Alternative music
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 237.0
+        y: 8.0
+        articles: 0
+      id: '227'
+      label: Early music
+    - children: []
+      data:
+        size: 353.2986546557406
+        level: 3
+        x: 222.0
+        y: 9.0
+        articles: 29
+      id: '228'
+      label: Christmas music
+    - children: []
+      data:
+        size: 1087.3382955739733
+        level: 3
+        x: 198.0
+        y: 22.0
+        articles: 16
+      id: '229'
+      label: Music awards
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 179.0
+        y: 36.0
+        articles: 6
+      id: '230'
+      label: Music media
+    - children: []
+      data:
+        size: 349.61685278700907
+        level: 3
+        x: 213.0
+        y: 33.0
+        articles: 12
+      id: '231'
+      label: Music-related lists
+    data:
+      size: 132537.14350833956
+      level: 2
+      x: 208.0
+      y: 47.0
+      articles: 96
+    id: '199'
+    label: Music
+  - children:
+    - children: []
+      data:
+        size: 4156.331341200693
+        level: 3
+        x: 178.0
+        y: 190.0
+        articles: 76
+      id: '233'
+      label: Aviation
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 165.0
+        y: 188.0
+        articles: 15
+      id: '234'
+      label: Travel
+    - children: []
+      data:
+        size: 742.8405354452302
+        level: 3
+        x: 205.0
+        y: 180.0
+        articles: 18
+      id: '235'
+      label: Water transportation
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 194.0
+        y: 161.0
+        articles: 0
+      id: '236'
+      label: Military transportation
+    - children: []
+      data:
+        size: 9826.245567559905
+        level: 3
+        x: 210.0
+        y: 197.0
+        articles: 46
+      id: '237'
+      label: Vehicles
+    - children: []
+      data:
+        size: 2111.8723241573844
+        level: 3
+        x: 227.0
+        y: 170.0
+        articles: 11
+      id: '238'
+      label: Traffic
+    - children: []
+      data:
+        size: 1266.6341287085513
+        level: 3
+        x: 237.0
+        y: 173.0
+        articles: 3
+      id: '239'
+      label: Transportation buildings and structures
+    - children: []
+      data:
+        size: 2409.493750915273
+        level: 3
+        x: 233.0
+        y: 183.0
+        articles: 12
+      id: '240'
+      label: Public transportation
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 182.0
+        y: 172.0
+        articles: 3
+      id: '241'
+      label: Elevators
+    - children: []
+      data:
+        size: 2349.713341249779
+        level: 3
+        x: 200.0
+        y: 164.0
+        articles: 0
+      id: '242'
+      label: Transportation by country
+    - children: []
+      data:
+        size: 3840.1186206783595
+        level: 3
+        x: 246.0
+        y: 169.0
+        articles: 4
+      id: '243'
+      label: Transportation companies
+    - children: []
+      data:
+        size: 4846.662391376067
+        level: 3
+        x: 172.0
+        y: 175.0
+        articles: 29
+      id: '244'
+      label: Rail transport
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 236.0
+        y: 196.0
+        articles: 16
+      id: '245'
+      label: Transportation lists
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 202.0
+        y: 160.0
+        articles: 2
+      id: '246'
+      label: Transport infrastructure
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 222.0
+        y: 186.0
+        articles: 9
+      id: '247'
+      label: Navigation
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 216.0
+        y: 173.0
+        articles: 9
+      id: '248'
+      label: Road transport
+    data:
+      size: 32905.44511876749
+      level: 2
+      x: 193.0
+      y: 174.0
+      articles: 19
+    id: '232'
+    label: Transportation
+  - children:
+    - children: []
+      data:
+        size: 1491.6424755125913
+        level: 3
+        x: 304.0
+        y: 81.0
+        articles: 28
+      id: '250'
+      label: Symbols
+    - children: []
+      data:
+        size: 1832.4188741238609
+        level: 3
+        x: 276.0
+        y: 78.0
+        articles: 32
+      id: '251'
+      label: Lists
+    - children: []
+      data:
+        size: 290.90163589366847
+        level: 3
+        x: 298.0
+        y: 70.0
+        articles: 3
+      id: '252'
+      label: Knots
+    data:
+      size: 3614.9629855301205
+      level: 2
+      x: 288.0
+      y: 76.0
+      articles: 10
+    id: '249'
+    label: Misc
+  - children: []
+    data:
+      size: 476.6851548908567
+      level: 2
+      x: 327.0
+      y: 101.0
+      articles: 94
+    id: '253'
+    label: Colors
+  - children:
+    - children: []
+      data:
+        size: 979.0473921764286
+        level: 3
+        x: 156.0
+        y: 111.0
+        articles: 15
+      id: '255'
+      label: Dancers
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 116.0
+        y: 97.0
+        articles: 11
+      id: '256'
+      label: Dance music
+    - children: []
+      data:
+        size: 1101.5866729705817
+        level: 3
+        x: 153.0
+        y: 98.0
+        articles: 14
+      id: '257'
+      label: Ballet
+    - children: []
+      data:
+        size: 308.9322657046156
+        level: 3
+        x: 97.0
+        y: 115.0
+        articles: 19
+      id: '258'
+      label: Strictly Come Dancing participants
+    - children: []
+      data:
+        size: 502.3064433002781
+        level: 3
+        x: 142.0
+        y: 109.0
+        articles: 22
+      id: '259'
+      label: Choreographers
+    data:
+      size: 3133.461353432872
+      level: 2
+      x: 129.0
+      y: 104.0
+      articles: 28
+    id: '254'
+    label: Dance
+  - children:
+    - children: []
+      data:
+        size: 308.9322657046156
+        level: 3
+        x: 142.0
+        y: 128.0
+        articles: 19
+      id: '261'
+      label: Footwear
+    - children: []
+      data:
+        size: 284.13021638002675
+        level: 3
+        x: 183.0
+        y: 142.0
+        articles: 15
+      id: '262'
+      label: Underwear
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 120.0
+        y: 139.0
+        articles: 9
+      id: '263'
+      label: Jewelry
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 130.0
+        y: 139.0
+        articles: 6
+      id: '264'
+      label: Islamic dress
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 169.0
+        y: 148.0
+        articles: 16
+      id: '265'
+      label: Protective clothing
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 177.0
+        y: 131.0
+        articles: 4
+      id: '266'
+      label: Uniforms
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 167.0
+        y: 134.0
+        articles: 5
+      id: '267'
+      label: Sports clothing
+    - children: []
+      data:
+        size: 356.8556253534439
+        level: 3
+        x: 125.0
+        y: 128.0
+        articles: 7
+      id: '268'
+      label: Clothing companies
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 159.0
+        y: 124.0
+        articles: 6
+      id: '269'
+      label: Japanese clothing
+    - children: []
+      data:
+        size: 324.3139882543849
+        level: 3
+        x: 142.0
+        y: 144.0
+        articles: 22
+      id: '270'
+      label: Accessories
+    data:
+      size: 2347.2873236440705
+      level: 2
+      x: 155.0
+      y: 137.0
+      articles: 80
+    id: '260'
+    label: Clothing
+  - children:
+    - children: []
+      data:
+        size: 744.7657378429035
+        level: 3
+        x: 312.0
+        y: 141.0
+        articles: 21
+      id: '272'
+      label: Domesticated animals
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 300.0
+        y: 146.0
+        articles: 7
+      id: '273'
+      label: Gardening
+    data:
+      size: 948.9317726830783
+      level: 2
+      x: 313.0
+      y: 154.0
+      articles: 69
+    id: '271'
+    label: Agriculture
+  - children:
+    - children: []
+      data:
+        size: 4884.028799398027
+        level: 3
+        x: 337.0
+        y: 157.0
+        articles: 7
+      id: '275'
+      label: Government occupations
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 319.0
+        y: 177.0
+        articles: 8
+      id: '276'
+      label: Sports occupations
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 323.0
+        y: 166.0
+        articles: 7
+      id: '277'
+      label: Personal service occupations
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 341.0
+        y: 167.0
+        articles: 5
+      id: '278'
+      label: Construction occupations
+    - children: []
+      data:
+        size: 406.1686819661445
+        level: 3
+        x: 334.0
+        y: 189.0
+        articles: 1
+      id: '279'
+      label: Law occupations
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 323.0
+        y: 188.0
+        articles: 8
+      id: '280'
+      label: Occupations in aviation
+    data:
+      size: 6099.579140352401
+      level: 2
+      x: 337.0
+      y: 181.0
+      articles: 123
+    id: '274'
+    label: Occupations
+  - children: []
+    data:
+      size: 303.25950111836914
+      level: 2
+      x: 329.0
+      y: 115.0
+      articles: 18
+    id: '281'
+    label: Relationships
+  - children:
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 148.0
+        y: 172.0
+        articles: 7
+      id: '283'
+      label: Traditions
+    - children: []
+      data:
+        size: 532.4902151746363
+        level: 3
+        x: 132.0
+        y: 172.0
+        articles: 24
+      id: '284'
+      label: Fashion
+    - children: []
+      data:
+        size: 3513.568775777122
+        level: 3
+        x: 157.0
+        y: 172.0
+        articles: 1
+      id: '285'
+      label: Culture by nationality
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 158.0
+        y: 166.0
+        articles: 5
+      id: '286'
+      label: Cultural anthropology
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 135.0
+        y: 183.0
+        articles: 4
+      id: '287'
+      label: Humanities
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 124.0
+        y: 187.0
+        articles: 12
+      id: '288'
+      label: Performing arts
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 123.0
+        y: 170.0
+        articles: 1
+      id: '289'
+      label: Subculture
+    data:
+      size: 11381.275642758403
+      level: 2
+      x: 147.0
+      y: 185.0
+      articles: 51
+    id: '282'
+    label: Culture
+  - children:
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 304.0
+        y: 127.0
+        articles: 4
+      id: '291'
+      label: Camping
+    data:
+      size: 218.17622692025137
+      level: 2
+      x: 303.0
+      y: 137.0
+      articles: 7
+    id: '290'
+    label: Survival skills
+  - children:
+    - children: []
+      data:
+        size: 422.3422617604262
+        level: 3
+        x: 210.0
+        y: 93.0
+        articles: 7
+      id: '293'
+      label: Cooking
+    - children: []
+      data:
+        size: 827.4911468163207
+        level: 3
+        x: 208.0
+        y: 117.0
+        articles: 9
+      id: '294'
+      label: Food companies
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 196.0
+        y: 100.0
+        articles: 5
+      id: '295'
+      label: Hunger
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 195.0
+        y: 91.0
+        articles: 3
+      id: '296'
+      label: Drink companies
+    data:
+      size: 13277.956036454292
+      level: 2
+      x: 208.0
+      y: 105.0
+      articles: 27
+    id: '292'
+    label: Food and drink
+  - children: []
+    data:
+      size: 269.11599188328734
+      level: 2
+      x: 285.0
+      y: 123.0
+      articles: 13
+    id: '297'
+    label: Lifestyles
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 332.0
+        y: 195.0
+        articles: 3
+      id: '299'
+      label: Waste management
+    data:
+      size: 72.72540897341712
+      level: 2
+      x: 343.0
+      y: 196.0
+      articles: 16
+    id: '298'
+    label: Waste
+  - children:
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 343.0
+        y: 109.0
+        articles: 5
+      id: '301'
+      label: Planning
+    data:
+      size: 168.86317030755072
+      level: 2
+      x: 354.0
+      y: 108.0
+      articles: 12
+    id: '300'
+    label: Management
+  - children:
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 369.0
+        y: 128.0
+        articles: 5
+      id: '303'
+      label: Woodworking
+    data:
+      size: 168.86317030755072
+      level: 2
+      x: 358.0
+      y: 127.0
+      articles: 14
+    id: '302'
+    label: Manufacturing
+  - children:
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 247.0
+        y: 204.0
+        articles: 10
+      id: '305'
+      label: Home appliances
+    data:
+      size: 356.8556253534438
+      level: 2
+      x: 235.0
+      y: 206.0
+      articles: 14
+    id: '304'
+    label: Home
+  - children:
+    - children: []
+      data:
+        size: 1044.7966584749145
+        level: 3
+        x: 224.0
+        y: 116.0
+        articles: 7
+      id: '307'
+      label: Skating
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 234.0
+        y: 107.0
+        articles: 1
+      id: '308'
+      label: Motorcycling
+    - children: []
+      data:
+        size: 938.6588971407808
+        level: 3
+        x: 239.0
+        y: 97.0
+        articles: 15
+      id: '309'
+      label: Hobbies
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 219.0
+        y: 106.0
+        articles: 4
+      id: '310'
+      label: Spa towns
+    - children: []
+      data:
+        size: 375.98491009178633
+        level: 3
+        x: 216.0
+        y: 97.0
+        articles: 1
+      id: '311'
+      label: Social events
+    data:
+      size: 2692.883738700209
+      level: 2
+      x: 235.0
+      y: 108.0
+      articles: 13
+    id: '306'
+    label: Leisure
+  - children:
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 308.0
+        y: 164.0
+        articles: 6
+      id: '313'
+      label: Yoga
+    data:
+      size: 392.15848988606797
+      level: 2
+      x: 307.0
+      y: 175.0
+      articles: 10
+    id: '312'
+    label: Spirituality
+  - children: []
+    data:
+      size: 115.26704607247602
+      level: 2
+      x: 320.0
+      y: 123.0
+      articles: 2
+    id: '314'
+    label: Personal life
+  - children: []
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 348.0
+      y: 132.0
+      articles: 4
+    id: '315'
+    label: Real estate
+  data:
+    size: 415149.651837483
+    level: 1
+    x: 278.0
+    y: 137.0
+    articles: 43
+  id: '161'
+  label: Everyday life
+- children:
+  - children:
+    - children: []
+      data:
+        size: 328.977893270837
+        level: 3
+        x: 184.0
+        y: 292.0
+        articles: 23
+      id: '318'
+      label: Nazi officers
+    - children: []
+      data:
+        size: 408.33206968034966
+        level: 3
+        x: 185.0
+        y: 320.0
+        articles: 49
+      id: '319'
+      label: Nazi leaders
+    data:
+      size: 737.3099629511867
+      level: 2
+      x: 185.0
+      y: 306.0
+      articles: 41
+    id: '317'
+    label: World War II people
+  - children:
+    - children: []
+      data:
+        size: 387.03939722780206
+        level: 3
+        x: 145.0
+        y: 299.0
+        articles: 40
+      id: '321'
+      label: Bisexual people
+    - children: []
+      data:
+        size: 470.95036216986097
+        level: 3
+        x: 149.0
+        y: 284.0
+        articles: 89
+      id: '322'
+      label: Gay men
+    - children: []
+      data:
+        size: 297.2624067935765
+        level: 3
+        x: 175.0
+        y: 288.0
+        articles: 17
+      id: '323'
+      label: Lesbians
+    - children: []
+      data:
+        size: 2102.656720543854
+        level: 3
+        x: 165.0
+        y: 287.0
+        articles: 0
+      id: '324'
+      label: LGBT people by occupation
+    - children: []
+      data:
+        size: 1439.527446657913
+        level: 3
+        x: 162.0
+        y: 277.0
+        articles: 0
+      id: '325'
+      label: LGBT people by nationality
+    data:
+      size: 4697.436333393007
+      level: 2
+      x: 160.0
+      y: 286.0
+      articles: 3
+    id: '320'
+    label: LGBT people
+  - children:
+    - children: []
+      data:
+        size: 319.43308091265084
+        level: 3
+        x: 92.0
+        y: 293.0
+        articles: 2
+      id: '327'
+      label: Rick Riordan
+    data:
+      size: 319.43308091265084
+      level: 2
+      x: 107.0
+      y: 299.0
+      articles: 10655
+    id: '326'
+    label: Living people
+  - children:
+    - children: []
+      data:
+        size: 1721.9639625455404
+        level: 3
+        x: 42.0
+        y: 202.0
+        articles: 39
+      id: '329'
+      label: Kings and queens
+    - children: []
+      data:
+        size: 6009.7271133789445
+        level: 3
+        x: 60.0
+        y: 216.0
+        articles: 39
+      id: '330'
+      label: Royal dynasties
+    - children: []
+      data:
+        size: 2863.050287096444
+        level: 3
+        x: 75.0
+        y: 192.0
+        articles: 5
+      id: '331'
+      label: Nobility
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 75.0
+        y: 204.0
+        articles: 19
+      id: '332'
+      label: Palaces
+    - children: []
+      data:
+        size: 710.755545762827
+        level: 3
+        x: 64.0
+        y: 185.0
+        articles: 1
+      id: '333'
+      label: Earls and countesses
+    - children: []
+      data:
+        size: 1524.9499597117815
+        level: 3
+        x: 76.0
+        y: 216.0
+        articles: 29
+      id: '334'
+      label: Princes and princesses
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 64.0
+        y: 200.0
+        articles: 3
+      id: '335'
+      label: Sultans of the Ottoman Empire
+    - children: []
+      data:
+        size: 276.89144381359193
+        level: 3
+        x: 48.0
+        y: 188.0
+        articles: 14
+      id: '336'
+      label: Regents
+    - children: []
+      data:
+        size: 1717.8567842546508
+        level: 3
+        x: 61.0
+        y: 194.0
+        articles: 0
+      id: '337'
+      label: Royalty and nobility by country
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 58.0
+        y: 189.0
+        articles: 3
+      id: '338'
+      label: Heirs apparent who never acceded
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 36.0
+        y: 214.0
+        articles: 11
+      id: '339'
+      label: Electors and Electresses
+    - children: []
+      data:
+        size: 1239.056330614363
+        level: 3
+        x: 24.0
+        y: 201.0
+        articles: 31
+      id: '340'
+      label: Emperors and empresses
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 33.0
+        y: 199.0
+        articles: 0
+      id: '341'
+      label: European monarchs
+    data:
+      size: 19389.26459841578
+      level: 2
+      x: 55.0
+      y: 203.0
+      articles: 15
+    id: '328'
+    label: Royalty and nobility
+  - children:
+    - children: []
+      data:
+        size: 187.99245504589314
+        level: 3
+        x: 98.0
+        y: 322.0
+        articles: 3
+      id: '343'
+      label: Mobsters
+    - children: []
+      data:
+        size: 1423.1394337914014
+        level: 3
+        x: 106.0
+        y: 320.0
+        articles: 0
+      id: '344'
+      label: Criminals by nationality
+    - children: []
+      data:
+        size: 1401.6522838283583
+        level: 3
+        x: 106.0
+        y: 313.0
+        articles: 0
+      id: '345'
+      label: Criminals by crime
+    data:
+      size: 3012.784172665653
+      level: 2
+      x: 109.0
+      y: 314.0
+      articles: 17
+    id: '342'
+    label: Criminals
+  - children: []
+    data:
+      size: 82169.72433722485
+      level: 2
+      x: 327.0
+      y: 255.0
+      articles: 2
+    id: '346'
+    label: People by nationality
+  - children:
+    - children: []
+      data:
+        size: 2681.2745801593164
+        level: 3
+        x: 255.0
+        y: 257.0
+        articles: 7
+      id: '348'
+      label: European people
+    - children: []
+      data:
+        size: 14242.147814853934
+        level: 3
+        x: 248.0
+        y: 265.0
+        articles: 1
+      id: '349'
+      label: North American people
+    - children: []
+      data:
+        size: 859.1620686537219
+        level: 3
+        x: 241.0
+        y: 250.0
+        articles: 13
+      id: '350'
+      label: African people
+    - children: []
+      data:
+        size: 2910.7614715731224
+        level: 3
+        x: 266.0
+        y: 262.0
+        articles: 11
+      id: '351'
+      label: Asian people
+    - children: []
+      data:
+        size: 742.8405354452301
+        level: 3
+        x: 240.0
+        y: 263.0
+        articles: 0
+      id: '352'
+      label: Politicians by continent
+    data:
+      size: 22993.884024967825
+      level: 2
+      x: 248.0
+      y: 258.0
+      articles: 0
+    id: '347'
+    label: People by continent
+  - children: []
+    data:
+      size: 230.53409214495204
+      level: 2
+      x: 207.0
+      y: 293.0
+      articles: 9
+    id: '353'
+    label: World record holders
+  - children: []
+    data:
+      size: 187.99245504589317
+      level: 2
+      x: 325.0
+      y: 242.0
+      articles: 6
+    id: '354'
+    label: Nomadic people
+  - children:
+    - children: []
+      data:
+        size: 314.3139882543849
+        level: 3
+        x: 81.0
+        y: 227.0
+        articles: 1
+      id: '356'
+      label: Critics
+    - children: []
+      data:
+        size: 260.71786401931024
+        level: 3
+        x: 51.0
+        y: 226.0
+        articles: 18
+      id: '357'
+      label: Lawyers
+    - children: []
+      data:
+        size: 749.0141152395119
+        level: 3
+        x: 60.0
+        y: 251.0
+        articles: 43
+      id: '358'
+      label: Business people
+    - children: []
+      data:
+        size: 1306.9943860523986
+        level: 3
+        x: 122.0
+        y: 235.0
+        articles: 14
+      id: '359'
+      label: Models
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 62.0
+        y: 234.0
+        articles: 7
+      id: '360'
+      label: Beauty pageant contestants
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 72.0
+        y: 239.0
+        articles: 4
+      id: '361'
+      label: Chefs
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 51.0
+        y: 238.0
+        articles: 6
+      id: '362'
+      label: Linguists
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 109.0
+        y: 255.0
+        articles: 3
+      id: '363'
+      label: Pirates
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 98.0
+        y: 250.0
+        articles: 8
+      id: '364'
+      label: Archaeologists
+    - children: []
+      data:
+        size: 1868.0160462460174
+        level: 3
+        x: 118.0
+        y: 242.0
+        articles: 0
+      id: '365'
+      label: Christians by occupation
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 117.0
+        y: 246.0
+        articles: 2
+      id: '366'
+      label: Ninjas
+    - children: []
+      data:
+        size: 392.15848988606797
+        level: 3
+        x: 129.0
+        y: 248.0
+        articles: 12
+      id: '367'
+      label: Lists of people by occupation
+    - children: []
+      data:
+        size: 975.5884700237401
+        level: 3
+        x: 43.0
+        y: 269.0
+        articles: 24
+      id: '368'
+      label: Movie producers
+    - children: []
+      data:
+        size: 776.156497733138
+        level: 3
+        x: 142.0
+        y: 251.0
+        articles: 17
+      id: '369'
+      label: Military people
+    - children: []
+      data:
+        size: 345.80113821742805
+        level: 3
+        x: 100.0
+        y: 234.0
+        articles: 27
+      id: '370'
+      label: Chess players
+    - children: []
+      data:
+        size: 269.11599188328734
+        level: 3
+        x: 31.0
+        y: 253.0
+        articles: 20
+      id: '371'
+      label: Photographers
+    - children: []
+      data:
+        size: 297.2624067935765
+        level: 3
+        x: 144.0
+        y: 264.0
+        articles: 50
+      id: '372'
+      label: Educators
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 109.0
+        y: 246.0
+        articles: 8
+      id: '373'
+      label: Academics
+    - children: []
+      data:
+        size: 760.3679480475497
+        level: 3
+        x: 123.0
+        y: 261.0
+        articles: 22
+      id: '374'
+      label: Activists
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 72.0
+        y: 253.0
+        articles: 10
+      id: '375'
+      label: Socialites
+    - children: []
+      data:
+        size: 353.2986546557406
+        level: 3
+        x: 46.0
+        y: 256.0
+        articles: 29
+      id: '376'
+      label: Movie directors
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 120.0
+        y: 287.0
+        articles: 20
+      id: '377'
+      label: Diplomats
+    - children: []
+      data:
+        size: 633.2462539590006
+        level: 3
+        x: 89.0
+        y: 260.0
+        articles: 4
+      id: '378'
+      label: Television directors
+    - children: []
+      data:
+        size: 872.2942590672717
+        level: 3
+        x: 95.0
+        y: 270.0
+        articles: 10
+      id: '379'
+      label: Television producers
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 83.0
+        y: 245.0
+        articles: 5
+      id: '380'
+      label: Publishers
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 106.0
+        y: 275.0
+        articles: 6
+      id: '381'
+      label: Movie editors
+    - children: []
+      data:
+        size: 422.3422617604262
+        level: 3
+        x: 120.0
+        y: 274.0
+        articles: 56
+      id: '382'
+      label: Aviators
+    - children: []
+      data:
+        size: 535.0809785790351
+        level: 3
+        x: 81.0
+        y: 238.0
+        articles: 0
+      id: '383'
+      label: Jews by occupation
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 107.0
+        y: 265.0
+        articles: 8
+      id: '384'
+      label: Spies
+    data:
+      size: 80058.92615796086
+      level: 2
+      x: 89.0
+      y: 245.0
+      articles: 0
+    id: '355'
+    label: People by occupation
+  - children:
+    - children: []
+      data:
+        size: 2115.1725961988877
+        level: 3
+        x: 313.0
+        y: 237.0
+        articles: 10
+      id: '386'
+      label: Germanic peoples
+    - children: []
+      data:
+        size: 375.9849100917863
+        level: 3
+        x: 311.0
+        y: 249.0
+        articles: 9
+      id: '387'
+      label: Indigenous peoples of Australia
+    data:
+      size: 2491.157506290674
+      level: 2
+      x: 299.0
+      y: 242.0
+      articles: 24
+    id: '385'
+    label: Ethnic groups
+  - children:
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 103.0
+        y: 213.0
+        articles: 7
+      id: '389'
+      label: Scientologists
+    - children: []
+      data:
+        size: 2644.1164331721034
+        level: 3
+        x: 147.0
+        y: 213.0
+        articles: 9
+      id: '390'
+      label: Christians
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 133.0
+        y: 200.0
+        articles: 12
+      id: '391'
+      label: Buddhists
+    - children: []
+      data:
+        size: 363.6270448670856
+        level: 3
+        x: 137.0
+        y: 212.0
+        articles: 2
+      id: '392'
+      label: Hindus
+    - children: []
+      data:
+        size: 535.7187956609946
+        level: 3
+        x: 145.0
+        y: 202.0
+        articles: 7
+      id: '393'
+      label: Atheists
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 129.0
+        y: 211.0
+        articles: 5
+      id: '394'
+      label: Occultists
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 119.0
+        y: 199.0
+        articles: 29
+      id: '395'
+      label: Muslims
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 114.0
+        y: 211.0
+        articles: 12
+      id: '396'
+      label: Quakers
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 103.0
+        y: 200.0
+        articles: 2
+      id: '397'
+      label: Agnostics
+    data:
+      size: 5253.493151305177
+      level: 2
+      x: 126.0
+      y: 202.0
+      articles: 0
+    id: '388'
+    label: People by religion
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 283.0
+        y: 234.0
+        articles: 3
+      id: '399'
+      label: Lists of princesses
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 274.0
+        y: 241.0
+        articles: 5
+      id: '400'
+      label: Lists of American people
+    data:
+      size: 622.69258203102
+      level: 2
+      x: 286.0
+      y: 245.0
+      articles: 31
+    id: '398'
+    label: Lists of people
+  - children:
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 176.0
+        y: 272.0
+        articles: 9
+      id: '402'
+      label: Organized crime
+    data:
+      size: 230.53409214495204
+      level: 2
+      x: 177.0
+      y: 261.0
+      articles: 6
+    id: '401'
+    label: Social groups
+  - children: []
+    data:
+      size: 251.58857928096785
+      level: 2
+      x: 219.0
+      y: 318.0
+      articles: 11
+    id: '403'
+    label: Theologians
+  - children: []
+    data:
+      size: 204.16603484017483
+      level: 2
+      x: 208.0
+      y: 317.0
+      articles: 7
+    id: '404'
+    label: Vegetarians
+  - children:
+    - children: []
+      data:
+        size: 290.90163589366847
+        level: 3
+        x: 217.0
+        y: 277.0
+        articles: 7
+      id: '406'
+      label: Religious workers
+    data:
+      size: 1565.5745750366848
+      level: 2
+      x: 227.0
+      y: 278.0
+      articles: 6
+    id: '405'
+    label: Religious people
+  - children:
+    - children: []
+      data:
+        size: 676.2887062660947
+        level: 3
+        x: 334.0
+        y: 266.0
+        articles: 6
+      id: '408'
+      label: Flemish people
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 331.0
+        y: 277.0
+        articles: 7
+      id: '409'
+      label: Indigenous Australian people
+    data:
+      size: 1514.2018102733052
+      level: 2
+      x: 328.0
+      y: 264.0
+      articles: 0
+    id: '407'
+    label: People by ethnicity
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 227.0
+        y: 233.0
+        articles: 3
+      id: '411'
+      label: Children's songs
+    - children: []
+      data:
+        size: 406.1686819661445
+        level: 3
+        x: 247.0
+        y: 237.0
+        articles: 3
+      id: '412'
+      label: Child singers
+    data:
+      size: 2927.5404805537914
+      level: 2
+      x: 237.0
+      y: 237.0
+      articles: 11
+    id: '410'
+    label: Children
+  - children: []
+    data:
+      size: 168.86317030755072
+      level: 2
+      x: 297.0
+      y: 258.0
+      articles: 5
+    id: '413'
+    label: Freemasons
+  - children: []
+    data:
+      size: 416.56535762531
+      level: 2
+      x: 267.0
+      y: 292.0
+      articles: 53
+    id: '414'
+    label: Time People of the Year
+  - children: []
+    data:
+      size: 373.0292051477255
+      level: 2
+      x: 217.0
+      y: 265.0
+      articles: 35
+    id: '415'
+    label: People with foods named after them
+  - children: []
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 272.0
+      y: 280.0
+      articles: 4
+    id: '416'
+    label: Homelessness
+  - children:
+    - children: []
+      data:
+        size: 341.8414008567044
+        level: 3
+        x: 237.0
+        y: 290.0
+        articles: 26
+      id: '418'
+      label: Former dictators
+    data:
+      size: 341.8414008567044
+      level: 2
+      x: 226.0
+      y: 289.0
+      articles: 3
+    id: '417'
+    label: Dictators
+  - children: []
+    data:
+      size: 356.8556253534438
+      level: 2
+      x: 216.0
+      y: 305.0
+      articles: 30
+    id: '419'
+    label: Twin people
+  - children:
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 189.0
+        y: 267.0
+        articles: 22
+      id: '421'
+      label: Executed people
+    data:
+      size: 375.9849100917863
+      level: 2
+      x: 201.0
+      y: 269.0
+      articles: 27
+    id: '420'
+    label: Prisoners
+  - children: []
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 206.0
+      y: 254.0
+      articles: 4
+    id: '422'
+    label: Adoptees
+  - children: []
+    data:
+      size: 529.8338559025976
+      level: 2
+      x: 140.0
+      y: 266.0
+      articles: 13
+    id: '423'
+    label: People by wealth or status
+  - children: []
+    data:
+      size: 451.5850355167268
+      level: 2
+      x: 287.0
+      y: 240.0
+      articles: 1
+    id: '424'
+    label: Crime victims
+  - children:
+    - children: []
+      data:
+        size: 337.72634061510144
+        level: 3
+        x: 307.0
+        y: 270.0
+        articles: 25
+      id: '426'
+      label: Alumni of Yale University
+    - children: []
+      data:
+        size: 360.2959528074797
+        level: 3
+        x: 320.0
+        y: 271.0
+        articles: 31
+      id: '427'
+      label: Columbia University alumni
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 295.0
+        y: 276.0
+        articles: 5
+      id: '428'
+      label: Massachusetts Institute of Technology alumni
+    - children: []
+      data:
+        size: 328.977893270837
+        level: 3
+        x: 293.0
+        y: 266.0
+        articles: 1
+      id: '429'
+      label: Alumni of the Grandes écoles
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 317.0
+        y: 280.0
+        articles: 2
+      id: '430'
+      label: Presidents of the Université de Versailles Saint-Quentin-en-Yvelines
+    data:
+      size: 2339.991667070609
+      level: 2
+      x: 298.0
+      y: 269.0
+      articles: 0
+    id: '425'
+    label: People by college or university
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 318.0
+        y: 287.0
+        articles: 5
+      id: '432'
+      label: Greens politicians
+    data:
+      size: 1586.0055097741592
+      level: 2
+      x: 312.0
+      y: 285.0
+      articles: 0
+    id: '431'
+    label: People by political orientation
+  - children:
+    - children: []
+      data:
+        size: 366.8556253534439
+        level: 3
+        x: 215.0
+        y: 253.0
+        articles: 2
+      id: '434'
+      label: Katy Perry
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 231.0
+        y: 255.0
+        articles: 3
+      id: '435'
+      label: Leona Lewis
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 231.0
+        y: 246.0
+        articles: 6
+      id: '436'
+      label: Elvis Presley
+    - children: []
+      data:
+        size: 448.7103190652034
+        level: 3
+        x: 218.0
+        y: 246.0
+        articles: 4
+      id: '437'
+      label: Britney Spears
+    - children: []
+      data:
+        size: 620.1642527771529
+        level: 3
+        x: 223.0
+        y: 251.0
+        articles: 1
+      id: '438'
+      label: Usher
+    data:
+      size: 7917.350479695671
+      level: 2
+      x: 223.0
+      y: 246.0
+      articles: 0
+    id: '433'
+    label: Categories named after people
+  - children: []
+    data:
+      size: 230.53409214495204
+      level: 2
+      x: 194.0
+      y: 280.0
+      articles: 9
+    id: '439'
+    label: Philanthropists
+  data:
+    size: 244237.57997282033
+    level: 1
+    x: 295.0
+    y: 283.0
+    articles: 0
+  id: '316'
+  label: People
+- children:
+  - children:
+    - children: []
+      data:
+        size: 715.7889539844216
+        level: 3
+        x: 345.0
+        y: 569.0
+        articles: 43
+      id: '442'
+      label: Greek mythology
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 332.0
+        y: 571.0
+        articles: 9
+      id: '443'
+      label: Roman mythology
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 296.0
+        y: 564.0
+        articles: 10
+      id: '444'
+      label: Egyptian mythology
+    - children: []
+      data:
+        size: 353.2986546557406
+        level: 3
+        x: 299.0
+        y: 577.0
+        articles: 29
+      id: '445'
+      label: Hindu mythology
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 326.0
+        y: 583.0
+        articles: 11
+      id: '446'
+      label: Legendary creatures
+    - children: []
+      data:
+        size: 397.03939722780206
+        level: 3
+        x: 347.0
+        y: 583.0
+        articles: 44
+      id: '447'
+      label: Norse mythology
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 320.0
+        y: 566.0
+        articles: 11
+      id: '448'
+      label: Arthurian legend
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 284.0
+        y: 570.0
+        articles: 12
+      id: '449'
+      label: Finnish mythology
+    - children: []
+      data:
+        size: 303.25950111836914
+        level: 3
+        x: 285.0
+        y: 584.0
+        articles: 18
+      id: '450'
+      label: Japanese mythology
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 274.0
+        y: 576.0
+        articles: 3
+      id: '451'
+      label: Germanic mythology
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 302.0
+        y: 588.0
+        articles: 4
+      id: '452'
+      label: Australian mythology
+    data:
+      size: 3296.305836887168
+      level: 2
+      x: 314.0
+      y: 580.0
+      articles: 44
+    id: '441'
+    label: Mythology
+  - children: []
+    data:
+      size: 260.7178640193103
+      level: 2
+      x: 363.0
+      y: 510.0
+      articles: 12
+    id: '453'
+    label: Confucianism
+  - children:
+    - children: []
+      data:
+        size: 345.80113821742805
+        level: 3
+        x: 304.0
+        y: 515.0
+        articles: 27
+      id: '455'
+      label: Mosques
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 328.0
+        y: 512.0
+        articles: 8
+      id: '456'
+      label: Buddhist buildings
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 338.0
+        y: 525.0
+        articles: 4
+      id: '457'
+      label: Shinto shrines
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 341.0
+        y: 515.0
+        articles: 7
+      id: '458'
+      label: Hindu temples
+    data:
+      size: 3021.370031126809
+      level: 2
+      x: 317.0
+      y: 517.0
+      articles: 19
+    id: '454'
+    label: Religious buildings
+  - children:
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 446.0
+        y: 531.0
+        articles: 10
+      id: '460'
+      label: Hindu texts
+    - children: []
+      data:
+        size: 1748.4781774699968
+        level: 3
+        x: 448.0
+        y: 519.0
+        articles: 23
+      id: '461'
+      label: Bible
+    data:
+      size: 1990.0667567509647
+      level: 2
+      x: 435.0
+      y: 521.0
+      articles: 20
+    id: '459'
+    label: Religious texts
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 357.0
+        y: 546.0
+        articles: 2
+      id: '463'
+      label: Scientology
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 345.0
+        y: 535.0
+        articles: 5
+      id: '464'
+      label: Rastafari
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 356.0
+        y: 555.0
+        articles: 9
+      id: '465'
+      label: Television evangelists
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 337.0
+        y: 537.0
+        articles: 2
+      id: '466'
+      label: Satanism
+    data:
+      size: 544.8480803993369
+      level: 2
+      x: 357.0
+      y: 541.0
+      articles: 23
+    id: '462'
+    label: New religious movements
+  - children:
+    - children: []
+      data:
+        size: 284.13021638002675
+        level: 3
+        x: 383.0
+        y: 513.0
+        articles: 15
+      id: '468'
+      label: Japanese deities
+    - children: []
+      data:
+        size: 284.13021638002675
+        level: 3
+        x: 383.0
+        y: 537.0
+        articles: 15
+      id: '469'
+      label: Hindu gods and goddesses
+    data:
+      size: 2485.3320616567453
+      level: 2
+      x: 382.0
+      y: 524.0
+      articles: 12
+    id: '467'
+    label: Gods and goddesses
+  - children:
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 323.0
+        y: 597.0
+        articles: 11
+      id: '471'
+      label: Luck
+    data:
+      size: 251.58857928096785
+      level: 2
+      x: 335.0
+      y: 595.0
+      articles: 14
+    id: '470'
+    label: Superstitions
+  - children: []
+    data:
+      size: 269.11599188328734
+      level: 2
+      x: 422.0
+      y: 519.0
+      articles: 13
+    id: '472'
+    label: Paganism
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 325.0
+        y: 532.0
+        articles: 3
+      id: '474'
+      label: Christian religious orders
+    data:
+      size: 115.26704607247602
+      level: 2
+      x: 332.0
+      y: 533.0
+      articles: 2
+    id: '473'
+    label: Religious orders
+  - children: []
+    data:
+      size: 537.6093078329022
+      level: 2
+      x: 433.0
+      y: 543.0
+      articles: 54
+    id: '475'
+    label: Theology
+  - children: []
+    data:
+      size: 72.72540897341712
+      level: 2
+      x: 356.0
+      y: 577.0
+      articles: 2
+    id: '476'
+    label: Religious media
+  - children: []
+    data:
+      size: 187.99245504589317
+      level: 2
+      x: 430.0
+      y: 554.0
+      articles: 6
+    id: '477'
+    label: Demons
+  - children: []
+    data:
+      size: 284.13021638002675
+      level: 2
+      x: 393.0
+      y: 534.0
+      articles: 1
+    id: '478'
+    label: Religious violence
+  - children:
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 288.0
+        y: 511.0
+        articles: 5
+      id: '480'
+      label: Islam by country
+    data:
+      size: 525.7187956609946
+      level: 2
+      x: 294.0
+      y: 511.0
+      articles: 0
+    id: '479'
+    label: Religion by country
+  - children: []
+    data:
+      size: 7092.266020932514
+      level: 2
+      x: 365.0
+      y: 536.0
+      articles: 14
+    id: '481'
+    label: Religions
+  - children:
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 394.0
+        y: 527.0
+        articles: 5
+      id: '483'
+      label: Christian symbols
+    data:
+      size: 168.86317030755072
+      level: 2
+      x: 405.0
+      y: 526.0
+      articles: 14
+    id: '482'
+    label: Religious symbols
+  - children: []
+    data:
+      size: 72.72540897341712
+      level: 2
+      x: 366.0
+      y: 545.0
+      articles: 2
+    id: '484'
+    label: Secularism
+  - children: []
+    data:
+      size: 2322.661759788971
+      level: 2
+      x: 420.0
+      y: 535.0
+      articles: 1
+    id: '485'
+    label: Theocracies
+  data:
+    size: 23499.30479197275
+    level: 1
+    x: 412.0
+    y: 534.0
+    articles: 81
+  id: '440'
+  label: Religion
+- children:
+  - children:
+    - children: []
+      data:
+        size: 1455.486593379965
+        level: 3
+        x: 69.0
+        y: 641.0
+        articles: 27
+      id: '488'
+      label: Science fiction
+    - children: []
+      data:
+        size: 2843.3663309532258
+        level: 3
+        x: 122.0
+        y: 656.0
+        articles: 46
+      id: '489'
+      label: Fictional characters
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 89.0
+        y: 633.0
+        articles: 30
+      id: '490'
+      label: Fairy tales
+    - children: []
+      data:
+        size: 1693.2594580913515
+        level: 3
+        x: 80.0
+        y: 644.0
+        articles: 4
+      id: '491'
+      label: Fictional universes
+    - children: []
+      data:
+        size: 1130.8294467268825
+        level: 3
+        x: 87.0
+        y: 642.0
+        articles: 2
+      id: '492'
+      label: Fantasy
+    - children: []
+      data:
+        size: 1316.8071949467721
+        level: 3
+        x: 121.0
+        y: 641.0
+        articles: 106
+      id: '493'
+      label: Fiction books
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 108.0
+        y: 632.0
+        articles: 3
+      id: '494'
+      label: Crime fiction
+    - children: []
+      data:
+        size: 568.2604327600535
+        level: 3
+        x: 87.0
+        y: 648.0
+        articles: 2
+      id: '495'
+      label: Superheroes
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 107.0
+        y: 646.0
+        articles: 5
+      id: '496'
+      label: Mockumentaries
+    data:
+      size: 9461.002843545826
+      level: 2
+      x: 97.0
+      y: 647.0
+      articles: 21
+    id: '487'
+    label: Fiction
+  - children:
+    - children: []
+      data:
+        size: 2518.57651155733
+        level: 3
+        x: 20.0
+        y: 645.0
+        articles: 37
+      id: '498'
+      label: Series of books
+    - children: []
+      data:
+        size: 2269.9436372204227
+        level: 3
+        x: 34.0
+        y: 623.0
+        articles: 0
+      id: '499'
+      label: Books by author
+    - children: []
+      data:
+        size: 328.977893270837
+        level: 3
+        x: 33.0
+        y: 648.0
+        articles: 23
+      id: '500'
+      label: Libraries
+    - children: []
+      data:
+        size: 749.0141152395117
+        level: 3
+        x: 61.0
+        y: 647.0
+        articles: 0
+      id: '501'
+      label: Books by genre
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 30.0
+        y: 631.0
+        articles: 7
+      id: '502'
+      label: Book terminology
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 61.0
+        y: 631.0
+        articles: 187
+      id: '503'
+      label: Movies based on books
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 6.0
+        y: 639.0
+        articles: 10
+      id: '504'
+      label: Hugo Award winning books
+    data:
+      size: 6484.085646660855
+      level: 2
+      x: 46.0
+      y: 638.0
+      articles: 26
+    id: '497'
+    label: Books
+  - children:
+    - children: []
+      data:
+        size: 1313.8897194026144
+        level: 3
+        x: 109.0
+        y: 679.0
+        articles: 31
+      id: '506'
+      label: Journalists
+    - children: []
+      data:
+        size: 783.7803004082662
+        level: 3
+        x: 154.0
+        y: 688.0
+        articles: 20
+      id: '507'
+      label: Playwrights
+    - children: []
+      data:
+        size: 5212.112985668365
+        level: 3
+        x: 143.0
+        y: 692.0
+        articles: 0
+      id: '508'
+      label: Writers by nationality
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 155.0
+        y: 677.0
+        articles: 4
+      id: '509'
+      label: Diarists
+    - children: []
+      data:
+        size: 962.0712495014974
+        level: 3
+        x: 154.0
+        y: 709.0
+        articles: 10
+      id: '510'
+      label: Novelists
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 150.0
+        y: 698.0
+        articles: 6
+      id: '511'
+      label: Essayists
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 127.0
+        y: 696.0
+        articles: 11
+      id: '512'
+      label: Royal Society of Literature
+    - children: []
+      data:
+        size: 511.5085642698501
+        level: 3
+        x: 122.0
+        y: 685.0
+        articles: 5
+      id: '513'
+      label: Biographers
+    - children: []
+      data:
+        size: 389.6301606322009
+        level: 3
+        x: 167.0
+        y: 676.0
+        articles: 41
+      id: '514'
+      label: LGBT writers
+    - children: []
+      data:
+        size: 649.9206489613175
+        level: 3
+        x: 129.0
+        y: 672.0
+        articles: 0
+      id: '515'
+      label: Award winning writers
+    - children: []
+      data:
+        size: 276.89144381359193
+        level: 3
+        x: 138.0
+        y: 671.0
+        articles: 5
+      id: '516'
+      label: Jewish writers
+    data:
+      size: 23058.069650100817
+      level: 2
+      x: 139.0
+      y: 685.0
+      articles: 12
+    id: '505'
+    label: Writers
+  - children:
+    - children: []
+      data:
+        size: 290.90163589366847
+        level: 3
+        x: 251.0
+        y: 714.0
+        articles: 16
+      id: '518'
+      label: Music magazines
+    data:
+      size: 290.90163589366847
+      level: 2
+      x: 238.0
+      y: 713.0
+      articles: 40
+    id: '517'
+    label: Magazines
+  - children:
+    - children: []
+      data:
+        size: 308.9322657046156
+        level: 3
+        x: 35.0
+        y: 700.0
+        articles: 19
+      id: '520'
+      label: Japanese folklore
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 33.0
+        y: 708.0
+        articles: 2
+      id: '521'
+      label: Robin Hood
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 60.0
+        y: 700.0
+        articles: 4
+      id: '522'
+      label: Witchcraft
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 51.0
+        y: 694.0
+        articles: 3
+      id: '523'
+      label: American folklore
+    - children: []
+      data:
+        size: 314.313988254385
+        level: 3
+        x: 56.0
+        y: 708.0
+        articles: 3
+      id: '524'
+      label: Australian folklore
+    data:
+      size: 1348.848016837796
+      level: 2
+      x: 47.0
+      y: 705.0
+      articles: 19
+    id: '519'
+    label: Folklore
+  - children:
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 252.0
+        y: 676.0
+        articles: 8
+      id: '526'
+      label: Journalism
+    - children: []
+      data:
+        size: 1128.8147399008792
+        level: 3
+        x: 265.0
+        y: 673.0
+        articles: 2
+      id: '527'
+      label: Newspapers by country
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 255.0
+        y: 686.0
+        articles: 4
+      id: '528'
+      label: Turkish-language newspapers
+    data:
+      size: 1492.4417847679647
+      level: 2
+      x: 266.0
+      y: 683.0
+      articles: 30
+    id: '525'
+    label: Newspapers
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 41.0
+        y: 676.0
+        articles: 18
+      id: '530'
+      label: Comic books
+    - children: []
+      data:
+        size: 848.1075815177062
+        level: 3
+        x: 79.0
+        y: 681.0
+        articles: 49
+      id: '531'
+      label: Manga
+    - children: []
+      data:
+        size: 356.8556253534439
+        level: 3
+        x: 42.0
+        y: 687.0
+        articles: 11
+      id: '532'
+      label: Comics characters
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 44.0
+        y: 665.0
+        articles: 3
+      id: '533'
+      label: American comics writers
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 76.0
+        y: 669.0
+        articles: 4
+      id: '534'
+      label: Webcomics
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 66.0
+        y: 666.0
+        articles: 9
+      id: '535'
+      label: Comics artists
+    data:
+      size: 1960.7487416243034
+      level: 2
+      x: 54.0
+      y: 673.0
+      articles: 14
+    id: '529'
+    label: Comics
+  - children:
+    - children: []
+      data:
+        size: 408.33206968034966
+        level: 3
+        x: 25.0
+        y: 733.0
+        articles: 49
+      id: '537'
+      label: Treaties
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 17.0
+        y: 720.0
+        articles: 8
+      id: '538'
+      label: Manuscripts
+    - children: []
+      data:
+        size: 204.16603484017483
+        level: 3
+        x: 61.0
+        y: 722.0
+        articles: 7
+      id: '539'
+      label: Identification documents
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 61.0
+        y: 732.0
+        articles: 5
+      id: '540'
+      label: Journals
+    - children: []
+      data:
+        size: 276.89144381359193
+        level: 3
+        x: 49.0
+        y: 717.0
+        articles: 14
+      id: '541'
+      label: Constitutions
+    data:
+      size: 1494.6051724821698
+      level: 2
+      x: 38.0
+      y: 724.0
+      articles: 17
+    id: '536'
+    label: Documents
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 222.0
+        y: 705.0
+        articles: 4
+      id: '543'
+      label: Persian literature
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 218.0
+      y: 698.0
+      articles: 0
+    id: '542'
+    label: Literature by language
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 108.0
+        y: 723.0
+        articles: 6
+      id: '545'
+      label: Medieval literature
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 91.0
+        y: 715.0
+        articles: 4
+      id: '546'
+      label: Classical Greek literature
+    - children: []
+      data:
+        size: 269.11599188328734
+        level: 3
+        x: 97.0
+        y: 725.0
+        articles: 13
+      id: '547'
+      label: Literature since 1500
+    data:
+      size: 602.5592648760148
+      level: 2
+      x: 96.0
+      y: 714.0
+      articles: 0
+    id: '544'
+    label: Literature by era
+  - children:
+    - children: []
+      data:
+        size: 284.13021638002675
+        level: 3
+        x: 231.0
+        y: 688.0
+        articles: 1
+      id: '549'
+      label: Prose
+    data:
+      size: 1202.0075019270892
+      level: 2
+      x: 233.0
+      y: 690.0
+      articles: 0
+    id: '548'
+    label: Literature by types of texts
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 197.0
+        y: 691.0
+        articles: 2
+      id: '551'
+      label: Dutch literature
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 208.0
+        y: 699.0
+        articles: 5
+      id: '552'
+      label: French literature
+    - children: []
+      data:
+        size: 434.7001269851269
+        level: 3
+        x: 201.0
+        y: 689.0
+        articles: 1
+      id: '553'
+      label: American literature
+    data:
+      size: 1079.8010289602005
+      level: 2
+      x: 200.0
+      y: 697.0
+      articles: 2
+    id: '550'
+    label: Literature by nationality
+  - children: []
+    data:
+      size: 218.17622692025137
+      level: 2
+      x: 222.0
+      y: 670.0
+      articles: 8
+    id: '554'
+    label: Beat Generation
+  - children:
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 243.0
+        y: 661.0
+        articles: 2
+      id: '556'
+      label: Non-fiction
+    - children: []
+      data:
+        size: 596.3245247262429
+        level: 3
+        x: 231.0
+        y: 654.0
+        articles: 3
+      id: '557'
+      label: Horror
+    - children: []
+      data:
+        size: 297.2624067935765
+        level: 3
+        x: 242.0
+        y: 653.0
+        articles: 8
+      id: '558'
+      label: Documentaries
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 241.0
+        y: 680.0
+        articles: 2
+      id: '559'
+      label: Parables
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 232.0
+        y: 659.0
+        articles: 1
+      id: '560'
+      label: Fables
+    data:
+      size: 1111.7631584400708
+      level: 2
+      x: 242.0
+      y: 671.0
+      articles: 26
+    id: '555'
+    label: Genres
+  - children: []
+    data:
+      size: 115.26704607247602
+      level: 2
+      x: 216.0
+      y: 695.0
+      articles: 0
+    id: '561'
+    label: Literature by genre
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 166.0
+        y: 691.0
+        articles: 1
+      id: '563'
+      label: Hugo Award
+    - children: []
+      data:
+        size: 360.2959528074797
+        level: 3
+        x: 170.0
+        y: 701.0
+        articles: 4
+      id: '564'
+      label: Pulitzer Prizes
+    data:
+      size: 475.5629988799557
+      level: 2
+      x: 181.0
+      y: 700.0
+      articles: 18
+    id: '562'
+    label: Literary awards
+  - children: []
+    data:
+      size: 276.89144381359193
+      level: 2
+      x: 252.0
+      y: 664.0
+      articles: 14
+    id: '565'
+    label: Literary terms
+  - children: []
+    data:
+      size: 72.72540897341712
+      level: 2
+      x: 188.0
+      y: 679.0
+      articles: 2
+    id: '566'
+    label: Collectors of fairy tales
+  - children: []
+    data:
+      size: 72.72540897341712
+      level: 2
+      x: 250.0
+      y: 692.0
+      articles: 2
+    id: '567'
+    label: Works by Johann Wolfgang von Goethe
+  - children: []
+    data:
+      size: 115.26704607247602
+      level: 2
+      x: 255.0
+      y: 699.0
+      articles: 3
+    id: '568'
+    label: Collections of fairy tales
+  data:
+    size: 51078.900843769195
+    level: 1
+    x: 221.0
+    y: 688.0
+    articles: 38
+  id: '486'
+  label: Literature
+- children:
+  - children:
+    - children: []
+      data:
+        size: 303.2595011183692
+        level: 3
+        x: 280.0
+        y: 410.0
+        articles: 29
+      id: '571'
+      label: Archaeological sites
+    - children: []
+      data:
+        size: 290.90163589366847
+        level: 3
+        x: 254.0
+        y: 419.0
+        articles: 16
+      id: '572'
+      label: Stone Age
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 257.0
+        y: 408.0
+        articles: 4
+      id: '573'
+      label: Radiometric dating
+    data:
+      size: 739.6119549588719
+      level: 2
+      x: 268.0
+      y: 413.0
+      articles: 18
+    id: '570'
+    label: Archaeology
+  - children:
+    - children: []
+      data:
+        size: 625.9716172367312
+        level: 3
+        x: 393.0
+        y: 454.0
+        articles: 0
+      id: '575'
+      label: Historians by nationality
+    data:
+      size: 625.9716172367312
+      level: 2
+      x: 397.0
+      y: 462.0
+      articles: 31
+    id: '574'
+    label: Historians
+  - children:
+    - children: []
+      data:
+        size: 230.53409214495204
+        level: 3
+        x: 334.0
+        y: 404.0
+        articles: 34
+      id: '577'
+      label: Ancient Egypt
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 301.0
+        y: 413.0
+        articles: 8
+      id: '578'
+      label: Seven Wonders of the World
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 296.0
+        y: 402.0
+        articles: 8
+      id: '579'
+      label: Ancient Armenia
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 332.0
+        y: 415.0
+        articles: 4
+      id: '580'
+      label: Hittite Empire
+    - children: []
+      data:
+        size: 260.7178640193103
+        level: 3
+        x: 307.0
+        y: 400.0
+        articles: 12
+      id: '581'
+      label: Prehistoric buildings and structures
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 329.0
+        y: 426.0
+        articles: 32
+      id: '582'
+      label: Mesopotamia
+    - children: []
+      data:
+        size: 290.90163589366847
+        level: 3
+        x: 290.0
+        y: 414.0
+        articles: 16
+      id: '583'
+      label: Battles of the Ancient World
+    data:
+      size: 3445.1768891454317
+      level: 2
+      x: 316.0
+      y: 414.0
+      articles: 43
+    id: '576'
+    label: Ancient history
+  - children:
+    - children: []
+      data:
+        size: 542.4902151746363
+        level: 3
+        x: 244.0
+        y: 376.0
+        articles: 31
+      id: '585'
+      label: Soviet Union
+    - children: []
+      data:
+        size: 2564.147827496691
+        level: 3
+        x: 281.0
+        y: 386.0
+        articles: 98
+      id: '586'
+      label: Former countries in Europe
+    - children: []
+      data:
+        size: 333.4432729927273
+        level: 3
+        x: 277.0
+        y: 400.0
+        articles: 30
+      id: '587'
+      label: Former countries in Asia
+    - children: []
+      data:
+        size: 1871.2000877042956
+        level: 3
+        x: 245.0
+        y: 374.0
+        articles: 0
+      id: '588'
+      label: Former countries by characteristic
+    - children: []
+      data:
+        size: 72.72540897341712
+        level: 3
+        x: 266.0
+        y: 372.0
+        articles: 2
+      id: '589'
+      label: Former city-states
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 254.0
+        y: 395.0
+        articles: 22
+      id: '590'
+      label: Former countries in Africa
+    - children: []
+      data:
+        size: 218.17622692025137
+        level: 3
+        x: 265.0
+        y: 394.0
+        articles: 8
+      id: '591'
+      label: Former countries in the Middle East
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 237.0
+        y: 386.0
+        articles: 3
+      id: '592'
+      label: Former countries in North America
+    data:
+      size: 5969.038664615463
+      level: 2
+      x: 259.0
+      y: 383.0
+      articles: 6
+    id: '584'
+    label: Former countries
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 412.0
+        y: 444.0
+        articles: 4
+      id: '594'
+      label: Fires
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 422.0
+        y: 447.0
+        articles: 14
+      id: '595'
+      label: Nuclear accidents
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 389.0
+        y: 447.0
+        articles: 10
+      id: '596'
+      label: Aviation disasters
+    data:
+      size: 1192.6053416464492
+      level: 2
+      x: 402.0
+      y: 448.0
+      articles: 20
+    id: '593'
+    label: Disasters
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 408.0
+        y: 415.0
+        articles: 3
+      id: '598'
+      label: Riots in England
+    - children: []
+      data:
+        size: 168.86317030755072
+        level: 3
+        x: 409.0
+        y: 436.0
+        articles: 5
+      id: '599'
+      label: Riots in the United States
+    data:
+      size: 284.13021638002675
+      level: 2
+      x: 410.0
+      y: 425.0
+      articles: 12
+    id: '597'
+    label: Riots
+  - children:
+    - children: []
+      data:
+        size: 502.30644330027815
+        level: 3
+        x: 335.0
+        y: 414.0
+        articles: 0
+      id: '601'
+      label: History by continent
+    - children: []
+      data:
+        size: 669.04993369966
+        level: 3
+        x: 344.0
+        y: 425.0
+        articles: 17
+      id: '602'
+      label: History of the Middle East
+    data:
+      size: 1171.3563769999382
+      level: 2
+      x: 337.0
+      y: 417.0
+      articles: 0
+    id: '600'
+    label: History by region
+  - children: []
+    data:
+      size: 8356.94388785415
+      level: 2
+      x: 354.0
+      y: 409.0
+      articles: 0
+    id: '603'
+    label: History by country
+  - children:
+    - children: []
+      data:
+        size: 948.0610574214207
+        level: 3
+        x: 321.0
+        y: 451.0
+        articles: 98
+      id: '605'
+      label: Fossils
+    - children: []
+      data:
+        size: 251.58857928096785
+        level: 3
+        x: 318.0
+        y: 437.0
+        articles: 11
+      id: '606'
+      label: Extinction events
+    - children: []
+      data:
+        size: 187.99245504589317
+        level: 3
+        x: 294.0
+        y: 438.0
+        articles: 11
+      id: '607'
+      label: Paleontologists
+    data:
+      size: 6558.663783890159
+      level: 2
+      x: 306.0
+      y: 439.0
+      articles: 13
+    id: '604'
+    label: Paleontology
+  - children:
+    - children: []
+      data:
+        size: 767.3073749419624
+        level: 3
+        x: 250.0
+        y: 431.0
+        articles: 1
+      id: '609'
+      label: Buildings and structures in the Middle Ages
+    data:
+      size: 971.4734097821372
+      level: 2
+      x: 258.0
+      y: 441.0
+      articles: 29
+    id: '608'
+    label: Middle Ages
+  - children: []
+    data:
+      size: 168.86317030755072
+      level: 2
+      x: 398.0
+      y: 420.0
+      articles: 5
+    id: '610'
+    label: Witches
+  - children:
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 371.0
+        y: 420.0
+        articles: 4
+      id: '612'
+      label: Monuments and memorials in the United States
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 362.0
+        y: 426.0
+        articles: 4
+      id: '613'
+      label: Monuments and memorials in England
+    data:
+      size: 290.90163589366847
+      level: 2
+      x: 372.0
+      y: 430.0
+      articles: 12
+    id: '611'
+    label: Monuments and memorials
+  - children: []
+    data:
+      size: 145.45081794683423
+      level: 2
+      x: 421.0
+      y: 417.0
+      articles: 4
+    id: '614'
+    label: Speeches
+  - children:
+    - children: []
+      data:
+        size: 241.58857928096782
+        level: 3
+        x: 380.0
+        y: 439.0
+        articles: 1
+      id: '616'
+      label: Imperialism
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 379.0
+        y: 434.0
+        articles: 3
+      id: '617'
+      label: History of ideas
+    data:
+      size: 5887.502222486545
+      level: 2
+      x: 374.0
+      y: 435.0
+      articles: 0
+    id: '615'
+    label: History by topic
+  - children: []
+    data:
+      size: 4806.7668160452695
+      level: 2
+      x: 432.0
+      y: 423.0
+      articles: 5
+    id: '618'
+    label: History-related lists
+  - children:
+    - children: []
+      data:
+        size: 488.2962512202016
+        level: 3
+        x: 359.0
+        y: 435.0
+        articles: 6
+      id: '620'
+      label: Millennia
+    data:
+      size: 488.2962512202016
+      level: 2
+      x: 350.0
+      y: 436.0
+      articles: 3
+    id: '619'
+    label: Chronology
+  - children: []
+    data:
+      size: 72.72540897341712
+      level: 2
+      x: 352.0
+      y: 444.0
+      articles: 2
+    id: '621'
+    label: Historiography
+  - children: []
+    data:
+      size: 168.86317030755072
+      level: 2
+      x: 283.0
+      y: 434.0
+      articles: 5
+    id: '622'
+    label: History books
+  - children: []
+    data:
+      size: 1352.5774125321893
+      level: 2
+      x: 431.0
+      y: 411.0
+      articles: 9
+    id: '623'
+    label: Periods and ages in history
+  data:
+    size: 309702.2258171312
+    level: 1
+    x: 381.0
+    y: 423.0
+    articles: 22
+  id: '569'
+  label: History
+- children:
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 342.0
+        y: 465.0
+        articles: 3
+      id: '626'
+      label: Critical thinking
+    - children: []
+      data:
+        size: 145.45081794683423
+        level: 3
+        x: 377.0
+        y: 478.0
+        articles: 4
+      id: '627'
+      label: Giftedness
+    - children: []
+      data:
+        size: 341.8414008567044
+        level: 3
+        x: 379.0
+        y: 465.0
+        articles: 26
+      id: '628'
+      label: Qualifications
+    - children: []
+      data:
+        size: 187.99245504589314
+        level: 3
+        x: 354.0
+        y: 476.0
+        articles: 3
+      id: '629'
+      label: Education by subject
+    - children: []
+      data:
+        size: 1849.2974101214088
+        level: 3
+        x: 346.0
+        y: 472.0
+        articles: 0
+      id: '630'
+      label: Education by country
+    data:
+      size: 2827.8415850892097
+      level: 2
+      x: 366.0
+      y: 474.0
+      articles: 39
+    id: '625'
+    label: Education
+  - children:
+    - children: []
+      data:
+        size: 115.26704607247602
+        level: 3
+        x: 357.0
+        y: 505.0
+        articles: 3
+      id: '632'
+      label: Mysterious people
+    data:
+      size: 187.99245504589314
+      level: 2
+      x: 352.0
+      y: 500.0
+      articles: 1
+    id: '631'
+    label: Mysteries
+  - children: []
+    data:
+      size: 269.11599188328734
+      level: 2
+      x: 357.0
+      y: 487.0
+      articles: 13
+    id: '633'
+    label: Epistemology
+  data:
+    size: 3453.813202325941
+    level: 1
+    x: 356.0
+    y: 496.0
+    articles: 2
+  id: '624'
+  label: Knowledge
+- children:
+  - children: []
+    data:
+      size: 218.17622692025137
+      level: 2
+      x: 467.0
+      y: 426.0
+      articles: 8
+    id: '635'
+    label: Turkish media
+  - children: []
+    data:
+      size: 241.58857928096785
+      level: 2
+      x: 460.0
+      y: 421.0
+      articles: 0
+    id: '636'
+    label: South Korean media
+  data:
+    size: 5374.014835559936
+    level: 1
+    x: 454.0
+    y: 426.0
+    articles: 15
+  id: '634'
+  label: Media
+data:
+  size: 1653196.1595308548
+  level: 0
+id: '0'
+label: Articles
