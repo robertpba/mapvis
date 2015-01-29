@@ -8,6 +8,10 @@ public class Node{
     String label = "";
     private List<Node> children = new ArrayList<>();
 
+    protected Node(){
+
+    }
+
     public Node(String id, String label) {
         setId(id);
         setLabel(label==null?"":label);

@@ -9,7 +9,16 @@ repositories {
 
 dependencies {
     testCompile 'org.testng:testng:6.8.8'
+    compile 'net.sf.jung:jung-api:2.0.1'
+    compile 'net.sf.jung:jung-algorithms:2.0.1'
+    compile 'net.sf.jung:jung-graph-impl:2.0.1'
+    compile 'org.apache.directory.studio:org.apache.commons.collections:3.2.1'
     compile 'net.sf.jung:jung2:2.0.1'
+
+    compile 'org.yaml:snakeyaml:1.14'
+    compile 'org.apache.xmlgraphics:batik-svggen:1.7'
+    compile 'org.apache.xmlgraphics:batik-dom:1.7'
+
 
     compile project(":common")
 }

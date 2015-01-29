@@ -5,6 +5,7 @@ import edu.uci.ics.jung.graph.DirectedGraph;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import mapvis.common.datatype.Node;
 
+import java.awt.*;
 import java.util.*;
 
 public final class PEAPreliminaryLayoutAlgorithm {
@@ -64,7 +65,7 @@ public final class PEAPreliminaryLayoutAlgorithm {
             node.setVal("x", springLayout.getX(node));
             node.setVal("y", springLayout.getY(node));
         }
-        compact(graph, steps);
+        compact(graph, steps*5);
     }
 
     DirectedGraph<Node,Edge> convertToGraph(){
@@ -76,13 +77,14 @@ public final class PEAPreliminaryLayoutAlgorithm {
         graph.addVertex(node);
 
         for (Node child : node.getChildren()) {
-            recAddNode(graph, node);
+            recAddNode(graph, child);
             graph.addEdge(new Edge(node, child), node, child);
         }
     }
 
     SpringLayout3<Node, Edge> disperse(DirectedGraph<Node, Edge> graph, int steps){
         SpringLayout3<Node, Edge> alg = new SpringLayout3<>(graph, e->100, new Random(0));
+        alg.setSize(new Dimension(1000,1000));
         for (int i = 0; i < steps; i++) {
             alg.step();
         }
@@ -98,22 +100,24 @@ public final class PEAPreliminaryLayoutAlgorithm {
     void recCompact(DirectedGraph<Node, Edge> graph, Node node) {
         double x0 = (double) node.getVal("x");
         double y0 = (double) node.getVal("y");
-        double r0 = (double) node.getVal("size");
+        double r0 = Math.sqrt((int) node.getVal("size") / Math.PI);
 
         for (Node child : node.getChildren()) {
             double x1 = (double)child.getVal("x");
             double y1 = (double)child.getVal("y");
-            double r1 = (double)child.getVal("size");
+            double r1 = Math.sqrt((int) child.getVal("size") / Math.PI);
 
-            if (distance(x0,y0,r0,x1,y1,r1)>0) {
-                final double x1_ = x1 - (x1 - x0) / 10;
-                final double y1_ = y1 - (y1 - y0) / 10;
+            if (distance(x0,y0,0,x1,y1,r1)>0) {
+                final double x1_ = x1 - (x1 - x0) / 7;
+                final double y1_ = y1 - (y1 - y0) / 7;
 
                 if (!graph.getVertices().stream()
                         .anyMatch(n -> {
+                            if (n.getChildren().size()>0)
+                                return false;
                             double x2 = (double) n.getVal("x");
                             double y2 = (double) n.getVal("y");
-                            double r2 = (double) n.getVal("size");
+                            double r2 = Math.sqrt((int) n.getVal("size") / Math.PI);
                             return distance(x1_,y1_,r1,x2,y2,r2) < 0;
                         })){
                     child.setVal("x", x1_);
