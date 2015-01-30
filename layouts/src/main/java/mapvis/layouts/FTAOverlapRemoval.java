@@ -1,4 +1,4 @@
-package mapvis.layouts.peap;
+package mapvis.layouts;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
