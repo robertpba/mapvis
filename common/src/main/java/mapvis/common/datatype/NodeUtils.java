@@ -1,10 +1,7 @@
 package mapvis.common.datatype;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class NodeUtils {
 
@@ -62,6 +59,18 @@ public class NodeUtils {
                 .forEach(leaves::addAll);
         return leaves;
 
+    }
+
+    public static List<Node> getDecedents(Node node){
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        node.getChildren().stream()
+                .map(NodeUtils::getDecedents)
+                .forEach(nodes::addAll);
+
+        nodes.addAll(node.getChildren());
+
+        return nodes;
     }
 
 }
