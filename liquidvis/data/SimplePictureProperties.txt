@@ -1,3 +1,0 @@
-#Properties for the Simple Picture class
-#Thu Mar 28 23:09:43 CST 2013
-mediaDirectory=C:/Users/FYP2013/Desktop/coding/Picture/
