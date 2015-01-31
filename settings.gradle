@@ -2,10 +2,6 @@ rootProject.name = 'mapvis'
 
 include 'patrick'
 
-include 'liquidvis'
-
-include 'vistools'
-
 include 'grid'
 include 'io'
 

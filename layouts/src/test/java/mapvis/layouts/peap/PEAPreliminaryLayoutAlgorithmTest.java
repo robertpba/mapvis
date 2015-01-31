@@ -1,6 +1,7 @@
 package mapvis.layouts.peap;
 
 import mapvis.common.datatype.Node;
+import mapvis.layouts.Dac;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.apache.batik.dom.GenericDOMImplementation;
@@ -17,30 +18,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.*;
 
 public class PEAPreliminaryLayoutAlgorithmTest {
-
-    @Test
-    public void testRun() throws Exception {
-        Yaml yaml = new Yaml();
-        FileInputStream ins = new FileInputStream("io/data/rand1.yaml");
-        Node node = yaml.loadAs(ins, Node.class);
-        PEAPreliminaryLayoutAlgorithm alg = new PEAPreliminaryLayoutAlgorithm(node);
-        alg.run(1000);
-        System.out.println(yaml.dump(node));
-
-
-    }
-
-    public static void main(String[] args) throws IOException {
-        Yaml yaml = new Yaml();
-        FileInputStream ins = new FileInputStream("io/data/rand1.yaml");
-        Node node = yaml.loadAs(ins, Node.class);
-        PEAPreliminaryLayoutAlgorithm alg = new PEAPreliminaryLayoutAlgorithm(node);
-        alg.run(2000);
-
-
-        //OvalPanelCanvas.start(node);
-        OvalPanelCanvas.export(node);
-    }
 
 
 

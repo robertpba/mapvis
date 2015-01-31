@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class Dac {
 
     static Entry<Node> createEntry(Node root){
-
         Entry<Node> entry = new Entry<>();
         entry.node = root;
         entry.r =  Math.sqrt((int) root.getVal("size"))/2;
@@ -33,6 +32,10 @@ public class Dac {
         entry.node.setVal("y1",entry.y1);
 
         entry.children.forEach(Dac::updatePosition);
+    }
+
+    static void adjust(Entry<Node> entry) {
+
     }
 
     public static void run(Node root, int steps){
