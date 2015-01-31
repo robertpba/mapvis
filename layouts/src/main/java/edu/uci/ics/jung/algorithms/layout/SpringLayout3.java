@@ -17,6 +17,7 @@ public class SpringLayout3<V, E> extends SpringLayout2<V, E> {
 
 	public SpringLayout3(Graph<V, E> g, Transformer<E, Integer> lengthFunction, Random rand) {
 		super(g, lengthFunction);
+		this.setInitializer(v-> new Point2D.Double(random(),random()));
 		this.rand = rand;
 	}
 

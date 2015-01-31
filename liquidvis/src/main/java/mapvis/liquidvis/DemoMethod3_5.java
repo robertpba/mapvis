@@ -10,7 +10,6 @@ import mapvis.liquidvis.model.*;
 import mapvis.liquidvis.model.Polygon;
 import mapvis.liquidvis.model.handler.CollectStatistics;
 import mapvis.common.datatype.TreeImp;
-import mapvis.liquidvis.util.PatrickFormatLoader2;
 import mapvis.vistools.colormap.ColorMap;
 import org.yaml.snakeyaml.Yaml;
 
@@ -62,7 +61,6 @@ public class DemoMethod3_5 {
 
 
     public static void main (String[] args) throws IOException, InterruptedException {
-        PatrickFormatLoader2 loader = new PatrickFormatLoader2();
         Node node = null;
         try {
             Yaml yaml = new Yaml();
