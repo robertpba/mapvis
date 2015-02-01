@@ -60,6 +60,8 @@ public class Visualization implements ActionListener {
         JButton forthButton = new JButton("By times move forth");
         controls.add(forthButton);
 
+
+
         saveButton.addActionListener(e -> {
             Stop();
             try {
@@ -110,7 +112,9 @@ public class Visualization implements ActionListener {
         Graphics2D g = image.createGraphics();
         g.setBackground(backgroundColor);
         g.clearRect(0,0, image.getWidth(), image.getHeight());
-        model.draw(g);
+
+        Drawer drawer = new Drawer(model);
+        drawer.draw(g);
     }
 
     public void save(String filename) throws IOException {
