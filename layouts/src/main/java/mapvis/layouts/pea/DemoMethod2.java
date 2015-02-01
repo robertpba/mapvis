@@ -1,6 +1,5 @@
 package mapvis.layouts.pea;
 
-import mapvis.common.datatype.TreeImp;
 import mapvis.layouts.pea.gui.Visualization;
 import mapvis.layouts.pea.gui.actions.*;
 import mapvis.layouts.pea.method.method2.Method2;
@@ -30,7 +29,7 @@ public class DemoMethod2 {
         Node node = yaml.loadAs(
                 new FileInputStream(filename), Node.class);
 
-        MapModel model = new MapModel(TreeImp.from(node), new MapModel.ToInitialValue<Node>() {
+        MapModel model = new MapModel(node, new MapModel.Initializer() {
             @Override
             public Point2D getPosition(Node n) {
                 return new Point2D.Double((double)n.getVal("x")/10, (double)n.getVal("y")/10);

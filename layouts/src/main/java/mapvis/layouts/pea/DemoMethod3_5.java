@@ -70,9 +70,7 @@ public class DemoMethod3_5 {
             e.printStackTrace();
         }
 
-        TreeImp<Node> tree = TreeImp.from(node);
-
-        MapModel model = new MapModel(tree, new MapModel.ToInitialValue<Node>() {
+        MapModel model = new MapModel(node, new MapModel.Initializer() {
             @Override
             public Point2D getPosition(Node node) {
                 return new Point2D.Double((double)node.getVal("x"), (double)node.getVal("y"));

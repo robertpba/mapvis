@@ -1,7 +1,7 @@
 package mapvis.layouts.pea.model;
 
 import mapvis.common.datatype.Node;
-import mapvis.common.datatype.Tree;
+import mapvis.common.datatype.NodeUtils;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.event.*;
 import mapvis.layouts.pea.model.handler.*;
@@ -12,7 +12,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static mapvis.utils.PointExtension.add;
 import static mapvis.utils.PointExtension.length;
@@ -23,8 +22,9 @@ public class MapModel {
 
     SpatialIndex<Node> index;
 
-    Tree<Node> tree;
-    Set<Node> leaves;
+    Collection<Node> leaves;
+    Collection<Node> nodes;
+    Node root;
 
     public Map<Node, Map<String, Object>> data = new HashMap<>();
     public Object getValue(Node vertex, String key ){
@@ -46,7 +46,7 @@ public class MapModel {
 
 
     public Node getRoot() {
-        return tree.getRoot();
+        return root;
     }
     public Polygon getPolygon(Node vertex){
         return (Polygon) getValue(vertex, "polygon");
@@ -56,36 +56,36 @@ public class MapModel {
     }
 
     public Collection<Node> getChildren(Node vertex){
-        return tree.getChildren(vertex);
+        return vertex.getChildren();
     }
-    public Set<Node> getAllNodes(){
-        return tree.getNodes();
-    }
-
-    public interface ToInitialValue<V> {
-        Point2D getPosition(V v);
-        double getMass(V v);
+    public Collection<Node> getAllNodes(){
+        return nodes;
     }
 
-    public MapModel(Tree<Node> tree, ToInitialValue toInitialValue){
-        this.tree = tree;
+    public interface Initializer {
+        Point2D getPosition(Node v);
+        double getMass(Node v);
+    }
 
+    public MapModel(Node root, Initializer initializer){
         double maxX = 0;
         double maxY = 0;
 
-        leaves =  tree.getNodes().stream()
-                .filter(n->tree.getChildren(n).size() == 0)
-                .collect(Collectors.toSet());
+        this.root = root;
+        leaves = NodeUtils.getLeaves(root);
+        nodes = NodeUtils.getDecedents(root);
+        nodes.add(root);
+
 
         for (Node n : getLeaves()) {
             setValue(n, "polygon" ,new Polygon(
                     n,
-                    toInitialValue.getPosition(n).getX(),
-                    toInitialValue.getPosition(n).getY(),
-                    toInitialValue.getMass(n)));
+                    initializer.getPosition(n).getX(),
+                    initializer.getPosition(n).getY(),
+                    initializer.getMass(n)));
 
-            maxX = Math.max(maxX, toInitialValue.getPosition(n).getX());
-            maxY = Math.max(maxY, toInitialValue.getPosition(n).getY());
+            maxX = Math.max(maxX, initializer.getPosition(n).getX());
+            maxY = Math.max(maxY, initializer.getPosition(n).getY());
         }
 
         listeners.add(new UpdatePolygonSizeWhenVertexMoved());
@@ -145,7 +145,7 @@ public class MapModel {
         event.polygon.setVertex(event.vertex.indexOfVertex, event.destination);
 
 
-        index.update((Node)event.polygon.node, new Rectangle2D.Double(
+        index.update(event.polygon.node, new Rectangle2D.Double(
                 event.polygon.minX, event.polygon.minY,
                 event.polygon.maxX - event.polygon.minX,
                 event.polygon.maxY - event.polygon.minY
