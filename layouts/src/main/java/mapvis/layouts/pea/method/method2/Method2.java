@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.method.method2;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
 import mapvis.layouts.pea.model.Vertex;
@@ -40,7 +41,7 @@ public class Method2 {
         this.model = model;
 
         descriptors = new ArrayList<>();
-        for (Object leaf : model.getLeaves()) {
+        for (Node leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             descriptors.add(new PolygonDescriptor(polygon, (int) polygon.mass));
         };

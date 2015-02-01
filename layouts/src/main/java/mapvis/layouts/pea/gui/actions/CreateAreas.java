@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.*;
 import mapvis.layouts.pea.model.Polygon;
@@ -10,10 +11,10 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 
-public class CreateAreas<T> implements RenderAction {
-    private MapModel<T> model;
+public class CreateAreas implements RenderAction {
+    private MapModel model;
 
-    public CreateAreas(MapModel<T> model){
+    public CreateAreas(MapModel model){
 
         this.model = model;
     }
@@ -27,8 +28,8 @@ public class CreateAreas<T> implements RenderAction {
     public void draw(Graphics2D g) {
     }
 
-    private void updatePosition(T node) {
-        Collection<T> children = model.getChildren(node);
+    private void updatePosition(Node node) {
+        Collection<Node> children = model.getChildren(node);
         if (children.isEmpty()) {
             Polygon polygon = model.getPolygon(node);
 
@@ -51,7 +52,7 @@ public class CreateAreas<T> implements RenderAction {
         else {
             Area area = new Area();
 
-            for (T childNode : children) {
+            for (Node childNode : children) {
                 updatePosition(childNode);
                 Area childArea = (Area) model.getValue(childNode, "__area");
                 area.add(childArea);

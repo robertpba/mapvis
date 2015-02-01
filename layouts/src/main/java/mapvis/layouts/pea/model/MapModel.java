@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.model;
 
+import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.event.*;
@@ -17,16 +18,16 @@ import static mapvis.utils.PointExtension.add;
 import static mapvis.utils.PointExtension.length;
 
 
-public class MapModel<V> {
+public class MapModel {
     public int iteration = 0;
 
-    SpatialIndex<V> index;
+    SpatialIndex<Node> index;
 
-    Tree<V> tree;
-    Set<V> leaves;
+    Tree<Node> tree;
+    Set<Node> leaves;
 
-    public Map<V, Map<String, Object>> data = new HashMap<>();
-    public Object getValue(V vertex, String key ){
+    public Map<Node, Map<String, Object>> data = new HashMap<>();
+    public Object getValue(Node vertex, String key ){
         Map<String, Object> map = data.get(vertex);
 
         if (map == null)
@@ -34,7 +35,7 @@ public class MapModel<V> {
 
         return map.get(key);
     }
-    public Object setValue(V vertex, String key, Object value){
+    public Object setValue(Node vertex, String key, Object value){
         Map<String, Object> map = data.get(vertex);
 
         if (map == null)
@@ -44,20 +45,20 @@ public class MapModel<V> {
     }
 
 
-    public V getRoot() {
+    public Node getRoot() {
         return tree.getRoot();
     }
-    public Polygon getPolygon(V vertex){
+    public Polygon getPolygon(Node vertex){
         return (Polygon) getValue(vertex, "polygon");
     }
-    public Collection<V> getLeaves(){
+    public Collection<Node> getLeaves(){
         return leaves;
     }
 
-    public Collection<V> getChildren(V vertex){
+    public Collection<Node> getChildren(Node vertex){
         return tree.getChildren(vertex);
     }
-    public Set<V> getAllNodes(){
+    public Set<Node> getAllNodes(){
         return tree.getNodes();
     }
 
@@ -66,7 +67,7 @@ public class MapModel<V> {
         double getMass(V v);
     }
 
-    public MapModel(Tree<V> tree, ToInitialValue<V> toInitialValue){
+    public MapModel(Tree<Node> tree, ToInitialValue toInitialValue){
         this.tree = tree;
 
         double maxX = 0;
@@ -76,7 +77,7 @@ public class MapModel<V> {
                 .filter(n->tree.getChildren(n).size() == 0)
                 .collect(Collectors.toSet());
 
-        for (V n : getLeaves()) {
+        for (Node n : getLeaves()) {
             setValue(n, "polygon" ,new Polygon(
                     n,
                     toInitialValue.getPosition(n).getX(),
@@ -93,8 +94,8 @@ public class MapModel<V> {
         index = new SpatialIndex<>( (int)(maxY / c) ,(int)(maxY / c) , c);
     }
 
-    public Polygon findSurroundingRegion(Point2D point, V exclude) {
-        for (V leaf : index.neighbours(point)) {
+    public Polygon findSurroundingRegion(Point2D point, Node exclude) {
+        for (Node leaf : index.neighbours(point)) {
             Polygon polygon = (Polygon) getValue(leaf, "polygon");
             if (polygon.node == exclude)
                 continue;
@@ -144,7 +145,7 @@ public class MapModel<V> {
         event.polygon.setVertex(event.vertex.indexOfVertex, event.destination);
 
 
-        index.update((V)event.polygon.node, new Rectangle2D.Double(
+        index.update((Node)event.polygon.node, new Rectangle2D.Double(
                 event.polygon.minX, event.polygon.minY,
                 event.polygon.maxX - event.polygon.minX,
                 event.polygon.maxY - event.polygon.minY

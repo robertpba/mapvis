@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.FTAOverlapRemoval;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.*;
@@ -15,15 +16,15 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LabelRender<T> implements RenderAction {
-    private MapModel<T> model;
+public class LabelRender implements RenderAction {
+    private MapModel model;
 
     protected class Entry{
-        public Entry (T element){
+        public Entry (Node element){
             this.element = element;
         }
 
-        public T element;
+        public Node element;
         public String text;
         public Rectangle2D bounds;
         private Point2D anchor;
@@ -35,18 +36,18 @@ public class LabelRender<T> implements RenderAction {
 
     }
 
-    Map<T, Entry> entries = new HashMap<>();
+    Map<Node, Entry> entries = new HashMap<>();
 
-    protected Rectangle2D getBounds(T node) {
+    protected Rectangle2D getBounds(Node node) {
         return ((Area) model.getValue(node, "__area")).getBounds2D();
     }
-    protected int getLevel(T node) {
+    protected int getLevel(Node node) {
         return ((int) model.getValue(node, "__level"));
     }
-    protected String getText(T node) {
+    protected String getText(Node node) {
         return ((String) model.getValue(node, "__label.text"));
     }
-    protected Point2D getAnchor(T node) {
+    protected Point2D getAnchor(Node node) {
         mapvis.layouts.pea.model.Polygon polygon = model.getPolygon(node);
 
         if (polygon != null){
@@ -59,7 +60,7 @@ public class LabelRender<T> implements RenderAction {
 
     }
 
-    public LabelRender(MapModel<T> model){
+    public LabelRender(MapModel model){
         this.model = model;
         entries = model.getLeaves().stream()
                 .map(n -> new Entry(n))

@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.*;
 import mapvis.layouts.pea.model.Polygon;
@@ -7,11 +8,11 @@ import mapvis.layouts.pea.model.Polygon;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class HighlightVertices<T> implements RenderAction {
+public class HighlightVertices implements RenderAction {
 
-    private MapModel<T> model;
+    private MapModel model;
 
-    public HighlightVertices(MapModel<T> model){
+    public HighlightVertices(MapModel model){
 
         this.model = model;
     }

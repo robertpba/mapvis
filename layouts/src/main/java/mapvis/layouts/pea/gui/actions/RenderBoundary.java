@@ -1,16 +1,17 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.MapModel;
 
 import java.awt.*;
 import java.awt.geom.Area;
 
-public class RenderBoundary<T> implements RenderAction {
+public class RenderBoundary implements RenderAction {
 
-    private MapModel<T> model;
+    private MapModel model;
 
-    public RenderBoundary(MapModel<T> model){
+    public RenderBoundary(MapModel model){
 
         this.model = model;
     }
@@ -28,7 +29,7 @@ public class RenderBoundary<T> implements RenderAction {
     }
 
 
-    private void drawPolygonBorder(Graphics2D g, T node) {
+    private void drawPolygonBorder(Graphics2D g, Node node) {
         Color color;
         int level = getLevel(node);
         if (level == 3)
@@ -79,17 +80,17 @@ public class RenderBoundary<T> implements RenderAction {
         return a;
     }
 
-    protected int getLevel(T node) {
+    protected int getLevel(Node node) {
         return ((int) model.getValue(node, "__level"));
     }
-    protected Area getArea(T node) {
+    protected Area getArea(Node node) {
         return ((Area) model.getValue(node, "__area"));
     }
 
     public Color firstLevelColor = Color.black;
     public float firstLevelThickness = 15;
     public float secondLevelThickness = 8;
-    protected Color getColor(T node) {
+    protected Color getColor(Node node) {
         int level = getLevel(node);
         if (level == 1)
             return firstLevelColor;

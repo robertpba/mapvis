@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.method.method3;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
 import mapvis.layouts.pea.model.Vertex;
@@ -16,11 +17,11 @@ public class Method3<T> {
 
     public final Estimator estimator;
     public final Manipulator manipulator;
-    public MapModel<T> model;
+    public MapModel model;
 
     DriveAwayInsideVertices driveAwayInsideVertices;
 
-    public Method3(MapModel<T> model){
+    public Method3(MapModel model){
         this.model = model;
 
         driveAwayInsideVertices = new DriveAwayInsideVertices(this, 100);
@@ -48,7 +49,7 @@ public class Method3<T> {
 
         int c = 0;
 
-        for (T leaf : model.getLeaves()) {
+        for (Node leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
                 vertex.momentum = vertex.momentum * 99 / 100;
@@ -125,7 +126,7 @@ public class Method3<T> {
 
 
     private void _growPolygons(){
-        for (T leaf : model.getLeaves()) {
+        for (Node leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
 
@@ -133,7 +134,7 @@ public class Method3<T> {
                 Point2D unit = unit(subtract(srcPos, polygon.getPivot()));
                 Point2D dstPos = add(srcPos, unit);
 
-                Polygon dstRegion = model.findSurroundingRegion(dstPos, (T)polygon.node);
+                Polygon dstRegion = model.findSurroundingRegion(dstPos, polygon.node);
 
                 if (dstRegion == null) {
                     vertex.moveCount++;

@@ -1,12 +1,14 @@
 package mapvis.layouts.pea.model;
 
+import mapvis.common.datatype.Node;
+
 import java.awt.geom.Point2D;
 
 import static mapvis.utils.PointExtension.*;
 
 
 public class Polygon {
-    public Object node;
+    public Node node;
 
     public int npoints;
     public Vertex[] vertices;
@@ -81,7 +83,7 @@ public class Polygon {
         return new Point2D.Double(x,y);
     }
 
-    public Polygon(Object node, double x, double y, double mass) {
+    public Polygon(Node node, double x, double y, double mass) {
         this.node = node;
 
         originX = x;

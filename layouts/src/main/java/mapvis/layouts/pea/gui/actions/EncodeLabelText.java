@@ -1,17 +1,18 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.MapModel;
 
 import java.awt.*;
 import java.util.function.Function;
 
-public class EncodeLabelText<T> implements RenderAction {
+public class EncodeLabelText implements RenderAction {
     private boolean initialized =false;
-    private MapModel<T> model;
-    private Function<T, String> getLabel;
+    private MapModel model;
+    private Function<Node, String> getLabel;
 
-    public EncodeLabelText(MapModel<T> model, Function<T, String> getLabel){
+    public EncodeLabelText(MapModel model, Function<Node, String> getLabel){
 
         this.model = model;
         this.getLabel = getLabel;
@@ -22,7 +23,7 @@ public class EncodeLabelText<T> implements RenderAction {
         if (initialized)
             return;
 
-        for (T t : model.getAllNodes()) {
+        for (Node t : model.getAllNodes()) {
             model.setValue(t, "__label.text", getLabel.apply(t));
         }
         initialized = false;

@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.model.handler;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
 import mapvis.layouts.pea.model.event.CriticalPointArrived;
@@ -56,7 +57,7 @@ public class CollectStatistics implements ModelEventListener {
 
 
 
-        for (Object leaf : model.getLeaves()) {
+        for (Node leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
 
             System.out.printf("d:%5.0f a:%7.0f, m:%7.0f %%:%6.3f\n",

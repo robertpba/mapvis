@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.*;
 import mapvis.layouts.pea.model.Polygon;
@@ -7,11 +8,11 @@ import mapvis.layouts.pea.model.Polygon;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class RenderOriginCentroid<T> implements RenderAction {
+public class RenderOriginCentroid implements RenderAction {
 
-    private MapModel<T> model;
+    private MapModel model;
 
-    public RenderOriginCentroid(MapModel<T> model) {
+    public RenderOriginCentroid(MapModel model) {
 
         this.model = model;
     }
@@ -30,7 +31,7 @@ public class RenderOriginCentroid<T> implements RenderAction {
     }
 
 
-    private void drawPolygonOrigin(Graphics2D g, T node){
+    private void drawPolygonOrigin(Graphics2D g, Node node){
         final int r = 4;
         Polygon polygon = model.getPolygon(node);
         int x = (int)polygon.originX - (r/2);
@@ -40,7 +41,7 @@ public class RenderOriginCentroid<T> implements RenderAction {
         g.fillOval(x,y,r,r);
     }
 
-    private void drawPolygonCentroid(Graphics2D g, T node){
+    private void drawPolygonCentroid(Graphics2D g, Node node){
         final int r = 4;
         Polygon polygon = model.getPolygon(node);
         Point2D centroid = polygon.calcCentroid();

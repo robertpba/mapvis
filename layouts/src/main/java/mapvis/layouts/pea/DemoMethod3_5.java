@@ -72,7 +72,7 @@ public class DemoMethod3_5 {
 
         TreeImp<Node> tree = TreeImp.from(node);
 
-        MapModel<Node> model = new MapModel<>(tree, new MapModel.ToInitialValue<Node>() {
+        MapModel model = new MapModel(tree, new MapModel.ToInitialValue<Node>() {
             @Override
             public Point2D getPosition(Node node) {
                 return new Point2D.Double((double)node.getVal("x"), (double)node.getVal("y"));
@@ -124,20 +124,20 @@ public class DemoMethod3_5 {
                 return colors[7];
         };
 
-        model.actions.add(new LevelEncoder<>(model));
-        model.actions.add(new EncodeLabelText<>(model, Node::getLabel));
-        model.actions.add(new CreateAreas<>(model));
+        model.actions.add(new LevelEncoder(model));
+        model.actions.add(new EncodeLabelText(model, Node::getLabel));
+        model.actions.add(new CreateAreas(model));
 
 
 
 
-        model.actions.add(new FillNode<>(model, colorMap2));
+        model.actions.add(new FillNode(model, colorMap2));
 
-        RenderBoundary<Node> renderBoundary = new RenderBoundary<>(model);
+        RenderBoundary renderBoundary = new RenderBoundary(model);
 
         model.actions.add(renderBoundary);
         //model.actions.add(new RenderOriginCentroid<>(model));
-        model.actions.add(new LabelRender<Node>(model){
+        model.actions.add(new LabelRender(model){
             protected void renderLabel(Graphics2D g, Entry entry){
                 Node element = (Node) entry.element;
                 if (entry.level == 2 && element.getLabel().equals("Engineering")) {

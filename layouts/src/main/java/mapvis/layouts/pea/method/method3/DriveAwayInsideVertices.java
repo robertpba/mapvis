@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.method.method3;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
 import mapvis.layouts.pea.model.Vertex;
@@ -28,7 +29,7 @@ public class DriveAwayInsideVertices implements ModelEventListener {
         if (event.iteration % period != 0)
             return;
 
-        for (Object leaf : model.getLeaves()) {
+        for (Node leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
                 Polygon surroundingRegion = model.findSurroundingRegion(vertex.getPoint(), vertex.polygon.node);

@@ -1,15 +1,16 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.MapModel;
 
 import java.awt.*;
 
-public class LevelEncoder<T> implements RenderAction {
+public class LevelEncoder implements RenderAction {
     private boolean initialized =false;
-    private MapModel<T> model;
+    private MapModel model;
 
-    public LevelEncoder(MapModel<T> model){
+    public LevelEncoder(MapModel model){
         this.model = model;
     }
 
@@ -22,7 +23,7 @@ public class LevelEncoder<T> implements RenderAction {
         initialized = true;
     }
 
-    private void updateLevel(T node, int level){
+    private void updateLevel(Node node, int level){
         model.setValue(node, "__level", level);
         final int lv = level + 1;
         model.getChildren(node)

@@ -30,14 +30,14 @@ public class DemoMethod2 {
         Node node = yaml.loadAs(
                 new FileInputStream(filename), Node.class);
 
-        MapModel<Node> model = new MapModel<>(TreeImp.from(node), new MapModel.ToInitialValue<Node>() {
+        MapModel model = new MapModel(TreeImp.from(node), new MapModel.ToInitialValue<Node>() {
             @Override
             public Point2D getPosition(Node n) {
                 return new Point2D.Double((double)n.getVal("x")/10, (double)n.getVal("y")/10);
             }
             @Override
             public double getMass(Node n) {
-                return (int)n.getVal("articles")/10;
+                return (int)n.getVal("articles");
             }
         });
 
@@ -66,16 +66,16 @@ public class DemoMethod2 {
             return ColorMap.JET.getColor(v);
         };
 
-        model.actions.add(new LevelEncoder<>(model));
+        model.actions.add(new LevelEncoder(model));
         //model.actions.add(new EncodeLabelText<>(model, Node::getLabel));
-        model.actions.add(new CreateAreas<>(model));
+        model.actions.add(new CreateAreas(model));
 
 
 
 
         //model.actions.add(new FillNode<>(model, colorMap2));
 
-        RenderBoundary<Node> renderBoundary = new RenderBoundary<>(model);
+        RenderBoundary renderBoundary = new RenderBoundary(model);
 
         model.actions.add(renderBoundary);
         //model.actions.add(new RenderOriginCentroid<>(model));
