@@ -1,6 +1,9 @@
-package mapvis.layouts.pea.method.method3;
+package mapvis.layouts;
 
 import mapvis.common.datatype.Node;
+import mapvis.layouts.epea.DriveAwayInsideVertices;
+import mapvis.layouts.epea.Estimator;
+import mapvis.layouts.epea.Manipulator;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
 import mapvis.layouts.pea.model.Vertex;
@@ -13,7 +16,7 @@ import java.util.*;
 
 import static mapvis.utils.PointExtension.*;
 
-public class Method3<T> {
+public class Epea<T> {
 
     public final Estimator estimator;
     public final Manipulator manipulator;
@@ -21,7 +24,7 @@ public class Method3<T> {
 
     DriveAwayInsideVertices driveAwayInsideVertices;
 
-    public Method3(MapModel model){
+    public Epea(MapModel model){
         this.model = model;
 
         driveAwayInsideVertices = new DriveAwayInsideVertices(this, 100);
@@ -42,7 +45,7 @@ public class Method3<T> {
     }
 
 
-    public static int[] movecount = new int[20000];
+    public static int[] movecount = new int[40000];
 
     public boolean IterateOnce() {
         boolean stable = true;

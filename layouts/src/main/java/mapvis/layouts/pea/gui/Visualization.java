@@ -4,18 +4,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.gui.NavigableImagePanel.ZoomDevice;
 import mapvis.utils.colormap.ColorBar;
 import mapvis.utils.colormap.ColorMap;
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
 public class Visualization implements ActionListener {
     public final JButton iterButton;
@@ -27,9 +31,11 @@ public class Visualization implements ActionListener {
 
     public int refreshThreshold = 1000;
 
+    public Drawer drawer;
 
     public Visualization(BufferedImage image, MapModel model)
     {
+        drawer = new Drawer(model);
 
         this.timer = new Timer(refreshThreshold, this);
         this.image = image;
@@ -113,7 +119,6 @@ public class Visualization implements ActionListener {
         g.setBackground(backgroundColor);
         g.clearRect(0,0, image.getWidth(), image.getHeight());
 
-        Drawer drawer = new Drawer(model);
         drawer.draw(g);
     }
 
@@ -130,27 +135,29 @@ public class Visualization implements ActionListener {
             e.printStackTrace();
         }
 
-        String extension = ".png"; // the default is current
+        export();
+    }
 
-        // create the file object
-        File file = new File(filename);
-        File fileLoc = file.getParentFile();
 
-        // canWrite is true only when the file exists already! (alexr)
-        if (!fileLoc.canWrite()) {
-            // System.err.println("can't write the file but trying anyway? ...");
-            throw new IOException(filename +
-              " could not be opened. Check to see if you can write to the directory.");
-        }
+    public void export() throws IOException {
+        // Get a DOMImplementation
+        DOMImplementation domImpl =
+                GenericDOMImplementation.getDOMImplementation();
 
-        // get the extension
-        int posDot = filename.indexOf('.');
-        if (posDot >= 0)
-            extension = filename.substring(posDot + 1);
+        Document document = domImpl.createDocument(null, "svg", null);
 
-        // write the contents of the buffered image to the file as jpeg
-        ImageIO.write(image, extension, file);
+        SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
 
+        drawer.draw(svgGenerator);
+
+        boolean useCSS = true;
+
+        File file = File.createTempFile("vis", ".svg");
+        FileOutputStream os = new FileOutputStream(file);
+        Writer out = new OutputStreamWriter(os, "UTF-8");
+        svgGenerator.stream(out, useCSS);
+
+        Desktop.getDesktop().browse(file.toURI());
     }
 
 }

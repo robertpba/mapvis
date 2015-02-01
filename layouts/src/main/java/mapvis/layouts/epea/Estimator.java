@@ -1,4 +1,4 @@
-package mapvis.layouts.pea.method.method3;
+package mapvis.layouts.epea;
 
 import mapvis.layouts.pea.model.*;
 

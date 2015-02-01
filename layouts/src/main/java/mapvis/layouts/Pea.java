@@ -1,4 +1,4 @@
-package mapvis.layouts.pea.method.method2;
+package mapvis.layouts;
 
 import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static mapvis.utils.PointExtension.*;
 
-public class Method2 {
+public class Pea {
     public MapModel model;
     public Map<Point2D, ArrayList<Vertex>> joints = new HashMap<>();
     private List<PolygonDescriptor> descriptors;
@@ -37,7 +37,7 @@ public class Method2 {
 
 
 
-    public Method2(MapModel model){
+    public Pea(MapModel model){
         this.model = model;
 
         descriptors = new ArrayList<>();
