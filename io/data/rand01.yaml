@@ -1,0 +1,553 @@
+# level_max: 2
+# level_min: 2
+# levels:
+# - weight_max: 100.0
+#   weight_min: 10.0
+#   width_max: 5
+#   width_min: 5
+# - weight_max: 100.0
+#   weight_min: 10.0
+#   width_max: 20
+#   width_min: 10
+# root_label: root
+# seed: 0
+# ====
+children:
+- children:
+  - children: []
+    data:
+      size: 31.648277410433728
+      color: -6388765
+      level: 2
+    id: '2'
+    label: '#2'
+  - children: []
+    data:
+      size: 67.36756828150973
+      color: -6388765
+      level: 2
+    id: '3'
+    label: '#3'
+  - children: []
+    data:
+      size: 59.53933046058705
+      color: -6388765
+      level: 2
+    id: '4'
+    label: '#4'
+  - children: []
+    data:
+      size: 63.77907500174816
+      color: -6388765
+      level: 2
+    id: '5'
+    label: '#5'
+  - children: []
+    data:
+      size: 39.98965595289848
+      color: -6388765
+      level: 2
+    id: '6'
+    label: '#6'
+  - children: []
+    data:
+      size: 44.667026626664665
+      color: -6388765
+      level: 2
+    id: '7'
+    label: '#7'
+  - children: []
+    data:
+      size: 98.63573861798281
+      color: -6388765
+      level: 2
+    id: '8'
+    label: '#8'
+  - children: []
+    data:
+      size: 89.12642660852322
+      color: -6388765
+      level: 2
+    id: '9'
+    label: '#9'
+  - children: []
+    data:
+      size: 94.7124261533903
+      color: -6388765
+      level: 2
+    id: '10'
+    label: '#10'
+  - children: []
+    data:
+      size: 34.74585694319363
+      color: -6388765
+      level: 2
+    id: '11'
+    label: '#11'
+  - children: []
+    data:
+      size: 21.600743578639907
+      color: -6388765
+      level: 2
+    id: '12'
+    label: '#12'
+  - children: []
+    data:
+      size: 23.194149188186643
+      color: -6388765
+      level: 2
+    id: '13'
+    label: '#13'
+  - children: []
+    data:
+      size: 12.09143102355005
+      color: -6388765
+      level: 2
+    id: '14'
+    label: '#14'
+  - children: []
+    data:
+      size: 59.206578147861904
+      color: -6388765
+      level: 2
+    id: '15'
+    label: '#15'
+  - children: []
+    data:
+      size: 96.8038174609165
+      color: -6388765
+      level: 2
+    id: '16'
+    label: '#16'
+  - children: []
+    data:
+      size: 19.40416176258745
+      color: -6388765
+      level: 2
+    id: '17'
+    label: '#17'
+  data:
+    size: 856.5122632186743
+    color: -6388765
+    level: 1
+  id: '1'
+  label: '#1'
+- children:
+  - children: []
+    data:
+      size: 35.73143075364318
+      color: -499981
+      level: 2
+    id: '19'
+    label: '#19'
+  - children: []
+    data:
+      size: 11.343437729300641
+      color: -499981
+      level: 2
+    id: '20'
+    label: '#20'
+  - children: []
+    data:
+      size: 97.9028062397994
+      color: -499981
+      level: 2
+    id: '21'
+    label: '#21'
+  - children: []
+    data:
+      size: 71.94110637681119
+      color: -499981
+      level: 2
+    id: '22'
+    label: '#22'
+  - children: []
+    data:
+      size: 88.09108014645763
+      color: -499981
+      level: 2
+    id: '23'
+    label: '#23'
+  - children: []
+    data:
+      size: 98.2850649354411
+      color: -499981
+      level: 2
+    id: '24'
+    label: '#24'
+  - children: []
+    data:
+      size: 61.30308767492677
+      color: -499981
+      level: 2
+    id: '25'
+    label: '#25'
+  - children: []
+    data:
+      size: 11.152598641814762
+      color: -499981
+      level: 2
+    id: '26'
+    label: '#26'
+  - children: []
+    data:
+      size: 47.09959696833713
+      color: -499981
+      level: 2
+    id: '27'
+    label: '#27'
+  - children: []
+    data:
+      size: 75.31973810404762
+      color: -499981
+      level: 2
+    id: '28'
+    label: '#28'
+  - children: []
+    data:
+      size: 98.62067285261429
+      color: -499981
+      level: 2
+    id: '29'
+    label: '#29'
+  data:
+    size: 696.7906204231936
+    color: -499981
+    level: 1
+  id: '18'
+  label: '#18'
+- children:
+  - children: []
+    data:
+      size: 17.47561584024234
+      color: -157
+      level: 2
+    id: '31'
+    label: '#31'
+  - children: []
+    data:
+      size: 98.07169061330562
+      color: -157
+      level: 2
+    id: '32'
+    label: '#32'
+  - children: []
+    data:
+      size: 75.01214072699638
+      color: -157
+      level: 2
+    id: '33'
+    label: '#33'
+  - children: []
+    data:
+      size: 74.3527912465427
+      color: -157
+      level: 2
+    id: '34'
+    label: '#34'
+  - children: []
+    data:
+      size: 22.88983467705371
+      color: -157
+      level: 2
+    id: '35'
+    label: '#35'
+  - children: []
+    data:
+      size: 51.66620365801806
+      color: -157
+      level: 2
+    id: '36'
+    label: '#36'
+  - children: []
+    data:
+      size: 10.403704196459667
+      color: -157
+      level: 2
+    id: '37'
+    label: '#37'
+  - children: []
+    data:
+      size: 16.43484833919047
+      color: -157
+      level: 2
+    id: '38'
+    label: '#38'
+  - children: []
+    data:
+      size: 41.357820681249805
+      color: -157
+      level: 2
+    id: '39'
+    label: '#39'
+  - children: []
+    data:
+      size: 40.48926881821782
+      color: -157
+      level: 2
+    id: '40'
+    label: '#40'
+  - children: []
+    data:
+      size: 87.34208962191832
+      color: -157
+      level: 2
+    id: '41'
+    label: '#41'
+  - children: []
+    data:
+      size: 97.43922899665415
+      color: -157
+      level: 2
+    id: '42'
+    label: '#42'
+  - children: []
+    data:
+      size: 87.91712921926344
+      color: -157
+      level: 2
+    id: '43'
+    label: '#43'
+  - children: []
+    data:
+      size: 65.13229942388813
+      color: -157
+      level: 2
+    id: '44'
+    label: '#44'
+  - children: []
+    data:
+      size: 26.10891860759355
+      color: -157
+      level: 2
+    id: '45'
+    label: '#45'
+  - children: []
+    data:
+      size: 29.58133709887174
+      color: -157
+      level: 2
+    id: '46'
+    label: '#46'
+  - children: []
+    data:
+      size: 86.90384503380616
+      color: -157
+      level: 2
+    id: '47'
+    label: '#47'
+  - children: []
+    data:
+      size: 10.87061475708769
+      color: -157
+      level: 2
+    id: '48'
+    label: '#48'
+  - children: []
+    data:
+      size: 72.306370625764
+      color: -157
+      level: 2
+    id: '49'
+    label: '#49'
+  - children: []
+    data:
+      size: 79.41816695536116
+      color: -157
+      level: 2
+    id: '50'
+    label: '#50'
+  data:
+    size: 1091.1739191374847
+    color: -157
+    level: 1
+  id: '30'
+  label: '#30'
+- children:
+  - children: []
+    data:
+      size: 72.09449483470894
+      color: -8788600
+      level: 2
+    id: '52'
+    label: '#52'
+  - children: []
+    data:
+      size: 14.334347553228193
+      color: -8788600
+      level: 2
+    id: '53'
+    label: '#53'
+  - children: []
+    data:
+      size: 45.56863419830786
+      color: -8788600
+      level: 2
+    id: '54'
+    label: '#54'
+  - children: []
+    data:
+      size: 79.12191169383036
+      color: -8788600
+      level: 2
+    id: '55'
+    label: '#55'
+  - children: []
+    data:
+      size: 65.6656987291324
+      color: -8788600
+      level: 2
+    id: '56'
+    label: '#56'
+  - children: []
+    data:
+      size: 65.04856730760886
+      color: -8788600
+      level: 2
+    id: '57'
+    label: '#57'
+  - children: []
+    data:
+      size: 12.214361738321482
+      color: -8788600
+      level: 2
+    id: '58'
+    label: '#58'
+  - children: []
+    data:
+      size: 93.69464560467715
+      color: -8788600
+      level: 2
+    id: '59'
+    label: '#59'
+  - children: []
+    data:
+      size: 38.466937236180854
+      color: -8788600
+      level: 2
+    id: '60'
+    label: '#60'
+  - children: []
+    data:
+      size: 53.09306763598678
+      color: -8788600
+      level: 2
+    id: '61'
+    label: '#61'
+  - children: []
+    data:
+      size: 22.937055775317585
+      color: -8788600
+      level: 2
+    id: '62'
+    label: '#62'
+  data:
+    size: 562.2397223073004
+    color: -8788600
+    level: 1
+  id: '51'
+  label: '#51'
+- children:
+  - children: []
+    data:
+      size: 75.1865530220982
+      color: -15295233
+      level: 2
+    id: '64'
+    label: '#64'
+  - children: []
+    data:
+      size: 70.96187451248869
+      color: -15295233
+      level: 2
+    id: '65'
+    label: '#65'
+  - children: []
+    data:
+      size: 82.39558755021721
+      color: -15295233
+      level: 2
+    id: '66'
+    label: '#66'
+  - children: []
+    data:
+      size: 49.72840963082126
+      color: -15295233
+      level: 2
+    id: '67'
+    label: '#67'
+  - children: []
+    data:
+      size: 51.587919125739504
+      color: -15295233
+      level: 2
+    id: '68'
+    label: '#68'
+  - children: []
+    data:
+      size: 86.75447199395147
+      color: -15295233
+      level: 2
+    id: '69'
+    label: '#69'
+  - children: []
+    data:
+      size: 55.16513651851616
+      color: -15295233
+      level: 2
+    id: '70'
+    label: '#70'
+  - children: []
+    data:
+      size: 99.27486823691952
+      color: -15295233
+      level: 2
+    id: '71'
+    label: '#71'
+  - children: []
+    data:
+      size: 97.23429189463745
+      color: -15295233
+      level: 2
+    id: '72'
+    label: '#72'
+  - children: []
+    data:
+      size: 41.77954649612063
+      color: -15295233
+      level: 2
+    id: '73'
+    label: '#73'
+  - children: []
+    data:
+      size: 14.253928227651647
+      color: -15295233
+      level: 2
+    id: '74'
+    label: '#74'
+  - children: []
+    data:
+      size: 16.446126107602055
+      color: -15295233
+      level: 2
+    id: '75'
+    label: '#75'
+  - children: []
+    data:
+      size: 12.619676144947222
+      color: -15295233
+      level: 2
+    id: '76'
+    label: '#76'
+  data:
+    size: 753.3883894617109
+    color: -15295233
+    level: 1
+  id: '63'
+  label: '#63'
+data:
+  size: 3960.104914548364
+  color: -15295233
+  level: 0
+id: '0'
+label: root

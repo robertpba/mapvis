@@ -19,6 +19,6 @@ public class YamlCfgReaderTest {
     @org.testng.annotations.Test
     public void testRead() throws Exception {
         YamlCfgReader reader = new YamlCfgReader();
-        Config config = reader.read("io/data/cfg.yaml");
+        Config config = reader.read("io/data/cfg01.yaml");
     }
 }

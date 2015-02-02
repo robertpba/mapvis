@@ -1,0 +1,13 @@
+level_max: 2
+level_min: 2
+levels:
+- weight_max: 100
+  weight_min: 10
+  width_max: 5
+  width_min: 5
+- weight_max: 100
+  weight_min: 10
+  width_max: 20
+  width_min: 10
+root_label: root
+seed: 2

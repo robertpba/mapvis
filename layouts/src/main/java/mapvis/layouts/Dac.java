@@ -13,7 +13,7 @@ public class Dac {
     static Entry<Node> createEntry(Node root){
         Entry<Node> entry = new Entry<>();
         entry.node = root;
-        entry.r =  Math.sqrt((int) root.getVal("size"))/2;
+        entry.r =  Math.sqrt((double) root.getVal("size"))/2;
 
         entry.children = root.getChildren().stream()
                 .map(Dac::createEntry)

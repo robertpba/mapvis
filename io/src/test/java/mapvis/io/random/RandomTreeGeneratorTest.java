@@ -1,6 +1,5 @@
 package mapvis.io.random;
 
-import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import org.testng.annotations.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -9,25 +8,17 @@ import java.util.ArrayList;
 
 public class RandomTreeGeneratorTest {
 
-    @Test
-    public void testGetTree() throws Exception {
-
-        Config config = getConfig();
-        System.out.print( new YamlCfgReader().dump(config));
-
-        RandomTreeGenerator generator = new RandomTreeGenerator();
-        MPTreeImp<Node> tree = generator.getTree(config);
-
-        System.out.println(tree);
-    }
 
     @Test
     public void testGetTree2() throws Exception {
 
-        Config config = getConfig();
+        //Config config = getConfig();
+        YamlCfgReader reader = new YamlCfgReader();
+        Config config = reader.read("io/data/cfg02.yaml");
+
         System.out.print( new YamlCfgReader().dump(config));
 
-        RandomTreeGenerator2 generator = new RandomTreeGenerator2();
+        RandomNodeGen generator = new RandomNodeGen();
         Node tree = generator.getTree(config);
 
 

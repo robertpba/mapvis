@@ -18,10 +18,12 @@ public class DacTest {
 
     public static void main(String[] args) throws IOException {
         Yaml yaml = new Yaml();
-        FileInputStream ins = new FileInputStream("io/data/rand1.yaml");
+        FileInputStream ins = new FileInputStream("io/data/rand02.yaml");
         Node node = yaml.loadAs(ins, Node.class);
 
         Dac.run(node, 2000);
+
+        System.out.println(yaml.dumpAsMap(node));
 
         //OvalPanelCanvas.start(node);
         PEAPreliminaryLayoutAlgorithmTest.OvalPanelCanvas.export(node);

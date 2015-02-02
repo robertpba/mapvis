@@ -13,7 +13,7 @@ import java.util.*;
 public class Drawer {
     private MapModel model;
 
-    public double[] thickness = new double[]{0.0, 15.0, 8.0, 5.0};
+    public double[] thickness = new double[]{0.0, 1.0, 0.5, 0.2};
 
     public Drawer(MapModel model){
         this.model = model;
@@ -76,7 +76,7 @@ public class Drawer {
     public void drawNode(Graphics2D g){
         entries.stream().filter(e->e.leaf)
                 .forEach(e->{
-                    g.setColor(Color.DARK_GRAY);
+                    g.setColor(new Color((int)e.node.getVal("color")));
                     g.fill(e.area);
                 });
     }

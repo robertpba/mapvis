@@ -35,7 +35,7 @@ public class PEAPreliminaryLayoutAlgorithmTest {
         void recPaintNode(Graphics2D g, Node node) {
             double x = (double) node.getVal("x");
             double y = (double) node.getVal("y");
-            double r = Math.sqrt((int)node.getVal("size"))/2;
+            double r = Math.sqrt((double)node.getVal("size"))/2;
 
             //System.out.printf("%f,%f,%i");
 

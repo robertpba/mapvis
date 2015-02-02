@@ -20,18 +20,18 @@ public class DemoMethod2 {
 
     public static void main (String[] args) throws IOException, InterruptedException {
         Yaml yaml = new Yaml();
-        String filename = "layouts/data/tree1.yaml";
+        String filename = "layouts/data/pea01.yaml";
         Node node = yaml.loadAs(
                 new FileInputStream(filename), Node.class);
 
         MapModel model = new MapModel(node, new MapModel.Initializer() {
             @Override
             public Point2D getPosition(Node n) {
-                return new Point2D.Double((double)n.getVal("x")/10, (double)n.getVal("y")/10);
+                return new Point2D.Double((double)n.getVal("x"), (double)n.getVal("y"));
             }
             @Override
             public double getMass(Node n) {
-                return (int)n.getVal("articles");
+                return (double)n.getVal("size");
             }
         });
 

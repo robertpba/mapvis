@@ -4,12 +4,12 @@ import mapvis.common.datatype.Node;
 
 import java.util.Random;
 
-public class RandomTreeGenerator2 {
+public class RandomNodeGen {
     Config config;
     private int nextid;
     private Random rn;
 
-    public RandomTreeGenerator2(){
+    public RandomNodeGen(){
         this.rn = new Random();
     }
 
@@ -32,7 +32,7 @@ public class RandomTreeGenerator2 {
         Node node = new Node(id, "#"+id);
         node.setVal("level", level);
 
-        int size = 0; // sum of sizes
+        double size = 0; // sum of sizes
 
         if (level >= config.level_max) {
             LevelCfg levelCfg = config.levels.get(level-1);
@@ -44,7 +44,7 @@ public class RandomTreeGenerator2 {
             while (n-- > 0) {
                 Node child = generateSubTree(level+1);
                 node.getChildren().add(child);
-                size += (int) child.getVal("size");
+                size += (double) child.getVal("size");
             }
         }
 
@@ -53,10 +53,10 @@ public class RandomTreeGenerator2 {
     }
 
     private int getRandomWidth(LevelCfg levelCfg) {
-        return levelCfg.width_min + rn.nextInt(levelCfg.width_max - levelCfg.width_min);
+        return levelCfg.width_min + rn.nextInt(levelCfg.width_max - levelCfg.width_min + 1);
     }
-    private int getRandomWeight(LevelCfg levelCfg) {
-        return levelCfg.weight_min + rn.nextInt(levelCfg.weight_max - levelCfg.weight_min);
+    private double getRandomWeight(LevelCfg levelCfg) {
+        return levelCfg.weight_min + rn.nextDouble()*(levelCfg.weight_max - levelCfg.weight_min);
     }
 
 

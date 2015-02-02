@@ -106,10 +106,10 @@ public class Epea<T> {
         return scores;
     }
 
-    public void growPolygons() {
+    public void growPolygons(int repeat) {
         model.listeners.remove(driveAwayInsideVertices);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < repeat; i++) {
             _growPolygons();
         }
         model.fireModelEvent(new CriticalPointArrived(model.iteration, "growing finished"));

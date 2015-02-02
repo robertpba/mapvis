@@ -56,8 +56,8 @@ public class DemoMethod3_5 {
         Node node = null;
         try {
             Yaml yaml = new Yaml();
-            node = yaml.loadAs(new FileInputStream("layouts/data/tree3.yaml"), Node.class);
-            refinePoints(node, 8, 0.81);
+            node = yaml.loadAs(new FileInputStream("layouts/data/epea02.yaml"), Node.class);
+            //refinePoints(node, 8, 0.81);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class DemoMethod3_5 {
 
             @Override
             public double getMass(Node node) {
-                return ((double)node.getVal("size")) * 1.4 * 0.81;
+                return ((double)node.getVal("size"));// * 1.4 * 0.81;
             }
         });
         Epea method = new Epea(model);
@@ -78,7 +78,7 @@ public class DemoMethod3_5 {
         CollectStatistics collectStatistics = new CollectStatistics(model, 100);
         model.listeners.add(collectStatistics);
 
-        BufferedImage image = new BufferedImage(8000, 8000, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
 
         Visualization visualization = new Visualization(image, model);
         visualization.backgroundColor = Color.decode("#aaffff");
@@ -88,7 +88,7 @@ public class DemoMethod3_5 {
 
         Date d1= new Date();
 
-        method.IterateUntilStable(100000);
+        method.IterateUntilStable(40000);
 
         Date d2= new Date();
 
@@ -101,7 +101,7 @@ public class DemoMethod3_5 {
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
-        method.growPolygons();
+        method.growPolygons(5);
 
         System.gc();
 
