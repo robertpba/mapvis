@@ -30,13 +30,13 @@ public class MPTreeImp<T> implements Tree2<T> {
 
     public MPTreeNode<T> root;
     // object to node mapping
-    private Map<T, MPTreeNode<T>> o2n = new HashMap<>();
+    private Map<T, MPTreeNode<T>> o2n = new LinkedHashMap<>();
 
     @Override
     public Set<T> getChildren(T obj){
         checkDirty();
         return o2n.get(obj).children.stream().map(n -> n.element)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
     @Override
     public T getParent(T node){
@@ -191,4 +191,21 @@ public class MPTreeImp<T> implements Tree2<T> {
         }
         return getLCA(n1.parent, n2);
     }
+
+
+    public static MPTreeImp<Node> from(Node root) {
+        MPTreeImp<Node> tree = new MPTreeImp<>();
+        tree.setRoot(root);
+        recAddChild(tree,root);
+        tree.getRoot();
+        return tree;
+    }
+
+    static void recAddChild(MPTreeImp<Node> tree, Node node){
+        for (Node child : node.getChildren()) {
+            tree.addChild(node, child, (int)(double)node.getVal("size"));
+            recAddChild(tree, child);
+        }
+    }
+
 }
