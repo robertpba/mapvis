@@ -63,8 +63,12 @@ public class MapModel {
     }
 
     public interface Initializer {
-        Point2D getPosition(Node v);
-        double getMass(Node v);
+        default Point2D getPosition(Node n) {
+            return new Point2D.Double((double)n.getVal("x"), (double)n.getVal("y"));
+        }
+        default double getMass(Node n) {
+            return (double)n.getVal("size");
+        }
     }
 
     public MapModel(Node root, Initializer initializer){
