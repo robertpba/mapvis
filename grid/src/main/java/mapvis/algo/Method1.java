@@ -23,6 +23,7 @@ public class Method1<T> {
     }
 
     public void Begin(){
+        random = new Random(1);
         recursive(tree.getRoot());
     }
 

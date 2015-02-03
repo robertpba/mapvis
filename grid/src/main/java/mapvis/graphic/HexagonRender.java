@@ -2,8 +2,8 @@ package mapvis.graphic;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.StrokeLineCap;
+import mapvis.common.datatype.Node;
 import mapvis.models.Dir;
-import utils.Node;
 
 class HexagonRender {
     HexagonalTilingView view;

@@ -8,8 +8,13 @@ dependencies {
     testCompile 'org.testng:testng:6.8.8'
 
     compile 'net.sf.supercsv:super-csv:2.2.0'
+    compile 'org.yaml:snakeyaml:1.14'
 
     compile project(":grid")
     compile project(":common")
+
+    compile 'org.apache.xmlgraphics:batik-svggen:1.7'
+    compile 'org.apache.xmlgraphics:batik-dom:1.7'
+    compile 'org.apache.xmlgraphics:batik-swing:1.7'
 
 }

@@ -10,11 +10,11 @@ import javafx.scene.control.TreeTableView;
 import mapvis.Impl.HashMapGrid;
 import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
+import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;
 import mapvis.common.datatype.MPTreeImp;
-import utils.Node;
 
 import java.net.URL;
 import java.util.ResourceBundle;

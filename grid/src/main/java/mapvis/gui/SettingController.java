@@ -7,20 +7,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Tree2;
-
-import mapvis.algo.Method1;
-import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
+import mapvis.algo.Method1;
+import mapvis.common.datatype.MPTreeImp;
+import mapvis.common.datatype.Node;
+import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.TreeImp;
 import mapvis.graphic.HexagonalTilingView;
-import utils.Node;
+import mapvis.models.Grid;
+import org.yaml.snakeyaml.Yaml;
 import utils.RandomTreeGenerator;
-import utils.TreeLoader2;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public class SettingController implements Initializable {
     @FXML
@@ -104,10 +106,18 @@ public class SettingController implements Initializable {
         //TreeLoader loader = new TreeLoader();
         //loader.load("data/simple.txt");
 
-        TreeLoader2 loader = new TreeLoader2();
-        loader.load("data/university_data_tree.csv");
-        Tree2<Node> treemodel = loader.convertToTreeModel();
+//        TreeLoader2 loader = new TreeLoader2();
+//        loader.load("data/university_data_tree.csv");
+//        Tree2<Node> treemodel = loader.convertToTreeModel();
+
+        Yaml yaml = new Yaml();
+        FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
+        Node node = yaml.loadAs(fileInputStream, Node.class);
+
+        MPTreeImp<Node> treemodel = MPTreeImp.from(node);
+
         tree.set(treemodel);
+
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 

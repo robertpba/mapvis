@@ -1,8 +1,8 @@
 package mapvis.gui;
 
 import javafx.scene.control.TreeItem;
+import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
-import utils.Node;
 
 public class TreeTableViewModelAdapter {
     Tree2<Node> tree;
@@ -11,16 +11,16 @@ public class TreeTableViewModelAdapter {
         this.tree = tree;
     }
 
-    public TreeItem<utils.Node> getRoot(){
+    public TreeItem<Node> getRoot(){
 
-        TreeItem<utils.Node> root = translateTree(tree.getRoot());
+        TreeItem<Node> root = translateTree(tree.getRoot());
         return root;
     }
 
-    private TreeItem<utils.Node> translateTree(utils.Node p){
-        TreeItem<utils.Node> item = new TreeItem<>(p);
+    private TreeItem<Node> translateTree(Node p){
+        TreeItem<Node> item = new TreeItem<>(p);
 
-        for (utils.Node child : tree.getChildren(p)) {
+        for (Node child : tree.getChildren(p)) {
             item.getChildren().add(translateTree(child));
         }
         return item;

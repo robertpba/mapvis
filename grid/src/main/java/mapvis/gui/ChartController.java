@@ -12,10 +12,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
+import mapvis.Drawer;
+import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.models.Grid;
 import mapvis.graphic.HexagonalTilingView;
-import utils.Node;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,9 +65,9 @@ public class ChartController implements Initializable  {
                 return;
 
             StringBuilder sb = new StringBuilder();
-            tree.get().getPathToNode(node).forEach(i-> sb.append(">").append(i.name));
+            tree.get().getPathToNode(node).forEach(i-> sb.append(">").append(i.getLabel()));
 
-            System.out.printf("%s node:%s, weight:%d %s\n", point, node.name, tree.get().getWeight(node), sb.toString());
+            System.out.printf("%s node:%s, weight:%d %s\n", point, node.getLabel(), tree.get().getWeight(node), sb.toString());
         });
 
         grid.addListener(e->{
@@ -83,11 +84,13 @@ public class ChartController implements Initializable  {
     @FXML
     public void save(ActionEvent event) throws IOException {
 
-        long startTime = System.currentTimeMillis();
-        chart.save("CanvasImage.png");
-        long estimatedTime = System.currentTimeMillis() - startTime;
-        System.out.printf("sav: %d",estimatedTime);
+//        long startTime = System.currentTimeMillis();
+//        chart.save("CanvasImage.png");
+//        long estimatedTime = System.currentTimeMillis() - startTime;
+//        System.out.printf("sav: %d",estimatedTime);
 
+        Drawer drawer = new Drawer(grid.get(), tree.get());
+        drawer.export();
 
 
     }

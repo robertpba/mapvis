@@ -5,7 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.Canvas;
+ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -15,11 +15,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
+import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
-import utils.Node;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -160,7 +160,7 @@ public class HexagonalTilingView extends Pane {
                 continue;
 
             g.setFill(Color.BLACK);
-            g.fillText(node.getName(), point2D.getX(), point2D.getY());
+            g.fillText(node.getLabel(), point2D.getX(), point2D.getY());
         }
     }
 
