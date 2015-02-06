@@ -12,4 +12,6 @@ dependencies {
     compile project(":common")
     compile project(":layouts")
     compile project(":io")
+    compile project(":grid")
+
 }

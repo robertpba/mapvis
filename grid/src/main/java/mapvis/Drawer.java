@@ -119,8 +119,10 @@ public class Drawer {
 
     private void drawBorder(Graphics2D g, int level, Shape line) {
         if (level > 0){
-            double width = (SideLength*0.8 - level*0.2)*(SideLength*0.8 - level*0.2)/2;;
-            g.setColor(Color.BLACK);
+            double alpha = 1.4;
+            double beta = alpha*0.25;
+            double width = (SideLength* alpha - level* beta)*(SideLength*alpha - level*beta)/2;;
+            g.setColor(new Color(0xaa,0xaa,0xaa));
             g.setStroke(new BasicStroke((float)width,
                     BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
             g.draw(line);

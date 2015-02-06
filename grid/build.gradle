@@ -10,7 +10,6 @@ dependencies {
     compile 'net.sf.supercsv:super-csv:2.2.0'
     compile 'org.yaml:snakeyaml:1.14'
 
-    compile project(":grid")
     compile project(":common")
 
     compile 'org.apache.xmlgraphics:batik-svggen:1.7'
