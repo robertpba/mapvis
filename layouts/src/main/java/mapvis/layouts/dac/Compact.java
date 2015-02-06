@@ -23,15 +23,21 @@ public class Compact {
             for (Entry<T> child : root.children) {
                 double dx = root.x-child.x;
                 double dy = root.y-child.y;
+                double length = length(dx, dy);
+                final double dX = dx/length;
+                final double dY = dy/length;
 
-                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-                    double length = length(dx, dy);
-                    final double dX = dx/length/100;
-                    final double dY = dy/length/100;
-
+                if (Math.abs(dx) > 1) {
                     if (!root.children.stream().anyMatch(e -> e != child
-                            && child.overlap(e, dX, dY))) {
-                        child.move(dX,dY);
+                            && child.overlap(e, dX, 0))) {
+                        child.move(dX,0);
+                        moving=true;
+                    }
+                }
+                if (Math.abs(dy) > 1) {
+                    if (!root.children.stream().anyMatch(e -> e != child
+                            && child.overlap(e, 0, dY))) {
+                        child.move(0,dY);
                         moving=true;
                     }
                 }

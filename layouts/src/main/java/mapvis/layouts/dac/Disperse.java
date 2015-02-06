@@ -35,7 +35,7 @@ public class Disperse {
         Random rand = new Random();
         rand.setSeed(0);
         SpringLayout3<Entry<T>, Edge<Entry<T>>> alg =
-                new SpringLayout3<>(graph, e->100, rand);
+                new SpringLayout3<>(graph, e->500, rand);
         alg.setSize(new Dimension(1000,1000));
         for (int i = 0; i < steps; i++) {
             alg.step();

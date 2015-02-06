@@ -90,7 +90,7 @@ public class Drawer {
 
     private void drawPolygonBorder(Graphics2D g, Entry entry) {
         Color color;
-        color = Color.black;
+        color = new Color(0xaa,0xaa,0xaa);
         g.setColor(color);
         g.setStroke(new BasicStroke((float) thickness[entry.level],
                 BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

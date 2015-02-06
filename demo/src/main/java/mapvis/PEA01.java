@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class PEA {
+public class PEA01 {
 
     public static void run(String file) throws IOException {
         YamlCfgReader reader = new YamlCfgReader();
@@ -27,7 +27,7 @@ public class PEA {
         Node root = generator.getTree(config);
 
         // preliminary layout
-        Dac.run(root, 4000);
+        Dac.run(root, 10000);
         RectangleCanvas.export(root);
 
         MapModel model = new MapModel(root, new MapModel.Initializer() {
@@ -51,7 +51,7 @@ public class PEA {
 
     public static void main(String[] args) throws IOException {
         run("demo/data/pea_cfg_01.yaml");
-        run("demo/data/pea_cfg_02.yaml");
+        //run("demo/data/pea_cfg_02.yaml");
     }
 
 }

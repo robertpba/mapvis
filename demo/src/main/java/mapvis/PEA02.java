@@ -5,7 +5,6 @@ import mapvis.io.random.Config;
 import mapvis.io.random.RandomNodeGen;
 import mapvis.io.random.YamlCfgReader;
 import mapvis.layouts.Dac;
-import mapvis.layouts.Epea;
 import mapvis.layouts.Pea;
 import mapvis.layouts.pea.gui.Visualization;
 import mapvis.layouts.pea.model.MapModel;
@@ -15,17 +14,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class EPEA {
+public class PEA02 {
 
-    public static void enlarge(Node root, double scale){
-        root.setVal("size", (double)root.getVal("size")*scale);
-
-        root.getChildren().forEach(n->enlarge(n,scale));
-    }
-
-    public static void main(String[] args) throws IOException {
+    public static void run(String file) throws IOException {
         YamlCfgReader reader = new YamlCfgReader();
-        Config config = reader.read("demo/data/epea_cfg_01.yaml");
+        Config config = reader.read(file);
 
         System.out.print( new YamlCfgReader().dump(config));
 
@@ -36,11 +29,9 @@ public class EPEA {
         Dac.run(root, 10000);
         RectangleCanvas.export(root);
 
-        enlarge(root,1.3);
-
         MapModel model = new MapModel(root, new MapModel.Initializer() {
         });
-        Epea method = new Epea(model);
+        Pea method = new Pea(model);
 
         model.listeners.add(new CollectStatistics(model, 10));
 
@@ -55,6 +46,11 @@ public class EPEA {
 
         method.IterateUntilStable(10000);
 
-        method.growPolygons(5);
     }
+
+    public static void main(String[] args) throws IOException {
+        //run("demo/data/pea_cfg_01.yaml");
+        run("demo/data/pea_cfg_02.yaml");
+    }
+
 }
