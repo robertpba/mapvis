@@ -13,5 +13,6 @@ dependencies {
     compile project(":layouts")
     compile project(":io")
     compile project(":grid")
+    compile project(":patrick")
 
 }

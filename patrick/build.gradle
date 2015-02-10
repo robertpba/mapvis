@@ -12,6 +12,8 @@ dependencies {
     compile 'net.sf.jung:jung2:2.0.1'
     compile 'net.sf.jung:jung-graph-impl:2.0.1'
     compile 'org.prefuse:prefuse:beta-20071021'
+
+    compile project(":common")
 }
 
 test.scanForTestClasses = false
