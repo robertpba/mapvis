@@ -205,7 +205,11 @@ class SpringLayoutForCategory {
 	private void prepareSpringLengths() {
 		List<Category> children = cp.findChildren(mainNode);
 		double metric = children.size() + 1;
-		if (level < LayoutGraphic.layoutDepth - 1) {
+
+
+        if (level < 2 - 1) {
+
+            //if (level < LayoutGraphic.layoutDepth - 1) {
 			// The lowest level uses sub-category count as metric.
 			// Other levels use sub-category area size as metric.
 			double sum = 0;

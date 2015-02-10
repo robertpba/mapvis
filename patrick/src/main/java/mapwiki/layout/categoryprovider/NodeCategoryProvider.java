@@ -19,8 +19,10 @@ public class NodeCategoryProvider implements CategoryProvider {
 
     public NodeCategory add(Node root){
         NodeCategory cat = new NodeCategory();
+        cat.node = root;
         cat.setPageID(Integer.parseInt(root.getId()));
         cat.setPageTitle(root.getLabel());
+        cat.setArea((int)(double)cat.node.getVal("size"));
 
         cat.children = root.getChildren().stream()
                 .map(this::add)
@@ -28,9 +30,9 @@ public class NodeCategoryProvider implements CategoryProvider {
 
         cat.children.forEach(c -> {
             c.parent = cat;
-            nodes.add(c);
         });
 
+        nodes.add(cat);
         return cat;
     }
 

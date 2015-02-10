@@ -22,18 +22,18 @@ public final class LayoutGraphic {
 	// A random generator with a specified seed for use of all classes.
 	public static final Random rand = new Random(0x8d14c220);
 	
-	static String outputFile;
-	static int affectRange;
-	static int layoutDepth;
-	static double areaFrac;
-	static String exportFile;
-	static String propertyFile;
-	static String tmpDir;
-	static boolean debug;
-	static SpringLayoutForCategory.CenterNodeMode centeringMode = CenterNodeMode.LARGEST;
+	public static String outputFile;
+	public static int affectRange;
+	public static int layoutDepth;
+	public static double areaFrac;
+	public static String exportFile;
+	public static String propertyFile;
+	public static String tmpDir;
+	public static boolean debug;
+	public static SpringLayoutForCategory.CenterNodeMode centeringMode = CenterNodeMode.LARGEST;
 	
 	// Properties read from the file.
-	private static Properties props = new Properties();
+	public static Properties props = new Properties();
 	
 	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();
