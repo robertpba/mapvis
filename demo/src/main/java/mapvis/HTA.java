@@ -76,7 +76,7 @@ public class HTA {
 
             // Perform the real drawing.
             System.err.println("Drawing on the canvas...");
-            canvas.draw(drawer, g);
+            drawer.draw(canvas, g);
 
             long imageOutputStartTime = System.currentTimeMillis();
             System.err.println("Writing image...");

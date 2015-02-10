@@ -58,28 +58,20 @@ public final class BULayout {
 	
 	private void doOverlapRemoval(int level, final Category ci, List<Category> ciChildren) {
 		// Create a list with both parent and children.
-		ArrayList<Category> list = new ArrayList<Category>(ciChildren.size() + 1);
-		list.add(ci);
+		ArrayList<Category> list = new ArrayList<>(ciChildren.size() + 1);
 		list.addAll(ciChildren);
 		
 		// Run the overlap removal with our own rectangle converter.
 		//final double af = layoutcfg.areaFrac;
-        final double af = 0;
+        final double af = 0.85;
 
-        FTAOverlapRemoval<Category> or = new FTAOverlapRemoval<Category>(list, new RectConverter<Category> () {
-			@Override
-			public Rectangle convert(Category obj) {
-				Rectangle r;
-				if (!obj.equals(ci))
-					r = obj.drawingRect();
-				else 
-					r = new Rectangle(obj.getPivot().x, obj.getPivot().y,
-							obj.getSize().width, obj.getSize().height);
-				r.width = (int) Math.ceil(r.width * af);
-				r.height = (int) Math.ceil(r.height * af);
-				return r;
-			}
-		});
+        FTAOverlapRemoval<Category> or = new FTAOverlapRemoval<>(list, obj -> {
+            Rectangle r;
+            r = obj.drawingRect();
+            r.width = (int) Math.ceil(r.width * af);
+            r.height = (int) Math.ceil(r.height * af);
+            return r;
+        });
 		or.run();
 		
 		// Find the minimum X and Y values to adjust, so that nodes will not move out of screen.

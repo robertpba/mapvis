@@ -3,6 +3,7 @@ package mapwiki.layout;
 import mapwiki.common.PageDatabase;
 import mapwiki.common.PageEntry;
 import mapwiki.layout.categoryprovider.MemoryCategory;
+import mapwiki.layout.categoryprovider.NodeCategory;
 import mapwiki.layout.categoryprovider.NodeCategoryProvider;
 import mapwiki.layout.hexagon.Hexagon;
 import mapwiki.layout.hexagon.HexagonCanvas;
@@ -88,7 +89,8 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 	private void drawRectangleOutput() throws IOException {
 
 		// Draw the rectangle drawings.
-		Dimension rootSize = cp.findRoot().getBorder();
+        NodeCategory root = (NodeCategory)cp.findRoot();
+        Dimension rootSize = root.getBorder();
 		BufferedImage img = new BufferedImage(rootSize.width, rootSize.height,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = img.createGraphics();
@@ -99,12 +101,8 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 			
 			// Draw rectangles output.
 			System.err.println("Generating rectangle output...");
-			List<Category> list = cp.findChildren(cp.findRoot());
-			for (int i = 0; i < list.size(); i++) {
-				Category c = list.get(i);
-				Color colour = Color.decode(MapDrawer.CATEGORY_COLOURS[i % MapDrawer.CATEGORY_COLOURS.length]);
-				drawCatRect(c, g, colour, 1, new Point(0, 0));
-			}
+
+            drawCatRect(root, g, new Point(0,0));
 
             File file = File.createTempFile("pre", ".png");
 
@@ -118,7 +116,6 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 	
 	public void run() throws IOException, ClassNotFoundException {
 		bottomUpLayout();
-		drawRectangleOutput();
 
 		// Output graphics.
 		if (breakCount > 0)
@@ -160,13 +157,10 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 	
 	private List<Category> sortBySize(List<Category> list) {
 		ArrayList<Category> newList = new ArrayList<Category>(list);
-		Comparator<Category> comp = new Comparator<Category>() {
-			@Override
-			public int compare(Category c1, Category c2) {
-				int i1 = c1.getArea(), i2 = c2.getArea();
-				return i1 < i2 ? -1 : (i1 == i2 ? 0 : 1);
-			}
-		};
+		Comparator<Category> comp = (c1, c2) -> {
+            int i1 = c1.getArea(), i2 = c2.getArea();
+            return i1 < i2 ? -1 : (i1 == i2 ? 0 : 1);
+        };
 		Collections.sort(newList, comp);
 		return newList;
 	}
@@ -174,6 +168,12 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 	private void bottomUpLayout() {
 		layout = new BULayout(cp, layoutcfg);
 		layout.run();
+        try {
+            drawRectangleOutput();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         // Create hexagon canvas.
 		Dimension rootSize = cp.findRoot().getBorder();
@@ -201,12 +201,9 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 		Point pivot = c.getPivot();
 		int px = origin.x + drawRect.x + pivot.x + c.getSize().width / 2;
 		int py = origin.y + drawRect.y + pivot.y + c.getSize().height / 2;
-		int areaSize = assignHexagons(c, px, py);
 
-		// Increase the counter that counts nodes in each level.
-		if (level < layoutcfg.counters.length)
-			layoutcfg.counters[level]++;
-		
+        int areaSize = assignHexagons(c, px, py);
+
 		Point newPoint = new Point(origin.x + drawRect.x, origin.y + drawRect.y);
 		for (Category subCat: sortBySize(cp.findChildren(c)))
 			makeHexagons(subCat, level + 1, newPoint);
@@ -278,42 +275,30 @@ public class HexagonLayout2 implements BottomUpLayout.DrawDebugImageProvider {
 	public static double pointDistance(int x1, int y1, int x2, int y2) {
 		return Math.abs(Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
 	}
-	
-	private void drawCatRect(Category c, Graphics2D g, Color colour, int level, Point origin) {
-		if (c.getLocation() == null)
-			return;
-
-		Rectangle drawRect = c.drawingRect();
-
-        int depth = 2;
-
-		int a = (int)(255 * (1 - level * (1.0 / depth)));
-		g.setColor(new Color(colour.getRed(), colour.getGreen(), colour.getBlue(), a));
-		
-		int x = origin.x + drawRect.x;
-		int y = origin.y + drawRect.y;
-		g.drawRect(x, y, drawRect.width, drawRect.height);
-		if (level == 1)
-			g.drawString(c.getPageTitle(), x, y);
-		
-		Point pivot = c.getPivot();
-		if (pivot.x > 0 || pivot.y > 0) {
-			int px = origin.x + drawRect.x + pivot.x;
-			int py = origin.y + drawRect.y + pivot.y;
-			g.fillArc(px, py, c.getSize().width, c.getSize().height, 0, 360);
-		}
-
-        int px = origin.x + drawRect.x + pivot.x + c.getSize().width / 2;
-        int py = origin.y + drawRect.y + pivot.y + c.getSize().height / 2;
-        System.err.printf("%d\t%s\t%d\t%d\t%d\n",
-                c.getPageID(),c.getPageTitle(), level, px, py);
 
 
-        //System.err.printf("id\ttitle\tlevel\tx\ty\n")
+    public void drawCatRect(NodeCategory c, Graphics2D g, Point origin) {
+        if (c.getLocation() == null)
+            return;
+        Rectangle drawRect = c.drawingRect();
 
-		
-		for (Category subCat: cp.findChildren(c))
-			drawCatRect(subCat, g, colour, level + 1, new Point(x, y));
-	}
-	
+        g.setColor(new Color((int)c.node.getVal("color")));
+
+        int x = origin.x + drawRect.x;
+        int y = origin.y + drawRect.y;
+
+        g.drawRect(x, y, drawRect.width, drawRect.height);
+
+        Point pivot = c.getPivot();
+        if (pivot.x > 0 || pivot.y > 0) {
+            int px = origin.x + drawRect.x + pivot.x;
+            int py = origin.y + drawRect.y + pivot.y;
+            g.fillArc(px-1, py-1, 2, 2, 0, 360);
+        }
+
+        for (NodeCategory subCat: c.children)
+            drawCatRect(subCat, g,  new Point(x, y));
+
+    }
+
 }

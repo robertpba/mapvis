@@ -77,7 +77,7 @@ public class NodeCategoryProvider implements CategoryProvider {
 
     @Override
     public float getAltitude(Category c) {
-        return 0;
+        return 10;
     }
 
     @Override

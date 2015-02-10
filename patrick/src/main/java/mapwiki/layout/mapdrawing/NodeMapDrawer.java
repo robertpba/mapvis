@@ -178,15 +178,10 @@ public class NodeMapDrawer extends DefaultHexagonDrawer {
 	}
 
 	private boolean isWater(Hexagon h) {
-		return h.getAltitude() < minAltInColour;
+		return h.getAltitude() < 0;
 	}
 	
-	@Override
-	protected void beforeDrawLabel() {}
 
-	@Override
-	protected void internalDrawLabel() {}
-	
 	private void markCategoryBound(Category c, int x, int y) {
 		if (c == null) {
 			return;
@@ -212,11 +207,5 @@ public class NodeMapDrawer extends DefaultHexagonDrawer {
 		}
 	}
 
-	@Override
-	protected void drawLegend() {}
 
-	@Override
-	protected void drawComplete() {
-		super.drawComplete();
-	}
 }
