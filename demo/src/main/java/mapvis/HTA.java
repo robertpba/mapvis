@@ -32,7 +32,7 @@ public class HTA {
         LayoutGraphic.props.load(new FileInputStream("patrick/data/defaults.properties"));
 
         YamlCfgReader reader = new YamlCfgReader();
-        Config config = reader.read("demo/data/ehta_cfg_01.yaml");
+        Config config = reader.read("demo/data/hta_cfg_01.yaml");
 
         System.out.print( new YamlCfgReader().dump(config));
 
