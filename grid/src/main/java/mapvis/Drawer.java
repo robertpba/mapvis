@@ -208,7 +208,8 @@ public class Drawer {
         Writer out = new OutputStreamWriter(os, "UTF-8");
         svgGenerator.stream(out, useCSS);
 
-        Desktop.getDesktop().browse(file.toURI());
+        System.out.println(file.toURI());
+        //Desktop.getDesktop().browse(file.toURI());
     }
 
 

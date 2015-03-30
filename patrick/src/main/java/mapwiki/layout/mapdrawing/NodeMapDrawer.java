@@ -21,7 +21,6 @@ import java.util.Map;
 
 public class NodeMapDrawer extends DefaultHexagonDrawer {
 	Stroke[] borderStrokes;		// 1-based index array.
-	float minAltInColour = Float.MAX_VALUE;
 
 	private NodeCategoryProvider cp;
 	private Map<Category, CategoryBoundary> catBounds = new HashMap<Category, CategoryBoundary>();
@@ -31,13 +30,14 @@ public class NodeMapDrawer extends DefaultHexagonDrawer {
 
 		this.cp = cp;
 
-		// Read thickness values for category borders.
-		String[] tmpBorderSizes = LayoutGraphic.propertyAsString("BORDER_SIZES").split(",");
-		this.borderStrokes = new Stroke[tmpBorderSizes.length + 1];
-		for (int i = 0; i < tmpBorderSizes.length; i++)
-			this.borderStrokes[i + 1] = new BasicStroke(Float.parseFloat(tmpBorderSizes[i]));
-		tmpBorderSizes = null;
-	}
+        this.borderStrokes = new Stroke[]{
+                null,
+                new BasicStroke(2.0f),
+                new BasicStroke(0.5f),
+                new BasicStroke(0.25f)
+
+        };
+    }
 
 	@Override
 	protected void beforeDraw(int x, int y) {
@@ -77,7 +77,7 @@ public class NodeMapDrawer extends DefaultHexagonDrawer {
 		if (isWater(h) && landCount >= 6 || alienCount >= 5) {
 			h.resetCatInfo();
 			if (lastCat != null) {
-				float newAlt = Math.max(lastAlt, minAltInColour);
+				float newAlt = Math.max(lastAlt, 0);
 				h.assignCategory(lastCat, newAlt, 0.1, Hexagon.CATEGORY_ESSENTIAL);
 			}
 		}
@@ -108,7 +108,7 @@ public class NodeMapDrawer extends DefaultHexagonDrawer {
         if (h.isEmpty() || isWater(h) || !isBorderHexagon(h))
             return;
 
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(0xaaaaaa));
         drawBorder(h, HexDir.NORTH_EAST, pointsX[0], pointsY[0], pointsX[1], pointsY[1]);
         drawBorder(h, HexDir.SOUTH_EAST, pointsX[1], pointsY[1], pointsX[2], pointsY[2]);
         drawBorder(h, HexDir.SOUTH, pointsX[2], pointsY[2], pointsX[3], pointsY[3]);

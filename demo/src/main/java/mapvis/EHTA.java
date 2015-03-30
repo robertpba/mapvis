@@ -36,6 +36,7 @@ public class EHTA {
 
         HashMapGrid<Node> grid = new HashMapGrid<>();
         Method1<Node> method1 = new Method1<>(treemodel, grid);
+        method1.beta = 2;
 
         method1.Begin();
 
@@ -46,7 +47,7 @@ public class EHTA {
 
     public static void main(String[] args) throws IOException {
         //run("demo/data/pea_cfg_01.yaml");
-        run("demo/data/ehta_cfg_01.yaml");
+        run("demo/data/ehta_cfg_02.yaml");
     }
 
 }

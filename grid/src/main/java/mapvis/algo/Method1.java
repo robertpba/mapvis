@@ -15,6 +15,7 @@ public class Method1<T> {
     public CoastCache<T> cache;
     public Grid<T> grid;
     private Random random = new Random(1);
+    public double beta = 3;
 
     public Method1(Tree2<T> tree, Grid<T> grid) {
         this.tree = tree;
@@ -129,6 +130,6 @@ public class Method1<T> {
         Set<Tile<T>> neighbours = grid.getNeighbours(tile.getX(), tile.getY());
         long n = neighbours.stream().filter(t->t.getItem() != null)
                 .count();
-        return (int)Math.pow(3, n);
+        return (int)Math.pow(beta, n);
     }
 }
