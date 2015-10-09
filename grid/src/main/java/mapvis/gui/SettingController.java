@@ -13,18 +13,15 @@ import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.fileSystemTree.FileSystemNode;
-import mapvis.fileSystemTree.FileSystemTreeGenerator;
 import mapvis.fileSystemTree.TreeGenerator;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
 import org.yaml.snakeyaml.Yaml;
 import utils.RandomTreeGenerator;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.nio.file.FileSystem;
 import java.util.ResourceBundle;
 import java.util.Set;
 

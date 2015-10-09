@@ -1,9 +1,9 @@
 package mapvis.algo;
 
-import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
-import mapvis.models.Tile;
 import mapvis.common.datatype.MPTreeImp;
+import mapvis.models.Grid;
+import mapvis.models.Tile;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.collections.Sets;
@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static org.testng.Assert.*;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class CoastCacheTest {
     private MPTreeImp<Integer> tree;

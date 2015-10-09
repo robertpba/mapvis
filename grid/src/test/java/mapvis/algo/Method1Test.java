@@ -1,8 +1,8 @@
 package mapvis.algo;
 
-import mapvis.models.Grid;
 import mapvis.Impl.HashMapGrid;
 import mapvis.common.datatype.MPTreeImp;
+import mapvis.models.Grid;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

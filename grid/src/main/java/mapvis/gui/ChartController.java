@@ -15,8 +15,8 @@ import javafx.scene.text.Text;
 import mapvis.Drawer;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
-import mapvis.models.Grid;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.Grid;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +37,7 @@ public class ChartController implements Initializable  {
 
     @FXML
     public ChoiceBox<Integer> levelChoiceBox;
+
     @FXML
     public ColorPicker colorPicker;
 

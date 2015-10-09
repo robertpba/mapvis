@@ -5,8 +5,6 @@ import mapvis.common.datatype.Node;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * Created by dacc on 10/7/2015.

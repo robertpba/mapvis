@@ -1,8 +1,8 @@
 package mapvis.algo;
 
 import mapvis.common.datatype.Tree2;
-import mapvis.layouts.commons.RandomHelper;
 import mapvis.common.datatype.Tuple2;
+import mapvis.layouts.commons.RandomHelper;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;

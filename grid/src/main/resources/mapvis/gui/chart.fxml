@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.*?>
-<?import java.lang.*?>
-<?import mapvis.graphic.*?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import mapvis.graphic.HexagonalTilingView?>
-<?import javafx.collections.FXCollections?>
-
+<?import java.lang.*?>
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.ChartController">
     <bottom>
         <VBox BorderPane.alignment="CENTER">

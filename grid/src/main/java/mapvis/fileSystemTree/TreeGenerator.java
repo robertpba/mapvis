@@ -2,8 +2,6 @@ package mapvis.fileSystemTree;
 
 import mapvis.common.datatype.Node;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

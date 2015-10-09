@@ -7,8 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import static org.testng.Assert.*;
-
 public class PanZoomPanelTest  extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {

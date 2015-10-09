@@ -1,6 +1,7 @@
 package mapvis.layouts.commons;
 
 import mapvis.common.datatype.Tuple2;
+
 import java.util.Collection;
 import java.util.Random;
 
