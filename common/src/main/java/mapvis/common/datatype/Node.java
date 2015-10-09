@@ -2,6 +2,7 @@ package mapvis.common.datatype;
 
 import java.util.*;
 
+
 public class Node{
 
     String id = "";

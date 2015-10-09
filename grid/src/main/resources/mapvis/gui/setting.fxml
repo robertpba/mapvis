@@ -44,6 +44,7 @@
                 <Button mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
                 <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
             <Button mnemonicParsing="false" onAction="#loadFile" text="Load File" />
+            <Button mnemonicParsing="false" onAction="#loadLinuxKernel" text="LoadLinuxKernel" />
             </children>
         </HBox>
         <TextArea fx:id="infoArea" editable="false" />
