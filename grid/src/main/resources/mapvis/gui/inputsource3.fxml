@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.InputController">
+<VBox fx:id="vBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.InputController">
 
     <children>
         <GridPane alignment="CENTER_LEFT">
@@ -22,6 +23,6 @@
         </GridPane>
       <Pane fx:id="inputSourcePane" prefHeight="200.0" prefWidth="200.0" />
     </children>
-    <fx:include fx:id="setting" source="setting.fxml"/>
-    <fx:include fx:id="directory" source="directoryChooser.fxml"/>
+    <fx:include fx:id="directory" source="directoryChooser.fxml" />
+    <fx:include fx:id="setting" source="setting.fxml" />
 </VBox>

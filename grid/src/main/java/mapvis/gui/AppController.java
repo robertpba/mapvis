@@ -32,6 +32,11 @@ public class AppController implements Initializable {
     @FXML
     public ChartController chartController;
 
+    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<TileStyler<Node>> tileStyler = new SimpleObjectProperty<>();
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tree.bindBidirectional(settingController.tree);
@@ -84,11 +89,4 @@ public class AppController implements Initializable {
 
 
     }
-
-    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<TileStyler<Node>> tileStyler = new SimpleObjectProperty<>();
-
-
-
 }

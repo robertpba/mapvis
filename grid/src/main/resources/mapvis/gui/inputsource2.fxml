@@ -22,6 +22,12 @@
         </GridPane>
       <Pane fx:id="inputSourcePane" prefHeight="200.0" prefWidth="200.0" />
     </children>
-    <fx:include fx:id="setting" source="setting.fxml"/>
-    <fx:include fx:id="directory" source="directoryChooser.fxml"/>
+   <children>
+      <VBox fx:id="inputSourceContainer" prefHeight="200.0" prefWidth="100.0">
+         <children>
+             <fx:include fx:id="directory" source="directoryChooser.fxml" />
+             <fx:include fx:id="setting" source="setting.fxml" />
+         </children>
+      </VBox>
+   </children>
 </VBox>

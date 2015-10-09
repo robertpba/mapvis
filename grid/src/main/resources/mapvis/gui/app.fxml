@@ -33,9 +33,9 @@
     <center>
         <TabPane>
             <tabs>
-                <Tab closable="false" text="Config">
+                <Tab closable="false" text="InputSource">
                     <content>
-                        <fx:include fx:id="test" source="inputsource.fxml"/>
+                        <fx:include fx:id="test" source="inputsource3.fxml"/>
                     </content>
                 </Tab>
                 <Tab closable="false" text="Config">

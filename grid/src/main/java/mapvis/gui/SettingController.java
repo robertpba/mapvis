@@ -5,8 +5,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.MPTreeImp;
@@ -36,12 +38,17 @@ public class SettingController implements Initializable {
     public TextField seedField;
     @FXML
     public TextArea infoArea;
+    @FXML
+    public VBox vBox;
 
     public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
 
     public HexagonalTilingView chart;
+
+    @FXML
+    public Button generateTreeButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -141,6 +148,13 @@ public class SettingController implements Initializable {
 
         Set<Node> leaves = tree.get().getLeaves();
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
+    }
+
+    void setVisible(boolean isVisible){
+        vBox.setVisible(isVisible);
+        vBox.setManaged(isVisible);
+//        generateTreeButton.setVisible(isVisible);
+//        generateTreeButton.setManaged(isVisible);
 
     }
 

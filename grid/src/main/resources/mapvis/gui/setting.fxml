@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.SettingController">
+
+<VBox fx:id="vBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.SettingController">
     <children>
         <GridPane>
             <columnConstraints>
@@ -30,7 +32,7 @@
         </GridPane>
         <HBox>
             <children>
-                <Button mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
+                <Button fx:id="generateTreeButton" mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
                 <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
             <Button mnemonicParsing="false" onAction="#loadFile" text="Load File" />
             <Button mnemonicParsing="false" onAction="#loadLinuxKernel" text="LoadLinuxKernel" />
