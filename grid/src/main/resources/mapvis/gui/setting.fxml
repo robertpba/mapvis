@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.SettingController">
+<VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.SettingController">
     <children>
-        <GridPane>
+        <GridPane nodeOrientation="LEFT_TO_RIGHT">
             <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="239.0" minWidth="57.0" prefWidth="57.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="543.0" minWidth="361.0" prefWidth="543.0" />
