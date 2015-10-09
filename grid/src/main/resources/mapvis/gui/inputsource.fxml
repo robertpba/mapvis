@@ -6,16 +6,16 @@
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.InputController">
     <children>
-        <GridPane>
+        <GridPane alignment="CENTER_LEFT">
             <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="239.0" minWidth="57.0" prefWidth="57.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="543.0" minWidth="361.0" prefWidth="543.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="57.0" prefWidth="113.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="543.0" minWidth="361.0" prefWidth="487.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Input Type:" />
+                <Label prefHeight="11.0" prefWidth="96.0" text="Input Type:" />
             <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
             </children>
         </GridPane>
