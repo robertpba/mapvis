@@ -7,14 +7,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
+import jdk.internal.util.xml.impl.Input;
 import mapvis.Impl.HashMapGrid;
 import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
+import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;
-import mapvis.common.datatype.MPTreeImp;
 
 import java.net.URL;
 import java.util.ResourceBundle;

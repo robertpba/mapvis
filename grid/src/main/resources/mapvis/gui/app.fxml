@@ -35,6 +35,11 @@
             <tabs>
                 <Tab closable="false" text="Config">
                     <content>
+                        <fx:include fx:id="test" source="inputsource.fxml"/>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="Config">
+                    <content>
                         <fx:include fx:id="setting" source="setting.fxml"/>
                     </content>
                 </Tab>
