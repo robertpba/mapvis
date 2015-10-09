@@ -107,12 +107,9 @@ public class SettingController implements Initializable {
 
     @FXML
     public void loadLinuxKernel(ActionEvent event) throws FileNotFoundException {
-        //FileSystemTreeGenerator gen = new FileSystemTreeGenerator("D:\\downloads\\datasets\\linux-4.2.3");
+
         TreeGenerator gen = new TreeGenerator();
         Node node = gen.genTree(new FileSystemNode("D:\\downloads\\datasets\\linux-4.2.3"));
-
-        System.out.println("hello world!");
-//        Node node = gen.genTree();
 
         MPTreeImp<Node> treeModel = MPTreeImp.from(node);
 

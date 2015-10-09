@@ -18,16 +18,6 @@ public class FileSystemNode extends File implements ITreeNode {
         super(filePath);
     }
 
-    static Function<File, ITreeNode> externalToMyLocation
-            = new Function<File, ITreeNode>() {
-
-
-        @Override
-        public ITreeNode apply(File file) {
-            return new FileSystemNode(file.getPath());
-        }
-    };
-
     @Override
     public List<ITreeNode> getChildren() {
         List<ITreeNode> result = Arrays.asList(this.listFiles())

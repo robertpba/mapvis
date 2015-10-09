@@ -11,10 +11,4 @@ public interface ITreeNode {
 
     String getName();
 
-    //
-
-//    double getNodeSize();
-//    int getID();
-
-
 }
