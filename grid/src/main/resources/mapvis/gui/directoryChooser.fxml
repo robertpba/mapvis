@@ -4,11 +4,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" prefHeight="26.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DirectoryChooserController">
+<VBox fx:id="vBox" prefHeight="26.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DirectoryChooserController">
    <children>
-      <FlowPane prefHeight="71.0" prefWidth="600.0">
+      <FlowPane prefHeight="26.0" prefWidth="325.0">
          <children>
-            <TextField fx:id="selectedDirectoryTextfield" editable="false" prefHeight="25.0" prefWidth="236.0" promptText="select the directory to visualize" />
+            <TextField fx:id="selectedDirectoryTextfield" editable="false" prefHeight="25.0" prefWidth="223.0" promptText="select the directory to visualize" />
             <Button mnemonicParsing="false" onAction="#onSelectDirectory" text="Select Directory" />
          </children>
       </FlowPane>

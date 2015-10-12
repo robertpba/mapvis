@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.InputController">
+<VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" prefHeight="409.0" prefWidth="313.0" translateX="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.InputController">
 
     <children>
-        <GridPane alignment="CENTER_LEFT">
+        <GridPane alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="389.0">
             <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="57.0" prefWidth="113.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="543.0" minWidth="361.0" prefWidth="487.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="213.0" minWidth="26.0" prefWidth="166.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="543.0" minWidth="122.0" prefWidth="251.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label prefHeight="11.0" prefWidth="96.0" text="Input Type:" />
-            <ComboBox fx:id="inputSourceComboBox" onAction="#onSelectionChanged" prefWidth="150.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="inputSourceComboBox" onAction="#onSelectionChanged" prefHeight="25.0" prefWidth="224.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
             </children>
         </GridPane>
-      <Pane fx:id="inputSourcePane" prefHeight="200.0" prefWidth="200.0" />
+      <HBox prefHeight="25.0" prefWidth="296.0">
+         <children>
+            <Button fx:id="generateTreeButton" mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
+            <Button mnemonicParsing="false" onAction="#loadFile" text="Load File" />
+            <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
+         </children>
+      </HBox>
+      <VBox prefHeight="367.0" prefWidth="322.0">
+         <children>
+              <fx:include fx:id="setting" source="setting.fxml" />
+              <fx:include fx:id="directory" source="directoryChooser.fxml" />
+         </children>
+      </VBox>
+      <TextArea fx:id="infoArea" editable="false" prefHeight="211.0" prefWidth="313.0" />
     </children>
-    <fx:include fx:id="setting" source="setting.fxml"/>
-    <fx:include fx:id="directory" source="directoryChooser.fxml"/>
 </VBox>

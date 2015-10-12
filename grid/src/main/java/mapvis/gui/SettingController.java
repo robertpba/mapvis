@@ -1,7 +1,5 @@
 package mapvis.gui;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,11 +11,6 @@ import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.common.datatype.Tree2;
-import mapvis.fileSystemTree.FileSystemNode;
-import mapvis.fileSystemTree.TreeGenerator;
-import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.Grid;
 import org.yaml.snakeyaml.Yaml;
 import utils.RandomTreeGenerator;
 
@@ -27,52 +20,33 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-public class SettingController implements Initializable {
+public class SettingController implements Initializable, IDatasetGeneratorController {
     @FXML
-    public TextField weightField;
+    private TextField weightField;
     @FXML
-    public TextField depthField;
+    private TextField depthField;
     @FXML
-    public TextField spanField;
+    private TextField spanField;
     @FXML
-    public TextField seedField;
+    private TextField seedField;
     @FXML
-    public TextArea infoArea;
+    private TextArea infoArea;
     @FXML
-    public VBox vBox;
+    private VBox vBox;
+    @FXML
+    private Button generateTreeButton;
 
-    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
-
-    public HexagonalTilingView chart;
-
-    @FXML
-    public Button generateTreeButton;
+    private static final int DEFAULT_SEED = 1;
+    private static final int DEFAULT_WEIGHT = 100;
+    private static final int DEFAULT_DEPTH = 3;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        System.out.println("Init InputController");
     }
 
-
-    @FXML
-    public void begin(ActionEvent event) {
-
-        long startTime = System.currentTimeMillis();
-
-        method1.get().Begin();
-
-        long estimatedTime = System.currentTimeMillis() - startTime;
-        System.out.printf("mm: %d",estimatedTime);
-
-
-        chart.updateHexagons();
-    }
-
-    @FXML
-    public void generateTree(ActionEvent event) {
-        int span = 10, weight = 100, depth = 3, seed = 1;
+    public MPTreeImp<Node> generateTree(ActionEvent event) {
+        int seed = DEFAULT_SEED, span = DEFAULT_SEED, weight = DEFAULT_WEIGHT, depth = DEFAULT_DEPTH;
         try {
             span = Integer.parseInt(spanField.getText());
         }
@@ -90,72 +64,18 @@ public class SettingController implements Initializable {
         }
         catch (NumberFormatException ignored) {  }
 
-        RandomTreeGenerator gen = new RandomTreeGenerator(seed);
-        MPTreeImp<Node> genTree = gen.getTree(depth, span, weight);
-
-        long startTime = System.currentTimeMillis();
-        tree.set(genTree);
-        long estimatedTime = System.currentTimeMillis() - startTime;
-        System.out.printf("gen: %d",estimatedTime);
-
-
-
-
-        grid.set(new HashMapGrid<>());
-        method1.set(new Method1<>(tree.get(), grid.get()));
-
-        Set<Node> leaves = tree.get().getLeaves();
-        infoArea.setText(String.format("%d leaves\n", leaves.size()));
-
+        RandomTreeGenerator randomTreeGenerator = new RandomTreeGenerator(seed);
+        MPTreeImp<Node> genTree = randomTreeGenerator.getTree(depth, span, weight);
+        return genTree;
     }
 
-    @FXML
-    public void loadLinuxKernel(ActionEvent event) throws FileNotFoundException {
-
-        TreeGenerator gen = new TreeGenerator();
-        Node node = gen.genTree(new FileSystemNode("D:\\downloads\\datasets\\linux-4.2.3"));
-
-        MPTreeImp<Node> treeModel = MPTreeImp.from(node);
-
-        tree.set(treeModel);
-
-        grid.set(new HashMapGrid<>());
-        method1.set(new Method1<>(tree.get(), grid.get()));
-
-        Set<Node> leaves = tree.get().getLeaves();
-        infoArea.setText(String.format("%d leaves\n", leaves.size()));
-    }
-
-    @FXML
-    public void loadFile(ActionEvent event) throws FileNotFoundException {
-        //TreeLoader loader = new TreeLoader();
-        //loader.load("data/simple.txt");
-
-//        TreeLoader2 loader = new TreeLoader2();
-//        loader.load("data/university_data_tree.csv");
-//        Tree2<Node> treemodel = loader.convertToTreeModel();
-
-        Yaml yaml = new Yaml();
-        FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
-        Node node = yaml.loadAs(fileInputStream, Node.class);
-
-        MPTreeImp<Node> treemodel = MPTreeImp.from(node);
-
-        tree.set(treemodel);
-
-        grid.set(new HashMapGrid<>());
-        method1.set(new Method1<>(tree.get(), grid.get()));
-
-        Set<Node> leaves = tree.get().getLeaves();
-        infoArea.setText(String.format("%d leaves\n", leaves.size()));
-    }
-
-    void setVisible(boolean isVisible){
+    public void setVisible(boolean isVisible){
         vBox.setVisible(isVisible);
         vBox.setManaged(isVisible);
-//        generateTreeButton.setVisible(isVisible);
-//        generateTreeButton.setManaged(isVisible);
-
     }
 
+    @Override
+    public String toString() {
+        return "Random Tree Generator";
+    }
 }

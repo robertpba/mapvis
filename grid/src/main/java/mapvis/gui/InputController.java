@@ -30,11 +30,20 @@ import java.util.Set;
 
 public class InputController implements Initializable {
 
+    public TextArea infoArea;
+    public Button generateTreeButton;
+
+    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
+
+    public HexagonalTilingView chart;
+
     @FXML
     private VBox inputSourceContainer;
 
     @FXML
-    private ComboBox<String> inputSourceComboBox;
+    private ComboBox<IDatasetGeneratorController> inputSourceComboBox;
 
     @FXML
     private Pane inputSourcePane;
@@ -47,33 +56,75 @@ public class InputController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        inputSourceComboBox.getItems().addAll("Filesystem", "RandomGenerator");
-        inputSourceComboBox.getSelectionModel().select(0);
+        System.out.println("Init InputController");
+        inputSourceComboBox.getItems().addAll(directoryController, settingController);
+        inputSourceComboBox.getSelectionModel().select(directoryController);
     }
 
-    private void selectSettingsController(boolean isSettingsControllerSelected)
-    {
-        if(isSettingsControllerSelected){
-            settingController.setVisible(true);
-            directoryController.setVisible(false);
-        }else{
-            settingController.setVisible(false);
-            directoryController.setVisible(true);
-        }
-    }
-
-    public void onSelectionChanged(ActionEvent event) {
-        System.out.println("selection changed to " + inputSourceComboBox.getSelectionModel().getSelectedItem());
-        if(inputSourceComboBox.getSelectionModel().getSelectedItem().equals("Filesystem")){
-            selectSettingsController(false);
-        }else{
-            selectSettingsController(true);
-        }
+    private IDatasetGeneratorController getActiveDatasetGenerator() {
+        return inputSourceComboBox.getSelectionModel().getSelectedItem();
     }
 
     @FXML
-    public void begin(ActionEvent event) {
+    private void onSelectionChanged(ActionEvent event) {
+        IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+        inputSourceComboBox.getItems().stream().forEach(iDatasetGeneratorController ->{
+            if(activeDatasetGenerator.equals(iDatasetGeneratorController)){
+                iDatasetGeneratorController.setVisible(true);
+            }else{
+                iDatasetGeneratorController.setVisible(false);
+            }
+        });
+    }
 
+    @FXML
+    private void begin(ActionEvent event) {
+        long startTime = System.currentTimeMillis();
+
+        method1.get().Begin();
+
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.printf("mm: %d",estimatedTime);
+
+        chart.updateHexagons();
+    }
+
+    @FXML
+    private void generateTree(ActionEvent event) {
+        IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+        MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+
+        tree.set(generatedTree);
+
+        grid.set(new HashMapGrid<>());
+        method1.set(new Method1<>(tree.get(), grid.get()));
+
+        Set<Node> leaves = tree.get().getLeaves();
+        infoArea.setText(String.format("%d leaves\n", leaves.size()));
+    }
+
+    @FXML
+    private void loadFile(ActionEvent event) throws FileNotFoundException {
+        //TreeLoader loader = new TreeLoader();
+        //loader.load("data/simple.txt");
+
+//        TreeLoader2 loader = new TreeLoader2();
+//        loader.load("data/university_data_tree.csv");
+//        Tree2<Node> treemodel = loader.convertToTreeModel();
+
+        Yaml yaml = new Yaml();
+        FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
+        Node node = yaml.loadAs(fileInputStream, Node.class);
+
+        MPTreeImp<Node> treemodel = MPTreeImp.from(node);
+
+        tree.set(treemodel);
+
+        grid.set(new HashMapGrid<>());
+        method1.set(new Method1<>(tree.get(), grid.get()));
+
+        Set<Node> leaves = tree.get().getLeaves();
+        infoArea.setText(String.format("%d leaves\n", leaves.size()));
     }
 
 }

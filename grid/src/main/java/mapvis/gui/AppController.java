@@ -27,7 +27,10 @@ public class AppController implements Initializable {
     public TreeTableView<Node> treeTableView;
 
     @FXML
-    public SettingController settingController;
+    private InputController inputController;
+
+    @FXML
+    private SettingController settingController;
 
     @FXML
     public ChartController chartController;
@@ -39,8 +42,9 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tree.bindBidirectional(settingController.tree);
-        grid.bindBidirectional(settingController.grid);
+        System.out.println("Init AppController");
+        tree.bindBidirectional(inputController.tree);
+        grid.bindBidirectional(inputController.grid);
         tree.bindBidirectional(chartController.tree);
         grid.bindBidirectional(chartController.grid);
 
@@ -78,7 +82,7 @@ public class AppController implements Initializable {
 
         chartController.chart.stylerProperty().bind(db);
 
-        settingController.chart = chartController.chart;
+        inputController.chart = chartController.chart;
 
         tree.addListener((v, o, n)-> {
             TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree.get());
