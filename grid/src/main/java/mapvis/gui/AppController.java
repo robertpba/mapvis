@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
-import jdk.internal.util.xml.impl.Input;
 import mapvis.Impl.HashMapGrid;
 import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
@@ -27,10 +26,10 @@ public class AppController implements Initializable {
     public TreeTableView<Node> treeTableView;
 
     @FXML
-    private InputController inputController;
+    private DatesetSelectionController datesetSelectionController;
 
     @FXML
-    private SettingController settingController;
+    private RandomTreeSettingsController randomTreeSettingController;
 
     @FXML
     public ChartController chartController;
@@ -43,8 +42,8 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init AppController");
-        tree.bindBidirectional(inputController.tree);
-        grid.bindBidirectional(inputController.grid);
+        tree.bindBidirectional(datesetSelectionController.tree);
+        grid.bindBidirectional(datesetSelectionController.grid);
         tree.bindBidirectional(chartController.tree);
         grid.bindBidirectional(chartController.grid);
 
@@ -82,7 +81,7 @@ public class AppController implements Initializable {
 
         chartController.chart.stylerProperty().bind(db);
 
-        inputController.chart = chartController.chart;
+        datesetSelectionController.chart = chartController.chart;
 
         tree.addListener((v, o, n)-> {
             TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree.get());

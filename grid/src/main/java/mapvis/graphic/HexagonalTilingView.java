@@ -100,6 +100,7 @@ public class HexagonalTilingView extends Pane {
     public void updateHexagons(){
         if (getGrid() == null)
             return;
+
         //canvas = new Canvas(getWidth(),getHeight());
 
         GraphicsContext g = canvas.getGraphicsContext2D();
@@ -124,16 +125,20 @@ public class HexagonalTilingView extends Pane {
 
         List<Tile<Node>> tiles = new ArrayList<>();
 
-
+        int counterForEach = 0;
         grid.get().foreach(t -> {
+
+//            System.out.println("foreach 1: " );
             if (t.getX() > tl.getX()
                     && t.getX() < br.getX()
                     && t.getY() > tl.getY()
                     && t.getY() < br.getY())
                 updateHexagon(t.getX(), t.getY(), g);
-
+//            System.out.println("foreach 2: " );
             if (t.getItem() != null && t.getTag() == Tile.LAND)
                 tiles.add(t);
+//            System.out.println("foreach 3: "  );
+
         });
 
         Map<Node, Pos> posmap = mapLabelPos(tiles);

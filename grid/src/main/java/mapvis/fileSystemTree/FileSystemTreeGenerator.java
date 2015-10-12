@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Created by dacc on 10/7/2015.
  */
-public class FileSystemTreeGenerator {
+public class FilesystemTreeGenerator {
 
     final String directory;
 
-    public FileSystemTreeGenerator(String directory) {
+    public FilesystemTreeGenerator(String directory) {
         this.directory = directory;
     }
 

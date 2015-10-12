@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-public class SettingController implements Initializable, IDatasetGeneratorController {
+public class RandomTreeSettingsController implements Initializable, IDatasetGeneratorController {
     @FXML
     private TextField weightField;
     @FXML
@@ -42,7 +42,7 @@ public class SettingController implements Initializable, IDatasetGeneratorContro
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Init InputController");
+        System.out.println("Init DatesetSelectionController");
     }
 
     public MPTreeImp<Node> generateTree(ActionEvent event) {

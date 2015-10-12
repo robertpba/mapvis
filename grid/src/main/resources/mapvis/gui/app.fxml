@@ -35,7 +35,7 @@
             <tabs>
                 <Tab closable="false" text="InputSource">
                     <content>
-                        <fx:include fx:id="input" source="inputsource.fxml"/>
+                        <fx:include fx:id="datesetSelection" source="DatasetSelectionLayout.fxml"/>
                     </content>
                 </Tab>
                 <Tab closable="false" text="Canvas">

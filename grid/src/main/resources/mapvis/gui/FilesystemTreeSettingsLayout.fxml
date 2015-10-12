@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" prefHeight="26.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DirectoryChooserController">
+<VBox fx:id="vBox" prefHeight="26.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.FilesystemTreeSettingsController">
    <children>
       <FlowPane prefHeight="26.0" prefWidth="325.0">
          <children>

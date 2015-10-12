@@ -59,4 +59,5 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
     public Color getBackground() {
         return background;
     }
+
 }

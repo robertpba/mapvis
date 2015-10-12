@@ -63,4 +63,5 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
     public Color getBackground() {
         return background;
     }
+
 }

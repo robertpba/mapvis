@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" prefHeight="409.0" prefWidth="313.0" translateX="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.InputController">
+<VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" prefHeight="409.0" prefWidth="313.0" translateX="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DatesetSelectionController">
 
     <children>
         <GridPane alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="389.0">
@@ -31,8 +31,8 @@
       </HBox>
       <VBox prefHeight="367.0" prefWidth="322.0">
          <children>
-              <fx:include fx:id="setting" source="setting.fxml" />
-              <fx:include fx:id="directory" source="directoryChooser.fxml" />
+              <fx:include fx:id="randomTreeSettings" source="RandomTreeSettingsLayout.fxml" />
+              <fx:include fx:id="filsystemTreeSettings" source="FilesystemTreeSettingsLayout.fxml" />
          </children>
       </VBox>
       <TextArea fx:id="infoArea" editable="false" prefHeight="211.0" prefWidth="313.0" />

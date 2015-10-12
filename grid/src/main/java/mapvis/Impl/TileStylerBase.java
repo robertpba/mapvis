@@ -95,6 +95,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return Color.AQUAMARINE;
     }
 
+
     TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
         Tile<T> tile = grid.getTile(x, y);

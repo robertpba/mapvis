@@ -1,6 +1,7 @@
 package mapvis.graphic;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import mapvis.common.datatype.Node;
 import mapvis.models.Dir;
@@ -51,8 +52,25 @@ class HexagonRender {
 
         if (!styler.isVisible(x,y))
             return;
+        Color col = null;
+        try {
 
-        g.setFill(styler.getColor(x,y));
+            col = styler.getColor(x,y);
+            if(col == null){
+                return;
+                //System.out.println("col null");
+            }
+        }catch (NullPointerException ex){
+            System.out.println("nULL");
+        }
+
+        try {
+            g.setFill(col);
+        }catch (NullPointerException ex){
+            System.out.println("nULL");
+        }
+
+
         g.fillPolygon(this.x,this.y,this.x.length);
 
         g.setLineCap(StrokeLineCap.ROUND);

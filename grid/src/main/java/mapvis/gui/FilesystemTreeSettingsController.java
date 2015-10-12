@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.fileSystemTree.FileSystemNode;
+import mapvis.fileSystemTree.FilesystemNode;
 import mapvis.fileSystemTree.TreeGenerator;
 
 import java.io.File;
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 /**
  * Created by dacc on 10/9/2015.
  */
-public class DirectoryChooserController implements Initializable, IDatasetGeneratorController {
+public class FilesystemTreeSettingsController implements Initializable, IDatasetGeneratorController {
 
     @FXML
     private TextField selectedDirectoryTextfield;
@@ -27,15 +27,15 @@ public class DirectoryChooserController implements Initializable, IDatasetGenera
     private VBox vBox;
 
     private TreeGenerator treeGenerator;
-    private FileSystemNode fileSystemNode;
+    private FilesystemNode filesystemNode;
 
-    public DirectoryChooserController() {
+    public FilesystemTreeSettingsController() {
         this.treeGenerator = new TreeGenerator();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Init DirectoryChooserController");
+        System.out.println("Init FilesystemTreeSettingsController");
     }
 
     @FXML
@@ -45,7 +45,7 @@ public class DirectoryChooserController implements Initializable, IDatasetGenera
         File selectedFolder = directoryChooser.showDialog(vBox.getScene().getWindow());
         System.out.printf("Path:" + selectedFolder.getPath());
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
-        fileSystemNode = new FileSystemNode(selectedFolder.getPath());
+        filesystemNode = new FilesystemNode(selectedFolder.getPath());
     }
 
     public void setVisible(boolean isVisible){
@@ -56,10 +56,10 @@ public class DirectoryChooserController implements Initializable, IDatasetGenera
     @Override
     public MPTreeImp<Node> generateTree(ActionEvent event) {
 
-        if(fileSystemNode == null || !fileSystemNode.exists())
+        if(filesystemNode == null || !filesystemNode.exists())
             return MPTreeImp.from(new Node(Integer.toString(0), "root"));
 
-        Node generatedTree = treeGenerator.genTree(fileSystemNode);
+        Node generatedTree = treeGenerator.genTree(filesystemNode);
         MPTreeImp<Node> treeModel = MPTreeImp.from(generatedTree);
         return treeModel;
     }
