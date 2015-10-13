@@ -32,5 +32,7 @@ public interface Grid<T> {
     int getMaxY();
     int getMinY();
 
+    void resetGrid();
+
 
 }

@@ -78,12 +78,15 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private void generateTree(ActionEvent event) {
+        System.out.println("generate Tree");
+        
         IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
         MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
 
         tree.set(generatedTree);
 
-        grid.set(new HashMapGrid<>());
+        //grid.set(new HashMapGrid<>());
+        grid.get().resetGrid();
         method1.set(new Method1<>(tree.get(), grid.get()));
 
         Set<Node> leaves = tree.get().getLeaves();

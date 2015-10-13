@@ -21,6 +21,12 @@ public class HashMapGrid<T> implements Grid<T> {
     public int getMinY() {
         return minY;
     }
+
+    @Override
+    public void resetGrid() {
+        map.clear();
+    }
+
     @Override
     public int getMinX() {
         return minX;

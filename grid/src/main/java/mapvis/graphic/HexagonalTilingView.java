@@ -31,22 +31,13 @@ import java.util.*;
 
 public class HexagonalTilingView extends Pane {
 
-    public final HexagonRender render;
+    public HexagonRender render;
     Canvas canvas;
 
     public HexagonalTilingView(){
-
         super();
-        setPrefHeight(1000);
-        setPrefWidth(1000);
-        canvas = new Canvas();
-        canvas.widthProperty().bind(this.widthProperty());
-        canvas.heightProperty().bind(this.heightProperty());
 
-        render = new HexagonRender(this);
-
-        getChildren().addAll(canvas);
-
+        initHexagonTilingView();
 
         this.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::dragEntered);
         this.addEventHandler(MouseEvent.MOUSE_PRESSED, this::mousePressed);
@@ -57,10 +48,21 @@ public class HexagonalTilingView extends Pane {
         originY.addListener(this::onOriginYChange);
         zoom.addListener(this::onZoomChange);
         styler.addListener(this::onStylerChange);
+    }
+
+    private void initHexagonTilingView(){
+        setPrefHeight(1000);
+        setPrefWidth(1000);
+        canvas = new Canvas();
+        canvas.widthProperty().bind(this.widthProperty());
+        canvas.heightProperty().bind(this.heightProperty());
+
+        render = new HexagonRender(this);
+
+        getChildren().addAll(canvas);
 
         updateHexagons();
     }
-
 
     static final double COS30 = Math.cos(Math.toRadians(30));
     static final double SideLength = 10;
@@ -127,18 +129,13 @@ public class HexagonalTilingView extends Pane {
 
         int counterForEach = 0;
         grid.get().foreach(t -> {
-
-//            System.out.println("foreach 1: " );
             if (t.getX() > tl.getX()
                     && t.getX() < br.getX()
                     && t.getY() > tl.getY()
                     && t.getY() < br.getY())
                 updateHexagon(t.getX(), t.getY(), g);
-//            System.out.println("foreach 2: " );
             if (t.getItem() != null && t.getTag() == Tile.LAND)
                 tiles.add(t);
-//            System.out.println("foreach 3: "  );
-
         });
 
         Map<Node, Pos> posmap = mapLabelPos(tiles);
