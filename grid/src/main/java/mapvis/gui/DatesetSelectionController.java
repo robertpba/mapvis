@@ -90,7 +90,6 @@ public class DatesetSelectionController implements Initializable {
         tree.set(generatedTree);
 
         grid.set(new HashMapGrid<>());
-//        grid.get().resetGrid();
         method1.set(new Method1<>(tree.get(), grid.get()));
 
         Set<Node> leaves = tree.get().getLeaves();

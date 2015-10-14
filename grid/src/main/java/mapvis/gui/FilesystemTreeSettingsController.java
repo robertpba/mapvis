@@ -44,6 +44,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select the Directory to visualize");
         File selectedFolder = directoryChooser.showDialog(vBox.getScene().getWindow());
+        //Choosing directory was aborted?
         if(selectedFolder == null){
             return;
         }
@@ -70,6 +71,6 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
 
     @Override
     public String toString() {
-        return "Directory Random Generator";
+        return "Directory Tree Generator";
     }
 }

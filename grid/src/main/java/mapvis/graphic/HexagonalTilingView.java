@@ -110,19 +110,17 @@ public class HexagonalTilingView extends Pane {
         GraphicsContext g = canvas.getGraphicsContext2D();
 
         g.setFill(styler.get().getBackground());
-        g.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
+        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         //Rectangle2D rect = viewport.get();
 
         Bounds rect = getLayoutBounds();
-        double x0 = -originXProperty().get()/zoomProperty().get();
-        double y0 = -originYProperty().get()/zoomProperty().get();
-        double x1 = (getWidth()-originXProperty().get())/zoomProperty().get();
-        double y1 = (getHeight()-originYProperty().get())/zoomProperty().get();
+        double x0 = - originXProperty().get()/zoomProperty().get();
+        double y0 = - originYProperty().get()/zoomProperty().get();
+        double x1 = (getWidth() - originXProperty().get())/zoomProperty().get();
+        double y1 = (getHeight()- originYProperty().get())/zoomProperty().get();
 
         Point2D tl = planeToHexagonal(x0, y0);
         Point2D br = planeToHexagonal(x1, y1);
-        System.out.println("x0: " + x0 + " y0: " + y0 + " x1: " + " y1: " + y1);
-        System.out.println("tl: " + tl + " br: " + br);
         g.save();
 
         g.translate(originXProperty().get(), originYProperty().get());

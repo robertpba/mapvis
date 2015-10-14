@@ -77,8 +77,8 @@ public class ChartController implements Initializable  {
         grid.addListener(e->{
 //            chart.updateHexagons();
         });
-        levelChoiceBox.valueProperty().addListener(observable -> chart.updateHexagons());
-        colorPicker.valueProperty().addListener(observable -> chart.updateHexagons());
+        levelChoiceBox.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
+        colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 
     @FXML
