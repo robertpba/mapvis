@@ -52,7 +52,7 @@ public class AppController implements Initializable {
                 super.bind(chartController.levelChoiceBox.valueProperty(),
                         chartController.colorPicker.valueProperty(),
                         chartController.colorscheme,
-//                        tree,
+                        tree,
                         grid
                 );
             }

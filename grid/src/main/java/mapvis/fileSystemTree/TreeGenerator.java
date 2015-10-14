@@ -15,19 +15,26 @@ public class TreeGenerator {
         return id++;
     }
 
-    private Node genSubTree(ITreeNode iTreeNode) {
-        Node node = new Node(Integer.toString(getNewID()), iTreeNode.getName());
+    private int createChildrenForNode(final ITreeNode iTreeNode, Node node) {
+        int numOfChildren = 0;
         List<ITreeNode> children = iTreeNode.getChildren();
-
         for (ITreeNode child : children) {
-            ++id;
-            node.getChildren().add(genSubTree(child));
+            Node childNode = new Node(Integer.toString(getNewID()), child.getName());
+            numOfChildren++;
+            numOfChildren += createChildrenForNode(child, childNode);
+            node.getChildren().add(childNode);
         }
-        node.setVal("size", (double) children.size());
-        return node;
+
+        node.setVal("size", (double) numOfChildren);
+        return numOfChildren;
     }
 
+
+
     public Node genTree(ITreeNode root) {
-        return genSubTree(root);
+        Node rootNode = new Node(Integer.toString(getNewID()), root.getName());
+        int numOfChildren = createChildrenForNode(root, rootNode);
+        rootNode.setVal("size", (double) numOfChildren);
+        return rootNode;
     }
 }
