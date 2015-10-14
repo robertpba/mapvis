@@ -30,6 +30,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     private FilesystemNode filesystemNode;
 
     public FilesystemTreeSettingsController() {
+        System.out.println("Creating: " + this.getClass().getName());
         this.treeGenerator = new TreeGenerator();
     }
 
@@ -43,6 +44,9 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select the Directory to visualize");
         File selectedFolder = directoryChooser.showDialog(vBox.getScene().getWindow());
+        if(selectedFolder == null){
+            return;
+        }
         System.out.printf("Path:" + selectedFolder.getPath());
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
         filesystemNode = new FilesystemNode(selectedFolder.getPath());

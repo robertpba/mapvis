@@ -45,6 +45,9 @@ public class ChartController implements Initializable  {
     public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
 
+    public ChartController() {
+        System.out.println("Creating: " + this.getClass().getName());
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,7 +75,7 @@ public class ChartController implements Initializable  {
         });
 
         grid.addListener(e->{
-            chart.updateHexagons();
+//            chart.updateHexagons();
         });
     }
 

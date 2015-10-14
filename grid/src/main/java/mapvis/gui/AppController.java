@@ -52,10 +52,16 @@ public class AppController implements Initializable {
                 super.bind(chartController.levelChoiceBox.valueProperty(),
                         chartController.colorPicker.valueProperty(),
                         chartController.colorscheme,
-                        tree, grid);
+//                        tree,
+                        grid
+                );
             }
+
+            private RandomColorStyler randomStyler;
+            private RampColorStyler rampColorStyler;
             @Override
             protected Object computeValue() {
+                System.out.println("requesting styler");
                 if (tree.get() == null)
                     tree.set(new MPTreeImp<>());
                 if (grid.get() == null)
@@ -64,15 +70,32 @@ public class AppController implements Initializable {
                 String s = chartController.colorscheme.get();
                 if (s == null) s = "random";
 
-                if (s.equals("random"))
-                    return new RandomColorStyler<>(tree.get(), grid.get(),
-                        chartController.levelChoiceBox.valueProperty().get(),
-                        chartController.colorPicker.valueProperty().get(),
-                        1);
+                if (s.equals("random")){
+                    if(randomStyler == null){
+                        randomStyler = new RandomColorStyler<>(tree.get(), grid.get(),
+                                chartController.levelChoiceBox.valueProperty().get(),
+                                chartController.colorPicker.valueProperty().get(),
+                                1);
+                    }else{
+                        randomStyler.resetStyler(tree.get(), grid.get(),
+                                chartController.levelChoiceBox.valueProperty().get(),
+                                chartController.colorPicker.valueProperty().get(),
+                                1);
+                    }
+                    return randomStyler;
+                }
+
                 if (s.equals("ramp")){
-                    return new RampColorStyler<>(tree.get(), grid.get(),
-                            chartController.levelChoiceBox.valueProperty().get(),
-                            chartController.colorPicker.valueProperty().get());
+                    if(rampColorStyler == null){
+                        rampColorStyler = new RampColorStyler<>(tree.get(), grid.get(),
+                                chartController.levelChoiceBox.valueProperty().get(),
+                                chartController.colorPicker.valueProperty().get());
+                    }else{
+                        rampColorStyler.resetStyler(tree.get(), grid.get(),
+                                chartController.levelChoiceBox.valueProperty().get(),
+                                chartController.colorPicker.valueProperty().get());
+                    }
+                    return rampColorStyler;
                 }
                 throw new RuntimeException();
             }

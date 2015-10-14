@@ -17,11 +17,20 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
 
     public RandomColorStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int seed) {
         super(tree, grid);
+        initSyler(level, background, seed);
+        System.out.println("Creating: " + this.getClass().getName());
+    }
+
+    private void initSyler(int level, Color background, int seed){
         this.background = background;
         this.rand = new Random(seed);
         this.level = level;
-
         rec(tree.getRoot(), null);
+    }
+
+    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int seed){
+        super.resetStyler(tree, grid);
+        initSyler(level, background, seed);
     }
 
     void rec(T leaf, Color color){

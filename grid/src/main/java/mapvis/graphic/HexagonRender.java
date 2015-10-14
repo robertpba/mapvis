@@ -18,6 +18,7 @@ class HexagonRender {
 
     public HexagonRender(HexagonalTilingView view) {
         super();
+        System.out.println("Creating: " + this.getClass().getName());
         this.sideLength = view.SideLength;
         this.view = view;
 
@@ -53,22 +54,23 @@ class HexagonRender {
         if (!styler.isVisible(x,y))
             return;
         Color col = null;
-        try {
+//        try {
 
             col = styler.getColor(x,y);
-            if(col == null){
-                return;
-                //System.out.println("col null");
-            }
-        }catch (NullPointerException ex){
-            System.out.println("nULL");
-        }
+//            if(col == null){
+//                System.out.println("col null");
+//                return;
+//
+//            }
+//        }catch (NullPointerException ex){
+//            System.out.println("nULL");
+//        }
 
-        try {
+//        try {
             g.setFill(col);
-        }catch (NullPointerException ex){
-            System.out.println("nULL");
-        }
+//        }catch (NullPointerException ex){
+//            System.out.println("nULL");
+//        }
 
 
         g.fillPolygon(this.x,this.y,this.x.length);

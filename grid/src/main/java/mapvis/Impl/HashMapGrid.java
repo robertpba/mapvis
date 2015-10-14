@@ -10,6 +10,10 @@ import java.util.function.Consumer;
 
 public class HashMapGrid<T> implements Grid<T> {
 
+    public HashMapGrid() {
+        System.out.println("Creating: " + this.getClass().getName());
+    }
+
     Map<Pos, Tile<T>> map = new HashMap<>();
 
     int minX;

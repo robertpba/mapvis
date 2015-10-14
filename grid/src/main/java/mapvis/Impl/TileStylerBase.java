@@ -12,6 +12,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
     Grid<T>      grid;
 
     public TileStylerBase(Tree2<T> tree, Grid<T> grid) {
+        System.out.println("Creating: " + this.getClass().getName());
         this.tree = tree;
         this.grid = grid;
     }
@@ -32,6 +33,10 @@ public class TileStylerBase<T> implements TileStyler<T> {
         this.tree = tree;
     }
 
+    void resetStyler(Tree2<T> tree, Grid<T> grid){
+        this.tree = tree;
+        this.grid = grid;
+    }
 
     @Override
     public boolean isBorderVisible(int x, int y, Dir dir) {

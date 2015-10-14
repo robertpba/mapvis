@@ -40,6 +40,10 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
     private static final int DEFAULT_WEIGHT = 100;
     private static final int DEFAULT_DEPTH = 3;
 
+    public RandomTreeSettingsController() {
+        System.out.println("Creating: " + this.getClass().getName());
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatesetSelectionController");

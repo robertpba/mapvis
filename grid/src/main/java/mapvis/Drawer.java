@@ -22,6 +22,7 @@ public class Drawer {
     Tree2<Node> tree;
 
     public Drawer(Grid<Node> grid, Tree2<Node> tree) {
+        System.out.println("Creating: " + this.getClass().getName());
         this.grid = grid;
         this.tree = tree;
     }

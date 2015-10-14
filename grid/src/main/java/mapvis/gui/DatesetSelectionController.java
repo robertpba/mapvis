@@ -41,6 +41,10 @@ public class DatesetSelectionController implements Initializable {
     @FXML
     private FilesystemTreeSettingsController filsystemTreeSettingsController;
 
+    public DatesetSelectionController() {
+        System.out.println("Creating: " + this.getClass().getName());
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatesetSelectionController");
@@ -85,8 +89,8 @@ public class DatesetSelectionController implements Initializable {
 
         tree.set(generatedTree);
 
-        //grid.set(new HashMapGrid<>());
-        grid.get().resetGrid();
+        grid.set(new HashMapGrid<>());
+//        grid.get().resetGrid();
         method1.set(new Method1<>(tree.get(), grid.get()));
 
         Set<Node> leaves = tree.get().getLeaves();

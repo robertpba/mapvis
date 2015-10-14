@@ -36,6 +36,7 @@ public class HexagonalTilingView extends Pane {
 
     public HexagonalTilingView(){
         super();
+        System.out.println("Creating: " + this.getClass().getName());
 
         initHexagonTilingView();
 
@@ -100,6 +101,7 @@ public class HexagonalTilingView extends Pane {
     }
 
     public void updateHexagons(){
+        System.out.println("updateHexagons");
         if (getGrid() == null)
             return;
 
@@ -119,7 +121,8 @@ public class HexagonalTilingView extends Pane {
 
         Point2D tl = planeToHexagonal(x0, y0);
         Point2D br = planeToHexagonal(x1, y1);
-
+        System.out.println("x0: " + x0 + " y0: " + y0 + " x1: " + " y1: " + y1);
+        System.out.println("tl: " + tl + " br: " + br);
         g.save();
 
         g.translate(originXProperty().get(), originYProperty().get());

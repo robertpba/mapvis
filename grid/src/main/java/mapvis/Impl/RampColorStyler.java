@@ -15,10 +15,20 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
 
     public RampColorStyler(Tree2<T> tree, Grid<T> grid, int level, Color background) {
         super(tree, grid);
+        System.out.println("Creating: " + this.getClass().getName());
+        initSyler(level, background);
+    }
+
+    private void initSyler(int level, Color background) {
         this.background = background;
         this.level = level;
 
         rec(tree.getRoot(), null);
+    }
+
+    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background){
+        super.resetStyler(tree, grid);
+        initSyler(level, background);
     }
 
     void rec(T leaf, Color color){
