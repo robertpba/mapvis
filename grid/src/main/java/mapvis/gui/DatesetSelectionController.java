@@ -2,6 +2,8 @@ package mapvis.gui;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,12 +27,12 @@ public class DatesetSelectionController implements Initializable {
 
     public TextArea infoArea;
     public Button generateTreeButton;
+    public Button beginTreeButton;
+    public HexagonalTilingView chart;
 
     public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
-
-    public HexagonalTilingView chart;
 
     @FXML
     private ComboBox<IDatasetGeneratorController> inputSourceComboBox;
@@ -66,31 +68,167 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private void begin(ActionEvent event) {
-        long startTime = System.currentTimeMillis();
+        renderTreeService = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+//                        generateTreeButton.setDisable(true);
+//                        beginTreeButton.setDisable(true);
+//                        logToInfoArea("Rendering...");
+                        long startTime = System.currentTimeMillis();
 
-        method1.get().Begin();
+                        method1.get().Begin();
 
-        long estimatedTime = System.currentTimeMillis() - startTime;
-        System.out.printf("mm: %d",estimatedTime);
+                        long estimatedTime = System.currentTimeMillis() - startTime;
+                        System.out.printf("mm: %d",estimatedTime);
+//                        logToInfoArea("Begin finished");
+//                        chart.updateHexagons();
+                        System.out.printf("Rendering Finished!");
+//                        logToInfoArea("Rendering finished");
+//                        logToInfoArea("mm: " + estimatedTime);
+//                        generateTreeButton.setDisable(false);
+//                        beginTreeButton.setDisable(false);
+                        return null;
+                    }
+                };
+            }
+        };
+        renderTreeService.setOnSucceeded(event1 -> {
+            chart.updateHexagons();
+        });
+        renderTreeService.restart();
+//        Task task = new Task<Void>() {
+//            @Override
+//            protected Void call() throws Exception {
+//                generateTreeButton.setDisable(true);
+//                beginTreeButton.setDisable(true);
+//                logToInfoArea("Rendering...");
+//                long startTime = System.currentTimeMillis();
+//
+//                method1.get().Begin();
+//
+//                long estimatedTime = System.currentTimeMillis() - startTime;
+////            System.out.printf("mm: %d",estimatedTime);
+//                logToInfoArea("Begin finished");
+//                chart.updateHexagons();
+//
+//                logToInfoArea("Rendering finished");
+//                logToInfoArea("mm: " + estimatedTime);
+//                generateTreeButton.setDisable(false);
+//                beginTreeButton.setDisable(false);
+//                return null;
+//            }
+//        };
+//        new Thread(task).start();
+//        new Thread(() -> {
+//            logToInfoArea("Rendering...");
+//            long startTime = System.currentTimeMillis();
+//
+//            method1.get().Begin();
+//
+//            long estimatedTime = System.currentTimeMillis() - startTime;
+////            System.out.printf("mm: %d",estimatedTime);
+//            logToInfoArea("Begin finished");
+//            chart.updateHexagons();
+//
+//            logToInfoArea("Rendering finished");
+//            logToInfoArea("mm: " + estimatedTime);
+//
+//        }).run();
 
-        chart.updateHexagons();
     }
-
+    private Service<Void> generateTreeService;
+    private Service<Void> renderTreeService;
     @FXML
     private void generateTree(ActionEvent event) {
-        System.out.println("generate Tree");
-        
-        IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
-        MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+        generateTreeService = new Service<Void>() {
+            public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
 
-        tree.set(generatedTree);
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+//                        generateTreeButton.setDisable(true);
+//                        beginTreeButton.setDisable(true);
+                        IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+                        MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
 
-        //grid.set(new HashMapGrid<>());
-        grid.get().resetGrid();
-        method1.set(new Method1<>(tree.get(), grid.get()));
+                        tree.set(generatedTree);
+                        //        grid.set(new HashMapGrid<>());
+                        grid.get().resetGrid();
+                        method1.set(new Method1<>(tree.get(), grid.get()));
 
-        Set<Node> leaves = tree.get().getLeaves();
-        infoArea.setText(String.format("%d leaves\n", leaves.size()));
+                        Set<Node> leaves = tree.get().getLeaves();
+//                        logToInfoArea("Generation Finished");
+//                        logToInfoArea(String.format("%d leaves", leaves.size()));
+                        System.out.println("Generation Finished");
+                        System.out.println(String.format("%d leaves", leaves.size()));
+//                        generateTreeButton.setDisable(false);
+//                        beginTreeButton.setDisable(false);
+                        return null;
+                    }
+                };
+            }
+        };
+        generateTreeService.restart();
+//
+//        Task task = new Task<Void>() {
+//            public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
+//            public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+//            public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
+//            @Override
+//            protected Void call() throws Exception {
+////                generateTreeButton.setDisable(true);
+////                beginTreeButton.setDisable(true);
+////                logToInfoArea("Generating Tree...");
+//
+//                IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+//                MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+//
+//                tree.set(generatedTree);
+//
+////        grid.set(new HashMapGrid<>());
+//                grid.get().resetGrid();
+//                method1.set(new Method1<>(tree.get(), grid.get()));
+//
+//                Set<Node> leaves = tree.get().getLeaves();
+////                logToInfoArea("Generation Finished");
+////                logToInfoArea(String.format("%d leaves", leaves.size()));
+//                System.out.println("Generation Finished");
+//                System.out.println(String.format("%d leaves", leaves.size()));
+////                generateTreeButton.setDisable(false);
+////                beginTreeButton.setDisable(false);
+//                return null;
+//            }
+//        };
+
+//        new Thread(task).start();
+
+//        new Thread(() -> {
+//            logToInfoArea("Generating Tree...");
+//
+//            IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+//            MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+//
+//            tree.set(generatedTree);
+//
+////        grid.set(new HashMapGrid<>());
+//            grid.get().resetGrid();
+//            method1.set(new Method1<>(tree.get(), grid.get()));
+//
+//            Set<Node> leaves = tree.get().getLeaves();
+//            logToInfoArea("Generation Finished");
+//            logToInfoArea(String.format("%d leaves", leaves.size()));
+//
+//        }).run();
+
+    }
+    private void logToInfoArea(String logMessage)
+    {
+        infoArea.setText(infoArea.getText() + "\n" + logMessage );
     }
 
     @FXML

@@ -23,9 +23,9 @@ public class FilesystemNode extends File implements ITreeNode {
                 .map(file1 -> new FilesystemNode(file1.getPath()))
                 .collect(Collectors.<ITreeNode>toList());
         if(result.size() > 0){
-            System.out.print("Children: ");
-            result.stream().forEach(iTreeNode -> System.out.print(iTreeNode.getName() + ","));
-            System.out.println();
+//            System.out.print("Children: ");
+//            result.stream().forEach(iTreeNode -> System.out.print(iTreeNode.getName() + ","));
+//            System.out.println();
         }
 
         return result;

@@ -71,9 +71,9 @@ public class ChartController implements Initializable  {
             System.out.printf("%s node:%s, weight:%d %s\n", point, node.getLabel(), tree.get().getWeight(node), sb.toString());
         });
 
-        grid.addListener(e->{
-            chart.updateHexagons();
-        });
+//        grid.addListener(e->{
+//            chart.updateHexagons();
+//        });
     }
 
     @FXML

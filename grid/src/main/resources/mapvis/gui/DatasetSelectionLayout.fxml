@@ -26,7 +26,7 @@
          <children>
             <Button fx:id="generateTreeButton" mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
             <Button mnemonicParsing="false" onAction="#loadFile" text="Load File" />
-            <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
+            <Button fx:id="beginTreeButton" mnemonicParsing="false" onAction="#begin" text="Begin" />
          </children>
       </HBox>
       <VBox prefHeight="367.0" prefWidth="322.0">

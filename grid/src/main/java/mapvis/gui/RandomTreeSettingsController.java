@@ -39,6 +39,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
     private static final int DEFAULT_SEED = 1;
     private static final int DEFAULT_WEIGHT = 100;
     private static final int DEFAULT_DEPTH = 3;
+    private static final int DEFAULT_SPAN = 10;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +47,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
     }
 
     public MPTreeImp<Node> generateTree(ActionEvent event) {
-        int seed = DEFAULT_SEED, span = DEFAULT_SEED, weight = DEFAULT_WEIGHT, depth = DEFAULT_DEPTH;
+        int span = DEFAULT_SPAN, weight = DEFAULT_WEIGHT, depth = DEFAULT_DEPTH, seed = DEFAULT_SEED;
         try {
             span = Integer.parseInt(spanField.getText());
         }
