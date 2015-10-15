@@ -67,6 +67,7 @@ public class Method1<T> {
         int count = tree.getWeight(o);
 
         while (count-->0) {
+
             ArrayList<Tile<T>> prepare = new ArrayList<>();
             Pos pos = findStartPoint(o);
             Tile<T> tile = new Tile<>(pos, o);

@@ -8,16 +8,15 @@ import java.util.Random;
 public class RandomTreeGenerator {
 
     private int seed;
+    private static Random rn;
+    private int lastId = 0;
 
     public RandomTreeGenerator(int seed){
         this.seed = seed;
         rn = new Random(seed);
     }
 
-    static Random rn;
-    int lastId = 0;
-
-    void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
+   void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
         if (level > maxLevel)
             return ;
 

@@ -128,7 +128,6 @@ public class HexagonalTilingView extends Pane {
 
         List<Tile<Node>> tiles = new ArrayList<>();
 
-        int counterForEach = 0;
         grid.get().foreach(t -> {
             if (t.getX() > tl.getX()
                     && t.getX() < br.getX()
