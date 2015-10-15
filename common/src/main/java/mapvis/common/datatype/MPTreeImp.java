@@ -38,6 +38,7 @@ public class MPTreeImp<T> implements Tree2<T> {
         return o2n.get(obj).children.stream().map(n -> n.element)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
+
     @Override
     public T getParent(T node){
         checkDirty();
@@ -165,6 +166,7 @@ public class MPTreeImp<T> implements Tree2<T> {
             node.weight += child.weight;
             left = child.right + 1;
         }
+
         node.right = left;
     }
     //public  T root;
@@ -203,7 +205,7 @@ public class MPTreeImp<T> implements Tree2<T> {
 
     static void recAddChild(MPTreeImp<Node> tree, Node node){
         for (Node child : node.getChildren()) {
-            tree.addChild(node, child, (int)(double)node.getVal("size"));
+            tree.addChild(node, child, (int)(double)child.getVal("size"));
             recAddChild(tree, child);
         }
     }
