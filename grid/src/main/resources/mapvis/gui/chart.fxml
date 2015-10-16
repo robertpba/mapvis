@@ -40,6 +40,7 @@
                               <Integer fx:value="100" />
                            </value>
                               </ChoiceBox>
+                                <CheckBox fx:id="showLabelsCheckBox" mnemonicParsing="false" text="Show Labels"/>
                         <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
                            <toggleGroup>
                               <ToggleGroup fx:id="colorSchemeGroup" />
