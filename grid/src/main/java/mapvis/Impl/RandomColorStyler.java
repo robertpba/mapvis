@@ -61,7 +61,7 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
 
     @Override
     protected double getBorderWidthByLevel(int l) {
-        return (depth + 1 - l)*(depth + 1 - l)/2.0;
+        return  Math.pow(depth + 1 - l, 1.2)/2.0;
     }
 
     @Override
