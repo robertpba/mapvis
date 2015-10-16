@@ -1,14 +1,10 @@
 package mapvis.fileSystemTree;
 
-import javafx.util.Pair;
 import mapvis.common.datatype.Node;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by dacc on 10/14/2015.
@@ -20,37 +16,12 @@ public class FilesystemTreeGenerator {
         return id++;
     }
 
-//    private double createChildrenForNode(final File file, Node node) {
-//        double fileSize = 0;
-//        File[] children = file.listFiles();
-//        for (File child : children) {
-//            Node childNode = new Node(Integer.toString(getNewID()), child.getName());
-//            if(child.isDirectory()){
-//                fileSize += createChildrenForNode(child, childNode);
-//            }else{
-//                fileSize += getRoundedUpFileSizeInMB(child);
-//            }
-//            node.getChildren().add(childNode);
-//        }
-//
-//        node.setVal("size", fileSize);
-//        return numOfChildren;
-//    }
-//
-
-//
-//    public Node genTree(ITreeNode root) {
-//        Node rootNode = new Node(Integer.toString(getNewID()), root.getName());
-//        int numOfChildren = createChildrenForNode(root, rootNode);
-//        rootNode.setVal("size", (double) numOfChildren);
-//        return rootNode;
-//    }
-    private Node createSingleFromFile(File file){
+    private Node createSingleNodeFromFile(File file){
         Node node = new Node(Integer.toString(getNewID()), file.getName());
         return node;
     }
 
-    private double getRoundedFileSizeInMBMinOneMB(File file){
+    private double getRoundedFileSizeInKB(File file){
         double fileSize = Math.round(file.length() / (1024.0 ));
         //set min size to 1
         fileSize = Math.max(fileSize, 1.0);
@@ -58,27 +29,38 @@ public class FilesystemTreeGenerator {
     }
 
     private Node createNodeForFile(File file) {
-        Node node = createSingleFromFile(file);
-        double fileSize = 0;
-        if(file.isDirectory()){
-            for (File child : file.listFiles()) {
+        Node node = createSingleNodeFromFile(file);
+
+        double countDirectFilesInFolder = 0;
+        double countSubdirFilesInFolder = 0;
+
+        for (File child : file.listFiles()) {
+            // for directories the sum of the size of the subfolders is used
+            if(child.isDirectory()){
                 Node childNode = createNodeForFile(child);
                 node.getChildren().add(childNode);
-                fileSize += (double) childNode.getVal("size");
+                countSubdirFilesInFolder += (double) childNode.getVal("size");
+            // files are counted
+            }else if(child.isFile()){
+                countDirectFilesInFolder += 1.0;
             }
-        }else{
-            fileSize = getRoundedFileSizeInMBMinOneMB(file);
         }
-
-        node.setVal("size", fileSize);
-        System.out.println("Size of File " + node.getLabel() + " : " + fileSize + " MB");
+        // if there are files and subdirectories, create a node which holds all the files
+        // to make sure the current node has the size of all subnodes including the files
+        // directly in the folder
+        if(countDirectFilesInFolder > 0 && countSubdirFilesInFolder != 0){
+            Node dummyChildForDirectFilesInFolder = new Node(Integer.toString(getNewID()), "*");
+            dummyChildForDirectFilesInFolder.setSize(countDirectFilesInFolder);
+            node.getChildren().add(dummyChildForDirectFilesInFolder);
+        }
+        node.setVal("size", countDirectFilesInFolder + countSubdirFilesInFolder);
         return node;
     }
 
     public Node genTree(final File filePath) {
 
         if(!filePath.exists()){
-            return createSingleFromFile(filePath);
+            return createSingleNodeFromFile(filePath);
         }
 
         Node rootTreeNode = createNodeForFile(filePath);
