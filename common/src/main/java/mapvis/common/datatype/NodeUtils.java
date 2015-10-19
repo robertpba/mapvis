@@ -29,12 +29,15 @@ public class NodeUtils {
         public int numOfLeaves;
         public int sumOfDepthsOfLeaves;
         public String maxDepthPathName;
+        float averageDepth;
+        boolean autoCalcAverageDepth;
 
         public TreeStatistics(final int maxDepth, final String maxDepthPathName){
             this.maxDepth = maxDepth;
             this.maxDepthPathName = maxDepthPathName;
             this.sumOfDepthsOfLeaves = 0;
             this.numOfLeaves = 0;
+            this.autoCalcAverageDepth = true;
         }
 
         public TreeStatistics(final int maxDepth, final String maxDepthPathName, final int numOfLeaves, final int sumOfDepthsOfLeaves) {
@@ -42,25 +45,31 @@ public class NodeUtils {
             this.maxDepthPathName = maxDepthPathName;
             this.sumOfDepthsOfLeaves = sumOfDepthsOfLeaves;
             this.numOfLeaves = numOfLeaves;
+            this.autoCalcAverageDepth = true;
         }
 
-        static TreeStatistics createNew(final int maxDepth, final String maxDepthPathName, final int numOfLeaves, final int sumOfDepthsOfLeaves){
+        public static TreeStatistics createNew(final int maxDepth, final String maxDepthPathName, final int numOfLeaves, final int sumOfDepthsOfLeaves){
             return new TreeStatistics(maxDepth, maxDepthPathName, numOfLeaves, sumOfDepthsOfLeaves);
         }
 
-        static TreeStatistics createNew(final int maxDepth, final String maxDepthPathName){
+        public static TreeStatistics createNew(final int maxDepth, final String maxDepthPathName){
             return new TreeStatistics(maxDepth, maxDepthPathName);
         }
 
-        public double getAverageDepth(){
+        public float calcAverageDepth(){
             if(numOfLeaves == 0)
                 return 0;
-            return ((float) sumOfDepthsOfLeaves) / ((float) numOfLeaves);
+            averageDepth = ((float) sumOfDepthsOfLeaves) / ((float) numOfLeaves);
+            return averageDepth;
         }
 
         @Override
         public String toString() {
-            return "Statistics: Max Depth: " + maxDepth +  " Leaves: " + numOfLeaves + " sum: " + sumOfDepthsOfLeaves + " avarge Tree Depth " + getAverageDepth() + " Tree: " + maxDepthPathName;
+            return "Statistics:"
+                    + "\nMax Depth:\t" + maxDepth
+                    + "\nMax Path:\t\t" + maxDepthPathName
+                    + "\nLeaves:\t\t" + numOfLeaves
+                    + "\nAvg Depth:\t" + (autoCalcAverageDepth ? calcAverageDepth() : averageDepth);
         }
     }
 
@@ -89,6 +98,19 @@ public class NodeUtils {
             }
         }
         return maxTreeDepthStatistics;
+    }
+
+    public static TreeStatistics diffTreeStatistics(TreeStatistics oldStats, TreeStatistics newStats){
+        if(oldStats == null || newStats == null)
+            return new TreeStatistics(0, "");
+        int diffNumOfleaves = oldStats.numOfLeaves - newStats.numOfLeaves;
+        int diffMaxDepth = oldStats.maxDepth - newStats.maxDepth;
+        int diffSumOfDepthsOfLeaves = oldStats.sumOfDepthsOfLeaves - newStats.sumOfDepthsOfLeaves;
+        float diffAverageDepth = oldStats.calcAverageDepth() - newStats.calcAverageDepth();
+        TreeStatistics diffStats = TreeStatistics.createNew(diffMaxDepth, "", diffNumOfleaves, diffSumOfDepthsOfLeaves);
+        diffStats.autoCalcAverageDepth = false;
+        diffStats.averageDepth = diffAverageDepth;
+        return diffStats;
     }
 
     public static TreeStatistics getTreeDepthStatistics(final Node node)

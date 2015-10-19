@@ -43,6 +43,6 @@
               <fx:include fx:id="filsystemTreeSettings" source="FilesystemTreeSettingsLayout.fxml" />
          </children>
       </VBox>
-      <TextArea fx:id="infoArea" editable="false" prefHeight="211.0" prefWidth="313.0" />
+      <TextArea fx:id="infoArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
     </children>
 </VBox>

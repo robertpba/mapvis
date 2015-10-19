@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 public class DatesetSelectionController implements Initializable {
-
+    private static final String INFO_AREA_PROCESS_SEPARATOR = "-------------";
     public TextArea infoArea;
     public Button generateTreeButton;
 
@@ -32,6 +32,8 @@ public class DatesetSelectionController implements Initializable {
     public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
 
     public HexagonalTilingView chart;
+
+    IDatasetGeneratorController activeDatasetGenerator;
 
     @FXML
     private TextField dropLevelsTextField;
@@ -44,6 +46,7 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private FilesystemTreeSettingsController filsystemTreeSettingsController;
+    private NodeUtils.TreeStatistics lastTreeStatistics;
 
     public DatesetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -52,11 +55,16 @@ public class DatesetSelectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatesetSelectionController");
+
         inputSourceComboBox.getItems().addAll(filsystemTreeSettingsController, randomTreeSettingsController);
+//        activeDatasetGenerator.setValue(filsystemTreeSettingsController);
+//        activeDatasetGenerator.unbindBidirectional(inputSourceComboBox.valueProperty());
+//        inputSourceComboBox.valueProperty().bind(activeDatasetGenerator);
         inputSourceComboBox.getSelectionModel().select(filsystemTreeSettingsController);
+
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
-            System.out.println("first: " + !("".equals(newValue)) +" " + !newValue.matches("[0-9]"));
-            if(!"".equals(newValue) && !newValue.matches("[0-9]*")){
+            System.out.println("first: " + !("".equals(newValue)) + " " + !newValue.matches("[0-9]"));
+            if (!"".equals(newValue) && !newValue.matches("[0-9]*")) {
                 dropLevelsTextField.setText(oldValue);
             }
         });
@@ -68,7 +76,10 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private void onSelectionChanged(ActionEvent event) {
-        IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+        activeDatasetGenerator = getActiveDatasetGenerator();
+        if(activeDatasetGenerator == null){
+            return;
+        }
         inputSourceComboBox.getItems().stream().forEach(iDatasetGeneratorController ->{
             if(activeDatasetGenerator.equals(iDatasetGeneratorController)){
                 iDatasetGeneratorController.setVisible(true);
@@ -81,29 +92,31 @@ public class DatesetSelectionController implements Initializable {
     @FXML
     private void begin(ActionEvent event) {
         long startTime = System.currentTimeMillis();
-
+        logTextToInfoArea("generating map..");
         method1.get().Begin();
 
         long estimatedTime = System.currentTimeMillis() - startTime;
-        System.out.printf("mm: %d",estimatedTime);
-
+//        System.out.printf("mm: %d",estimatedTime);
+        logTextToInfoArea("generation finished: mm: "+ estimatedTime);
+        logTextToInfoArea("rendering map");
         chart.updateHexagons();
+        logTextToInfoArea("rendering finished");
     }
 
     @FXML
     private void generateTree(ActionEvent event) {
-        System.out.println("generate Tree");
-        
-        IDatasetGeneratorController activeDatasetGenerator = getActiveDatasetGenerator();
+//        System.out.println("generate Tree");
+        logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
+        logTextToInfoArea("reading data..");
+        if(activeDatasetGenerator == null){
+            return;
+        }
         MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
-
-        tree.set(generatedTree);
-
-        grid.set(new HashMapGrid<>());
-        method1.set(new Method1<>(tree.get(), grid.get()));
-
-        Set<Node> leaves = tree.get().getLeaves();
-        infoArea.setText(String.format("%d leaves\n", leaves.size()));
+        setTreeModel(generatedTree);
+        logTextToInfoArea("reading data finished");
+        lastTreeStatistics = NodeUtils.getTreeDepthStatistics(generatedTree.getRoot());
+        logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
+//        logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
     }
 
     @FXML
@@ -131,7 +144,7 @@ public class DatesetSelectionController implements Initializable {
         method1.set(new Method1<>(tree.get(), grid.get()));
 
         Set<Node> leaves = tree.get().getLeaves();
-        infoArea.setText(String.format("%d leaves\n", leaves.size()));
+//        logTextToInfoArea(String.format("%d leaves", leaves.size()));
     }
 
     @FXML
@@ -139,16 +152,31 @@ public class DatesetSelectionController implements Initializable {
         System.out.println("onDropLevelsPressed");
         try {
             int levelsToDrop = Integer.parseInt(dropLevelsTextField.getText());
-//            tree.get().getRoot()
+            logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
+            logTextToInfoArea("Dropping levels > " + levelsToDrop);
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
-            NodeUtils.TreeStatistics statistics = NodeUtils.getTreeDepthStatistics(filteredTree);
+            NodeUtils.TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
+            NodeUtils.TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics, cappedTreeStatistics);
             MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
-            System.out.println(statistics);
+            lastTreeStatistics = cappedTreeStatistics;
+            if(lastTreeStatistics == null || lastTreeStatistics == null){
+                logTextToInfoArea("Error dropping levels");
+                return;
+            }
+            logTextToInfoArea("Dropping finished");
+            logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
+            logTextToInfoArea("New Tree:");
+            logTextToInfoArea(lastTreeStatistics.toString());
+            logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
+            logTextToInfoArea("Diff to last tree:");
+            logTextToInfoArea(diffTreeStatistics.toString());
         }catch (NumberFormatException ex){
             return;
         }
+    }
 
-
+    private void logTextToInfoArea(String text){
+        infoArea.appendText("\n" + text);
     }
 }

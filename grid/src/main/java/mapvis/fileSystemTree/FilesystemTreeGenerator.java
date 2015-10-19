@@ -63,7 +63,6 @@ public class FilesystemTreeGenerator {
         }
 
         Node rootTreeNode = createNodeForFile(filePath);
-        System.out.println("Tree Depth: " + NodeUtils.getTreeDepthStatistics(rootTreeNode));
         return rootTreeNode;
     }
 }
