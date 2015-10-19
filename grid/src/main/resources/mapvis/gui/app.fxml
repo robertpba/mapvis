@@ -54,7 +54,7 @@
                                 </TreeTableColumn>
                                 <TreeTableColumn minWidth="45.0" prefWidth="47.0" text="Level">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="level"/>
+                                        <TreeItemPropertyValueFactory property="maxHexagonLevelToShow"/>
                                     </cellValueFactory>
                                 </TreeTableColumn>
                                 <TreeTableColumn minWidth="0.0" prefWidth="89.0" text="Size">
