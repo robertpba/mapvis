@@ -13,6 +13,16 @@ public class NodeUtils {
         return nextid;
     }
 
+    public static void populateSize(Node root)
+    {
+        int sizeOfCurrentNode = 0;
+        for(Node child: root.getChildren()){
+            populateSize(child);
+            sizeOfCurrentNode += child.getSize();
+        }
+        root.setSize(sizeOfCurrentNode);
+    }
+
     public static void populateLevel(Node root, int level){
         root.setVal("level", level);
         for (Node child : root.getChildren()) {
@@ -50,11 +60,11 @@ public class NodeUtils {
     public static TreeStatistics diffTreeStatistics(TreeStatistics oldStats, TreeStatistics newStats){
         if(oldStats == null || newStats == null)
             return new TreeStatistics(0, "");
-        int diffNumOfleaves = oldStats.numOfLeaves - newStats.numOfLeaves;
+        int diffNumOfLeaves = oldStats.numOfLeaves - newStats.numOfLeaves;
         int diffMaxDepth = oldStats.maxDepth - newStats.maxDepth;
         int diffSumOfDepthsOfLeaves = oldStats.sumOfDepthsOfLeaves - newStats.sumOfDepthsOfLeaves;
         float diffAverageDepth = oldStats.calcAverageDepth() - newStats.calcAverageDepth();
-        TreeStatistics diffStats = TreeStatistics.createNew(-diffMaxDepth, "", -diffNumOfleaves, -diffSumOfDepthsOfLeaves);
+        TreeStatistics diffStats = TreeStatistics.createNew(-diffMaxDepth, "", -diffNumOfLeaves, -diffSumOfDepthsOfLeaves);
         diffStats.autoCalcAverageDepth = false;
         diffStats.averageDepth = -diffAverageDepth;
         return diffStats;
