@@ -8,10 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
-import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Node;
-import mapvis.common.datatype.NodeUtils;
-import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
 import org.yaml.snakeyaml.Yaml;
@@ -46,7 +43,7 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private FilesystemTreeSettingsController filsystemTreeSettingsController;
-    private NodeUtils.TreeStatistics lastTreeStatistics;
+    private TreeStatistics lastTreeStatistics;
 
     public DatesetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -55,11 +52,7 @@ public class DatesetSelectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatesetSelectionController");
-
         inputSourceComboBox.getItems().addAll(filsystemTreeSettingsController, randomTreeSettingsController);
-//        activeDatasetGenerator.setValue(filsystemTreeSettingsController);
-//        activeDatasetGenerator.unbindBidirectional(inputSourceComboBox.valueProperty());
-//        inputSourceComboBox.valueProperty().bind(activeDatasetGenerator);
         inputSourceComboBox.getSelectionModel().select(filsystemTreeSettingsController);
 
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
@@ -96,7 +89,6 @@ public class DatesetSelectionController implements Initializable {
         method1.get().Begin();
 
         long estimatedTime = System.currentTimeMillis() - startTime;
-//        System.out.printf("mm: %d",estimatedTime);
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
         chart.updateHexagons();
@@ -105,7 +97,6 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private void generateTree(ActionEvent event) {
-//        System.out.println("generate Tree");
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("reading data..");
         if(activeDatasetGenerator == null){
@@ -116,7 +107,6 @@ public class DatesetSelectionController implements Initializable {
         logTextToInfoArea("reading data finished");
         lastTreeStatistics = NodeUtils.getTreeDepthStatistics(generatedTree.getRoot());
         logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
-//        logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
     }
 
     @FXML
@@ -149,14 +139,13 @@ public class DatesetSelectionController implements Initializable {
 
     @FXML
     private void onDropLevelsPressed(ActionEvent event) {
-        System.out.println("onDropLevelsPressed");
         try {
             int levelsToDrop = Integer.parseInt(dropLevelsTextField.getText());
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Dropping levels > " + levelsToDrop);
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
-            NodeUtils.TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
-            NodeUtils.TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics, cappedTreeStatistics);
+            TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
+            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics, cappedTreeStatistics);
             MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
             lastTreeStatistics = cappedTreeStatistics;
