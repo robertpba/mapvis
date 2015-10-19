@@ -38,6 +38,7 @@ public class HexagonalTilingView extends Pane {
     private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
 
+    private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private BooleanProperty areLabelsShown = new SimpleBooleanProperty(true);
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     private DoubleProperty originX = new SimpleDoubleProperty(0);
@@ -61,6 +62,7 @@ public class HexagonalTilingView extends Pane {
         zoom.addListener(this::onZoomChange);
         styler.addListener(this::onStylerChange);
         areLabelsShown.addListener(this::onShowLabelsChanged);
+        maxLevelOfBordersToShow.addListener(this::onBorderLevelToShowChanged);
     }
 
     private void initHexagonTilingView(){
@@ -137,11 +139,9 @@ public class HexagonalTilingView extends Pane {
         List<Tile<Node>> tiles = new ArrayList<>();
 
         grid.get().foreach(t -> {
-            if (t.getX() > tl.getX()
-                    && t.getX() < br.getX()
-                    && t.getY() > tl.getY()
-                    && t.getY() < br.getY())
+            if (isTileVisibleOnScreen(t, tl, br)) {
                 updateHexagon(t.getX(), t.getY(), g);
+            }
             if (t.getItem() != null && t.getTag() == Tile.LAND)
                 tiles.add(t);
         });
@@ -154,7 +154,15 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-    void drawLabels(Map<Node, Pos> posmap, GraphicsContext g){
+    private boolean isTileVisibleOnScreen(Tile<Node> tile, Point2D topleftBorder, Point2D bottomRightBorder)
+    {
+        return tile.getX() > topleftBorder.getX()
+                && tile.getX() < bottomRightBorder.getX()
+                && tile.getY() > topleftBorder.getY()
+                && tile.getY() < bottomRightBorder.getY();
+    }
+
+    private void drawLabels(Map<Node, Pos> posmap, GraphicsContext g){
         for (Map.Entry<Node, Pos> entry : posmap.entrySet()) {
             Node node = entry.getKey();
             Pos pos = entry.getValue();
@@ -290,7 +298,7 @@ public class HexagonalTilingView extends Pane {
         Point2D point2D = hexagonalToPlain(x, y);
         g.translate(point2D.getX(), point2D.getY());
 
-        render.drawHexagon(g,x,y);
+        render.drawHexagon(g, x, y);
 
         g.restore();
     }
@@ -324,6 +332,9 @@ public class HexagonalTilingView extends Pane {
     public final boolean getAreLabelsShownProperty() { return this.areLabelsShownProperty().get(); }
     public final void setAreLabelsShownProperty(boolean y) { this.areLabelsShownProperty().set(y); }
 
+    public int getMaxLevelOfBordersToShow() {return maxLevelOfBordersToShow.get(); }
+    public IntegerProperty maxLevelOfBordersToShowProperty() { return maxLevelOfBordersToShow;}
+    public void setMaxLevelOfBordersToShow(int maxLevelOfBordersToShow) { this.maxLevelOfBordersToShow.set(maxLevelOfBordersToShow );    }
 
     public void zoom(double scale){
         Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
@@ -370,24 +381,28 @@ public class HexagonalTilingView extends Pane {
     Transform scaleTransform = Affine.scale(1, 1);
 
     //////////////////////////
-    void onZoomChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+    private void onZoomChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         scaleTransform = Affine.scale(newValue.doubleValue(), newValue.doubleValue());
         updateHexagons();
 
     }
-    void onOriginXChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+    private void onOriginXChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         translateTransform = Affine.translate(newValue.doubleValue(), originY.get());
         updateHexagons();
     }
-    void onOriginYChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+    private void onOriginYChange(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         translateTransform = Affine.translate(originX.get(), newValue.doubleValue());
         updateHexagons();
     }
-    void onStylerChange(ObservableValue<? extends TileStyler<Node>> observable,
+    private void onStylerChange(ObservableValue<? extends TileStyler<Node>> observable,
                         TileStyler<Node> oldValue, TileStyler<Node> newValue){
         updateHexagons();
     }
-    void onShowLabelsChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
+    private void onShowLabelsChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
+        updateHexagons();
+    }
+    private void onBorderLevelToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+        styler.get().setMaxBorderLevelToShow(newValue.intValue());
         updateHexagons();
     }
 

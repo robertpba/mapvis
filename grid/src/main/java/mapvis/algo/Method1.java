@@ -35,7 +35,7 @@ public class Method1<T> {
             children.forEach(this::recursive);
             int level = tree.getDepth(o);
 
-            //if (level == 1)
+            //if (maxHexagonLevelToShow == 1)
             //addPadding(o,5);
 
 

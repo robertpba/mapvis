@@ -11,6 +11,7 @@ import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
+import mapvis.common.datatype.NodeUtils;
 import org.yaml.snakeyaml.Yaml;
 import utils.RandomTreeGenerator;
 
@@ -67,6 +68,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
 
         RandomTreeGenerator randomTreeGenerator = new RandomTreeGenerator(seed);
         MPTreeImp<Node> genTree = randomTreeGenerator.getTree(depth, span, weight);
+//        NodeUtils.populateSize(genTree.getRoot());
         return genTree;
     }
 

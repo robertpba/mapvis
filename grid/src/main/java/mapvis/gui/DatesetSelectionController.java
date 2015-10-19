@@ -85,6 +85,7 @@ public class DatesetSelectionController implements Initializable {
     @FXML
     private void begin(ActionEvent event) {
         long startTime = System.currentTimeMillis();
+        logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("generating map..");
         method1.get().Begin();
 

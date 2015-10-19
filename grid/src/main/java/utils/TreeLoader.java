@@ -28,7 +28,7 @@
 //                node.id = ++lastId;
 //                node.pageId = scanner.nextInt();
 //                node.name = scanner.next().replace('_', ' ');
-//                node.level = scanner.nextInt();
+//                node.maxHexagonLevelToShow = scanner.nextInt();
 //
 //                int parentId = scanner.nextInt();
 //
@@ -80,7 +80,7 @@
 //            if (node.figure > 0){
 //                Node dummy = new Node();
 //                dummy.id = ++lastId;
-//                dummy.level = node.level + 1;
+//                dummy.maxHexagonLevelToShow = node.maxHexagonLevelToShow + 1;
 //                dummy.figure = node.figure/5;
 //                dummy.name = node.name;
 //                dummy.parent = node;
@@ -96,7 +96,7 @@
 //        List<Node> children = new ArrayList<>();
 //
 //        for (Node child : node.children) {
-//            if (child.level > maxlevel || child.figure < minweight)
+//            if (child.maxHexagonLevelToShow > maxlevel || child.figure < minweight)
 //                continue;
 //            prune(child, maxlevel, minweight);
 //            children.add(child);

@@ -16,19 +16,51 @@ public class RandomTreeGenerator {
         rn = new Random(seed);
     }
 
-   void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
-        if (level > maxLevel)
+//   boolean getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
+//        if (level > maxLevel){
+//            node.setSize(1);
+//            return false;
+//        }
+//
+//        int n = rn.nextInt(span);
+//        int size = 0;
+//        while (n-- > 0){
+//            String id = Integer.toString(++lastId);
+//            Node child = new Node(id, "#"+id);
+//            tree.addChild(node, child, rn.nextInt(weight));
+//
+//            if(getTree(tree, child, level+1, maxLevel, span, weight))
+//                node.getChildren().add(child);
+//            size += child.getSize();
+//        }
+//       node.setSize(size);
+//       return true;
+//   }
+//    public MPTreeImp<Node> getTree(int level, int span, int weight){
+//        rn.setSeed(seed);
+//        lastId = 0;
+//        MPTreeImp<Node> mptree = new MPTreeImp<>();
+//        Node child = new Node("0","root");
+//        child.setSize(weight);
+//        mptree.setRoot(child);
+//        getTree(mptree, child, 0, level, span, weight);
+//        return mptree;
+//    }
+
+    void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
+        if (level > maxLevel){
             return ;
+        }
 
         int n = rn.nextInt(span);
-
+        int size = 0;
         while (n-- > 0){
             String id = Integer.toString(++lastId);
             Node child = new Node(id, "#"+id);
-            tree.addChild(node,  child, rn.nextInt(weight));
-            node.getChildren().add(child);
+            tree.addChild(node, child, rn.nextInt(weight));
 
             getTree(tree, child, level+1, maxLevel, span, weight);
+            node.getChildren().add(child);
         }
     }
     public MPTreeImp<Node> getTree(int level, int span, int weight){
