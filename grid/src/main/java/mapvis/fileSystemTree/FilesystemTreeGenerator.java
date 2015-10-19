@@ -1,10 +1,9 @@
 package mapvis.fileSystemTree;
 
 import mapvis.common.datatype.Node;
+import mapvis.common.datatype.NodeUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by dacc on 10/14/2015.
@@ -64,6 +63,7 @@ public class FilesystemTreeGenerator {
         }
 
         Node rootTreeNode = createNodeForFile(filePath);
+        System.out.println("Tree Depth: " + NodeUtils.getTreeDepthStatistics(rootTreeNode));
         return rootTreeNode;
     }
 }

@@ -10,6 +10,7 @@ import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
+import mapvis.common.datatype.NodeUtils;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
@@ -33,6 +34,9 @@ public class DatesetSelectionController implements Initializable {
     public HexagonalTilingView chart;
 
     @FXML
+    private TextField dropLevelsTextField;
+
+    @FXML
     private ComboBox<IDatasetGeneratorController> inputSourceComboBox;
 
     @FXML
@@ -50,6 +54,12 @@ public class DatesetSelectionController implements Initializable {
         System.out.println("Init DatesetSelectionController");
         inputSourceComboBox.getItems().addAll(filsystemTreeSettingsController, randomTreeSettingsController);
         inputSourceComboBox.getSelectionModel().select(filsystemTreeSettingsController);
+        dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
+            System.out.println("first: " + !("".equals(newValue)) +" " + !newValue.matches("[0-9]"));
+            if(!"".equals(newValue) && !newValue.matches("[0-9]*")){
+                dropLevelsTextField.setText(oldValue);
+            }
+        });
     }
 
     private IDatasetGeneratorController getActiveDatasetGenerator() {
@@ -109,9 +119,13 @@ public class DatesetSelectionController implements Initializable {
         FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
         Node node = yaml.loadAs(fileInputStream, Node.class);
 
-        MPTreeImp<Node> treemodel = MPTreeImp.from(node);
+        MPTreeImp<Node> treeModel = MPTreeImp.from(node);
+        setTreeModel(treeModel);
+    }
 
-        tree.set(treemodel);
+    private void setTreeModel(MPTreeImp<Node> treeModel)
+    {
+        tree.set(treeModel);
 
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
@@ -120,4 +134,21 @@ public class DatesetSelectionController implements Initializable {
         infoArea.setText(String.format("%d leaves\n", leaves.size()));
     }
 
+    @FXML
+    private void onDropLevelsPressed(ActionEvent event) {
+        System.out.println("onDropLevelsPressed");
+        try {
+            int levelsToDrop = Integer.parseInt(dropLevelsTextField.getText());
+//            tree.get().getRoot()
+            Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
+            NodeUtils.TreeStatistics statistics = NodeUtils.getTreeDepthStatistics(filteredTree);
+            MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
+            setTreeModel(cappedTreeModel);
+            System.out.println(statistics);
+        }catch (NumberFormatException ex){
+            return;
+        }
+
+
+    }
 }
