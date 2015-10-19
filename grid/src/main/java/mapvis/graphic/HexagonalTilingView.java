@@ -1,9 +1,6 @@
 package mapvis.graphic;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
@@ -31,8 +28,22 @@ import java.util.*;
 
 public class HexagonalTilingView extends Pane {
 
-    public HexagonRender render;
-    Canvas canvas;
+    static final double COS30 = Math.cos(Math.toRadians(30));
+    static final double SideLength = 10;
+
+    private HexagonRender render;
+    private Canvas canvas;
+
+    private ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
+    private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
+
+    private BooleanProperty areLabelsShown = new SimpleBooleanProperty(true);
+    private DoubleProperty zoom = new SimpleDoubleProperty(1);
+    private DoubleProperty originX = new SimpleDoubleProperty(0);
+    private DoubleProperty originY = new SimpleDoubleProperty(0);
+
+
 
     public HexagonalTilingView(){
         super();
@@ -49,6 +60,7 @@ public class HexagonalTilingView extends Pane {
         originY.addListener(this::onOriginYChange);
         zoom.addListener(this::onZoomChange);
         styler.addListener(this::onStylerChange);
+        areLabelsShown.addListener(this::onShowLabelsChanged);
     }
 
     private void initHexagonTilingView(){
@@ -64,10 +76,6 @@ public class HexagonalTilingView extends Pane {
 
         updateHexagons();
     }
-
-    static final double COS30 = Math.cos(Math.toRadians(30));
-    static final double SideLength = 10;
-
 
     public Point2D hexagonalToPlain(int x, int y){
         double cx = x * 3 * SideLength / 2;
@@ -128,7 +136,6 @@ public class HexagonalTilingView extends Pane {
 
         List<Tile<Node>> tiles = new ArrayList<>();
 
-        int counterForEach = 0;
         grid.get().foreach(t -> {
             if (t.getX() > tl.getX()
                     && t.getX() < br.getX()
@@ -138,9 +145,10 @@ public class HexagonalTilingView extends Pane {
             if (t.getItem() != null && t.getTag() == Tile.LAND)
                 tiles.add(t);
         });
-
-        Map<Node, Pos> posmap = mapLabelPos(tiles);
-        drawLabels(posmap, g);
+        if(areLabelsShown.get()){
+            Map<Node, Pos> posmap = mapLabelPos(tiles);
+            drawLabels(posmap, g);
+        }
 
         //getChildren().setAll(canvas);
         g.restore();
@@ -207,9 +215,6 @@ public class HexagonalTilingView extends Pane {
 
         return  posmap;
     }
-
-
-
 
     public void save(String filename) throws IOException {
         if (getGrid() == null)
@@ -279,8 +284,6 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-
-
     private void updateHexagon(int x, int y, GraphicsContext g) {
 
         g.save();
@@ -292,35 +295,34 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-    private ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+
     public ObjectProperty<Grid<Node>> gridProperty() { return this.grid; }
     public final Grid<Node> getGrid() { return this.gridProperty().get(); }
     public final void setGrid(Grid<Node> grid) { this.gridProperty().set(grid); }
 
-    private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Tree2<Node>> treeProperty() { return this.tree; }
     public final Tree2<Node> getTree() { return this.treeProperty().get(); }
     public final void setTree(Tree2<Node> tree) { this.treeProperty().set(tree); }
 
-    private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
     public ObjectProperty<TileStyler<Node>> stylerProperty() { return this.styler; }
     public final TileStyler<Node> getStyler() { return this.stylerProperty().get(); }
     public final void setStyler(TileStyler<Node> styler) { this.stylerProperty().set(styler); }
 
-    private DoubleProperty zoom = new SimpleDoubleProperty(1);
     public DoubleProperty zoomProperty() { return this.zoom; }
     public final double getZoom() { return this.zoomProperty().get(); }
     public final void setZoom(double zoom) { this.zoomProperty().set(zoom); }
 
-    private DoubleProperty originX = new SimpleDoubleProperty(0);
     public DoubleProperty originXProperty() { return this.originX; }
     public final double getOriginX() { return this.originXProperty().get(); }
     public final void setOriginX(double x) { this.originXProperty().set(x); }
 
-    private DoubleProperty originY = new SimpleDoubleProperty(0);
     public DoubleProperty originYProperty() { return this.originY; }
     public final double getOriginY() { return this.originYProperty().get(); }
     public final void setOriginY(double y) { this.originYProperty().set(y); }
+
+    public BooleanProperty areLabelsShownProperty() { return this.areLabelsShown; }
+    public final boolean getAreLabelsShownProperty() { return this.areLabelsShownProperty().get(); }
+    public final void setAreLabelsShownProperty(boolean y) { this.areLabelsShownProperty().set(y); }
 
 
     public void zoom(double scale){
@@ -385,6 +387,9 @@ public class HexagonalTilingView extends Pane {
                         TileStyler<Node> oldValue, TileStyler<Node> newValue){
         updateHexagons();
     }
+    void onShowLabelsChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
+        updateHexagons();
+    }
 
     //////////////////////////
 
@@ -410,6 +415,7 @@ public class HexagonalTilingView extends Pane {
 
         inDrag = true;
     }
+
     private void mouseReleased(MouseEvent e) {
         inDrag = false;
     }

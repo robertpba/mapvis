@@ -59,12 +59,12 @@
                                 </TreeTableColumn>
                                 <TreeTableColumn minWidth="0.0" prefWidth="89.0" text="Size">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="figure"/>
+                                        <TreeItemPropertyValueFactory property="size"/>
                                     </cellValueFactory>
                                 </TreeTableColumn>
-                                <TreeTableColumn minWidth="0.0" prefWidth="200.0" text="name">
+                                <TreeTableColumn minWidth="0.0" prefWidth="200.0" text="label">
                                     <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="name"/>
+                                        <TreeItemPropertyValueFactory property="label"/>
                                     </cellValueFactory>
                                 </TreeTableColumn>
                             </columns>

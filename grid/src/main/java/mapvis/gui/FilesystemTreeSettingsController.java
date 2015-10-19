@@ -1,5 +1,7 @@
 package mapvis.gui;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,8 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.fileSystemTree.FilesystemNode;
-import mapvis.fileSystemTree.TreeGenerator;
+import mapvis.fileSystemTree.*;
 
 import java.io.File;
 import java.net.URL;
@@ -26,12 +27,19 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     @FXML
     private VBox vBox;
 
-    private TreeGenerator treeGenerator;
-    private FilesystemNode filesystemNode;
+    private FilesystemTreeGenerator treeGenerator;
+//    private FilesystemNodeWithSize filesystemNode;
+//    private String selectedDirectory;
+    public File selectedDirectory;
+
+    DirectoryChooser directoryChooser;
 
     public FilesystemTreeSettingsController() {
         System.out.println("Creating: " + this.getClass().getName());
-        this.treeGenerator = new TreeGenerator();
+        this.treeGenerator = new FilesystemTreeGenerator();
+//        this.selectedDirectoryTextfield.textProperty().bind(this.selectedDirectory);
+        this.directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select the Directory to visualize");
     }
 
     @Override
@@ -41,16 +49,14 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
 
     @FXML
     private void onSelectDirectory(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select the Directory to visualize");
         File selectedFolder = directoryChooser.showDialog(vBox.getScene().getWindow());
         //Choosing directory was aborted?
         if(selectedFolder == null){
             return;
         }
+        selectedDirectory = selectedFolder;
         System.out.printf("Path:" + selectedFolder.getPath());
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
-        filesystemNode = new FilesystemNode(selectedFolder.getPath());
     }
 
     public void setVisible(boolean isVisible){
@@ -61,10 +67,10 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     @Override
     public MPTreeImp<Node> generateTree(ActionEvent event) {
 
-        if(filesystemNode == null || !filesystemNode.exists())
+        if(selectedDirectory == null || !selectedDirectory.exists())
             return MPTreeImp.from(new Node(Integer.toString(0), "root"));
 
-        Node generatedTree = treeGenerator.genTree(filesystemNode);
+        Node generatedTree = treeGenerator.genTree(selectedDirectory);
         MPTreeImp<Node> treeModel = MPTreeImp.from(generatedTree);
         return treeModel;
     }
