@@ -16,7 +16,14 @@ public class MPTreeImp<T> implements Tree2<T> {
         public MPTreeNode<T> parent;
         public List<MPTreeNode<T>> children = new ArrayList<>();
     }
-    boolean dirty = false;
+
+    private boolean dirty = false;
+    private MPTreeNode<T> root;
+    // object to node mapping
+    private Map<T, MPTreeNode<T>> o2n = new LinkedHashMap<>();
+    //public  T root;
+    private Set<T> leaves = new HashSet<>();
+
     void checkDirty(){
         if (dirty) {
             populate(1, 0, root);
@@ -27,10 +34,6 @@ public class MPTreeImp<T> implements Tree2<T> {
     void markDirty(){
         dirty = true;
     }
-
-    public MPTreeNode<T> root;
-    // object to node mapping
-    private Map<T, MPTreeNode<T>> o2n = new LinkedHashMap<>();
 
     @Override
     public Set<T> getChildren(T obj){
@@ -44,11 +47,13 @@ public class MPTreeImp<T> implements Tree2<T> {
         checkDirty();
         return o2n.get(node).parent.element;
     }
+
     @Override
     public Set<T> getNodes(){
         checkDirty();
         return Collections.unmodifiableSet(o2n.keySet());
     }
+
     @Override
     public T getRoot() {
         checkDirty();
@@ -56,23 +61,27 @@ public class MPTreeImp<T> implements Tree2<T> {
             return null;
         return root.element;
     }
+
     @Override
     public int getDepth(T elem){
         checkDirty();
         MPTreeNode<T> node = o2n.get(elem);
         return node.depth;
     }
+
     @Override
     public int getWeight(T elem){
         checkDirty();
         MPTreeNode<T> node = o2n.get(elem);
         return node.weight;
     }
+
     @Override
     public Set<T> getLeaves(){
         checkDirty();
         return Collections.unmodifiableSet(leaves);
     }
+
     // lowest common ancestor
     @Override
     public T getLCA(T o1, T o2){
@@ -84,6 +93,7 @@ public class MPTreeImp<T> implements Tree2<T> {
             return lca.element;
         return null;
     }
+
     @Override
     public List<T> getPathToNode(T elem){
         checkDirty();
@@ -99,6 +109,7 @@ public class MPTreeImp<T> implements Tree2<T> {
         Collections.reverse(list);
         return list;
     }
+
     @Override
     public boolean isAncestorOf(T ancestor, T decedent){
         checkDirty();
@@ -107,6 +118,7 @@ public class MPTreeImp<T> implements Tree2<T> {
         return na != null && nd != null &&
                 na.left < nd.left && na.right > nd.right;
     }
+
     @Override
     public boolean isSibling(T o1, T o2){
         checkDirty();
@@ -149,7 +161,7 @@ public class MPTreeImp<T> implements Tree2<T> {
 
     // recalculate the left and right value of all nodes.
     /// @return: right
-    void populate(int left, int depth, MPTreeNode<T> node){
+    private void populate(int left, int depth, MPTreeNode<T> node){
         node.left = left;
         node.depth = depth;
         left ++;
@@ -169,15 +181,13 @@ public class MPTreeImp<T> implements Tree2<T> {
 
         node.right = left;
     }
-    //public  T root;
-    Set<T> leaves = new HashSet<>();
 
-    void refreshLeafCache(){
+    private void refreshLeafCache(){
         leaves.clear();
         refreshLeafCache(root);
     }
 
-    void refreshLeafCache(MPTreeNode<T> node){
+    private void refreshLeafCache(MPTreeNode<T> node){
         if (node.children.size() == 0)
             leaves.add(node.element);
         else {
@@ -185,7 +195,7 @@ public class MPTreeImp<T> implements Tree2<T> {
         }
     }
 
-    MPTreeNode<T> getLCA(MPTreeNode<T> n1, MPTreeNode<T> n2) {
+    private MPTreeNode<T> getLCA(MPTreeNode<T> n1, MPTreeNode<T> n2) {
         if (n1 == null)
             return null;
         if (n1.left < n2.left && n1.right > n2.right) {
@@ -203,7 +213,7 @@ public class MPTreeImp<T> implements Tree2<T> {
         return tree;
     }
 
-    static void recAddChild(MPTreeImp<Node> tree, Node node){
+    private static void recAddChild(MPTreeImp<Node> tree, Node node){
         for (Node child : node.getChildren()) {
             tree.addChild(node, child, (int)(double)child.getVal("size"));
             recAddChild(tree, child);
