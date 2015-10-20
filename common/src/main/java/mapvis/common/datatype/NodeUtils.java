@@ -15,11 +15,33 @@ public class NodeUtils {
 
     public static void populateSize(Node root)
     {
+        if(root.getChildren().size() == 0){
+            root.setSize(-1);
+            return;
+        }
+
         int sizeOfCurrentNode = 0;
+
+//        Iterator<Node> it = root.getChildren().iterator();
+//        while (it.hasNext()) {
+//            Node child = it.next();
+//            if(!populateSize(child)) {
+//                it.remove();
+//                continue;
+//            }
+//            sizeOfCurrentNode += child.getSize();
+//        }
+        List<Node> filteredChildren = new ArrayList<>();
         for(Node child: root.getChildren()){
             populateSize(child);
+            if(child.getSize() < 0){
+                sizeOfCurrentNode++;
+                continue;
+            }
             sizeOfCurrentNode += child.getSize();
+            filteredChildren.add(child);
         }
+        root.setChildren(filteredChildren);
         root.setSize(sizeOfCurrentNode);
     }
 
