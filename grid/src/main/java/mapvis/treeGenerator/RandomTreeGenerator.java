@@ -1,4 +1,4 @@
-package utils;
+package mapvis.treeGenerator;
 
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;

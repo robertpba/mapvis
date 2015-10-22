@@ -1,4 +1,4 @@
-package mapvis.udcTree;
+package mapvis.treeGenerator;
 
 import mapvis.common.datatype.Node;
 import org.w3c.dom.Document;

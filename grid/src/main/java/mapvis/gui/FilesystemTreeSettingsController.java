@@ -8,7 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.fileSystemTree.*;
+import mapvis.treeGenerator.FilesystemNode;
+import mapvis.treeGenerator.TreeGenerator;
 
 import java.io.File;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package mapvis.fileSystemTree;
+package mapvis.treeGenerator;
 
 import mapvis.common.datatype.ITreeNode;
 import mapvis.common.datatype.Node;
