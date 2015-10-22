@@ -43,7 +43,10 @@ public class ChartController implements Initializable  {
     public ColorPicker colorPicker;
 
     @FXML
-    public ChoiceBox bordersLevelsToShowChoiceBox;
+    private ChoiceBox bordersLevelsToShowChoiceBox;
+
+    @FXML
+    private ChoiceBox labelLevelsToShowChoiceBox;
 
     @FXML
     private CheckBox showLabelsCheckBox;
@@ -68,7 +71,8 @@ public class ChartController implements Initializable  {
                 .bindBidirectional(chart.areLabelsShownProperty());
         bordersLevelsToShowChoiceBox.valueProperty()
                 .bindBidirectional(chart.maxLevelOfBordersToShowProperty());
-
+        labelLevelsToShowChoiceBox.valueProperty()
+                .bindBidirectional(chart.maxLevelOfLabelsToShowProperty());
         grid.bindBidirectional(chart.gridProperty());
         tree.bindBidirectional(chart.treeProperty());
 
@@ -90,6 +94,7 @@ public class ChartController implements Initializable  {
 //        });
         levelChoiceBox.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
+
 //        bordersLevelsToShowChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 

@@ -32,6 +32,7 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
     private TreeGenerator treeGenerator;
     private Yaml yaml;
     private BufferedWriter yamlWriter;
+    private BooleanProperty isDumpToFileEnabled = new SimpleBooleanProperty(false);
 
 
     public UDCTreeSettingsController(){
@@ -82,8 +83,6 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
     public BooleanProperty isDumpToFileEnabledProperty() {
         return isDumpToFileEnabled;
     }
-
-    private BooleanProperty isDumpToFileEnabled = new SimpleBooleanProperty(true);
 
     @Override
     public String toString() {
