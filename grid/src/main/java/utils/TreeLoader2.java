@@ -16,7 +16,7 @@
 //import java.util.stream.Collectors;
 //
 //public class TreeLoader2 {
-//    final static String[] header = new String[] { "id", "level", "label", "parentid", "size"};
+//    final static String[] header = new String[] { "id", "maxHexagonLevelToShow", "label", "parentid", "size"};
 //    final static CellProcessor[] processors = new CellProcessor[] {
 //            new UniqueHashCode(),
 //            new NotNull(),
@@ -40,7 +40,7 @@
 //            while((map = reader.read(header, processors)) != null ) {
 //                Node node = new Node();
 //                node.id     = Integer.parseInt((String) map.get("id"));
-//                node.level  = Integer.parseInt((String) map.get("level"));
+//                node.maxHexagonLevelToShow  = Integer.parseInt((String) map.get("maxHexagonLevelToShow"));
 //                node.name   =  map.get("label") == null?"":(String)map.get("label");
 //                node.figure = Integer.parseInt((String)  map.get("size"));
 //                int pid = Integer.parseInt((String) map.get("parentid"));

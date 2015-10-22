@@ -48,7 +48,7 @@ class HexagonRender {
         };
     }
 
-    public void drawHexagon(GraphicsContext g,int x, int y) {
+    public void drawHexagon(GraphicsContext g, int x, int y) {
         TileStyler<Node> styler = view.getStyler();
 
         if (!styler.isVisible(x,y))

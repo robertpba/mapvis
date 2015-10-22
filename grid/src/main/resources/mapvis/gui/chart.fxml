@@ -25,6 +25,7 @@
                         <FlowPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                             <children>
                         <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" />
                               <ChoiceBox fx:id="levelChoiceBox">
                                  <items>
                                  <FXCollections fx:factory="observableArrayList">
@@ -40,6 +41,22 @@
                               <Integer fx:value="100" />
                            </value>
                               </ChoiceBox>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxBorders" />
+                                <ChoiceBox fx:id="bordersLevelsToShowChoiceBox">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <Integer fx:value="100" />
+                                            <Integer fx:value="1" />
+                                            <Integer fx:value="2" />
+                                            <Integer fx:value="3" />
+                                            <Integer fx:value="4" />
+                                            <Integer fx:value="5" />
+                                        </FXCollections>
+                                    </items>
+                                    <value>
+                                        <Integer fx:value="100" />
+                                    </value>
+                                </ChoiceBox>
                                 <CheckBox fx:id="showLabelsCheckBox" mnemonicParsing="false" text="Show Labels"/>
                         <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
                            <toggleGroup>

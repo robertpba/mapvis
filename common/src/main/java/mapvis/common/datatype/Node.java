@@ -1,9 +1,10 @@
 package mapvis.common.datatype;
 
+
 import java.util.*;
 
 
-public class Node{
+public class Node implements ITreeNode{
 
     String id = "";
     String label = "";
@@ -65,5 +66,24 @@ public class Node{
     }
     public void setChildren(List<Node> children) {
         this.children = children;
+    }
+
+    @Override
+    public List<? extends ITreeNode> getDirectChildren() {
+        return children;
+    }
+
+    @Override
+    public String getName() {
+        return getLabel();
+    }
+
+    @Override
+    public NodeType getNodeType() {
+        if(getDirectChildren() == null)
+            return NodeType.Undefined;
+        if(getDirectChildren().size() == 0)
+            return NodeType.Leaf;
+        return NodeType.Node;
     }
 }

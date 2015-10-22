@@ -10,4 +10,5 @@ include 'common'
 include 'layouts'
 
 include 'demo'
+include 'udcpreprocessing'
 

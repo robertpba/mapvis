@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" prefHeight="409.0" prefWidth="323.0" translateX="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DatesetSelectionController">
+<VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" prefHeight="409.0" prefWidth="323.0" translateX="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DatasetSelectionController">
 
     <children>
         <GridPane prefHeight="30.0" prefWidth="389.0">
@@ -40,7 +40,8 @@
       <VBox prefHeight="265.0" prefWidth="345.0">
          <children>
               <fx:include fx:id="randomTreeSettings" source="RandomTreeSettingsLayout.fxml" />
-              <fx:include fx:id="filsystemTreeSettings" source="FilesystemTreeSettingsLayout.fxml" />
+              <fx:include fx:id="filesystemTreeSettings" source="FilesystemTreeSettingsLayout.fxml" />
+             <fx:include fx:id="udcTreeSettings" source="UDCTreeSettingsLayout.fxml" />
          </children>
       </VBox>
       <TextArea fx:id="infoArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />

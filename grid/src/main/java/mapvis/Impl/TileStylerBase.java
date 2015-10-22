@@ -8,13 +8,30 @@ import mapvis.models.Grid;
 import mapvis.models.Tile;
 
 public class TileStylerBase<T> implements TileStyler<T> {
-    Tree2<T> tree;
-    Grid<T>      grid;
+    protected Tree2<T> tree;
+    protected Grid<T> grid;
+    protected int maxBorderLevelToShow;
+
+    static class TileCache<T> {
+        public T v;
+        public int x;
+        public int y;
+        public int t;
+
+        public int borderN;
+        public int borderS;
+        public int borderNE;
+        public int borderSE;
+        public int borderNW;
+        public int borderSW;
+    }
+    private TileCache<T> cache;
 
     public TileStylerBase(Tree2<T> tree, Grid<T> grid) {
         System.out.println("Creating: " + this.getClass().getName());
         this.tree = tree;
         this.grid = grid;
+        this.maxBorderLevelToShow = Integer.MAX_VALUE;
     }
 
     public Grid<T> getGrid() {
@@ -40,6 +57,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
 
     @Override
     public boolean isBorderVisible(int x, int y, Dir dir) {
+
         TileCache c = getCache(x, y);
         int l = 0;
         switch (dir){
@@ -100,8 +118,13 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return Color.AQUAMARINE;
     }
 
+    @Override
+    public void setMaxBorderLevelToShow(int maxBorderLevelToShow) {
+        this.maxBorderLevelToShow = maxBorderLevelToShow;
+    }
 
-    TileCache<T> getCache(int x, int y){
+
+    private TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
         Tile<T> tile = grid.getTile(x, y);
         if (cache.x == x && cache.y == y && cache.t == tile.getTag())
@@ -128,7 +151,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return cache;
     }
 
-    int calcLevel(int x, int y, Dir dir){
+    private int calcLevel(int x, int y, Dir dir){
         Tile<T> t = getGrid().getTile(x, y);
         Tile<T> tn = getGrid().getNeighbour(x, y, dir);
         if (t.getItem() == null || tn.getItem() == null || t.getItem() == tn.getItem())
@@ -142,23 +165,12 @@ public class TileStylerBase<T> implements TileStyler<T> {
         T lca = getTree().getLCA(t.getItem(), tn.getItem());
         if (lca == null) return 0;
 
-        return getTree().getDepth(lca) + 1;
+//        return getTree().getDepth(lca) + 1;
+        int level = getTree().getDepth(lca) + 1;
+        if(level > maxBorderLevelToShow)
+            return 0;
+        return level;
     }
-
-    static class TileCache<T> {
-        public T v;
-        public int x;
-        public int y;
-        public int t;
-
-        public int borderN;
-        public int borderS;
-        public int borderNE;
-        public int borderSE;
-        public int borderNW;
-        public int borderSW;
-    }
-    TileCache<T> cache;
 
     protected double getBorderWidthByLevel(int l){
         return (4.0 - l)*(4.0 - l)/2;

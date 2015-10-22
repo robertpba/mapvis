@@ -10,4 +10,5 @@ public interface TileStyler<T> {
     boolean isVisible(int x, int y);
     Color getColor(int x, int y);
     Color getBackground();
+    void setMaxBorderLevelToShow(int maxBorderLevelToShow);
 }

@@ -9,22 +9,26 @@ import java.util.Map;
 import java.util.Random;
 
 public class RandomColorStyler<T> extends TileStylerBase<T> {
-    public int level;
+    public int maxHexagonLevelToShow;
     public int depth;
     Map<T, Color> map = new HashMap<>();
     Random rand;
     private Color background;
 
-    public RandomColorStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int seed) {
+    public RandomColorStyler(Tree2<T> tree, Grid<T> grid, int maxHexagonLevelToShow, Color background, int seed) {
         super(tree, grid);
-        initSyler(level, background, seed);
+        initSyler(maxHexagonLevelToShow, background, seed);
         System.out.println("Creating: " + this.getClass().getName());
+    }
+
+    public RandomColorStyler(Tree2 tree, Grid grid) {
+        this(tree, grid, 100, Color.AQUAMARINE, 0);
     }
 
     private void initSyler(int level, Color background, int seed){
         this.background = background;
         this.rand = new Random(seed);
-        this.level = level;
+        this.maxHexagonLevelToShow = level;
         rec(tree.getRoot(), null);
     }
 
@@ -33,10 +37,10 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
         initSyler(level, background, seed);
     }
 
-    void rec(T leaf, Color color){
+    private void rec(T leaf, Color color){
         if (leaf == null)
             return;
-        if (tree.getDepth(leaf) <= level)
+        if (tree.getDepth(leaf) <= maxHexagonLevelToShow)
             color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0);
         else
             new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0);
@@ -47,11 +51,6 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
             rec(child, color);
         }
         depth = Math.max(tree.getDepth(leaf), depth);
-    }
-
-
-    public RandomColorStyler(Tree2 tree, Grid grid) {
-        this(tree, grid, 100, Color.AQUAMARINE, 0);
     }
 
     @Override
