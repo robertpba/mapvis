@@ -19,7 +19,6 @@ public class TreeTableViewModelAdapter {
 
     private TreeItem<Node> translateTree(Node p){
         TreeItem<Node> item = new TreeItem<>(p);
-
         for (Node child : tree.getChildren(p)) {
             item.getChildren().add(translateTree(child));
         }

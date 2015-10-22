@@ -48,30 +48,13 @@ class HexagonRender {
         };
     }
 
-    public void drawHexagon(GraphicsContext g,int x, int y) {
+    public void drawHexagon(GraphicsContext g, int x, int y) {
         TileStyler<Node> styler = view.getStyler();
 
         if (!styler.isVisible(x,y))
             return;
-        Color col = null;
-//        try {
-
-            col = styler.getColor(x,y);
-//            if(col == null){
-//                System.out.println("col null");
-//                return;
-//
-//            }
-//        }catch (NullPointerException ex){
-//            System.out.println("nULL");
-//        }
-
-//        try {
-            g.setFill(col);
-//        }catch (NullPointerException ex){
-//            System.out.println("nULL");
-//        }
-
+        Color col = styler.getColor(x,y);
+        g.setFill(col);
 
         g.fillPolygon(this.x,this.y,this.x.length);
 

@@ -23,4 +23,6 @@ public interface Tree2<T> extends Tree<T>
     boolean isAncestorOf(T ancestor, T decedent);
 
     boolean isSibling(T o1, T o2);
+
+
 }

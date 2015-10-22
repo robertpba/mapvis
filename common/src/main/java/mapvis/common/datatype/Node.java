@@ -8,6 +8,7 @@ public class Node{
     String id = "";
     String label = "";
     private List<Node> children = new ArrayList<>();
+    private Map<Object,Object> data = new HashMap<>();
 
     protected Node(){
 
@@ -25,7 +26,7 @@ public class Node{
         this.data = data;
     }
 
-    private  Map<Object,Object> data = new HashMap<>();
+
 
     public String getLabel() {
         return label;
@@ -39,6 +40,17 @@ public class Node{
     }
     public void setId(String id) {
         this.id = id;
+    }
+
+    public double getSize() {
+        Object size = data.get("size");
+        if(size == null){
+            return 0.0;
+        }
+        return (double) size;
+    }
+    public void setSize(double size) {
+        data.put("size", size);
     }
 
     public Object getVal(String key) {

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
@@ -41,9 +42,15 @@ public class ChartController implements Initializable  {
     @FXML
     public ColorPicker colorPicker;
 
+    @FXML
+    public ChoiceBox bordersLevelsToShowChoiceBox;
+
+    @FXML
+    private CheckBox showLabelsCheckBox;
 
     public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+
 
     public ChartController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -57,6 +64,10 @@ public class ChartController implements Initializable  {
                 .bind(chart.originXProperty().asString());
         originY.textProperty()
                 .bind(chart.originXProperty().asString());
+        showLabelsCheckBox.selectedProperty()
+                .bindBidirectional(chart.areLabelsShownProperty());
+        bordersLevelsToShowChoiceBox.valueProperty()
+                .bindBidirectional(chart.maxLevelOfBordersToShowProperty());
 
         grid.bindBidirectional(chart.gridProperty());
         tree.bindBidirectional(chart.treeProperty());
@@ -74,11 +85,12 @@ public class ChartController implements Initializable  {
             System.out.printf("%s node:%s, weight:%d %s\n", point, node.getLabel(), tree.get().getWeight(node), sb.toString());
         });
 
-        grid.addListener(e->{
+//        grid.addListener(e->{
 //            chart.updateHexagons();
-        });
+//        });
         levelChoiceBox.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
+//        bordersLevelsToShowChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 
     @FXML

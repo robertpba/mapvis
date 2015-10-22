@@ -35,7 +35,7 @@ public class Method1<T> {
             children.forEach(this::recursive);
             int level = tree.getDepth(o);
 
-            //if (level == 1)
+            //if (maxHexagonLevelToShow == 1)
             //addPadding(o,5);
 
 
@@ -67,6 +67,7 @@ public class Method1<T> {
         int count = tree.getWeight(o);
 
         while (count-->0) {
+
             ArrayList<Tile<T>> prepare = new ArrayList<>();
             Pos pos = findStartPoint(o);
             Tile<T> tile = new Tile<>(pos, o);
