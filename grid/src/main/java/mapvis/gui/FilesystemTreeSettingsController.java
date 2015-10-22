@@ -38,7 +38,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
         this.treeGenerator = new TreeGenerator();
 //        this.selectedDirectoryTextfield.textProperty().bind(this.selectedDirectory);
         this.directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select the Directory to visualize");
+        this.directoryChooser.setTitle("Select the Directory to visualize");
     }
 
     @Override
