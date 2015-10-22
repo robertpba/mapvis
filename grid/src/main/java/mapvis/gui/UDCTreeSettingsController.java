@@ -34,7 +34,6 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
 
     @Override
     public MPTreeImp<Node> generateTree(ActionEvent event) {
-//        Node udcDree = ParseUDC.createUDCTree();
         parser.configure("D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf");
         Node udcNodes = parser.generateUDCCathegories();
 
