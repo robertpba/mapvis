@@ -47,6 +47,9 @@ public class DatasetSelectionController implements Initializable {
     @FXML
     private UDCTreeSettingsController udcTreeSettingsController;
 
+    @FXML
+    private LoadDumpedTreeSettingsController loadDumpedTreeSettingsController;
+
     private TreeStatistics lastTreeStatistics;
 
     public DatasetSelectionController() {
@@ -56,7 +59,9 @@ public class DatasetSelectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatasetSelectionController");
-        inputSourceComboBox.getItems().addAll(filesystemTreeSettingsController, randomTreeSettingsController, udcTreeSettingsController);
+        inputSourceComboBox.getItems().addAll(
+                filesystemTreeSettingsController, randomTreeSettingsController,
+                udcTreeSettingsController, loadDumpedTreeSettingsController);
         inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
@@ -107,29 +112,19 @@ public class DatasetSelectionController implements Initializable {
         if(activeDatasetGenerator == null){
             return;
         }
-        MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+        MPTreeImp<Node> generatedTree = null;
+        try {
+            generatedTree = activeDatasetGenerator.generateTree(event);
+        } catch (FileNotFoundException e) {
+            logTextToInfoArea("reading data failed: " + e);
+            return;
+        }
         setTreeModel(generatedTree);
         logTextToInfoArea("reading data finished");
         lastTreeStatistics = NodeUtils.getTreeDepthStatistics(generatedTree.getRoot());
         logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
     }
 
-    @FXML
-    private void loadFile(ActionEvent event) throws FileNotFoundException {
-        //TreeLoader loader = new TreeLoader();
-        //loader.load("data/simple.txt");
-
-//        TreeLoader2 loader = new TreeLoader2();
-//        loader.load("data/university_data_tree.csv");
-//        Tree2<Node> treemodel = loader.convertToTreeModel();
-
-        Yaml yaml = new Yaml();
-        FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
-        Node node = yaml.loadAs(fileInputStream, Node.class);
-
-        MPTreeImp<Node> treeModel = MPTreeImp.from(node);
-        setTreeModel(treeModel);
-    }
 
     private void setTreeModel(MPTreeImp<Node> treeModel)
     {

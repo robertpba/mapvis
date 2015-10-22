@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="vBox" prefHeight="26.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.LoadDumpedTreeSettingsController">
+   <children>
+      <FlowPane prefHeight="26.0" prefWidth="325.0">
+         <children>
+            <TextField fx:id="selectedFileTextfield" editable="false" prefHeight="25.0" prefWidth="223.0" promptText="select the dumped Node File to visualize" />
+            <Button mnemonicParsing="false" onAction="#onSelectDumpfile" text="Select Tree" />
+         </children>
+      </FlowPane>
+   </children>
+</VBox>

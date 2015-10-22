@@ -47,7 +47,7 @@ public class RandomTreeGenerator {
 //        return mptree;
 //    }
 
-    void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
+    private void getTree(MPTreeImp<Node> tree, Node node, int level, int maxLevel, int span, int weight){
         if (level > maxLevel){
             return ;
         }

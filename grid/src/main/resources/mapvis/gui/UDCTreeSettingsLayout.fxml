@@ -8,7 +8,7 @@
    <children>
       <FlowPane prefHeight="26.0" prefWidth="325.0">
          <children>
-            <Label text="Placeholder" />
+            <CheckBox fx:id="dumpToFileCheckbox" mnemonicParsing="false" text="Dump generated Tree" />
          </children>
       </FlowPane>
    </children>
