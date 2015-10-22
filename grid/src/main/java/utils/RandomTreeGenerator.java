@@ -30,7 +30,7 @@ public class RandomTreeGenerator {
 //            tree.addChild(node, child, rn.nextInt(weight));
 //
 //            if(getTree(tree, child, level+1, maxLevel, span, weight))
-//                node.getChildren().add(child);
+//                node.getDirectChildren().add(child);
 //            size += child.getSize();
 //        }
 //       node.setSize(size);
