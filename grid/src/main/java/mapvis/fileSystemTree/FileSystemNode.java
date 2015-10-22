@@ -1,5 +1,6 @@
 package mapvis.fileSystemTree;
 
+import mapvis.common.datatype.ITreeNode;
 
 import java.io.File;
 import java.util.Arrays;
@@ -7,26 +8,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by dacc on 10/8/2015.
+ * Created by dacc on 10/22/2015.
  */
 public class FilesystemNode extends File implements ITreeNode {
 
-    public FilesystemNode(String filePath) {
-        super(filePath);
+    public FilesystemNode(String pathname) {
+        super(pathname);
     }
 
     @Override
-    public List<ITreeNode> getChildren() {
+    public List<ITreeNode> getDirectChildren() {
         List<ITreeNode> result = Arrays.asList(this.listFiles())
                 .stream()
-                .filter(file -> file.isDirectory())
-                .map(file1 -> new FilesystemNode(file1.getPath()))
+                .map(file -> new FilesystemNode(file.getPath()))
                 .collect(Collectors.<ITreeNode>toList());
         return result;
     }
 
     @Override
-    public String getName() {
-        return super.getName();
+    public NodeType getNodeType() {
+        if(this.isFile()){
+            return NodeType.Leaf;
+        }else{
+            if(this.isDirectory()){
+                return NodeType.Node;
+            }
+        }
+        return NodeType.Undefined;
     }
 }
