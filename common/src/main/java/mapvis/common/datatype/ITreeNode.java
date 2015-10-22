@@ -1,6 +1,6 @@
 package mapvis.common.datatype;
 
-import mapvis.udcTree.UDCCathegory;
+
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface ITreeNode {
         Undefined
     }
 
-    List<UDCCathegory> getDirectChildren();
+    List<? extends ITreeNode> getDirectChildren();
 
     String getName();
 
