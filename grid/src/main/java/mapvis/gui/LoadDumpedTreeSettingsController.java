@@ -34,12 +34,7 @@ public class LoadDumpedTreeSettingsController implements Initializable, IDataset
     private Yaml yaml;
 
     @Override
-    public void setVisible(boolean isVisible) {
-        this.vBox.setVisible(isVisible);
-        this.fileChooser = new FileChooser();
-        this.fileChooser.setTitle("Select the dumped Tree to visualize");
-        this.selectedFile = null;
-        this.yaml = new Yaml();
+    public void initialize(URL location, ResourceBundle resources) {
     }
 
     @Override
@@ -53,17 +48,8 @@ public class LoadDumpedTreeSettingsController implements Initializable, IDataset
         return treeModel;
     }
 
-    @Override
-    public String toString() {
-        return "Tree Dump File";
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-    public void onSelectDumpfile(ActionEvent event) {
+    @FXML
+    private void onSelectDumpfile(ActionEvent event) {
         selectedFile = fileChooser.showOpenDialog(vBox.getScene().getWindow());
         //Choosing file was aborted?
         if(selectedFile == null || !selectedFile.exists()){
@@ -72,5 +58,20 @@ public class LoadDumpedTreeSettingsController implements Initializable, IDataset
 
         System.out.printf("Path:" + selectedFile.getPath());
         selectedFileTextfield.setText(selectedFile.getPath());
+    }
+
+    @Override
+    public String toString() {
+        return "Tree Dump File";
+    }
+
+
+    @Override
+    public void setVisible(boolean isVisible) {
+        this.vBox.setVisible(isVisible);
+        this.fileChooser = new FileChooser();
+        this.fileChooser.setTitle("Select the dumped Tree to visualize");
+        this.selectedFile = null;
+        this.yaml = new Yaml();
     }
 }
