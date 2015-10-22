@@ -1,7 +1,5 @@
 package mapvis.gui;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,16 +25,16 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     @FXML
     private VBox vBox;
 
-    private FilesystemTreeGenerator treeGenerator;
-//    private FilesystemNodeWithSize filesystemNode;
-//    private String selectedDirectory;
+    private TreeGenerator treeGenerator;
+
     public File selectedDirectory;
 
     DirectoryChooser directoryChooser;
 
     public FilesystemTreeSettingsController() {
         System.out.println("Creating: " + this.getClass().getName());
-        this.treeGenerator = new FilesystemTreeGenerator();
+//        this.treeGenerator = new FilesystemTreeGenerator();
+        this.treeGenerator = new TreeGenerator();
 //        this.selectedDirectoryTextfield.textProperty().bind(this.selectedDirectory);
         this.directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select the Directory to visualize");
@@ -55,6 +53,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
             return;
         }
         selectedDirectory = selectedFolder;
+        treeGenerator.configure(new FilesystemNode(selectedFolder.getPath()));
         System.out.printf("Path:" + selectedFolder.getPath());
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
     }
@@ -66,11 +65,10 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
 
     @Override
     public MPTreeImp<Node> generateTree(ActionEvent event) {
-
         if(selectedDirectory == null || !selectedDirectory.exists())
             return MPTreeImp.from(new Node(Integer.toString(0), "root"));
 
-        Node generatedTree = treeGenerator.genTree(selectedDirectory);
+        Node generatedTree = treeGenerator.genTree();
         MPTreeImp<Node> treeModel = MPTreeImp.from(generatedTree);
         return treeModel;
     }

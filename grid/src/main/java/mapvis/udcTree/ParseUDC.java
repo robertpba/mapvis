@@ -33,6 +33,15 @@ public class ParseUDC {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
+        try {
+//            csvWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("udc.csv"), "utf-8"));
+            yamlWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("udc.yaml"), "utf-8"));
+            dumMainTableToYaml();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return UDCRootNodes.get(1);
     }
 
@@ -110,7 +119,7 @@ public class ParseUDC {
         DocumentBuilder db = dbf.newDocumentBuilder();
 
         try {
-            FileInputStream in = new FileInputStream(new File("D:/repository/mapvis_martin/udcpreprocessing_xml/udcsummary-skos.rdf"));
+            FileInputStream in = new FileInputStream(new File("D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf"));
             Document doc = db.parse(in, "UTF-8");
 
             NodeList nList = doc.getElementsByTagName("skos:Concept");

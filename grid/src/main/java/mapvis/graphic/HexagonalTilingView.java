@@ -150,7 +150,7 @@ public class HexagonalTilingView extends Pane {
             drawLabels(posmap, g);
         }
 
-        //getChildren().setAll(canvas);
+        //getDirectChildren().setAll(canvas);
         g.restore();
     }
 
