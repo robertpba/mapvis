@@ -17,6 +17,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.TreeStatistics;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
@@ -37,6 +38,7 @@ public class HexagonalTilingView extends Pane {
     private ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
     private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
+
 
     private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private IntegerProperty maxLevelOfLabelsToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
@@ -340,11 +342,8 @@ public class HexagonalTilingView extends Pane {
     public void setMaxLevelOfBordersToShow(int maxLevelOfBordersToShow) { this.maxLevelOfBordersToShow.set(maxLevelOfBordersToShow );    }
 
     public int getMaxLevelOfLabelsToShow() {return maxLevelOfLabelsToShow.get(); }
-
     public IntegerProperty maxLevelOfLabelsToShowProperty() {return maxLevelOfLabelsToShow; }
-
-    public void setMaxLevelOfLabelsToShow(int maxLevelOfLabelsToShow) {this.maxLevelOfLabelsToShow.set(maxLevelOfLabelsToShow );
-    }
+    public void setMaxLevelOfLabelsToShow(int maxLevelOfLabelsToShow) {this.maxLevelOfLabelsToShow.set(maxLevelOfLabelsToShow );    }
 
     public void zoom(double scale){
         Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
@@ -464,5 +463,6 @@ public class HexagonalTilingView extends Pane {
 
         zoom(pivot, scale);
     }
+
 
 }

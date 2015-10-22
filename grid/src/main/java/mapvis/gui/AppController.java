@@ -49,7 +49,7 @@ public class AppController implements Initializable {
 
         ObjectBinding db = new ObjectBinding() {
             {
-                super.bind(chartController.levelChoiceBox.valueProperty(),
+                super.bind(chartController.levelsToShowSlider.valueProperty(),
                         chartController.colorPicker.valueProperty(),
                         chartController.colorscheme,
                         tree,
@@ -73,12 +73,12 @@ public class AppController implements Initializable {
                 if (s.equals("random")){
                     if(randomStyler == null){
                         randomStyler = new RandomColorStyler<>(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get(),
                                 1);
                     }else{
                         randomStyler.resetStyler(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get(),
                                 1);
                     }
@@ -88,11 +88,11 @@ public class AppController implements Initializable {
                 if (s.equals("ramp")){
                     if(rampColorStyler == null){
                         rampColorStyler = new RampColorStyler<>(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get());
                     }else{
                         rampColorStyler.resetStyler(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get());
                     }
                     return rampColorStyler;
@@ -105,8 +105,8 @@ public class AppController implements Initializable {
         chartController.chart.stylerProperty().bind(db);
 
         datasetSelectionController.chart = chartController.chart;
-
-        tree.addListener((v, o, n)-> {
+        chartController.treeStatisticsProperty().bind(datasetSelectionController.lastTreeStatistics);
+        tree.addListener((v, o, n) -> {
             TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree.get());
             TreeItem<Node> root = adapter.getRoot();
             root.setExpanded(true);

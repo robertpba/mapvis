@@ -26,53 +26,12 @@
                             <children>
                         <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" />
-                              <ChoiceBox fx:id="levelChoiceBox">
-                                 <items>
-                                 <FXCollections fx:factory="observableArrayList">
-                                    <Integer fx:value="100" />
-                                    <Integer fx:value="1" />
-                                    <Integer fx:value="2" />
-                                    <Integer fx:value="3" />
-                                    <Integer fx:value="4" />
-                                    <Integer fx:value="5" />
-                                 </FXCollections>
-                                 </items>
-                                 <value>
-                              <Integer fx:value="100" />
-                           </value>
-                              </ChoiceBox>
+                                <Slider fx:id="levelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="1" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxBorders" />
-                                <ChoiceBox fx:id="bordersLevelsToShowChoiceBox">
-                                    <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                            <Integer fx:value="100" />
-                                            <Integer fx:value="1" />
-                                            <Integer fx:value="2" />
-                                            <Integer fx:value="3" />
-                                            <Integer fx:value="4" />
-                                            <Integer fx:value="5" />
-                                        </FXCollections>
-                                    </items>
-                                    <value>
-                                        <Integer fx:value="100" />
-                                    </value>
-                                </ChoiceBox>
+                                <Slider fx:id="bordersLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="1" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLabels" />
-                                <ChoiceBox fx:id="labelLevelsToShowChoiceBox">
-                                    <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                            <Integer fx:value="100" />
-                                            <Integer fx:value="1" />
-                                            <Integer fx:value="2" />
-                                            <Integer fx:value="3" />
-                                            <Integer fx:value="4" />
-                                            <Integer fx:value="5" />
-                                        </FXCollections>
-                                    </items>
-                                    <value>
-                                        <Integer fx:value="100" />
-                                    </value>
-                                </ChoiceBox>
+                                <Slider fx:id="labelLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="1" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+
                                 <CheckBox fx:id="showLabelsCheckBox" mnemonicParsing="false" text="Show Labels"/>
                         <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
                            <toggleGroup>

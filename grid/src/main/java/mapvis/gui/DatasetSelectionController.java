@@ -50,7 +50,8 @@ public class DatasetSelectionController implements Initializable {
     @FXML
     private LoadDumpedTreeSettingsController loadDumpedTreeSettingsController;
 
-    private TreeStatistics lastTreeStatistics;
+    public SimpleObjectProperty<TreeStatistics> lastTreeStatistics;
+//    private TreeStatistics lastTreeStatistics;
 
     public DatasetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -70,6 +71,7 @@ public class DatasetSelectionController implements Initializable {
                 dropLevelsTextField.setText(oldValue);
             }
         });
+        lastTreeStatistics = new SimpleObjectProperty<>();
     }
 
     private IDatasetGeneratorController getActiveDatasetGenerator() {
@@ -121,7 +123,7 @@ public class DatasetSelectionController implements Initializable {
         }
         setTreeModel(generatedTree);
         logTextToInfoArea("reading data finished");
-        lastTreeStatistics = NodeUtils.getTreeDepthStatistics(generatedTree.getRoot());
+        lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
         logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
     }
 
@@ -145,10 +147,10 @@ public class DatasetSelectionController implements Initializable {
             logTextToInfoArea("Dropping levels > " + levelsToDrop);
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
             TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
-            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics, cappedTreeStatistics);
+            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics.get(), cappedTreeStatistics);
             MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
-            lastTreeStatistics = cappedTreeStatistics;
+            lastTreeStatistics.set(cappedTreeStatistics);
             if(lastTreeStatistics == null || lastTreeStatistics == null){
                 logTextToInfoArea("Error dropping levels");
                 return;
