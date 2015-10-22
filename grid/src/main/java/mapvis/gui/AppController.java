@@ -26,7 +26,7 @@ public class AppController implements Initializable {
     public TreeTableView<Node> treeTableView;
 
     @FXML
-    private DatesetSelectionController datesetSelectionController;
+    private DatasetSelectionController datasetSelectionController;
 
     @FXML
     private RandomTreeSettingsController randomTreeSettingController;
@@ -42,8 +42,8 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init AppController");
-        tree.bindBidirectional(datesetSelectionController.tree);
-        grid.bindBidirectional(datesetSelectionController.grid);
+        tree.bindBidirectional(datasetSelectionController.tree);
+        grid.bindBidirectional(datasetSelectionController.grid);
         tree.bindBidirectional(chartController.tree);
         grid.bindBidirectional(chartController.grid);
 
@@ -104,7 +104,7 @@ public class AppController implements Initializable {
 
         chartController.chart.stylerProperty().bind(db);
 
-        datesetSelectionController.chart = chartController.chart;
+        datasetSelectionController.chart = chartController.chart;
 
         tree.addListener((v, o, n)-> {
             TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree.get());

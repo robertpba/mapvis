@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-public class DatesetSelectionController implements Initializable {
+public class DatasetSelectionController implements Initializable {
     private static final String INFO_AREA_PROCESS_SEPARATOR = "-------------";
     public TextArea infoArea;
     public Button generateTreeButton;
@@ -42,18 +42,22 @@ public class DatesetSelectionController implements Initializable {
     private RandomTreeSettingsController randomTreeSettingsController;
 
     @FXML
-    private FilesystemTreeSettingsController filsystemTreeSettingsController;
+    private FilesystemTreeSettingsController filesystemTreeSettingsController;
+
+    @FXML
+    private UDCTreeSettingsController udcTreeSettingsController;
+
     private TreeStatistics lastTreeStatistics;
 
-    public DatesetSelectionController() {
+    public DatasetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Init DatesetSelectionController");
-        inputSourceComboBox.getItems().addAll(filsystemTreeSettingsController, randomTreeSettingsController);
-        inputSourceComboBox.getSelectionModel().select(filsystemTreeSettingsController);
+        System.out.println("Init DatasetSelectionController");
+        inputSourceComboBox.getItems().addAll(filesystemTreeSettingsController, randomTreeSettingsController, udcTreeSettingsController);
+        inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
             System.out.println("first: " + !("".equals(newValue)) + " " + !newValue.matches("[0-9]"));

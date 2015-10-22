@@ -44,7 +44,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Init DatesetSelectionController");
+        System.out.println("Init DatasetSelectionController");
     }
 
     public MPTreeImp<Node> generateTree(ActionEvent event) {
