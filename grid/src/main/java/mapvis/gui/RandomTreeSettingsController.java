@@ -7,19 +7,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import mapvis.Impl.HashMapGrid;
-import mapvis.algo.Method1;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.NodeUtils;
-import org.yaml.snakeyaml.Yaml;
-import utils.RandomTreeGenerator;
+import mapvis.treeGenerator.RandomTreeGenerator;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 public class RandomTreeSettingsController implements Initializable, IDatasetGeneratorController {
     @FXML

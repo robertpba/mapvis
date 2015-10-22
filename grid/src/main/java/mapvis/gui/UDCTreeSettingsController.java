@@ -6,8 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.fileSystemTree.TreeGenerator;
-import mapvis.udcTree.UDCParser;
+import mapvis.treeGenerator.TreeGenerator;
+import mapvis.treeGenerator.UDCParser;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,7 +34,6 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
 
     @Override
     public MPTreeImp<Node> generateTree(ActionEvent event) {
-//        Node udcDree = ParseUDC.createUDCTree();
         parser.configure("D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf");
         Node udcNodes = parser.generateUDCCathegories();
 
