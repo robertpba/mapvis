@@ -1,6 +1,7 @@
 package mapvis.treeGenerator;
 
-import mapvis.common.datatype.ITreeNode;
+import mapvis.common.datatype.INode;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 
 /**
@@ -9,9 +10,9 @@ import mapvis.common.datatype.Node;
 public class TreeGenerator {
 
     private int id = 0;
-    private ITreeNode rootNode;
+    private INode rootNode;
 
-    public void configure(ITreeNode rootNode){
+    public void configure(INode rootNode){
         this.rootNode = rootNode;
     }
 
@@ -19,25 +20,25 @@ public class TreeGenerator {
         return id++;
     }
 
-    private Node createSingleNodeFromITreeNode(ITreeNode iTreeNode){
-        Node node = new Node(Integer.toString(getNewID()), iTreeNode.getName());
+    private Node createSingleNodeFromINode(INode iNode){
+        Node node = new Node(Integer.toString(getNewID()), iNode.getLabel());
         return node;
     }
 
-    private Node createNodeFromITreeNode(final ITreeNode iTreeNode) {
-        Node node = createSingleNodeFromITreeNode(iTreeNode);
+    private Node createNodeFromINode(final INode iNode) {
+        Node node = createSingleNodeFromINode(iNode);
 
         double countDirectLeafsOfNode = 0;
         double countChildLeafsOfNode = 0;
 
-        for (ITreeNode child : iTreeNode.getDirectChildren()) {
+        for (INode child : iNode.getChildren()) {
             // for directories the sum of the size of the subfolders is used
-            if(child.getNodeType() == ITreeNode.NodeType.Node){
-                Node childNode = createNodeFromITreeNode(child);
+            if(child.getNodeType() == INode.NodeType.Node){
+                Node childNode = createNodeFromINode(child);
                 node.getChildren().add(childNode);
                 countChildLeafsOfNode += (double) childNode.getVal("size");
                 // files are counted
-            }else if(child.getNodeType() == ITreeNode.NodeType.Leaf){
+            }else if(child.getNodeType() == INode.NodeType.Leaf){
                 countDirectLeafsOfNode += 1.0;
             }
         }
@@ -55,10 +56,10 @@ public class TreeGenerator {
 
 
     public Node genTree() {
-        if(rootNode == null || rootNode.getNodeType() == ITreeNode.NodeType.Undefined){
+        if(rootNode == null || rootNode.getNodeType() == INode.NodeType.Undefined){
             return new Node(Integer.toString(getNewID()), "undefined");
         }
-        Node rootTreeNode = createNodeFromITreeNode(rootNode);
+        Node rootTreeNode = createNodeFromINode(rootNode);
         return rootTreeNode;
     }
 }

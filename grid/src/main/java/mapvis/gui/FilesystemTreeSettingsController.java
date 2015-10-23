@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.treeGenerator.FilesystemNode;
@@ -65,12 +66,12 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     }
 
     @Override
-    public MPTreeImp<Node> generateTree(ActionEvent event) {
+    public MPTreeImp<INode> generateTree(ActionEvent event) {
         if(selectedDirectory == null || !selectedDirectory.exists())
             return MPTreeImp.from(new Node(Integer.toString(0), "root"));
 
         Node generatedTree = treeGenerator.genTree();
-        MPTreeImp<Node> treeModel = MPTreeImp.from(generatedTree);
+        MPTreeImp<INode> treeModel = MPTreeImp.from(generatedTree);
         return treeModel;
     }
 

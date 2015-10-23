@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.treeGenerator.FilesystemNode;
@@ -38,13 +39,13 @@ public class LoadDumpedTreeSettingsController implements Initializable, IDataset
     }
 
     @Override
-    public MPTreeImp<Node> generateTree(ActionEvent event) throws FileNotFoundException {
+    public MPTreeImp<INode> generateTree(ActionEvent event) throws FileNotFoundException {
         if(selectedFile == null || !selectedFile.exists())
             return MPTreeImp.from(new Node("", "error reading file"));
 
         FileInputStream fileInputStream = new FileInputStream(selectedFile);
         Node node = yaml.loadAs(fileInputStream, Node.class);
-        MPTreeImp<Node> treeModel = MPTreeImp.from(node);
+        MPTreeImp<INode> treeModel = MPTreeImp.from(node);
         return treeModel;
     }
 

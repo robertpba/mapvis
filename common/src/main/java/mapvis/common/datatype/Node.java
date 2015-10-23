@@ -4,12 +4,12 @@ package mapvis.common.datatype;
 import java.util.*;
 
 
-public class Node implements ITreeNode{
+public class Node implements INode {
 
     String id = "";
     String label = "";
-    private List<Node> children = new ArrayList<>();
-    private Map<Object,Object> data = new HashMap<>();
+    private List<INode> children = new ArrayList<>();
+    private Map<Object, Object> data = new HashMap<>();
 
     protected Node(){
 
@@ -61,28 +61,17 @@ public class Node implements ITreeNode{
         data.put(key, val);
     }
 
-    public List<Node> getChildren() {
+    public List<INode> getChildren() {
         return children;
     }
-    public void setChildren(List<Node> children) {
+    public void setChildren(List<INode> children) {
         this.children = children;
     }
 
-    @Override
-    public List<? extends ITreeNode> getDirectChildren() {
-        return children;
-    }
-
-    @Override
-    public String getName() {
-        return getLabel();
-    }
 
     @Override
     public NodeType getNodeType() {
-        if(getDirectChildren() == null)
-            return NodeType.Undefined;
-        if(getDirectChildren().size() == 0)
+        if(children == null || children.size() == 0)
             return NodeType.Leaf;
         return NodeType.Node;
     }

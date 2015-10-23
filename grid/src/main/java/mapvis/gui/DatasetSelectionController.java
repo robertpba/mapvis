@@ -24,9 +24,9 @@ public class DatasetSelectionController implements Initializable {
     public TextArea infoArea;
     public Button generateTreeButton;
 
-    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
+    public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Method1<INode>> method1 = new SimpleObjectProperty<>();
 
     public HexagonalTilingView chart;
 
@@ -114,7 +114,7 @@ public class DatasetSelectionController implements Initializable {
         if(activeDatasetGenerator == null){
             return;
         }
-        MPTreeImp<Node> generatedTree = null;
+        MPTreeImp<INode> generatedTree = null;
         try {
             generatedTree = activeDatasetGenerator.generateTree(event);
         } catch (FileNotFoundException e) {
@@ -128,14 +128,14 @@ public class DatasetSelectionController implements Initializable {
     }
 
 
-    private void setTreeModel(MPTreeImp<Node> treeModel)
+    private void setTreeModel(MPTreeImp<INode> treeModel)
     {
         tree.set(treeModel);
 
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 
-        Set<Node> leaves = tree.get().getLeaves();
+        Set<INode> leaves = tree.get().getLeaves();
 //        logTextToInfoArea(String.format("%d leaves", leaves.size()));
     }
 
@@ -148,7 +148,7 @@ public class DatasetSelectionController implements Initializable {
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
             TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
             TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics.get(), cappedTreeStatistics);
-            MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
+            MPTreeImp<INode> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
             lastTreeStatistics.set(cappedTreeStatistics);
             if(lastTreeStatistics == null || lastTreeStatistics.get() == null){

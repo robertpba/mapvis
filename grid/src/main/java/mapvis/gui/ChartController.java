@@ -14,6 +14,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 import mapvis.Drawer;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.TreeStatistics;
@@ -53,8 +54,8 @@ public class ChartController implements Initializable  {
     @FXML
     private CheckBox showLabelsCheckBox;
 
-    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
     private ObjectProperty<TreeStatistics> treeStatistics = new SimpleObjectProperty<>();
 
     public ChartController() {
@@ -81,7 +82,7 @@ public class ChartController implements Initializable  {
         chart.setOnMouseClicked(e -> {
             Point2D pl = chart.localToPlane(e.getX(), e.getY());
             Point2D point = chart.planeToHexagonal(pl.getX(), pl.getY());
-            Node node = grid.get().getItem((int) point.getX(), (int) point.getY());
+            INode node = grid.get().getItem((int) point.getX(), (int) point.getY());
             if (node == null)
                 return;
 

@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.NodeUtils;
@@ -41,7 +42,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
         System.out.println("Init DatasetSelectionController");
     }
 
-    public MPTreeImp<Node> generateTree(ActionEvent event) {
+    public MPTreeImp<INode> generateTree(ActionEvent event) {
         int span = DEFAULT_SPAN, weight = DEFAULT_WEIGHT, depth = DEFAULT_DEPTH, seed = DEFAULT_SEED;
         try {
             span = Integer.parseInt(spanField.getText());
@@ -61,7 +62,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
         catch (NumberFormatException ignored) {  }
 
         RandomTreeGenerator randomTreeGenerator = new RandomTreeGenerator(seed);
-        MPTreeImp<Node> genTree = randomTreeGenerator.getTree(depth, span, weight);
+        MPTreeImp<INode> genTree = randomTreeGenerator.getTree(depth, span, weight);
         NodeUtils.populateSize(genTree.getRoot());
         return genTree;
     }

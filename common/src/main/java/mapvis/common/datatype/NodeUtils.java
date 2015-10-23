@@ -5,15 +5,15 @@ import java.util.*;
 
 public class NodeUtils {
 
-    public static int rebuildId(Node root, int nextid) {
-        root.id = Integer.toString(nextid++);
-        for (Node child : root.getChildren()) {
+    public static int rebuildId(INode root, int nextid) {
+        root.setId(Integer.toString(nextid++));
+        for (INode child : root.getChildren()) {
             nextid = rebuildId(child, nextid);
         }
         return nextid;
     }
 
-    public static void populateSize(Node root)
+    public static void populateSize(INode root)
     {
         if(root.getChildren().size() == 0){
             root.setSize(-1);
@@ -31,8 +31,8 @@ public class NodeUtils {
 //            }
 //            sizeOfCurrentNode += child.getSize();
 //        }
-        List<Node> filteredChildren = new ArrayList<>();
-        for(Node child: root.getChildren()){
+        List<INode> filteredChildren = new ArrayList<>();
+        for(INode child: root.getChildren()){
             populateSize(child);
             if(child.getSize() < 0){
                 sizeOfCurrentNode++;
@@ -45,14 +45,14 @@ public class NodeUtils {
         root.setSize(sizeOfCurrentNode);
     }
 
-    public static void populateLevel(Node root, int level){
+    public static void populateLevel(INode root, int level){
         root.setVal("level", level);
-        for (Node child : root.getChildren()) {
+        for (INode child : root.getChildren()) {
             populateLevel(child, level + 1);
         }
     }
 
-    private static TreeStatistics getTreeStatisticsOfSubNode(final Node node, final int currDepth)
+    private static TreeStatistics getTreeStatisticsOfSubNode(final INode node, final int currDepth)
     {
         if(node.getSize() == 0 || node.getLabel().equals("*")){
             return TreeStatistics.createNew(currDepth, node.getLabel(), 0, 0);
@@ -61,7 +61,7 @@ public class NodeUtils {
         }
 
         TreeStatistics maxTreeDepthStatistics = TreeStatistics.createNew(0, node.getLabel());
-        for(Node child: node.getChildren()){
+        for(INode child: node.getChildren()){
             // children with no size are dummy nodes e.g. folder with no files
             if(child.getSize() == 0){
                 continue;
@@ -92,14 +92,14 @@ public class NodeUtils {
         return diffStats;
     }
 
-    public static TreeStatistics getTreeDepthStatistics(final Node node)
+    public static TreeStatistics getTreeDepthStatistics(final INode node)
     {
         TreeStatistics treeStatistics = getTreeStatisticsOfSubNode(node, 0);
         treeStatistics.sizeOfRootNode = (int) node.getSize();
         return treeStatistics;
     }
 
-    public static Node filterByDepth(final Node node, final int depth){
+    public static Node filterByDepth(final INode node, final int depth){
         if(depth == 0){
             Node cappedNode = new Node(node.getId(), node.getLabel());
             cappedNode.setSize(node.getSize());
@@ -107,7 +107,7 @@ public class NodeUtils {
         }
         Node subTreeNode = new Node(node.getId(), node.getLabel());
 //        List<Node> filteredChilds = new ArrayList<>();
-        for(Node child: node.getChildren()){
+        for(INode child: node.getChildren()){
             Node newChildNode = filterByDepth(child, depth - 1);
             subTreeNode.getChildren().add(newChildNode);
         }
@@ -115,7 +115,7 @@ public class NodeUtils {
         return subTreeNode;
     }
 
-    public static double filterBySize(Node root, double min, String sizeKey){
+    public static double filterBySize(INode root, double min, String sizeKey){
         if (sizeKey == null) sizeKey = "size";
 
         if (root.getChildren().isEmpty())
@@ -123,9 +123,9 @@ public class NodeUtils {
 
         double size = 0;
 
-        List<Node> removed = new LinkedList<>();
+        List<INode> removed = new LinkedList<>();
 
-        for (Node child : root.getChildren()) {
+        for (INode child : root.getChildren()) {
             double sizeChild = filterBySize(child, min, sizeKey);
             if (sizeChild < min)
                 removed.add(child);
@@ -139,11 +139,11 @@ public class NodeUtils {
         return size;
     }
 
-    public static List<Node> getLeaves(Node node){
+    public static List<INode> getLeaves(INode node){
         if (node.getChildren().isEmpty())
             return Arrays.asList(node);
 
-        ArrayList<Node> leaves = new ArrayList<>();
+        ArrayList<INode> leaves = new ArrayList<>();
 
         node.getChildren().stream()
                 .map(NodeUtils::getLeaves)
@@ -152,8 +152,8 @@ public class NodeUtils {
 
     }
 
-    public static List<Node> getDecedents(Node node){
-        ArrayList<Node> nodes = new ArrayList<>();
+    public static List<INode> getDecedents(INode node){
+        ArrayList<INode> nodes = new ArrayList<>();
 
         node.getChildren().stream()
                 .map(NodeUtils::getDecedents)

@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.TreeStatistics;
@@ -35,9 +36,9 @@ public class HexagonalTilingView extends Pane {
     private HexagonRender render;
     private Canvas canvas;
 
-    private ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-    private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
+    private ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
+    private ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
+    private ObjectProperty<TileStyler<INode>> styler = new SimpleObjectProperty<>();
 
 
     private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
@@ -140,7 +141,7 @@ public class HexagonalTilingView extends Pane {
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
 
-        List<Tile<Node>> tiles = new ArrayList<>();
+        List<Tile<INode>> tiles = new ArrayList<>();
 
         grid.get().foreach(t -> {
             if (isTileVisibleOnScreen(t, tl, br)) {
@@ -150,7 +151,7 @@ public class HexagonalTilingView extends Pane {
                 tiles.add(t);
         });
         if(areLabelsShown.get()){
-            Map<Node, Pos> posmap = mapLabelPos(tiles);
+            Map<INode, Pos> posmap = mapLabelPos(tiles);
             drawLabels(posmap, g);
         }
 
@@ -158,7 +159,7 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-    private boolean isTileVisibleOnScreen(Tile<Node> tile, Point2D topleftBorder, Point2D bottomRightBorder)
+    private boolean isTileVisibleOnScreen(Tile<INode> tile, Point2D topleftBorder, Point2D bottomRightBorder)
     {
         return tile.getX() > topleftBorder.getX()
                 && tile.getX() < bottomRightBorder.getX()
@@ -166,9 +167,9 @@ public class HexagonalTilingView extends Pane {
                 && tile.getY() < bottomRightBorder.getY();
     }
 
-    private void drawLabels(Map<Node, Pos> posmap, GraphicsContext g){
-        for (Map.Entry<Node, Pos> entry : posmap.entrySet()) {
-            Node node = entry.getKey();
+    private void drawLabels(Map<INode, Pos> posmap, GraphicsContext g){
+        for (Map.Entry<INode, Pos> entry : posmap.entrySet()) {
+            INode node = entry.getKey();
             Pos pos = entry.getValue();
             Point2D point2D = hexagonalToPlain(pos.getX(), pos.getY());
             //System.out.printf("%s\n", node.name);
@@ -192,16 +193,16 @@ public class HexagonalTilingView extends Pane {
     }
 
 
-    Map<Node, Pos> mapLabelPos(Collection<Tile<Node>> tiles){
-        Map<Node, List<Pos>> map = new HashMap<>();
+    Map<INode, Pos> mapLabelPos(Collection<Tile<INode>> tiles){
+        Map<INode, List<Pos>> map = new HashMap<>();
 
-        for (Tile<Node> tile : tiles) {
-            Node item = tile.getItem();
+        for (Tile<INode> tile : tiles) {
+            INode item = tile.getItem();
             if (item == null || tile.getTag() != Tile.LAND)
                 continue;
-            List<Node> pathToNode = tree.get().getPathToNode(item);
+            List<INode> pathToNode = tree.get().getPathToNode(item);
 
-            for (Node node : pathToNode) {
+            for (INode node : pathToNode) {
                 List<Pos> poslist = map.get(node);
                 if (poslist == null)
                     map.put(node, poslist= new ArrayList<>());
@@ -211,9 +212,9 @@ public class HexagonalTilingView extends Pane {
 
         }
 
-        Map<Node, Pos> posmap= new HashMap<>();
+        Map<INode, Pos> posmap= new HashMap<>();
 
-        for (Map.Entry<Node, List<Pos>> entry : map.entrySet()) {
+        for (Map.Entry<INode, List<Pos>> entry : map.entrySet()) {
             int x=0; int y=0; int n=0;
 
             for (Pos pos : entry.getValue()) {
@@ -269,7 +270,7 @@ public class HexagonalTilingView extends Pane {
         g.scale(scale, scale);
         g.translate(-topleft.getX(), -topleft.getY());
 
-        List<Tile<Node>> tiles = new ArrayList<>();
+        List<Tile<INode>> tiles = new ArrayList<>();
 
         grid.get().foreach(t -> {
             if (t.getX() >= minx
@@ -283,7 +284,7 @@ public class HexagonalTilingView extends Pane {
                 tiles.add(t);
         });
 
-        Map<Node, Pos> posmap = mapLabelPos(tiles);
+        Map<INode, Pos> posmap = mapLabelPos(tiles);
         //drawLabels(posmap, g);
 
 
@@ -309,17 +310,17 @@ public class HexagonalTilingView extends Pane {
     }
 
 
-    public ObjectProperty<Grid<Node>> gridProperty() { return this.grid; }
-    public final Grid<Node> getGrid() { return this.gridProperty().get(); }
-    public final void setGrid(Grid<Node> grid) { this.gridProperty().set(grid); }
+    public ObjectProperty<Grid<INode>> gridProperty() { return this.grid; }
+    public final Grid<INode> getGrid() { return this.gridProperty().get(); }
+    public final void setGrid(Grid<INode> grid) { this.gridProperty().set(grid); }
 
-    public ObjectProperty<Tree2<Node>> treeProperty() { return this.tree; }
-    public final Tree2<Node> getTree() { return this.treeProperty().get(); }
-    public final void setTree(Tree2<Node> tree) { this.treeProperty().set(tree); }
+    public ObjectProperty<Tree2<INode>> treeProperty() { return this.tree; }
+    public final Tree2<INode> getTree() { return this.treeProperty().get(); }
+    public final void setTree(Tree2<INode> tree) { this.treeProperty().set(tree); }
 
-    public ObjectProperty<TileStyler<Node>> stylerProperty() { return this.styler; }
-    public final TileStyler<Node> getStyler() { return this.stylerProperty().get(); }
-    public final void setStyler(TileStyler<Node> styler) { this.stylerProperty().set(styler); }
+    public ObjectProperty<TileStyler<INode>> stylerProperty() { return this.styler; }
+    public final TileStyler<INode> getStyler() { return this.stylerProperty().get(); }
+    public final void setStyler(TileStyler<INode> styler) { this.stylerProperty().set(styler); }
 
     public DoubleProperty zoomProperty() { return this.zoom; }
     public final double getZoom() { return this.zoomProperty().get(); }
@@ -403,8 +404,8 @@ public class HexagonalTilingView extends Pane {
         translateTransform = Affine.translate(originX.get(), newValue.doubleValue());
         updateHexagons();
     }
-    private void onStylerChange(ObservableValue<? extends TileStyler<Node>> observable,
-                        TileStyler<Node> oldValue, TileStyler<Node> newValue){
+    private void onStylerChange(ObservableValue<? extends TileStyler<INode>> observable,
+                        TileStyler<INode> oldValue, TileStyler<INode> newValue){
         updateHexagons();
     }
     private void onShowLabelsChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
