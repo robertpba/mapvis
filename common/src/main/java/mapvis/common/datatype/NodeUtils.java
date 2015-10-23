@@ -94,7 +94,9 @@ public class NodeUtils {
 
     public static TreeStatistics getTreeDepthStatistics(final Node node)
     {
-        return getTreeStatisticsOfSubNode(node, 0);
+        TreeStatistics treeStatistics = getTreeStatisticsOfSubNode(node, 0);
+        treeStatistics.sizeOfRootNode = (int) node.getSize();
+        return treeStatistics;
     }
 
     public static Node filterByDepth(final Node node, final int depth){
