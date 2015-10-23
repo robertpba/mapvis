@@ -62,7 +62,7 @@ public class UDCParser {
     private void resolveCathegoryToChildrenRelations() {
         mapvis.common.datatype.Node mainTableRootNode = null;
         for(mapvis.common.datatype.Node rootNode: UDCRootNodes){
-            if("MAIN TABLES".equals(rootNode.getLabel())){
+            if("AUXILIARY TABLES".equals(rootNode.getLabel())){
                 mainTableRootNode = rootNode;
             }
         }

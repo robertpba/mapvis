@@ -124,7 +124,7 @@ public class DatasetSelectionController implements Initializable {
         setTreeModel(generatedTree);
         logTextToInfoArea("reading data finished");
         lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
-        logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
+        logTextToInfoArea(lastTreeStatistics.get() != null ? lastTreeStatistics.get().toString() : "error reading statistics");
     }
 
 
@@ -151,14 +151,14 @@ public class DatasetSelectionController implements Initializable {
             MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
             lastTreeStatistics.set(cappedTreeStatistics);
-            if(lastTreeStatistics == null || lastTreeStatistics == null){
+            if(lastTreeStatistics == null || lastTreeStatistics.get() == null){
                 logTextToInfoArea("Error dropping levels");
                 return;
             }
             logTextToInfoArea("Dropping finished");
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("New Tree:");
-            logTextToInfoArea(lastTreeStatistics.toString());
+            logTextToInfoArea(lastTreeStatistics.get().toString());
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Diff to last tree:");
             logTextToInfoArea(diffTreeStatistics.toString());

@@ -90,6 +90,7 @@ public class ChartController implements Initializable  {
 
             System.out.printf("%s node:%s, weight:%d %s\n", point, node.getLabel(), tree.get().getWeight(node), sb.toString());
         });
+        
         treeStatistics.addListener((observable2, oldValue1, newValue1) -> {
             if(newValue1 == null)
                 return;
@@ -98,16 +99,6 @@ public class ChartController implements Initializable  {
             bordersLevelsToShowSlider.setMax(maxDeph);
             levelsToShowSlider.setMax(maxDeph);
         });
-//        labelLevelsToShowSlider.setValueChanging(true);
-//        tree.addListener((observable2, oldValue1, newValue1) -> {
-//            if(newValue1 == null || newValue1.getRoot() == null)
-//                return;
-//            int newDepth = newValue1.getDepth(newValue1.getRoot());
-//            labelLevelsToShowSlider.setMax(newDepth);
-//        });
-//        grid.addListener(e->{
-//            chart.updateHexagons();
-//        });
 
         levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
