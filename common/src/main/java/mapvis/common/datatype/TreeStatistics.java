@@ -6,6 +6,7 @@ package mapvis.common.datatype;
 public class TreeStatistics {
     public int maxDepth;
     public int numOfLeaves;
+    public int sizeOfRootNode;
     public int sumOfDepthsOfLeaves;
     public String maxDepthPathName;
     float averageDepth;
@@ -16,6 +17,7 @@ public class TreeStatistics {
         this.maxDepthPathName = maxDepthPathName;
         this.sumOfDepthsOfLeaves = 0;
         this.numOfLeaves = 0;
+        this.sizeOfRootNode = 0;
         this.autoCalcAverageDepth = true;
     }
 
@@ -25,6 +27,7 @@ public class TreeStatistics {
         this.sumOfDepthsOfLeaves = sumOfDepthsOfLeaves;
         this.numOfLeaves = numOfLeaves;
         this.autoCalcAverageDepth = true;
+        this.sizeOfRootNode = 0;
     }
 
     public static TreeStatistics createNew(final int maxDepth, final String maxDepthPathName, final int numOfLeaves, final int sumOfDepthsOfLeaves) {
@@ -38,6 +41,7 @@ public class TreeStatistics {
     public float calcAverageDepth() {
         if (numOfLeaves == 0)
             return 0;
+
         averageDepth = ((float) sumOfDepthsOfLeaves) / ((float) numOfLeaves);
         return averageDepth;
     }
@@ -48,6 +52,7 @@ public class TreeStatistics {
                 + "\nMax Depth:\t" + maxDepth
                 + "\nMax Path:\t\t" + maxDepthPathName
                 + "\nLeaves:\t\t" + numOfLeaves
+                + "\nSize of Root:\t" + sizeOfRootNode
                 + "\nAvg Depth:\t" + (autoCalcAverageDepth ? calcAverageDepth() : averageDepth);
     }
 }

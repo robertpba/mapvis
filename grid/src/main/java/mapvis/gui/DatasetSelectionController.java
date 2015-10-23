@@ -47,7 +47,11 @@ public class DatasetSelectionController implements Initializable {
     @FXML
     private UDCTreeSettingsController udcTreeSettingsController;
 
-    private TreeStatistics lastTreeStatistics;
+    @FXML
+    private LoadDumpedTreeSettingsController loadDumpedTreeSettingsController;
+
+    public SimpleObjectProperty<TreeStatistics> lastTreeStatistics;
+//    private TreeStatistics lastTreeStatistics;
 
     public DatasetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -56,7 +60,9 @@ public class DatasetSelectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatasetSelectionController");
-        inputSourceComboBox.getItems().addAll(filesystemTreeSettingsController, randomTreeSettingsController, udcTreeSettingsController);
+        inputSourceComboBox.getItems().addAll(
+                filesystemTreeSettingsController, randomTreeSettingsController,
+                udcTreeSettingsController, loadDumpedTreeSettingsController);
         inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
@@ -65,6 +71,7 @@ public class DatasetSelectionController implements Initializable {
                 dropLevelsTextField.setText(oldValue);
             }
         });
+        lastTreeStatistics = new SimpleObjectProperty<>();
     }
 
     private IDatasetGeneratorController getActiveDatasetGenerator() {
@@ -107,29 +114,19 @@ public class DatasetSelectionController implements Initializable {
         if(activeDatasetGenerator == null){
             return;
         }
-        MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+        MPTreeImp<Node> generatedTree = null;
+        try {
+            generatedTree = activeDatasetGenerator.generateTree(event);
+        } catch (FileNotFoundException e) {
+            logTextToInfoArea("reading data failed: " + e);
+            return;
+        }
         setTreeModel(generatedTree);
         logTextToInfoArea("reading data finished");
-        lastTreeStatistics = NodeUtils.getTreeDepthStatistics(generatedTree.getRoot());
-        logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
+        lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
+        logTextToInfoArea(lastTreeStatistics.get() != null ? lastTreeStatistics.get().toString() : "error reading statistics");
     }
 
-    @FXML
-    private void loadFile(ActionEvent event) throws FileNotFoundException {
-        //TreeLoader loader = new TreeLoader();
-        //loader.load("data/simple.txt");
-
-//        TreeLoader2 loader = new TreeLoader2();
-//        loader.load("data/university_data_tree.csv");
-//        Tree2<Node> treemodel = loader.convertToTreeModel();
-
-        Yaml yaml = new Yaml();
-        FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
-        Node node = yaml.loadAs(fileInputStream, Node.class);
-
-        MPTreeImp<Node> treeModel = MPTreeImp.from(node);
-        setTreeModel(treeModel);
-    }
 
     private void setTreeModel(MPTreeImp<Node> treeModel)
     {
@@ -150,18 +147,18 @@ public class DatasetSelectionController implements Initializable {
             logTextToInfoArea("Dropping levels > " + levelsToDrop);
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
             TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
-            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics, cappedTreeStatistics);
+            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics.get(), cappedTreeStatistics);
             MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
-            lastTreeStatistics = cappedTreeStatistics;
-            if(lastTreeStatistics == null || lastTreeStatistics == null){
+            lastTreeStatistics.set(cappedTreeStatistics);
+            if(lastTreeStatistics == null || lastTreeStatistics.get() == null){
                 logTextToInfoArea("Error dropping levels");
                 return;
             }
             logTextToInfoArea("Dropping finished");
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("New Tree:");
-            logTextToInfoArea(lastTreeStatistics.toString());
+            logTextToInfoArea(lastTreeStatistics.get().toString());
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Diff to last tree:");
             logTextToInfoArea(diffTreeStatistics.toString());

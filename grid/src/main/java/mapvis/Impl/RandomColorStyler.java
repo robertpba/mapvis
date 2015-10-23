@@ -32,7 +32,7 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
         rec(tree.getRoot(), null);
     }
 
-    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int seed){
+    public void resetStyler(Tree2 tree, Grid grid, int level, Color background, int seed){
         super.resetStyler(tree, grid);
         initSyler(level, background, seed);
     }

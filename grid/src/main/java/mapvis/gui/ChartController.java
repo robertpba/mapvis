@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import mapvis.Drawer;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.TreeStatistics;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
 
@@ -37,20 +38,24 @@ public class ChartController implements Initializable  {
     public Text originY;
 
     @FXML
-    public ChoiceBox<Integer> levelChoiceBox;
-
-    @FXML
     public ColorPicker colorPicker;
 
     @FXML
-    public ChoiceBox bordersLevelsToShowChoiceBox;
+    public Slider labelLevelsToShowSlider;
+    @FXML
+    public Slider bordersLevelsToShowSlider;
+    @FXML
+    public Slider levelsToShowSlider;
+
+    @FXML
+    private ChoiceBox labelLevelsToShowChoiceBox;
 
     @FXML
     private CheckBox showLabelsCheckBox;
 
     public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-
+    private ObjectProperty<TreeStatistics> treeStatistics = new SimpleObjectProperty<>();
 
     public ChartController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -66,9 +71,10 @@ public class ChartController implements Initializable  {
                 .bind(chart.originXProperty().asString());
         showLabelsCheckBox.selectedProperty()
                 .bindBidirectional(chart.areLabelsShownProperty());
-        bordersLevelsToShowChoiceBox.valueProperty()
+        bordersLevelsToShowSlider.valueProperty()
                 .bindBidirectional(chart.maxLevelOfBordersToShowProperty());
-
+        labelLevelsToShowSlider.valueProperty()
+                .bindBidirectional(chart.maxLevelOfLabelsToShowProperty());
         grid.bindBidirectional(chart.gridProperty());
         tree.bindBidirectional(chart.treeProperty());
 
@@ -84,12 +90,19 @@ public class ChartController implements Initializable  {
 
             System.out.printf("%s node:%s, weight:%d %s\n", point, node.getLabel(), tree.get().getWeight(node), sb.toString());
         });
+        
+        treeStatistics.addListener((observable2, oldValue1, newValue1) -> {
+            if(newValue1 == null)
+                return;
+            int maxDeph = newValue1.maxDepth;
+            labelLevelsToShowSlider.setMax(maxDeph);
+            bordersLevelsToShowSlider.setMax(maxDeph);
+            levelsToShowSlider.setMax(maxDeph);
+        });
 
-//        grid.addListener(e->{
-//            chart.updateHexagons();
-//        });
-        levelChoiceBox.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
+        levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
+
 //        bordersLevelsToShowChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 
@@ -124,4 +137,9 @@ public class ChartController implements Initializable  {
     public void onChooseRamp(ActionEvent event){
         colorscheme.set("ramp");
     }
+
+    public TreeStatistics getTreeStatistics() {return treeStatistics.get(); }
+    public ObjectProperty<TreeStatistics> treeStatisticsProperty() {return treeStatistics;  }
+    public void setTreeStatistics(TreeStatistics treeStatistics) {this.treeStatistics.set(treeStatistics);  }
+
 }

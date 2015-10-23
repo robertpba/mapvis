@@ -17,6 +17,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.TreeStatistics;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
 import mapvis.models.Tile;
@@ -38,7 +39,9 @@ public class HexagonalTilingView extends Pane {
     private ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
     private ObjectProperty<TileStyler<Node>> styler = new SimpleObjectProperty<>();
 
+
     private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
+    private IntegerProperty maxLevelOfLabelsToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private BooleanProperty areLabelsShown = new SimpleBooleanProperty(true);
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     private DoubleProperty originX = new SimpleDoubleProperty(0);
@@ -62,7 +65,8 @@ public class HexagonalTilingView extends Pane {
         zoom.addListener(this::onZoomChange);
         styler.addListener(this::onStylerChange);
         areLabelsShown.addListener(this::onShowLabelsChanged);
-        maxLevelOfBordersToShow.addListener(this::onBorderLevelToShowChanged);
+        maxLevelOfBordersToShow.addListener(this::onBorderLevelsToShowChanged);
+        maxLevelOfLabelsToShow.addListener(this::onLabelLevelsToShowChanged);
     }
 
     private void initHexagonTilingView(){
@@ -169,17 +173,18 @@ public class HexagonalTilingView extends Pane {
             Point2D point2D = hexagonalToPlain(pos.getX(), pos.getY());
             //System.out.printf("%s\n", node.name);
             int level = tree.get().getDepth(node);
-            if (level == 0)
+            if (level == 0 || level > maxLevelOfLabelsToShow.get())
                 continue;
-
-            if (level == 1)
-                g.setFont(new Font(80));
-            else if (level == 2)
-                g.setFont(new Font(42));
-            else if (level == 3)
-                g.setFont(new Font(28));
-            else
-                continue;
+            int fontSize = (int) (80 / Math.log(level + 1));
+            g.setFont(new Font(fontSize));
+//            if (level == 1)
+//                g.setFont(new Font(80));
+//            else if (level == 2)
+//                g.setFont(new Font(42));
+//            else if (level == 3)
+//                g.setFont(new Font(28));
+//            else
+//                continue;
 
             g.setFill(Color.BLACK);
             g.fillText(node.getLabel(), point2D.getX(), point2D.getY());
@@ -336,6 +341,10 @@ public class HexagonalTilingView extends Pane {
     public IntegerProperty maxLevelOfBordersToShowProperty() { return maxLevelOfBordersToShow;}
     public void setMaxLevelOfBordersToShow(int maxLevelOfBordersToShow) { this.maxLevelOfBordersToShow.set(maxLevelOfBordersToShow );    }
 
+    public int getMaxLevelOfLabelsToShow() {return maxLevelOfLabelsToShow.get(); }
+    public IntegerProperty maxLevelOfLabelsToShowProperty() {return maxLevelOfLabelsToShow; }
+    public void setMaxLevelOfLabelsToShow(int maxLevelOfLabelsToShow) {this.maxLevelOfLabelsToShow.set(maxLevelOfLabelsToShow );    }
+
     public void zoom(double scale){
         Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
         zoom(center, scale);
@@ -401,8 +410,12 @@ public class HexagonalTilingView extends Pane {
     private void onShowLabelsChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
         updateHexagons();
     }
-    private void onBorderLevelToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+    private void onBorderLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         styler.get().setMaxBorderLevelToShow(newValue.intValue());
+        updateHexagons();
+    }
+
+    private void onLabelLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         updateHexagons();
     }
 
@@ -450,4 +463,6 @@ public class HexagonalTilingView extends Pane {
 
         zoom(pivot, scale);
     }
+
+
 }
