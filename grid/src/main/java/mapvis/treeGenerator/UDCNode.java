@@ -73,11 +73,23 @@ public class UDCNode implements INode {
 
     @Override
     public String getLabel() {
-        return null;
+        return node.getLabel();
     }
 
     @Override
     public NodeType getNodeType() {
+        if(node.getChildren() == null)
+            return NodeType.Leaf;
+        return null;
+    }
+
+    @Override
+    public void setNodeState(NodeState newState) {
+
+    }
+
+    @Override
+    public NodeState getNodeState() {
         return null;
     }
 //

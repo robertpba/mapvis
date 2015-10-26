@@ -124,7 +124,9 @@ public class DatasetSelectionController implements Initializable {
         setTreeModel(generatedTree);
         logTextToInfoArea("reading data finished");
         lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
-        logTextToInfoArea(lastTreeStatistics.get() != null ? lastTreeStatistics.get().toString() : "error reading statistics");
+        logTextToInfoArea(lastTreeStatistics.get() != null ?
+                lastTreeStatistics.get().createStatisticsOverview(true)
+                : "error reading statistics");
     }
 
 
@@ -158,10 +160,10 @@ public class DatasetSelectionController implements Initializable {
             logTextToInfoArea("Dropping finished");
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("New Tree:");
-            logTextToInfoArea(lastTreeStatistics.get().toString());
+            logTextToInfoArea(lastTreeStatistics.get().createStatisticsOverview(false));
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Diff to last tree:");
-            logTextToInfoArea(diffTreeStatistics.toString());
+            logTextToInfoArea(diffTreeStatistics.createStatisticsOverview(true));
         }catch (NumberFormatException ex){
             return;
         }

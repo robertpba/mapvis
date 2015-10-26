@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  * Created by dacc on 10/22/2015.
  */
 public class FilesystemNode extends Node {
+
     private File file;
 
     public FilesystemNode(String pathname) {
@@ -21,11 +22,14 @@ public class FilesystemNode extends Node {
 
     @Override
     public List<INode> getChildren() {
-        List<INode> result = Arrays.asList(file.listFiles())
-                .stream()
-                .map(file -> new FilesystemNode(file.getPath()))
-                .collect(Collectors.<INode>toList());
-        return result;
+        if(getNodeState() == NodeState.created) {
+            List<INode> result = Arrays.asList(file.listFiles())
+                    .stream()
+                    .map(file -> new FilesystemNode(file.getPath()))
+                    .collect(Collectors.<INode>toList());
+            return result;
+        }
+        return super.getChildren();
     }
 
     @Override

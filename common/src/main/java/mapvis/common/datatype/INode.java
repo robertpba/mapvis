@@ -32,4 +32,12 @@ public interface INode {
         Undefined
     }
     NodeType getNodeType();
+
+    void setNodeState(NodeState newState);
+    NodeState getNodeState();
+
+    enum NodeState{
+        created,
+        connectedToTree
+    }
 }

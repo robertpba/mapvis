@@ -61,22 +61,37 @@ public class UDCParser {
     }
 
     private void resolveCathegoryToChildrenRelations() {
-        INode mainTableRootNode = null;
+        Node udcNode = new Node("-", "UDC");
+        int sizeUDCNode = 0;
         for(INode rootNode: UDCRootNodes){
-            if("AUXILIARY TABLES".equals(rootNode.getLabel())){
-                mainTableRootNode = rootNode;
-            }
+            List<INode> firstOrderCathegories = parentToSubnode.get(rootNode.getId());
+            firstOrderCathegories.stream().forEach(node -> {
+                setChildrenOfNode(node);
+            });
+            sizeUDCNode += rootNode.getSize();
+            rootNode.setChildren(firstOrderCathegories);
+            udcNode.getChildren().add(rootNode);
         }
+        rootNode = udcNode;
 
-        if(mainTableRootNode == null)
-            return;
 
-        List<INode> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
-        firstOrderCathegories.stream().forEach(node -> {
-            setChildrenOfNode(node);
-        });
-        mainTableRootNode.setChildren(firstOrderCathegories);
-        rootNode = mainTableRootNode;
+
+//        INode mainTableRootNode = null;
+//        for(INode rootNode: UDCRootNodes){
+//            if("MAIN TABLES".equals(rootNode.getLabel())){
+//                mainTableRootNode = rootNode;
+//            }
+//        }
+//
+//        if(mainTableRootNode == null)
+//            return;
+//
+//        List<INode> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
+//        firstOrderCathegories.stream().forEach(node -> {
+//            setChildrenOfNode(node);
+//        });
+//        mainTableRootNode.setChildren(firstOrderCathegories);
+//        rootNode = mainTableRootNode;
     }
 
     private void readUDC() throws ParserConfigurationException {
@@ -96,6 +111,7 @@ public class UDCParser {
                 if (nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     processConceptNode(eElement);
+
                 }
             }
         } catch (SAXException e) {
@@ -104,6 +120,7 @@ public class UDCParser {
             e.printStackTrace();
         }
     }
+    static int processedConceptNodes = 0;
 
     private void processConceptNode(Element conceptNode)  {
         NodeList childNodes = conceptNode.getChildNodes();
@@ -143,6 +160,6 @@ public class UDCParser {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        System.out.println("Concept: " + conceptName + " Parent: " + parentNodeID + " Label: " + englishLabel);
+//        System.out.println("Concept: " + conceptName + " Parent: " + parentNodeID + " Label: " + englishLabel);
     }
 }

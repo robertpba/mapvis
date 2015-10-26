@@ -174,6 +174,7 @@ public class HexagonalTilingView extends Pane {
             Point2D point2D = hexagonalToPlain(pos.getX(), pos.getY());
             //System.out.printf("%s\n", node.name);
             int level = tree.get().getDepth(node);
+
             if (level == 0 || level > maxLevelOfLabelsToShow.get())
                 continue;
             int fontSize = (int) (80 / Math.log(level + 1));

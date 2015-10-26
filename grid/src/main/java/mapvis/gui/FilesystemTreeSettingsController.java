@@ -10,7 +10,8 @@ import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.treeGenerator.FilesystemNode;
-import mapvis.treeGenerator.TreeGenerator;
+import mapvis.treeGenerator.ITreeGenerator;
+import mapvis.treeGenerator.TreeGeneratorSummedLeaves;
 
 import java.io.File;
 import java.net.URL;
@@ -27,7 +28,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     @FXML
     private VBox vBox;
 
-    private TreeGenerator treeGenerator;
+    private ITreeGenerator treeGenerator;
 
     public File selectedDirectory;
 
@@ -36,7 +37,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     public FilesystemTreeSettingsController() {
         System.out.println("Creating: " + this.getClass().getName());
 //        this.treeGenerator = new FilesystemTreeGenerator();
-        this.treeGenerator = new TreeGenerator();
+        this.treeGenerator = new TreeGeneratorSummedLeaves();
 //        this.selectedDirectoryTextfield.textProperty().bind(this.selectedDirectory);
         this.directoryChooser = new DirectoryChooser();
         this.directoryChooser.setTitle("Select the Directory to visualize");
@@ -70,7 +71,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
         if(selectedDirectory == null || !selectedDirectory.exists())
             return MPTreeImp.from(new Node(Integer.toString(0), "root"));
 
-        Node generatedTree = treeGenerator.genTree();
+        INode generatedTree = treeGenerator.genTree();
         MPTreeImp<INode> treeModel = MPTreeImp.from(generatedTree);
         return treeModel;
     }
