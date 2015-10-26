@@ -10,14 +10,18 @@ public class Node implements INode {
     String label = "";
     private List<INode> children = new ArrayList<>();
     private Map<Object, Object> data = new HashMap<>();
+    private NodeState nodeState;
+
+    private NodeState state;
 
     protected Node(){
-
+        nodeState = NodeState.created;
     }
 
     public Node(String id, String label) {
         setId(id);
         setLabel(label==null?"":label);
+        nodeState = NodeState.created;
     }
 
     public Map<Object, Object> getData() {
@@ -74,5 +78,15 @@ public class Node implements INode {
         if(children == null || children.size() == 0)
             return NodeType.Leaf;
         return NodeType.Node;
+    }
+
+    @Override
+    public void setNodeState(NodeState newState) {
+        nodeState = newState;
+    }
+
+    @Override
+    public NodeState getNodeState() {
+        return nodeState;
     }
 }

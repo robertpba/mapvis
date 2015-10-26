@@ -55,21 +55,24 @@ public class NodeUtils {
     private static TreeStatistics getTreeStatisticsOfSubNode(final INode node, final int currDepth)
     {
         if(node.getSize() == 0 || node.getLabel().equals("*")){
-            return TreeStatistics.createNew(currDepth, node.getLabel(), 0, 0);
+            return TreeStatistics.createNew(currDepth, node.getLabel(), 0, 0, 0);
         }else if(node.getChildren().size() == 0){
-            return TreeStatistics.createNew(currDepth, node.getLabel(), 1, currDepth);
+            return TreeStatistics.createNew(currDepth, node.getLabel(), 1, currDepth, 1);
         }
 
         TreeStatistics maxTreeDepthStatistics = TreeStatistics.createNew(0, node.getLabel());
+        maxTreeDepthStatistics.numOfNodes = 1;
         for(INode child: node.getChildren()){
             // children with no size are dummy nodes e.g. folder with no files
+//            maxTreeDepthStatistics.numOfNodes++;
             if(child.getSize() == 0){
                 continue;
             }
 
             TreeStatistics childStatistics = getTreeStatisticsOfSubNode(child, currDepth + 1);
-
+            maxTreeDepthStatistics.numOfNodes += childStatistics.numOfNodes;
             maxTreeDepthStatistics.numOfLeaves += childStatistics.numOfLeaves;
+
             maxTreeDepthStatistics.sumOfDepthsOfLeaves += childStatistics.sumOfDepthsOfLeaves;
             if(childStatistics.maxDepth > maxTreeDepthStatistics.maxDepth){
                 maxTreeDepthStatistics.maxDepthPathName = node.getLabel() + ("->" + childStatistics.maxDepthPathName);
@@ -85,8 +88,12 @@ public class NodeUtils {
         int diffNumOfLeaves = oldStats.numOfLeaves - newStats.numOfLeaves;
         int diffMaxDepth = oldStats.maxDepth - newStats.maxDepth;
         int diffSumOfDepthsOfLeaves = oldStats.sumOfDepthsOfLeaves - newStats.sumOfDepthsOfLeaves;
+        int diffNumOfNodes = oldStats.numOfNodes - newStats.numOfNodes;
+        int diffSizeOfRootNodes = oldStats.sizeOfRootNode - newStats.sizeOfRootNode;
         float diffAverageDepth = oldStats.calcAverageDepth() - newStats.calcAverageDepth();
-        TreeStatistics diffStats = TreeStatistics.createNew(-diffMaxDepth, "", -diffNumOfLeaves, -diffSumOfDepthsOfLeaves);
+        TreeStatistics diffStats = TreeStatistics.createNew(-diffMaxDepth, "", -diffNumOfLeaves,
+                -diffSumOfDepthsOfLeaves, -diffNumOfNodes);
+        diffStats.sizeOfRootNode = -diffSizeOfRootNodes;
         diffStats.autoCalcAverageDepth = false;
         diffStats.averageDepth = -diffAverageDepth;
         return diffStats;
@@ -96,6 +103,7 @@ public class NodeUtils {
     {
         TreeStatistics treeStatistics = getTreeStatisticsOfSubNode(node, 0);
         treeStatistics.sizeOfRootNode = (int) node.getSize();
+        treeStatistics.numOfNodes -= 1;//substract 1 to get #nodes without root
         return treeStatistics;
     }
 
