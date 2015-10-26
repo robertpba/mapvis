@@ -61,37 +61,39 @@ public class UDCParser {
     }
 
     private void resolveCathegoryToChildrenRelations() {
-        Node udcNode = new Node("-", "UDC");
-        int sizeUDCNode = 0;
-        for(INode rootNode: UDCRootNodes){
-            List<INode> firstOrderCathegories = parentToSubnode.get(rootNode.getId());
+        boolean showEntireUDC = false;
+        if(showEntireUDC) {
+            Node udcNode = new Node("-", "UDC");
+            int sizeUDCNode = 0;
+            for (INode rootNode : UDCRootNodes) {
+                List<INode> firstOrderCathegories = parentToSubnode.get(rootNode.getId());
+                firstOrderCathegories.stream().forEach(node -> {
+                    setChildrenOfNode(node);
+                });
+                sizeUDCNode += rootNode.getSize();
+                rootNode.setChildren(firstOrderCathegories);
+                udcNode.getChildren().add(rootNode);
+            }
+            rootNode = udcNode;
+        }else{
+            INode mainTableRootNode = null;
+            for(INode rootNode: UDCRootNodes){
+                if("MAIN TABLES".equals(rootNode.getLabel())){
+                    mainTableRootNode = rootNode;
+                }
+            }
+
+            if(mainTableRootNode == null)
+                return;
+
+            List<INode> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
             firstOrderCathegories.stream().forEach(node -> {
                 setChildrenOfNode(node);
             });
-            sizeUDCNode += rootNode.getSize();
-            rootNode.setChildren(firstOrderCathegories);
-            udcNode.getChildren().add(rootNode);
+            mainTableRootNode.setChildren(firstOrderCathegories);
+            rootNode = mainTableRootNode;
+
         }
-        rootNode = udcNode;
-
-
-
-//        INode mainTableRootNode = null;
-//        for(INode rootNode: UDCRootNodes){
-//            if("MAIN TABLES".equals(rootNode.getLabel())){
-//                mainTableRootNode = rootNode;
-//            }
-//        }
-//
-//        if(mainTableRootNode == null)
-//            return;
-//
-//        List<INode> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
-//        firstOrderCathegories.stream().forEach(node -> {
-//            setChildrenOfNode(node);
-//        });
-//        mainTableRootNode.setChildren(firstOrderCathegories);
-//        rootNode = mainTableRootNode;
     }
 
     private void readUDC() throws ParserConfigurationException {
