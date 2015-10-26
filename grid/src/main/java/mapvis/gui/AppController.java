@@ -10,6 +10,7 @@ import javafx.scene.control.TreeTableView;
 import mapvis.Impl.HashMapGrid;
 import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
@@ -23,7 +24,7 @@ import java.util.ResourceBundle;
 public class AppController implements Initializable {
 
     @FXML
-    public TreeTableView<Node> treeTableView;
+    public TreeTableView<INode> treeTableView;
 
     @FXML
     private DatasetSelectionController datasetSelectionController;
@@ -34,9 +35,9 @@ public class AppController implements Initializable {
     @FXML
     public ChartController chartController;
 
-    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<TileStyler<Node>> tileStyler = new SimpleObjectProperty<>();
+    public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<TileStyler<INode>> tileStyler = new SimpleObjectProperty<>();
 
 
     @Override
@@ -49,7 +50,7 @@ public class AppController implements Initializable {
 
         ObjectBinding db = new ObjectBinding() {
             {
-                super.bind(chartController.levelChoiceBox.valueProperty(),
+                super.bind(chartController.levelsToShowSlider.valueProperty(),
                         chartController.colorPicker.valueProperty(),
                         chartController.colorscheme,
                         tree,
@@ -73,12 +74,12 @@ public class AppController implements Initializable {
                 if (s.equals("random")){
                     if(randomStyler == null){
                         randomStyler = new RandomColorStyler<>(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get(),
                                 1);
                     }else{
                         randomStyler.resetStyler(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get(),
                                 1);
                     }
@@ -88,11 +89,11 @@ public class AppController implements Initializable {
                 if (s.equals("ramp")){
                     if(rampColorStyler == null){
                         rampColorStyler = new RampColorStyler<>(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get());
                     }else{
                         rampColorStyler.resetStyler(tree.get(), grid.get(),
-                                chartController.levelChoiceBox.valueProperty().get(),
+                                (int) chartController.levelsToShowSlider.valueProperty().get(),
                                 chartController.colorPicker.valueProperty().get());
                     }
                     return rampColorStyler;
@@ -105,10 +106,10 @@ public class AppController implements Initializable {
         chartController.chart.stylerProperty().bind(db);
 
         datasetSelectionController.chart = chartController.chart;
-
-        tree.addListener((v, o, n)-> {
+        chartController.treeStatisticsProperty().bind(datasetSelectionController.lastTreeStatistics);
+        tree.addListener((v, o, n) -> {
             TreeTableViewModelAdapter adapter = new TreeTableViewModelAdapter(tree.get());
-            TreeItem<Node> root = adapter.getRoot();
+            TreeItem<INode> root = adapter.getRoot();
             root.setExpanded(true);
             treeTableView.setRoot(root);
         });

@@ -205,16 +205,16 @@ public class MPTreeImp<T> implements Tree2<T> {
     }
 
 
-    public static MPTreeImp<Node> from(Node root) {
-        MPTreeImp<Node> tree = new MPTreeImp<>();
+    public static MPTreeImp<INode> from(INode root) {
+        MPTreeImp<INode> tree = new MPTreeImp<>();
         tree.setRoot(root);
         recAddChild(tree,root);
         tree.getRoot();
         return tree;
     }
 
-    private static void recAddChild(MPTreeImp<Node> tree, Node node){
-        for (Node child : node.getChildren()) {
+    private static void recAddChild(MPTreeImp<INode> tree, INode node){
+        for (INode child : node.getChildren()) {
             tree.addChild(node, child, (int)(double)child.getVal("size"));
             recAddChild(tree, child);
         }

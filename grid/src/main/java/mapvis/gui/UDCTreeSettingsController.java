@@ -7,9 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.treeGenerator.TreeGenerator;
+import mapvis.treeGenerator.ITreeGenerator;
+import mapvis.treeGenerator.TreeGeneratorSizeOneLeaves;
+import mapvis.treeGenerator.TreeGeneratorSummedLeaves;
 import mapvis.treeGenerator.UDCParser;
 import org.yaml.snakeyaml.Yaml;
 
@@ -29,14 +32,16 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
     private VBox vBox;
 
     private UDCParser parser;
-    private TreeGenerator treeGenerator;
+    private ITreeGenerator treeGenerator;
     private Yaml yaml;
     private BufferedWriter yamlWriter;
+    private BooleanProperty isDumpToFileEnabled = new SimpleBooleanProperty(false);
 
 
     public UDCTreeSettingsController(){
         parser = new UDCParser();
-        treeGenerator = new TreeGenerator();
+        treeGenerator = new TreeGeneratorSizeOneLeaves();
+//        treeGenerator = new TreeGeneratorSummedLeaves();
         yaml = new Yaml();
     }
 
@@ -46,11 +51,11 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
     }
 
     @Override
-    public MPTreeImp<Node> generateTree(ActionEvent event) {
+    public MPTreeImp<INode> generateTree(ActionEvent event) {
         parser.configure("D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf");
-        Node udcNodes = parser.generateUDCCathegories();
+        INode udcNodes = parser.generateUDCCathegories();
         treeGenerator.configure(udcNodes);
-        Node connectedUDCTree = treeGenerator.genTree();
+        INode connectedUDCTree = treeGenerator.genTree();
 
         if(isDumpToFileEnabled.get()){
             System.out.println("Dumping files!");
@@ -82,8 +87,6 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
     public BooleanProperty isDumpToFileEnabledProperty() {
         return isDumpToFileEnabled;
     }
-
-    private BooleanProperty isDumpToFileEnabled = new SimpleBooleanProperty(true);
 
     @Override
     public String toString() {

@@ -3,6 +3,7 @@ package mapvis.graphic;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.models.Dir;
 
@@ -49,7 +50,7 @@ class HexagonRender {
     }
 
     public void drawHexagon(GraphicsContext g, int x, int y) {
-        TileStyler<Node> styler = view.getStyler();
+        TileStyler<INode> styler = view.getStyler();
 
         if (!styler.isVisible(x,y))
             return;

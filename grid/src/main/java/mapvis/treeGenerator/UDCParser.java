@@ -1,5 +1,6 @@
 package mapvis.treeGenerator;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,9 +22,9 @@ import java.util.List;
  */
 public class UDCParser {
     private String path;
-    private List<Node> UDCRootNodes;
-    private HashMap<String, List<Node>> parentToSubnode;
-    private mapvis.common.datatype.Node rootNode;
+    private List<INode> UDCRootNodes;
+    private HashMap<String, List<INode>> parentToSubnode;
+    private INode rootNode;
 
     public UDCParser() {
         this.path = null;
@@ -38,7 +39,7 @@ public class UDCParser {
         this.rootNode = null;
     }
 
-    public mapvis.common.datatype.Node generateUDCCathegories(){
+    public INode generateUDCCathegories(){
         if(this.rootNode == null) {
             try {
                 readUDC();
@@ -51,8 +52,8 @@ public class UDCParser {
     }
 
 
-    private void setChildrenOfNode(mapvis.common.datatype.Node node){
-        List<mapvis.common.datatype.Node> children = parentToSubnode.get(node.getId());
+    private void setChildrenOfNode(INode node){
+        List<INode> children = parentToSubnode.get(node.getId());
         if(children == null)
             return;
         node.setChildren(children);
@@ -60,22 +61,37 @@ public class UDCParser {
     }
 
     private void resolveCathegoryToChildrenRelations() {
-        mapvis.common.datatype.Node mainTableRootNode = null;
-        for(mapvis.common.datatype.Node rootNode: UDCRootNodes){
-            if("MAIN TABLES".equals(rootNode.getLabel())){
-                mainTableRootNode = rootNode;
-            }
+        Node udcNode = new Node("-", "UDC");
+        int sizeUDCNode = 0;
+        for(INode rootNode: UDCRootNodes){
+            List<INode> firstOrderCathegories = parentToSubnode.get(rootNode.getId());
+            firstOrderCathegories.stream().forEach(node -> {
+                setChildrenOfNode(node);
+            });
+            sizeUDCNode += rootNode.getSize();
+            rootNode.setChildren(firstOrderCathegories);
+            udcNode.getChildren().add(rootNode);
         }
+        rootNode = udcNode;
 
-        if(mainTableRootNode == null)
-            return;
 
-        List<mapvis.common.datatype.Node> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
-        firstOrderCathegories.stream().forEach(node -> {
-            setChildrenOfNode(node);
-        });
-        mainTableRootNode.setChildren(firstOrderCathegories);
-        rootNode = mainTableRootNode;
+
+//        INode mainTableRootNode = null;
+//        for(INode rootNode: UDCRootNodes){
+//            if("MAIN TABLES".equals(rootNode.getLabel())){
+//                mainTableRootNode = rootNode;
+//            }
+//        }
+//
+//        if(mainTableRootNode == null)
+//            return;
+//
+//        List<INode> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
+//        firstOrderCathegories.stream().forEach(node -> {
+//            setChildrenOfNode(node);
+//        });
+//        mainTableRootNode.setChildren(firstOrderCathegories);
+//        rootNode = mainTableRootNode;
     }
 
     private void readUDC() throws ParserConfigurationException {
@@ -95,6 +111,7 @@ public class UDCParser {
                 if (nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     processConceptNode(eElement);
+
                 }
             }
         } catch (SAXException e) {
@@ -103,6 +120,7 @@ public class UDCParser {
             e.printStackTrace();
         }
     }
+    static int processedConceptNodes = 0;
 
     private void processConceptNode(Element conceptNode)  {
         NodeList childNodes = conceptNode.getChildNodes();
@@ -126,13 +144,13 @@ public class UDCParser {
                 }
             }
         }
-        mapvis.common.datatype.Node node = new mapvis.common.datatype.Node(conceptName, englishLabel);
+        Node node = new Node(conceptName, englishLabel);
         if(parentNodeID.isEmpty()){
             UDCRootNodes.add(node);
         }else{
-            List<mapvis.common.datatype.Node> treeNodeList = parentToSubnode.get(parentNodeID);
+            List<INode> treeNodeList = parentToSubnode.get(parentNodeID);
             if(treeNodeList == null){
-                treeNodeList = new ArrayList<mapvis.common.datatype.Node>();
+                treeNodeList = new ArrayList<INode>();
                 parentToSubnode.put(parentNodeID, treeNodeList);
             }
             treeNodeList.add(node);
@@ -142,6 +160,6 @@ public class UDCParser {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        System.out.println("Concept: " + conceptName + " Parent: " + parentNodeID + " Label: " + englishLabel);
+//        System.out.println("Concept: " + conceptName + " Parent: " + parentNodeID + " Label: " + englishLabel);
     }
 }

@@ -57,15 +57,15 @@ public class TreeImp<T> implements Tree<T> {
         return root;
     }
 
-    public static TreeImp<Node> from(Node root) {
-        TreeImp<Node> tree = new TreeImp<>();
+    public static TreeImp<INode> from(INode root) {
+        TreeImp<INode> tree = new TreeImp<>();
         tree.setRoot(root);
         recAddChild(tree,root);
         return tree;
     }
 
-    static void recAddChild(TreeImp<Node> tree, Node node){
-        for (Node child : node.getChildren()) {
+    static void recAddChild(TreeImp<INode> tree, INode node){
+        for (INode child : node.getChildren()) {
             tree.addChild(node, child);
             recAddChild(tree, child);
         }
