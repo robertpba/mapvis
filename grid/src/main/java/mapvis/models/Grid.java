@@ -1,14 +1,17 @@
 package mapvis.models;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public interface Grid<T> {
     void putTile(Tile<T> tile);
     Tile<T> getTile(Pos pos);
     Tile<T> getNeighbour(int x, int y, Dir dir);
     Set<Tile<T>> getNeighbours(int x, int y);
+    List<Dir> getNeighborDirectionsFulfilling(Predicate<Tile<T>> typeTester, int x, int y);
 
     void foreach(Consumer<Tile<T>> consumer);
     public Collection<Tile<T>> allTiles();

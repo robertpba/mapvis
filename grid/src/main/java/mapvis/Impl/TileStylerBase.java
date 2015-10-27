@@ -126,10 +126,13 @@ public class TileStylerBase<T> implements TileStyler<T> {
 
     private TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
+
+        //known tile?
         Tile<T> tile = grid.getTile(x, y);
         if (cache.x == x && cache.y == y && cache.t == tile.getTag())
             return cache;
 
+        //create new one
         cache.x = x;
         cache.y = y;
         cache.t = tile.getTag();
@@ -152,6 +155,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
     }
 
     private int calcLevel(int x, int y, Dir dir){
+        //calc level of border at tile position and direction
         Tile<T> t = getGrid().getTile(x, y);
         Tile<T> tn = getGrid().getNeighbour(x, y, dir);
         if (t.getItem() == null || tn.getItem() == null || t.getItem() == tn.getItem())

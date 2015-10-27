@@ -11,6 +11,8 @@ import mapvis.algo.Method1;
 import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
+import mapvis.models.Region;
+import mapvis.models.Tile;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -98,11 +100,14 @@ public class DatasetSelectionController implements Initializable {
         long startTime = System.currentTimeMillis();
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("generating map..");
-        method1.get().Begin();
+        Region<INode> world = method1.get().Begin();
+
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
+        chart.setWorld(world);
+//        chart.updateHexagonsWithCoastCache(world);
         chart.updateHexagons();
         logTextToInfoArea("rendering finished");
     }

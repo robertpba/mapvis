@@ -45,14 +45,14 @@ public class AppController implements Initializable {
         System.out.println("Init AppController");
         tree.bindBidirectional(datasetSelectionController.tree);
         grid.bindBidirectional(datasetSelectionController.grid);
-        tree.bindBidirectional(chartController.tree);
-        grid.bindBidirectional(chartController.grid);
+        tree.bindBidirectional(chartController.treeProperty());
+        grid.bindBidirectional(chartController.gridProperty());
 
         ObjectBinding db = new ObjectBinding() {
             {
                 super.bind(chartController.levelsToShowSlider.valueProperty(),
                         chartController.colorPicker.valueProperty(),
-                        chartController.colorscheme,
+                        chartController.colorschemeProperty(),
                         tree,
                         grid
                 );
@@ -68,7 +68,7 @@ public class AppController implements Initializable {
                 if (grid.get() == null)
                     grid.set(new HashMapGrid<>());
 
-                String s = chartController.colorscheme.get();
+                String s = chartController.colorschemeProperty().get();
                 if (s == null) s = "random";
 
                 if (s.equals("random")){

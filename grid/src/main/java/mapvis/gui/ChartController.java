@@ -28,16 +28,12 @@ import java.util.ResourceBundle;
 public class ChartController implements Initializable  {
     @FXML
     public HexagonalTilingView chart;
-
     @FXML
     public Slider zoomSlider;
-
     @FXML
     public Text originX;
-
     @FXML
     public Text originY;
-
     @FXML
     public ColorPicker colorPicker;
 
@@ -54,8 +50,9 @@ public class ChartController implements Initializable  {
     @FXML
     private CheckBox showLabelsCheckBox;
 
-    public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
+    private ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
+    private ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
+    private StringProperty colorscheme = new SimpleStringProperty();
     private ObjectProperty<TreeStatistics> treeStatistics = new SimpleObjectProperty<>();
 
     public ChartController() {
@@ -95,16 +92,14 @@ public class ChartController implements Initializable  {
         treeStatistics.addListener((observable2, oldValue1, newValue1) -> {
             if(newValue1 == null)
                 return;
-            int maxDeph = newValue1.maxDepth;
-            labelLevelsToShowSlider.setMax(maxDeph);
-            bordersLevelsToShowSlider.setMax(maxDeph);
-            levelsToShowSlider.setMax(maxDeph);
+            int maxDepth = newValue1.maxDepth;
+            labelLevelsToShowSlider.setMax(maxDepth);
+            bordersLevelsToShowSlider.setMax(maxDepth);
+            levelsToShowSlider.setMax(maxDepth);
         });
 
         levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
-
-//        bordersLevelsToShowChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 
     @FXML
@@ -127,9 +122,6 @@ public class ChartController implements Initializable  {
 
     }
 
-
-    public StringProperty colorscheme = new SimpleStringProperty();
-
     @FXML
     public void onChooseRandom(ActionEvent event){
         colorscheme.set("random");
@@ -143,4 +135,34 @@ public class ChartController implements Initializable  {
     public ObjectProperty<TreeStatistics> treeStatisticsProperty() {return treeStatistics;  }
     public void setTreeStatistics(TreeStatistics treeStatistics) {this.treeStatistics.set(treeStatistics);  }
 
+    public Grid<INode> getGrid() {
+        return grid.get();
+    }
+    public ObjectProperty<Grid<INode>> gridProperty() {
+        return grid;
+    }
+    public void setGrid(Grid<INode> grid) {
+        this.grid.set(grid);
+    }
+
+    public String getColorscheme() {
+        return colorscheme.get();
+    }
+    public StringProperty colorschemeProperty() {
+        return colorscheme;
+    }
+    public void setColorscheme(String colorscheme) {
+        this.colorscheme.set(colorscheme);
+    }
+
+    public Tree2<INode> getTree() {
+        return tree.get();
+    }
+    public ObjectProperty<Tree2<INode>> treeProperty() {
+        return tree;
+    }
+
+    public void setTree(Tree2<INode> tree) {
+        this.tree.set(tree);
+    }
 }

@@ -6,7 +6,7 @@ import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 
 public class TreeTableViewModelAdapter {
-    Tree2<INode> tree;
+    private Tree2<INode> tree;
 
     public TreeTableViewModelAdapter(Tree2<INode> tree){
         this.tree = tree;

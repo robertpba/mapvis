@@ -7,11 +7,11 @@ import mapvis.models.Tile;
 import java.util.*;
 
 public class CoastCache<T> {
-    Map<T, Set<Tile<T>>> edge = new HashMap<>();
-    Map<T, Set<Tile<T>>> waters = new HashMap<>();
+    private Map<T, Set<Tile<T>>> edge = new HashMap<>();
+    private Map<T, Set<Tile<T>>> waters = new HashMap<>();
 
-    public Grid<T> grid;
-    public Tree2<T> tree;
+    private Grid<T> grid;
+    private Tree2<T> tree;
 
     public CoastCache(Grid<T> grid, Tree2<T> tree){
         this.grid = grid;
@@ -35,20 +35,23 @@ public class CoastCache<T> {
             }
         }
     }
-    void removeWaters(T o, Tile<T> water){
+
+    private void removeWaters(T o, Tile<T> water){
         List<T> nodes = tree.getPathToNode(o);
         for (T node : nodes) {
             Set<Tile<T>> list = getWatersList(node);
             list.remove(water);
         }
     }
-    void addWaters(List<T> nodes, Tile<T> water) {
+
+    private void addWaters(List<T> nodes, Tile<T> water) {
         for (T node : nodes) {
             Set<Tile<T>> set = getWatersList(node);
             set.add(water);
         }
     }
-    void updateEdge(Tile<T> t){
+
+    private void updateEdge(Tile<T> t){
         List<T> nodes = tree.getPathToNode(t.getItem());
         Set<Tile<T>> neighbours = grid.getNeighbours(t.getX(), t.getY());
 
@@ -85,22 +88,30 @@ public class CoastCache<T> {
     public Set<Tile<T>> getEdge(T o){
         return Collections.unmodifiableSet(getEdgeList(o));
     }
+
     public Set<Tile<T>> getWaters(T o){
         return Collections.unmodifiableSet(getWatersList(o));
     }
 
     private Set<Tile<T>> getEdgeList(T o){
         Set<Tile<T>> list = edge.get(o);
-        if (list==null)
+        if (list == null)
             edge.put(o, list = new HashSet<>());
         return list;
     }
+
     private Set<Tile<T>> getWatersList(T o){
         Set<Tile<T>> list = waters.get(o);
-        if (list==null)
+        if (list == null)
             waters.put(o, list = new HashSet<>());
         return list;
     }
 
+    public Map<T, Set<Tile<T>>> getEdge() {
+        return edge;
+    }
 
+    public Map<T, Set<Tile<T>>> getWaters() {
+        return waters;
+    }
 }

@@ -61,7 +61,7 @@ public class UDCParser {
     }
 
     private void resolveCathegoryToChildrenRelations() {
-        boolean showEntireUDC = false;
+        boolean showEntireUDC = true;
         if(showEntireUDC) {
             Node udcNode = new Node("-", "UDC");
             int sizeUDCNode = 0;

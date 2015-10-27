@@ -7,11 +7,13 @@ import mapvis.models.Tile;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class HashMapGrid<T> implements Grid<T> {
 
     public HashMapGrid() {
-        System.out.println("Creating: " + this.getClass().getName());
+//        System.out.println("Creating: " + this.getClass().getName());
     }
 
     Map<Pos, Tile<T>> map = new HashMap<>();
@@ -95,6 +97,13 @@ public class HashMapGrid<T> implements Grid<T> {
         }
 
         return getTile(nx, ny);
+    }
+
+    public List<Dir> getNeighborDirectionsFulfilling(Predicate<Tile<T>> typeTester, int x, int y){
+        return Arrays.asList(Dir.values()).
+                stream().filter(
+                dir -> typeTester.test(getNeighbour(x, y, dir))
+        ).collect(Collectors.toList());
     }
 
     @Override

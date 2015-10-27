@@ -1,11 +1,11 @@
 package mapvis.algo;
 
+import mapvis.Impl.HashMapGrid;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
 import mapvis.layouts.commons.RandomHelper;
-import mapvis.models.Grid;
-import mapvis.models.Pos;
-import mapvis.models.Tile;
+import mapvis.models.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,6 +16,7 @@ public class Method1<T> {
     public Grid<T> grid;
     private Random random = new Random(1);
     public double beta = 3;
+    private Region<T> world;
 
     public Method1(Tree2<T> tree, Grid<T> grid) {
         this.tree = tree;
@@ -23,28 +24,26 @@ public class Method1<T> {
         this.cache = new CoastCache<>(grid, tree);
     }
 
-    public void Begin(){
+    public Region<T> Begin(){
         random = new Random(1);
-        recursive(tree.getRoot());
+        world = recursive(tree.getRoot());
+        return world;
     }
 
-    public void recursive(T o){
+    private Region<T> recursive(T o){
         Set<T> children = tree.getChildren(o);
 
         if (children.size() > 0) {
-            children.forEach(this::recursive);
-            int level = tree.getDepth(o);
-
+            List<Region<T>> childRegions = new ArrayList<>();
+            children.forEach((o1) -> childRegions.add(recursive(o1)));
             //if (maxHexagonLevelToShow == 1)
             //addPadding(o,5);
-
-
-            return;
+            return new Region<>(childRegions);
         }
-
-        allocate(o);
+        return allocate(o);
     }
 
+    //not used atm
     private void addPadding(T o, int i) {
         while (i-->0) {
             List<Tile<T>> list = cache.getEdge(o).stream()
@@ -61,18 +60,22 @@ public class Method1<T> {
 
     }
 
-
-    public void allocate(T o){
+    private LeafRegion<T> allocate(T o){
+        //holds all allocated Tiles to delete created Tiles when
+        //space is insufficient
         ArrayList<Tile<T>> rollback = new ArrayList<>();
+        List<Tile<T>> prepare = new ArrayList<>();
+
+        Grid<T> regionGrid = new HashMapGrid<>();
+
         int count = tree.getWeight(o);
-
-        while (count-->0) {
-
-            ArrayList<Tile<T>> prepare = new ArrayList<>();
+        while (count-- > 0) {
             Pos pos = findStartPoint(o);
             Tile<T> tile = new Tile<>(pos, o);
 
             grid.putTile(tile);
+            regionGrid.putTile(tile);
+
             cache.insert(tile.getX(), tile.getY(), o);
             prepare.add(tile);
 
@@ -84,6 +87,8 @@ public class Method1<T> {
                 tile = new Tile<>(pos, o);
 
                 grid.putTile(tile);
+                regionGrid.putTile(tile);
+
                 cache.insert(tile.getX(), tile.getY(), o);
                 prepare.add(tile);
             }
@@ -92,17 +97,32 @@ public class Method1<T> {
                 prepare.clear();
             }
         }
-        if (count > 0) {
-            System.out.printf("Insufficient space: %s\n", o.toString());
-        }
+
         for (Tile<T> tile : rollback) {
             Tile<T> empty = new Tile<>(tile.getPos());
             grid.putTile(empty);
+            regionGrid.putTile(empty);
             cache.remove(tile.getX(), tile.getY(), tile.getItem());
         }
+        if (count > 0) {
+            System.out.printf("Insufficient space: %s\n", o.toString());
+        }
+        List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw = new ArrayList<>();
+
+        List<Tile<T>> borderTiles = new ArrayList<>();
+        for (Tile<T> tTile : prepare) {
+            List<Dir> directions = regionGrid.getNeighborDirectionsFulfilling(tTile2 -> tTile2.isEmpty(), tTile.getX(), tTile.getY());
+            if(directions.size() > 0){
+                Tuple2<Tile<T>, List<Dir>> tileDirectionsPair = new Tuple2<>(tTile, directions);
+                tileAndDirectionsToDraw.add(tileDirectionsPair);
+                borderTiles.add(tTile);
+            }
+        }
+        LeafRegion<T> leafRegion = new LeafRegion<>(borderTiles, tileAndDirectionsToDraw);
+        return leafRegion;
     }
 
-    public Pos findNextPoint(T o){
+    private Pos findNextPoint(T o){
         Set<Tile<T>> waters = cache.getWaters(o);
 
         if (waters.size() == 0) return null;
@@ -115,7 +135,8 @@ public class Method1<T> {
 
         return t.getPos();
     }
-    public Pos findStartPoint(T o){
+
+    private Pos findStartPoint(T o){
         List<T> nodes = tree.getPathToNode(o);
         Collections.reverse(nodes);
 
