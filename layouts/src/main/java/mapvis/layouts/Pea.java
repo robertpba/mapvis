@@ -1,5 +1,6 @@
 package mapvis.layouts;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
@@ -41,7 +42,7 @@ public class Pea {
         this.model = model;
 
         descriptors = new ArrayList<>();
-        for (Node leaf : model.getLeaves()) {
+        for (INode leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             descriptors.add(new PolygonDescriptor(polygon, (int) polygon.mass));
         };

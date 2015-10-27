@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.model;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 
 import java.awt.geom.Point2D;
@@ -8,7 +9,7 @@ import static mapvis.utils.PointExtension.*;
 
 
 public class Polygon {
-    public Node node;
+    public INode node;
 
     public int npoints;
     public Vertex[] vertices;
@@ -83,7 +84,7 @@ public class Polygon {
         return new Point2D.Double(x,y);
     }
 
-    public Polygon(Node node, double x, double y, double mass) {
+    public Polygon(INode node, double x, double y, double mass) {
         this.node = node;
 
         originX = x;

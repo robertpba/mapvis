@@ -1,5 +1,6 @@
 package mapvis.layouts.epea;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.Epea;
 import mapvis.layouts.pea.model.MapModel;
@@ -34,7 +35,7 @@ public class MovePivot implements ModelEventListener {
         if (event.iteration % period != 0)
             return;
 
-        for (Node leaf : model.getLeaves()) {
+        for (INode leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
 
             Point2D centroid = polygon.calcCentroid();

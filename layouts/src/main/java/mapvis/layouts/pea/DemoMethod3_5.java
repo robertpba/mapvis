@@ -1,5 +1,6 @@
 package mapvis.layouts.pea;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.NodeUtils;
 import mapvis.layouts.Epea;
@@ -24,8 +25,8 @@ public class DemoMethod3_5 {
 
     static void refinePoints(Node node, double scale, double tolerance) {
         //int scale = 8;
-        java.util.List<Node> leaves = NodeUtils.getLeaves(node);
-        for (Node leave : leaves) {
+        java.util.List<INode> leaves = NodeUtils.getLeaves(node);
+        for (INode leave : leaves) {
             double x = (double) leave.getVal("x");
             double y = (double) leave.getVal("y");
             double size = (double) leave.getVal("size");
@@ -37,12 +38,12 @@ public class DemoMethod3_5 {
         //width  = (int)((width + 100)* scale);
         //height = (int)((height + 100)* scale);
 
-        CircleOverlapRemoval<Node> removal = new CircleOverlapRemoval<>(leaves,
+        CircleOverlapRemoval<INode> removal = new CircleOverlapRemoval<>(leaves,
                 n -> new Point2D.Double((double)n.getVal("x"), (double)n.getVal("y")),
                 n -> Math.sqrt((double)n.getVal("size") * tolerance / Math.PI));
         removal.run(1000);
 
-        for (Node n : leaves) {
+        for (INode n : leaves) {
             Point2D position = removal.getPosition(n);
             n.setVal("x", position.getX());
             n.setVal("y", position.getY());
@@ -64,12 +65,12 @@ public class DemoMethod3_5 {
 
         MapModel model = new MapModel(node, new MapModel.Initializer() {
             @Override
-            public Point2D getPosition(Node node) {
+            public Point2D getPosition(INode node) {
                 return new Point2D.Double((double)node.getVal("x"), (double)node.getVal("y"));
             }
 
             @Override
-            public double getMass(Node node) {
+            public double getMass(INode node) {
                 return ((double)node.getVal("size"));// * 1.4 * 0.81;
             }
         });

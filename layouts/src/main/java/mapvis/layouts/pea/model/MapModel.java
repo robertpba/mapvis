@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.model;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.common.datatype.NodeUtils;
 import mapvis.layouts.pea.gui.RenderAction;
@@ -20,14 +21,14 @@ import static mapvis.utils.PointExtension.length;
 public class MapModel {
     public int iteration = 0;
 
-    SpatialIndex<Node> index;
+    SpatialIndex<INode> index;
 
-    Collection<Node> leaves;
-    Collection<Node> nodes;
+    Collection<INode> leaves;
+    Collection<INode> nodes;
     Node root;
 
-    public Map<Node, Map<String, Object>> data = new HashMap<>();
-    public Object getValue(Node vertex, String key ){
+    public Map<INode, Map<String, Object>> data = new HashMap<>();
+    public Object getValue(INode vertex, String key ){
         Map<String, Object> map = data.get(vertex);
 
         if (map == null)
@@ -35,7 +36,7 @@ public class MapModel {
 
         return map.get(key);
     }
-    public Object setValue(Node vertex, String key, Object value){
+    public Object setValue(INode vertex, String key, Object value){
         Map<String, Object> map = data.get(vertex);
 
         if (map == null)
@@ -48,25 +49,25 @@ public class MapModel {
     public Node getRoot() {
         return root;
     }
-    public Polygon getPolygon(Node vertex){
+    public Polygon getPolygon(INode vertex){
         return (Polygon) getValue(vertex, "polygon");
     }
-    public Collection<Node> getLeaves(){
+    public Collection<INode> getLeaves(){
         return leaves;
     }
 
-    public Collection<Node> getChildren(Node vertex){
+    public Collection<INode> getChildren(Node vertex){
         return vertex.getChildren();
     }
-    public Collection<Node> getAllNodes(){
+    public Collection<INode> getAllNodes(){
         return nodes;
     }
 
     public interface Initializer {
-        default Point2D getPosition(Node n) {
+        default Point2D getPosition(INode n) {
             return new Point2D.Double((double)n.getVal("x"), (double)n.getVal("y"));
         }
-        default double getMass(Node n) {
+        default double getMass(INode n) {
             return (double)n.getVal("size");
         }
     }
@@ -81,7 +82,7 @@ public class MapModel {
         nodes.add(root);
 
 
-        for (Node n : getLeaves()) {
+        for (INode n : getLeaves()) {
             setValue(n, "polygon" ,new Polygon(
                     n,
                     initializer.getPosition(n).getX(),
@@ -98,8 +99,8 @@ public class MapModel {
         index = new SpatialIndex<>( (int)(maxY / c) ,(int)(maxY / c) , c);
     }
 
-    public Polygon findSurroundingRegion(Point2D point, Node exclude) {
-        for (Node leaf : index.neighbours(point)) {
+    public Polygon findSurroundingRegion(Point2D point, INode exclude) {
+        for (INode leaf : index.neighbours(point)) {
             Polygon polygon = (Polygon) getValue(leaf, "polygon");
             if (polygon.node == exclude)
                 continue;

@@ -1,5 +1,6 @@
 package mapvis.layouts;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.epea.DriveAwayInsideVertices;
 import mapvis.layouts.epea.Estimator;
@@ -52,7 +53,7 @@ public class Epea<T> {
 
         int c = 0;
 
-        for (Node leaf : model.getLeaves()) {
+        for (INode leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
                 vertex.momentum = vertex.momentum * 99 / 100;
@@ -129,7 +130,7 @@ public class Epea<T> {
 
 
     private void _growPolygons(){
-        for (Node leaf : model.getLeaves()) {
+        for (INode leaf : model.getLeaves()) {
             Polygon polygon = model.getPolygon(leaf);
             for (Vertex vertex : polygon.vertices) {
 

@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.gui;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.model.MapModel;
 import mapvis.layouts.pea.model.Polygon;
@@ -20,7 +21,7 @@ public class Drawer {
     }
 
     static class Entry {
-        Node node;
+        INode node;
         Polygon polygon;
         Area area;
         int level;
@@ -37,13 +38,13 @@ public class Drawer {
 
 
 
-    Entry updateEntry(Node node, int level) {
+    Entry updateEntry(INode node, int level) {
         Entry entry = new Entry();
         entry.node = node;
         entry.polygon = model.getPolygon(node);
         entry.level = level;
 
-        Collection<Node> children = node.getChildren();
+        Collection<INode> children = node.getChildren();
         if (children.isEmpty()) {
             entry.leaf = true;
 
@@ -64,7 +65,7 @@ public class Drawer {
             entry.leaf = false;
             entry.area = new Area();
 
-            for (Node childNode : children) {
+            for (INode childNode : children) {
                 Entry childEntry = updateEntry(childNode, level + 1);
                 entry.area.add(childEntry.area);
             }

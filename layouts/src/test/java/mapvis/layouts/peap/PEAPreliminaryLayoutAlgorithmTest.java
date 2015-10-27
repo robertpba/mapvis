@@ -1,5 +1,6 @@
 package mapvis.layouts.peap;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.Dac;
 import org.apache.batik.svggen.SVGGraphics2D;
@@ -32,7 +33,7 @@ public class PEAPreliminaryLayoutAlgorithmTest {
             recPaintNode((Graphics2D) g,root);
         }
 
-        void recPaintNode(Graphics2D g, Node node) {
+        void recPaintNode(Graphics2D g, INode node) {
             double x = (double) node.getVal("x");
             double y = (double) node.getVal("y");
             double r = Math.sqrt((double)node.getVal("size"))/2;
@@ -57,7 +58,7 @@ public class PEAPreliminaryLayoutAlgorithmTest {
             g.draw(new Rectangle2D.Double(x0,y0,x1-x0,y1-y0));
 
 
-            for (Node child : node.getChildren()) {
+            for (INode child : node.getChildren()) {
                 recPaintNode(g, child);
             }
         }
