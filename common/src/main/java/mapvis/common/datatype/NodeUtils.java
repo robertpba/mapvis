@@ -13,10 +13,11 @@ public class NodeUtils {
         return nextid;
     }
 
-    public static void populateSize(INode root)
+    public static void populateSize(INode root, MPTreeImp<INode> genTree)
     {
         if(root.getChildren().size() == 0){
-            root.setSize(-1);
+            double weight = genTree.getWeight(root);
+            root.setSize(weight);
             return;
         }
 
@@ -33,7 +34,7 @@ public class NodeUtils {
 //        }
         List<INode> filteredChildren = new ArrayList<>();
         for(INode child: root.getChildren()){
-            populateSize(child);
+            populateSize(child, genTree);
             if(child.getSize() < 0){
                 sizeOfCurrentNode++;
                 continue;

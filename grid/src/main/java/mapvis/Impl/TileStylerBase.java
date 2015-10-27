@@ -182,7 +182,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
     protected Color getBorderColorByLevel(int l){
         return Color.BLACK;
     }
-    protected Color getColorByValue(T v) {
+    public Color getColorByValue(T v) {
         return Color.RED;
     }
 

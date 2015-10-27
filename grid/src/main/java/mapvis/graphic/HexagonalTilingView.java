@@ -480,28 +480,9 @@ public class HexagonalTilingView extends Pane {
         zoom(pivot, scale);
     }
 
-    private void drawSubRegion(Region<INode> region, Point2D tl, Point2D br) {
-        regionRenderer.drawRegionHelper(region, tl, br);
-
-//        if(region.isLeaf()) {
-//            LeafRegion leaf = (LeafRegion) region;
-//            for (Object iNodeTile : leaf.getTileAndDirectionsToDraw()) {
-//                Tuple2<Tile<INode>, List<Dir>> leafTile = (Tuple2<Tile<INode>, List<Dir>>) iNodeTile;
-//                if (isTileVisibleOnScreen(leafTile.first, tl, br)) {
-//                    drawHexagonBorders(leafTile.first.getX(), leafTile.first.getY(), leafTile.second, canvas.getGraphicsContext2D());
-//                }
-//            }
-//        }else{
-//            for (Region<INode> iNodeRegion : region.getChildRegions()) {
-//                drawSubRegion(iNodeRegion, tl, br);
-//            }
-//        }
-    }
-
     public void updateHexagonsWithCoastCache(Region<INode> region) {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
-
         g.setFill(styler.get().getBackground());
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         //Rectangle2D rect = viewport.get();
@@ -518,8 +499,7 @@ public class HexagonalTilingView extends Pane {
 
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
-        drawSubRegion(world, tl, br);
-
+        regionRenderer.drawRegionHelper(region, tl, br);
         g.restore();
     }
 

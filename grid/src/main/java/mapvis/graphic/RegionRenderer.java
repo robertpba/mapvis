@@ -149,16 +149,33 @@ public class RegionRenderer {
             g.save();
             if(drawIndex == 1){
                 g.setStroke(Color.GREEN);
+//                g.setLineWidth(4);
             }else if (drawIndex == 2){
                 g.setStroke(Color.RED);
+//                g.setLineWidth(1);
             }else if(drawIndex == 3){
                 g.setStroke(Color.YELLOW);
+//                g.setLineWidth(1);
             }else if(drawIndex == 4){
                 g.setStroke(Color.BLUE);
+//                g.setLineWidth(4);
             }
+            System.out.println("Rendering Region: " + drawIndex);
             LeafRegion<INode> leafRegion = (LeafRegion<INode>) regionToDraw;
             Tuple2<double[], double[]> tuple2 = leafRegion.computeCoordinates();
+            if(leafRegion.getLeafElements().size() == 0){
+                g.restore();
+                return;
+            }
+
+            Tile<INode> iNodeTile = leafRegion.getLeafElements().get(0);
+            Color regionColor = view.getStyler().getColorByValue(iNodeTile.getItem());
+
+            g.setFill(regionColor);
+            g.fillPolygon(tuple2.first, tuple2.second, tuple2.first.length);
             g.strokePolygon(tuple2.first, tuple2.second, tuple2.first.length);
+
+
             g.restore();
         }else{
             for (Object iNodeRegion : regionToDraw.getChildRegions()) {

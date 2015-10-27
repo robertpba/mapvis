@@ -63,7 +63,7 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
 
         RandomTreeGenerator randomTreeGenerator = new RandomTreeGenerator(seed);
         MPTreeImp<INode> genTree = randomTreeGenerator.getTree(depth, span, weight);
-        NodeUtils.populateSize(genTree.getRoot());
+        NodeUtils.populateSize(genTree.getRoot(), genTree);
         return genTree;
     }
 

@@ -77,6 +77,9 @@ public class LeafRegion<T> extends Region<T> {
         for (Tuple2<Tile<T>, List<Dir>> leafTile : tileAndDirectionsToDraw) {
             int x = leafTile.first.getX();
             int y = leafTile.first.getY();
+            INode iNode = (INode) leafTile.first.getItem();
+            
+            System.out.println("Label: " +iNode.getLabel() + " size: " + iNode.getSize());
 
 //            color = styler.getColor(x,y);
 
