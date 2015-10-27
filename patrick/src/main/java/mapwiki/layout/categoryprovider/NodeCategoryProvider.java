@@ -1,6 +1,7 @@
 package mapwiki.layout.categoryprovider;
 
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapwiki.layout.Category;
 import mapwiki.layout.CategoryProvider;
@@ -13,11 +14,11 @@ public class NodeCategoryProvider implements CategoryProvider {
     NodeCategory root;
     List<NodeCategory> nodes = new ArrayList<>();
 
-    public NodeCategoryProvider(Node root){
+    public NodeCategoryProvider(INode root){
         this.root = add(root);
     }
 
-    public NodeCategory add(Node root){
+    public NodeCategory add(INode root){
         NodeCategory cat = new NodeCategory();
         cat.node = root;
         cat.setPageID(Integer.parseInt(root.getId()));
