@@ -118,6 +118,7 @@ public class Method1<T> {
                 borderTiles.add(tTile);
             }
         }
+
         LeafRegion<T> leafRegion = new LeafRegion<>(borderTiles, tileAndDirectionsToDraw);
         return leafRegion;
     }

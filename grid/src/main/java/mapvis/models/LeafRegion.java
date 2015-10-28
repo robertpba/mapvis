@@ -1,15 +1,15 @@
 package mapvis.models;
 
+import com.sun.deploy.util.ArrayUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import jdk.nashorn.internal.ir.LiteralNode;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by dacc on 10/26/2015.
@@ -33,18 +33,29 @@ public class LeafRegion<T> extends Region<T> {
                 - sideLength/2,   sideLength*COS30,
                 - sideLength,     0.0
     };
+
+    public static class BoundaryShape{
+        public double[] xValues;
+        public double[] yValues;
+
+        public BoundaryShape(double[] xValues, double[] yValues) {
+            this.xValues = xValues;
+            this.yValues = yValues;
+        }
+    }
+
     List<Tile<T>> leafElements;
 
     List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw;
 
     Color color;
-    Tuple2<double[], double[]> regionCoordinates;
-
+//    Tuple2<double[], double[]> regionCoordinates;
+    List<BoundaryShape> boundaryShapes;
     public LeafRegion(List<Tile<T>> prepare, List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw) {
         super(Collections.<Region<T>>emptyList());
         this.leafElements = prepare;
         this.tileAndDirectionsToDraw = tileAndDirectionsToDraw;
-        this.regionCoordinates = null;
+        this.boundaryShapes = null;
     }
 
     @Override
@@ -68,9 +79,9 @@ public class LeafRegion<T> extends Region<T> {
         return new Point2D(roundTo4Digits(point2D.getX()), roundTo4Digits(point2D.getY()));
     }
 
-    public Tuple2<double[], double[]> computeCoordinates(){
-        if(regionCoordinates != null){
-            return regionCoordinates;
+    public List<BoundaryShape> computeCoordinates(){
+        if(boundaryShapes != null){
+            return new ArrayList<>(boundaryShapes);
         }
 
         Map<Point2D, Point2D> startToEnd = new HashMap<>();
@@ -78,9 +89,6 @@ public class LeafRegion<T> extends Region<T> {
             int x = leafTile.first.getX();
             int y = leafTile.first.getY();
             INode iNode = (INode) leafTile.first.getItem();
-            
-            System.out.println("Label: " +iNode.getLabel() + " size: " + iNode.getSize());
-
 //            color = styler.getColor(x,y);
 
 //            if (isTileVisibleOnScreen(leafTile.first, topleftBorder, bottomRightBorder)) {
@@ -96,7 +104,6 @@ public class LeafRegion<T> extends Region<T> {
                     double yStart = POINTS[pointIndices[1]] + point2D.getY();
                     double yEnd = POINTS[pointIndices[3]] + point2D.getY();
 
-
                     Point2D startPoint = roundToCoordinatesTo4Digits(new Point2D(xStart, yStart));
                     Point2D endPoint = roundToCoordinatesTo4Digits(new Point2D(xEnd, yEnd));
 
@@ -106,30 +113,59 @@ public class LeafRegion<T> extends Region<T> {
         }
 
         if(startToEnd.size() == 0){
-            return new Tuple2<>(new double[0], new double[0]);
+            return Collections.emptyList();
         }
-        double[] xValues = new double[startToEnd.keySet().size() * 2];
-        double[] yValues = new double[startToEnd.keySet().size() * 2];
+        List<BoundaryShape> computedBoundaryShapes = new ArrayList<>();
 
+        List<Double> xValues = new ArrayList<>();
+        List<Double> yValues = new ArrayList<>();
         Point2D startPoint = null;
-        for(int i = 0; i < startToEnd.keySet().size(); i++){
+        Point2D initialPoint = null;
+
+        int keySetSize = startToEnd.keySet().size();
+        for(int i = 0; i < keySetSize; i++){
             if(i == 0){
                 startPoint = startToEnd.keySet().iterator().next();
+                initialPoint = startPoint;
             }
             Point2D endPoint = startToEnd.get(startPoint);
+
             if(endPoint == null){
+
+                xValues.add(initialPoint.getX());
+                yValues.add(initialPoint.getY());
                 System.out.println("problem corr point: " +  startPoint + " init point: "  );
-                break;
+                computedBoundaryShapes.add(new BoundaryShape(
+                        xValues.stream().mapToDouble(Double::doubleValue).toArray(),
+                        yValues.stream().mapToDouble(Double::doubleValue).toArray())
+                );
+                xValues.clear();
+                yValues.clear();
+                startPoint = startToEnd.keySet().iterator().next();
+                initialPoint = startPoint;
+                endPoint = startToEnd.get(startPoint);
             }else{
-                xValues[i*2] = startPoint.getX();
-                yValues[i*2] = startPoint.getY();
-                xValues[i*2 + 1] = endPoint.getX();
-                yValues[i*2 + 1] = endPoint.getY();
+                xValues.add(startPoint.getX());
+                yValues.add(startPoint.getY());
             }
+            if(endPoint.equals(initialPoint)){
+                System.out.println("circal detected");
+//                break;
+            }
+            //remove points to avoid circular points if two boundaries more than one circle
+            startToEnd.remove(startPoint, endPoint);
             startPoint = endPoint;
         }
-        regionCoordinates = new Tuple2(xValues, yValues);
-        return regionCoordinates;
+        xValues.add(initialPoint.getX());
+        yValues.add(initialPoint.getY());
+
+        computedBoundaryShapes.add(new BoundaryShape(
+                        xValues.stream().mapToDouble(Double::doubleValue).toArray(),
+                        yValues.stream().mapToDouble(Double::doubleValue).toArray())
+        );
+
+        boundaryShapes = computedBoundaryShapes;
+        return new ArrayList<>(boundaryShapes);
     }
 
 }

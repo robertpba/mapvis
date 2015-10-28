@@ -1,6 +1,7 @@
 package mapvis.graphic;
 
 import com.sun.deploy.util.ArrayUtil;
+import com.sun.scenario.effect.Effect;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -147,35 +148,67 @@ public class RegionRenderer {
 
 //            drawIndex++;
             g.save();
+            g.setLineWidth(2);
             if(drawIndex == 1){
-                g.setStroke(Color.GREEN);
+                g.setStroke(Color.BLACK);
+                g.setFill(Color.GREEN);
 //                g.setLineWidth(4);
             }else if (drawIndex == 2){
-                g.setStroke(Color.RED);
+                g.setStroke(Color.BLACK);
+                g.setFill(Color.RED);
 //                g.setLineWidth(1);
             }else if(drawIndex == 3){
-                g.setStroke(Color.YELLOW);
+                g.setStroke(Color.BLACK);
+                g.setFill(Color.YELLOW);
 //                g.setLineWidth(1);
             }else if(drawIndex == 4){
-                g.setStroke(Color.BLUE);
+                g.setStroke(Color.BLACK);
+                g.setFill(Color.BLUE);
 //                g.setLineWidth(4);
             }
-            System.out.println("Rendering Region: " + drawIndex);
+//            System.out.println("Rendering Region: " + drawIndex);
             LeafRegion<INode> leafRegion = (LeafRegion<INode>) regionToDraw;
-            Tuple2<double[], double[]> tuple2 = leafRegion.computeCoordinates();
+
             if(leafRegion.getLeafElements().size() == 0){
                 g.restore();
                 return;
             }
 
             Tile<INode> iNodeTile = leafRegion.getLeafElements().get(0);
+//            if(!iNodeTile.getItem().getLabel().equals("#5") && !iNodeTile.getItem().getLabel().equals("#4")){
+//                g.restore();
+//                return;
+//            }
+            List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinates();
+
             Color regionColor = view.getStyler().getColorByValue(iNodeTile.getItem());
+//            if(boundaryShapes.size() > 1){
+            if(true){
+                g.setFillRule(FillRule.NON_ZERO);
+                g.beginPath();
+                g.setFill(regionColor);
+                for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
+                    for (int i = 0; i < boundaryShape.xValues.length; i++) {
+                        double x = boundaryShape.xValues[i];
+                        double y = boundaryShape.yValues[i];
+                        if(i == 0){
+                            g.moveTo(x, y);
+                        }else{
+                            g.lineTo(x, y);
+                        }
+                    }
+                }
+                g.closePath();
+                g.fill();
+                g.stroke();
 
-            g.setFill(regionColor);
-            g.fillPolygon(tuple2.first, tuple2.second, tuple2.first.length);
-            g.strokePolygon(tuple2.first, tuple2.second, tuple2.first.length);
-
-
+            }else{
+                for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
+                    g.setFill(regionColor);
+                    g.fillPolygon(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
+                    g.strokePolygon(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
+                }
+            }
             g.restore();
         }else{
             for (Object iNodeRegion : regionToDraw.getChildRegions()) {

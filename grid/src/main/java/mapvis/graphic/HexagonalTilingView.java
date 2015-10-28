@@ -114,7 +114,7 @@ public class HexagonalTilingView extends Pane {
     }
 
     public void updateHexagons(){
-        System.out.println("updateHexagons");
+//        System.out.println("updateHexagons");
         if (getGrid() == null)
             return;
         if(world != null)
