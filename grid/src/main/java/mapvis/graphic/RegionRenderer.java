@@ -142,31 +142,8 @@ public class RegionRenderer {
         TileStyler<INode> styler = view.getStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
         if(regionToDraw.isLeaf()) {
-            if(drawIndex > maxDrawIndex){
-                return;
-            }
-
-//            drawIndex++;
             g.save();
-            g.setLineWidth(2);
-            if(drawIndex == 1){
-                g.setStroke(Color.BLACK);
-                g.setFill(Color.GREEN);
-//                g.setLineWidth(4);
-            }else if (drawIndex == 2){
-                g.setStroke(Color.BLACK);
-                g.setFill(Color.RED);
-//                g.setLineWidth(1);
-            }else if(drawIndex == 3){
-                g.setStroke(Color.BLACK);
-                g.setFill(Color.YELLOW);
-//                g.setLineWidth(1);
-            }else if(drawIndex == 4){
-                g.setStroke(Color.BLACK);
-                g.setFill(Color.BLUE);
-//                g.setLineWidth(4);
-            }
-//            System.out.println("Rendering Region: " + drawIndex);
+//            g.setLineWidth(2);
             LeafRegion<INode> leafRegion = (LeafRegion<INode>) regionToDraw;
 
             if(leafRegion.getLeafElements().size() == 0){
@@ -182,33 +159,23 @@ public class RegionRenderer {
             List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinates();
 
             Color regionColor = view.getStyler().getColorByValue(iNodeTile.getItem());
-//            if(boundaryShapes.size() > 1){
-            if(true){
-                g.setFillRule(FillRule.NON_ZERO);
-                g.beginPath();
-                g.setFill(regionColor);
-                for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
-                    for (int i = 0; i < boundaryShape.xValues.length; i++) {
-                        double x = boundaryShape.xValues[i];
-                        double y = boundaryShape.yValues[i];
-                        if(i == 0){
-                            g.moveTo(x, y);
-                        }else{
-                            g.lineTo(x, y);
-                        }
+            g.setFillRule(FillRule.NON_ZERO);
+            g.beginPath();
+            g.setFill(regionColor);
+            for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
+                for (int i = 0; i < boundaryShape.xValues.length; i++) {
+                    double x = boundaryShape.xValues[i];
+                    double y = boundaryShape.yValues[i];
+                    if(i == 0){
+                        g.moveTo(x, y);
+                    }else{
+                        g.lineTo(x, y);
                     }
                 }
-                g.closePath();
-                g.fill();
-                g.stroke();
-
-            }else{
-                for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
-                    g.setFill(regionColor);
-                    g.fillPolygon(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
-                    g.strokePolygon(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
-                }
             }
+            g.closePath();
+            g.fill();
+            g.stroke();
             g.restore();
         }else{
             for (Object iNodeRegion : regionToDraw.getChildRegions()) {
