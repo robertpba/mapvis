@@ -59,4 +59,8 @@ public class Tile<T> {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Label " + getTag() + " Pos: " + getPos().getX() + ";" + getPos().getY();
+    }
 }

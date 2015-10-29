@@ -1,7 +1,6 @@
 package mapvis.algo;
 
 import mapvis.Impl.HashMapGrid;
-import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
 import mapvis.layouts.commons.RandomHelper;
@@ -38,7 +37,7 @@ public class Method1<T> {
             children.forEach((o1) -> childRegions.add(recursive(o1)));
             //if (maxHexagonLevelToShow == 1)
             //addPadding(o,5);
-            return new Region<>(childRegions);
+            return new Region<>(childRegions, o);
         }
         return allocate(o);
     }
@@ -107,9 +106,12 @@ public class Method1<T> {
         if (count > 0) {
             System.out.printf("Insufficient space: %s\n", o.toString());
         }
+
         List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw = new ArrayList<>();
 
+//        List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsOfBorder = new ArrayList<>();
         List<Tile<T>> borderTiles = new ArrayList<>();
+        List<Border> borders = new ArrayList<>();
         for (Tile<T> tTile : prepare) {
             List<Dir> directions = regionGrid.getNeighborDirectionsFulfilling(tTile2 -> tTile2.isEmpty(), tTile.getX(), tTile.getY());
             if(directions.size() > 0){
@@ -117,9 +119,23 @@ public class Method1<T> {
                 tileAndDirectionsToDraw.add(tileDirectionsPair);
                 borderTiles.add(tTile);
             }
+            //collect all tiles with their directions to neighbors which have border to an tile of a different node
+            List<Dir> bordersOfTile = grid.getNeighborDirectionsFulfilling(tTile1 -> {
+                return tTile1.getTag() == Tile.LAND && !tTile.getItem().equals(tTile1.getItem());
+            }, tTile.getX(), tTile.getY());
+
+            Border border = new Border();
+            if(directions.size() > 0){
+                Tuple2<Tile<T>, List<Dir>> tileDirectionsPair = new Tuple2<>(tTile, directions);
+//                border.addBorderItem(tTile);
+                borderTiles.add(tTile);
+            }
         }
 
-        LeafRegion<T> leafRegion = new LeafRegion<>(borderTiles, tileAndDirectionsToDraw);
+        LeafRegion<T> leafRegion = new LeafRegion<>(borderTiles, tileAndDirectionsToDraw, o);
+//        for (Border border : borders) {
+//            leafRegion.addNewBorder(border);
+//        }
         return leafRegion;
     }
 

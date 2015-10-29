@@ -150,15 +150,15 @@ public class RegionRenderer {
                 g.restore();
                 return;
             }
-
-            Tile<INode> iNodeTile = leafRegion.getLeafElements().get(0);
+            INode nodeItem = leafRegion.getNodeItem();
+//            Tile<INode> iNodeTile = leafRegion.getLeafElements().get(0);
 //            if(!iNodeTile.getItem().getLabel().equals("#5") && !iNodeTile.getItem().getLabel().equals("#4")){
 //                g.restore();
 //                return;
 //            }
-            List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinates();
+            List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinatesNew();
 
-            Color regionColor = view.getStyler().getColorByValue(iNodeTile.getItem());
+            Color regionColor = view.getStyler().getColorByValue(nodeItem);
             g.setFillRule(FillRule.NON_ZERO);
             g.beginPath();
             g.setFill(regionColor);
