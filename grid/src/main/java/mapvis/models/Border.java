@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Border<T> {
     public static class BorderItem{
-        Tuple2<Pos, List<Dir>> borderItem;
+        public Tuple2<Pos, List<Dir>> borderItem;
 
         public BorderItem(Tuple2<Pos, List<Dir>> borderItem) {
             this.borderItem = borderItem;

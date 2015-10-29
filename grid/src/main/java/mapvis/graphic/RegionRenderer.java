@@ -1,16 +1,11 @@
 package mapvis.graphic;
 
-import com.sun.deploy.util.ArrayUtil;
-import com.sun.scenario.effect.Effect;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
 import mapvis.models.Dir;
@@ -131,6 +126,7 @@ public class RegionRenderer {
         drawIndex = 0;
         drawRegion(regionToDraw, topleftBorder, bottomRightBorder);
     }
+
     public static double roundTo4Digits(double val){
         return Math.round(100.0 * val) / 100.0;
     }
@@ -138,6 +134,7 @@ public class RegionRenderer {
     public static Point2D roundToCoordinatesTo4Digits(Point2D point2D){
         return new Point2D(roundTo4Digits(point2D.getX()), roundTo4Digits(point2D.getY()));
     }
+
     public void drawRegion(Region regionToDraw, Point2D topleftBorder, Point2D bottomRightBorder){
         TileStyler<INode> styler = view.getStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
@@ -146,17 +143,22 @@ public class RegionRenderer {
 //            g.setLineWidth(2);
             LeafRegion<INode> leafRegion = (LeafRegion<INode>) regionToDraw;
 
-            if(leafRegion.getLeafElements().size() == 0){
-                g.restore();
-                return;
-            }
+//            if(leafRegion.getLeafElements().size() == 0){
+//                g.restore();
+//                return;
+//            }
             INode nodeItem = leafRegion.getNodeItem();
 //            Tile<INode> iNodeTile = leafRegion.getLeafElements().get(0);
 //            if(!iNodeTile.getItem().getLabel().equals("#5") && !iNodeTile.getItem().getLabel().equals("#4")){
 //                g.restore();
 //                return;
 //            }
-            List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinatesNew();
+            List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinates();
+
+            if(boundaryShapes.size() == 0){
+                g.restore();
+                return;
+            }
 
             Color regionColor = view.getStyler().getColorByValue(nodeItem);
             g.setFillRule(FillRule.NON_ZERO);
@@ -183,5 +185,4 @@ public class RegionRenderer {
             }
         }
     }
-
 }

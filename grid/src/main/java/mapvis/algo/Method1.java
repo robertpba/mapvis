@@ -111,7 +111,7 @@ public class Method1<T> {
 
 //        List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsOfBorder = new ArrayList<>();
         List<Tile<T>> borderTiles = new ArrayList<>();
-        List<Border> borders = new ArrayList<>();
+//        List<Border> borders = new ArrayList<>();
         for (Tile<T> tTile : prepare) {
             List<Dir> directions = regionGrid.getNeighborDirectionsFulfilling(tTile2 -> tTile2.isEmpty(), tTile.getX(), tTile.getY());
             if(directions.size() > 0){
@@ -124,15 +124,17 @@ public class Method1<T> {
                 return tTile1.getTag() == Tile.LAND && !tTile.getItem().equals(tTile1.getItem());
             }, tTile.getX(), tTile.getY());
 
-            Border border = new Border();
-            if(directions.size() > 0){
-                Tuple2<Tile<T>, List<Dir>> tileDirectionsPair = new Tuple2<>(tTile, directions);
-//                border.addBorderItem(tTile);
-                borderTiles.add(tTile);
-            }
+//            Border border = new Border();
+//            if(directions.size() > 0){
+//                Tuple2<Tile<T>, List<Dir>> tileDirectionsPair = new Tuple2<>(tTile, directions);
+////                border.addBorderItem(tTile);
+//                borderTiles.add(tTile);
+//            }
         }
 
-        LeafRegion<T> leafRegion = new LeafRegion<>(borderTiles, tileAndDirectionsToDraw, o);
+        List<Border<T>> borders = BorderUtils.orderBorders(tileAndDirectionsToDraw);
+        LeafRegion<T> leafRegion = new LeafRegion<>(borders, o);
+
 //        for (Border border : borders) {
 //            leafRegion.addNewBorder(border);
 //        }
