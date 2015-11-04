@@ -97,7 +97,7 @@ public class BorderUtils {
             startToEnd.remove(startPoint, endPoint);
             startPoint = endPoint;
         }
-        System.out.println("Circle end!");
+//        System.out.println("Circle end!");
         borders.add(new Border<T>(abstrBoundaries));
         return borders;
 

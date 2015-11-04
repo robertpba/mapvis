@@ -102,7 +102,7 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea("generating map..");
         Region<INode> world = method1.get().Begin();
         BorderDetector borderDetector = new BorderDetector(world, grid.get(), tree.get());
-
+        borderDetector.Begin();
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");

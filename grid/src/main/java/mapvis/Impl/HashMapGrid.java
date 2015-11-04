@@ -1,5 +1,6 @@
 package mapvis.Impl;
 
+import mapvis.common.datatype.Tuple2;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
 import mapvis.models.Pos;

@@ -49,10 +49,13 @@ public class LeafRegion<T> extends Region<T> {
     public static class BoundaryShape{
         public double[] xValues;
         public double[] yValues;
+        public List<String> text;
+        public int level;
 
         public BoundaryShape(double[] xValues, double[] yValues) {
             this.xValues = xValues;
             this.yValues = yValues;
+            text = new ArrayList<>();
         }
     }
 
@@ -68,6 +71,10 @@ public class LeafRegion<T> extends Region<T> {
 
     public List<Border<T>> getBorders() {
         return borders;
+    }
+
+    public void setBorders(List<Border<T>> borders) {
+        this.borders = borders;
     }
 
     @Override
@@ -91,13 +98,14 @@ public class LeafRegion<T> extends Region<T> {
         return new Point2D(roundTo4Digits(point2D.getX()), roundTo4Digits(point2D.getY()));
     }
 
-    public List<BoundaryShape> computeCoordinates(){
+    public List<Tuple2<Border<T>, BoundaryShape>> computeCoordinates(){
 
         List<Double> xValues = new ArrayList<>();
         List<Double> yValues = new ArrayList<>();
         List<BoundaryShape> computedBoundaryShapes = new ArrayList<>();
+        List<Tuple2<Border<T>, BoundaryShape>> result =  new ArrayList<>();
 
-
+        List<String> descriptionTexts = new ArrayList<>();
         for (Border<T> border : borders) {
             if(border.getBorderItems().size() == 0){
                 continue;
@@ -121,16 +129,28 @@ public class LeafRegion<T> extends Region<T> {
                     yValues.add(startPoint.getY());
                 }
             }
-            computedBoundaryShapes.add(new BoundaryShape(
-                            xValues.stream().mapToDouble(Double::doubleValue).toArray(),
-                            yValues.stream().mapToDouble(Double::doubleValue).toArray())
-            );
+            BoundaryShape boundaryShape = new BoundaryShape(
+                    xValues.stream().mapToDouble(Double::doubleValue).toArray(),
+                    yValues.stream().mapToDouble(Double::doubleValue).toArray());
+            boundaryShape.text = descriptionTexts;
+
+            boundaryShape.level = border.getLevel();
+            result.add(new Tuple2<>(border, boundaryShape));
+//            computedBoundaryShapes.add(boundaryShape);
+
+//            System.out.println("X");
+//            for (Double xValue : xValues) {
+//                System.out.println(xValue);
+//            }
+//            System.out.println("Y");
+//            for (Double yValue : yValues) {
+//                System.out.println(yValue);
+//            }
             xValues.clear();
             yValues.clear();
         }
-        return computedBoundaryShapes;
-//        boundaryShapes = computedBoundaryShapes;
-//        return new ArrayList<>(boundaryShapes);
+//        return computedBoundaryShapes;
+        return result;
     }
 
     public T getNodeItem() {

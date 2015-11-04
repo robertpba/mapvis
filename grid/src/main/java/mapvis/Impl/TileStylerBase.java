@@ -154,7 +154,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return cache;
     }
 
-    private int calcLevel(int x, int y, Dir dir){
+    public int calcLevel(int x, int y, Dir dir){
         //calc level of border at tile position and direction
         Tile<T> t = getGrid().getTile(x, y);
         Tile<T> tn = getGrid().getNeighbour(x, y, dir);
