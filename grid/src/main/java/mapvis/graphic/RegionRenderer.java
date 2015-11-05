@@ -4,8 +4,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.FillRule;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
@@ -38,13 +36,13 @@ public class RegionRenderer {
     final double[] x;
     final double[] y;
     int drawIndex;
-    int maxDrawIndex;
+    int maxBorderLevelToShow;
     Random rand = new Random(0);
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
         super();
         drawIndex = 0;
-        maxDrawIndex = 1;
+        maxBorderLevelToShow = 1;
         System.out.println("Creating: " + this.getClass().getName());
         this.sideLength = view.SideLength;
         this.view = view;
@@ -141,7 +139,7 @@ public class RegionRenderer {
         GraphicsContext g = canvas.getGraphicsContext2D();
         if(regionToDraw.isLeaf()) {
             g.save();
-//            if(totalDrawnBorder != maxDrawIndex){
+//            if(totalDrawnBorder != maxBorderLevelToShow){
 //                totalDrawnBorder++;
 //                g.restore();
 //                return;
@@ -201,6 +199,8 @@ public class RegionRenderer {
                 LeafRegion.BoundaryShape boundaryShape = boundaryShapeTuple.second;
 
                 int borderLevel = boundaryShape.level;
+                if(borderLevel > maxBorderLevelToShow)
+                    continue;
                 if(borderLevel == 0){
                     g.setStroke(Color.BLACK);
                 }else if(borderLevel == 1){

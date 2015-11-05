@@ -17,7 +17,6 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
-import mapvis.common.datatype.Tuple2;
 import mapvis.models.*;
 
 import javax.imageio.ImageIO;
@@ -426,7 +425,7 @@ public class HexagonalTilingView extends Pane {
     }
     private void onBorderLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         styler.get().setMaxBorderLevelToShow(newValue.intValue());
-        regionRenderer.maxDrawIndex = newValue.intValue();
+        regionRenderer.maxBorderLevelToShow = newValue.intValue();
         updateHexagons();
 
     }

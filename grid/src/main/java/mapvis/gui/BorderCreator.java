@@ -125,19 +125,14 @@ public class BorderCreator<T> {
     private Point2D findStartPointAtBorderChange(){
         Iterator<Point2D> iterator = startToEnd.keySet().iterator();
         startPoint = iterator.next();
-        int prevBorderLevel = -1;
         Point2D prevStartPoint = null;
         for(int i = 0; i < startToEnd.keySet().size(); i++){
-
-            int borderLevelAtPosition = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(startPoint));
-//            if(prevBorderLevel != -1 && prevBorderLevel != borderLevelAtPosition){
             if (isBorderChangeRequired(prevStartPoint, startPoint)) {
-
                 Point2D resultingEndpoint = startPoint;
                 startPoint = prevStartPoint;
                 return resultingEndpoint;
             }
-            prevBorderLevel = borderLevelAtPosition;
+
             prevStartPoint = startPoint;
             startPoint = startToEnd.get(startPoint);
         }
@@ -147,22 +142,39 @@ public class BorderCreator<T> {
     private boolean isBorderChangeRequired(Point2D prevStartPoint, Point2D startPoint) {
         if(prevStartPoint == null)
             return false;
+        Tuple2<Pos, Dir> startPointTile = point2DToBorderAbstrBorder.get(startPoint);
+        Tile<T> startItem  = grid.getNeighbour(startPointTile.first.getX(), startPointTile.first.getY(), startPointTile.second);
 
-        int borderLevelAtStartPoint = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(startPoint));
-        int borderLevelAtPrevStartPoint = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(prevStartPoint));
-        return borderLevelAtStartPoint != borderLevelAtPrevStartPoint;
+        Tuple2<Pos, Dir> prevStartPointTile = point2DToBorderAbstrBorder.get(prevStartPoint);
+        Tile<T> endItem = grid.getNeighbour(prevStartPointTile.first.getX(), prevStartPointTile.first.getY(), prevStartPointTile.second);
+
+        //check if the tiles belong to the same node. in case they are not a Land tile, they have to have the same type
+        if(startItem == null || endItem == null)
+            return true;
+        if(startItem.getTag() != endItem.getTag())
+            return true;
+        if(startItem.getTag() == Tile.LAND)
+            return !startItem.getItem().equals(endItem.getItem());
+        return false;
     }
+
+//    private boolean isBorderChangeRequired(Point2D prevStartPoint, Point2D startPoint) {
+//        if(prevStartPoint == null)
+//            return false;
+//
+//        int borderLevelAtStartPoint = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(startPoint));
+//        int borderLevelAtPrevStartPoint = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(prevStartPoint));
+//        return borderLevelAtStartPoint != borderLevelAtPrevStartPoint;
+//    }
 
     private List<Border<T>> orderBorders(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
         initializeHashMaps();
         createStartPointToEndPointMapping(tileAndDirectionsToDraw);
 
-
         int keySetSize = startToEnd.keySet().size();
 
         List<Border.BorderItem> borderItems = new ArrayList<>();
         List<Border<T>> borders = new ArrayList<>();
-        int prevBorderLevel = -1;
         Point2D prevStartPoint = null;
         for(int i = 0; i < keySetSize; i++){
             Point2D endPoint = null;
@@ -171,7 +183,6 @@ public class BorderCreator<T> {
                 //initialize with new startpoint
                 endPoint = findBeginningBorderChange();
                 initialPoint = startPoint;
-                prevBorderLevel = getBorderLevelAtCurrentPos();
             }else{
                 //continue with last startpoint
                 endPoint = startToEnd.get(startPoint);
@@ -181,24 +192,21 @@ public class BorderCreator<T> {
                 //circle detected => close circular boundary
                 appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
 
-                borders.add(createBorder(borderItems, prevBorderLevel));
+                borders.add(createBorder(borderItems, getBorderLevelAtPosition(prevStartPoint)));
                 borderItems = new ArrayList<>();
 
                 //reinitialize with next point to continue with next boundaries if there
                 //are any left
                 endPoint = findStartPointAtBorderChange();
                 initialPoint = startPoint;
-                prevBorderLevel = getBorderLevelAtCurrentPos();
             }
 
            if(isBorderChangeRequired(prevStartPoint, startPoint)){
-//         if(prevBorderLevel != -1 && prevBorderLevel != getBorderLevelAtCurrentPos()){
-                   appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
-                   borders.add(createBorder(borderItems, prevBorderLevel));
-                   borderItems = new ArrayList<>();
+               appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
+               borders.add(createBorder(borderItems, getBorderLevelAtPosition(prevStartPoint)));
+               borderItems = new ArrayList<>();
 
-                   prevBorderLevel = getBorderLevelAtCurrentPos();
-                   appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
+               appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
            }else{
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
            }
@@ -206,22 +214,16 @@ public class BorderCreator<T> {
             prevStartPoint = startPoint;
             startPoint = endPoint;
         }
-//        closeBorderIfCircular(borderItems, initialPoint);
-//        appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
+
         if(circleDetected()){
             appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
         }
-        borders.add(createBorder(borderItems, prevBorderLevel));
+        borders.add(createBorder(borderItems, getBorderLevelAtPosition(prevStartPoint)));
         return borders;
 
     }
 
-    private void closeBorderIfCircular(List<Border.BorderItem> borderItems, Point2D initialPoint) {
-//        if(borderItems.size() > 0 && borderItems.get(borderItems.size() - 1))
-    }
-
     private Border<T> createBorder(List<Border.BorderItem> borderItems, int prevBorderLevel) {
-//        borderItems.add(borderItems.get(0));
         return new Border<T>(borderItems, prevBorderLevel);
     }
 
@@ -234,7 +236,11 @@ public class BorderCreator<T> {
     }
 
     private int getBorderLevelAtCurrentPos(){
-        return getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(startPoint));
+        return getBorderLevelAtPosition(startPoint);
+    }
+
+    private int getBorderLevelAtPosition(Point2D point2D){
+        return getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(point2D));
     }
 
     private int getBorderLevelAtPosition(Tuple2<Pos, Dir> addedBorderPart) {

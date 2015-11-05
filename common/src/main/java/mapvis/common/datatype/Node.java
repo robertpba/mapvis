@@ -90,4 +90,13 @@ public class Node implements INode {
         return nodeState;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass())
+            return false;
+        Node node = (Node) obj;
+
+        return node.getId().equals(this.getId());
+//        return super.equals(obj);
+    }
 }
