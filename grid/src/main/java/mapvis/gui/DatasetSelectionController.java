@@ -105,7 +105,7 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea("generating map..");
         Region<INode> world = method1.get().Begin();
 
-        BorderCreator<INode> borderCreator = new BorderCreator<>(world, grid.get(), tree.get(),
+        BorderCreator<INode> borderCreator = new BorderCreator<INode>(world, grid.get(), tree.get(), method1.get().getItemToRegioMap(),
                 new RandomColorStyler<INode>(tree.get(), grid.get(), 100, Color.WHITE, 2)
         );
         borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionToBoundaries());

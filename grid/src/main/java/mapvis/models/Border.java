@@ -1,7 +1,10 @@
 package mapvis.models;
 
+import com.sun.scenario.effect.impl.Renderer;
 import mapvis.common.datatype.Tuple2;
+import mapvis.graphic.RegionRenderer;
 
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,20 +26,21 @@ public class Border<T> {
     }
 
     private int level;
-    private boolean isDrawn;
+//    private boolean isDrawn;
+    private RegionRenderer.RenderState renderState;
     private List<BorderItem> borderItems;
     private T nodeA;
     private T nodeB;
 
     public Border() {
         this.level = -1;
-        this.isDrawn = false;
+        this.renderState = RegionRenderer.INITIAL_BORDER_RENDERSTATE;
         this.borderItems = new ArrayList<>();
     }
 
     public Border(List<BorderItem> borderItems, int level) {
         this.level = level;
-        this.isDrawn = false;
+        this.renderState = RegionRenderer.INITIAL_BORDER_RENDERSTATE;
         this.borderItems = borderItems;
     }
 
@@ -112,11 +116,41 @@ public class Border<T> {
         this.nodeB = nodeB;
     }
 
-    public void setIsDrawn(boolean isDrawn) {
-        this.isDrawn = isDrawn;
+    public RegionRenderer.RenderState getRenderState() {
+        return renderState;
     }
 
-    public boolean isDrawn() {
-        return isDrawn;
+    public void setRenderState(RegionRenderer.RenderState renderState) {
+        this.renderState = renderState;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+        Border border = (Border) obj;
+        //same referenced node?
+        if(     (border.getNodeA().equals(this.getNodeA()) && border.getNodeB().equals(this.getNodeB())) ||
+                (border.getNodeA().equals(this.getNodeB()) && border.getNodeB().equals(this.getNodeA()))){
+            //same size of borderItems?
+            if(borderItems.size() > 0 && borderItems.size() == border.getBorderItems().size()){
+                int endIndex = borderItems.size() - 1;
+                //same start/endpoints?
+                boolean sameBorderPointStart = borderItems.get(0).equals(borderItems.get(0));
+                boolean sameBorderPointEnd = borderItems.get(endIndex).equals(borderItems.get(endIndex));
+
+                if(sameBorderPointStart && sameBorderPointEnd)
+                    return true;
+                //same start/endpoints switched?
+                if(!sameBorderPointEnd && !sameBorderPointStart){
+                    sameBorderPointStart = borderItems.get(endIndex).equals(borderItems.get(0));
+                    sameBorderPointEnd = borderItems.get(0).equals(borderItems.get(endIndex));
+                    if(sameBorderPointStart && sameBorderPointEnd)
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 }

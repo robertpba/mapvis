@@ -1,10 +1,8 @@
 package mapvis.algo;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import mapvis.Impl.HashMapGrid;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
-import mapvis.gui.BorderCreator;
 import mapvis.layouts.commons.RandomHelper;
 import mapvis.models.*;
 
@@ -15,16 +13,20 @@ public class Method1<T> {
     public Tree2<T> tree;
     public CoastCache<T> cache;
     public Grid<T> grid;
+    private Region<T> world;
+    private Map<T, LeafRegion<T>> leafItemToLeafRegion;
+    private List<Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>>> leafRegionToBoundaries;
+
     private Random random = new Random(1);
     public double beta = 3;
-    private Region<T> world;
-    private List<Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>>> leafRegionToBoundaries;
+
 
     public Method1(Tree2<T> tree, Grid<T> grid) {
         this.tree = tree;
         this.grid = grid;
         this.cache = new CoastCache<>(grid, tree);
         this.leafRegionToBoundaries = new ArrayList<>();
+        this.leafItemToLeafRegion = new HashMap<>();
     }
 
     public Region<T> Begin(){
@@ -37,9 +39,12 @@ public class Method1<T> {
         return leafRegionToBoundaries;
     }
 
+    public Map<T, LeafRegion<T>> getItemToRegioMap() {
+        return leafItemToLeafRegion;
+    }
+
     private Region<T> recursive(T o){
         Set<T> children = tree.getChildren(o);
-
         if (children.size() > 0) {
             List<Region<T>> childRegions = new ArrayList<>();
             children.stream().filter(t1 -> tree.getWeight(t1) > 0).forEach(t2 -> childRegions.add(recursive(t2)));
@@ -141,10 +146,11 @@ public class Method1<T> {
 //            }
         }
 
-        List<Border<T>> borders = BorderUtils.orderBorders(tileAndDirectionsToDraw);
+//        List<Border<T>> borders = BorderUtils.orderBorders(tileAndDirectionsToDraw);
 
-        LeafRegion<T> leafRegion = new LeafRegion<>(null, o);
+        LeafRegion<T> leafRegion = new LeafRegion<>(o);
         leafRegionToBoundaries.add(new Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>>(leafRegion, tileAndDirectionsToDraw));
+        leafItemToLeafRegion.put(o, leafRegion);
 //        for (Border border : borders) {
 //            leafRegion.addNewBorder(border);
 //        }

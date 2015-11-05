@@ -2,6 +2,7 @@ package mapvis.gui;
 
 import javafx.geometry.Point2D;
 import mapvis.Impl.RandomColorStyler;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
@@ -14,6 +15,7 @@ import java.util.*;
  */
 public class BorderCreator<T> {
 
+    private final Map<T, LeafRegion<T>> leafNodeToLeafRegionMap;
     private Map<Point2D, Point2D> startToEnd;
     private Map<Point2D, Tuple2<Pos, Dir>> point2DToBorderAbstrBorder;
     private Point2D startPoint = null;
@@ -25,10 +27,11 @@ public class BorderCreator<T> {
     private final Tree2<T> tree;
     private final RandomColorStyler<T> styler;
 
-    public BorderCreator(Region<T> world, Grid<T> grid, Tree2<T> tree, RandomColorStyler<T> styler) {
+    public BorderCreator(Region<T> world, Grid<T> grid, Tree2<T> tree, Map<T, LeafRegion<T>> leafNodeToLeafRegionMap, RandomColorStyler<T> styler) {
         this.world = world;
         this.grid = grid;
         this.tree = tree;
+        this.leafNodeToLeafRegionMap = leafNodeToLeafRegionMap;
         this.styler = styler;
         initializeHashMaps();
     }
@@ -57,66 +60,20 @@ public class BorderCreator<T> {
                 Point2D endPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xEnd, yEnd));
                 startToEnd.put(startPoint, endPoint);
                 point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(leafTile.first.getPos(), direction));
-//                if(isVectorPointingClockWise(startPoint, endPoint)){
-//                    startToEnd.put(startPoint, endPoint);
-//                    point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(leafTile.first.getPos(), direction));
-//                }else{
-//                    startToEnd.put(endPoint, startPoint);
-//                    Pos endPointTilePos = grid.getNeighbour(leafTile.first.getX(), leafTile.first.getY(), direction).getPos();
-//                    point2DToBorderAbstrBorder.put(endPoint, new Tuple2<>(endPointTilePos, getOppositeDirection(direction) ));
-//                }
-
-
             }
         }
     }
-
-    private Dir getOppositeDirection(Dir direction) {
-        switch (direction) {
-            case N:
-                return Dir.S;
-            case S:
-                return Dir.N;
-            case SE:
-                return Dir.NW;
-            case SW:
-                return Dir.NE;
-            case NE:
-                return Dir.SW;
-            case NW:
-                return Dir.SE;
-        }
-        return null;
-    }
-
-    private boolean isVectorPointingClockWise(Point2D startPoint, Point2D endPoint) {
-        return (startPoint.getY() * endPoint.getX()) > (startPoint.getX() * endPoint.getY());
-    }
-
 
     public void orderBordersOfLeaves(List<Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>>> leafRegionsToBorders){
         for (Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>> leafRegionListEntry : leafRegionsToBorders) {
             if(leafRegionListEntry.second.size() == 0){
                 continue;
             }
-            List<Border<T>> borders = orderBorders(leafRegionListEntry.second);
-            leafRegionListEntry.first.setBorders(borders);
+            List<Border<T>> borders = orderBorders(leafRegionListEntry.first, leafRegionListEntry.second);
+//            leafRegionListEntry.first.addBorders(borders);
         }
     }
-//    private Point2D findBeginningBorderChange(){
-//        Iterator<Point2D> iterator = startToEnd.keySet().iterator();
-//        startPoint = iterator.next();
-//        int prevBorderLevel = -1;
-//        for(int i = 0; i < startToEnd.keySet().size(); i++){
-//            int borderLevelAtPosition = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(startPoint));
-//            if(prevBorderLevel != -1 && prevBorderLevel != borderLevelAtPosition){
-//                return startToEnd.get(startPoint);
-//            }
-//            prevBorderLevel = borderLevelAtPosition;
-//            startPoint = startToEnd.get(startPoint);
-//        }
-//        return startToEnd.get(startPoint);
-//    }
+
     private Point2D findBeginningBorderChange(){
         startPoint = findStartPointAtBorderChange();
         return startToEnd.get(startPoint);
@@ -155,6 +112,7 @@ public class BorderCreator<T> {
             return true;
         if(startItem.getTag() == Tile.LAND)
             return !startItem.getItem().equals(endItem.getItem());
+
         return false;
     }
 
@@ -167,7 +125,7 @@ public class BorderCreator<T> {
 //        return borderLevelAtStartPoint != borderLevelAtPrevStartPoint;
 //    }
 
-    private List<Border<T>> orderBorders(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
+    private List<Border<T>> orderBorders(LeafRegion first, List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
         initializeHashMaps();
         createStartPointToEndPointMapping(tileAndDirectionsToDraw);
 
@@ -223,21 +181,27 @@ public class BorderCreator<T> {
 
     }
 
-    private Border<T> createBorder(List<Border.BorderItem> borderItems, int prevBorderLevel) {
-        return new Border<T>(borderItems, prevBorderLevel);
+    private Border<T> createBorder(List<Border.BorderItem> borderItems, int borderLevel) {
+        Tuple2<Pos, List<Dir>> borderItem = borderItems.get(0).borderItem;
+        Tile<T> innerNodeItem = grid.getTile(borderItem.first.getX(), borderItem.first.getY());
+        Tile<T> outerNodeItem = grid.getNeighbour(borderItem.first.getX(), borderItem.first.getY(), borderItem.second.get(0));
+        Border<T> tBorder = new Border<T>(borderItems, borderLevel);
+        if(innerNodeItem.getTag() == Tile.LAND){
+            tBorder.setNodeA(innerNodeItem.getItem());
+            leafNodeToLeafRegionMap.get(innerNodeItem.getItem()).addBorder(tBorder);
+        }
+        if(outerNodeItem.getTag() == Tile.LAND){
+            tBorder.setNodeB(outerNodeItem.getItem());
+            leafNodeToLeafRegionMap.get(outerNodeItem.getItem()).addBorder(tBorder);
+        }
+        return tBorder;
     }
 
-    private boolean borderLevelChanged(int prevLevel, int level) {
-        return prevLevel != level;
-    }
 
     private boolean circleDetected() {
         return startPoint.equals(initialPoint);
     }
 
-    private int getBorderLevelAtCurrentPos(){
-        return getBorderLevelAtPosition(startPoint);
-    }
 
     private int getBorderLevelAtPosition(Point2D point2D){
         return getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(point2D));
@@ -250,14 +214,8 @@ public class BorderCreator<T> {
     private void appendBorderStepToBorderItemListToStartingAtPos(List<Border.BorderItem> borderItems, Point2D pointToAdd) {
         Tuple2<Pos, Dir> abstrBorderItem = point2DToBorderAbstrBorder.get(pointToAdd);
         addBorderPartToList(lastPos, borderItems, abstrBorderItem);
-//        lastPos = abstrBorderItem.first;
     }
 
-    private Point2D reinitializeAtNextPoint() {
-        startPoint = startToEnd.keySet().iterator().next();
-        Point2D endPoint = startToEnd.get(startPoint);
-        return endPoint;
-    }
 
     private void addBorderPartToList(Pos lastPos, List<Border.BorderItem> borderItems, Tuple2<Pos, Dir> abstrBorderItem) {
         if(borderItems.size() > 0 && borderItems.get(borderItems.size() - 1).borderItem.first.equals(abstrBorderItem.first)){

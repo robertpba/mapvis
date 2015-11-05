@@ -1,16 +1,12 @@
 package mapvis.gui;
 
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import mapvis.Impl.RandomColorStyler;
-import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
-import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -119,7 +115,7 @@ public class BorderDetector<T> {
                 splitBorders.add(currBorder);
             }
         }
-        leafRegion.setBorders(splitBorders);
+        leafRegion.addBorders(splitBorders);
     }
 
 //    private void processLeafNew(LeafRegion<INode> leafRegion) {
@@ -178,7 +174,7 @@ public class BorderDetector<T> {
 //                splitBorders.add(currBorder);
 //            }
 //        }
-//        leafRegion.setBorders(splitBorders);
+//        leafRegion.addBorders(splitBorders);
 //    }
 
     private void processLeaf(LeafRegion<T> leafRegion) {

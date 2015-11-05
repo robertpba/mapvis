@@ -34,7 +34,7 @@ public class LeafRegion<T> extends Region<T> {
                 - sideLength,     0.0
     };
 
-    private List<Border<T>> borders;
+    private Set<Border<T>> borders;
 
 
 
@@ -55,7 +55,7 @@ public class LeafRegion<T> extends Region<T> {
         public BoundaryShape(double[] xValues, double[] yValues) {
             this.xValues = xValues;
             this.yValues = yValues;
-            text = new ArrayList<>();
+            this.text = new ArrayList<>();
         }
     }
 
@@ -64,17 +64,21 @@ public class LeafRegion<T> extends Region<T> {
     Color color;
     List<BoundaryShape> boundaryShapes;
 
-    public LeafRegion(List<Border<T>> borders, T treeItem) {
+    public LeafRegion(T treeItem) {
         super(Collections.<Region<T>>emptyList(), treeItem);
-        this.borders = borders;
+        this.borders = new HashSet<>();
     }
 
-    public List<Border<T>> getBorders() {
+    public Set<Border<T>> getBorders() {
         return borders;
     }
 
-    public void setBorders(List<Border<T>> borders) {
-        this.borders = borders;
+    public void addBorder(Border<T> border) {
+        this.borders.add(border);
+    }
+
+    public void addBorders(List<Border<T>> borders) {
+        this.borders.addAll(borders);
     }
 
     @Override
