@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
 import mapvis.models.*;
@@ -83,46 +84,47 @@ public class RegionRenderer {
                 && tile.getY() < bottomRightBorder.getY();
     }
 
-
-    private Tuple2<List<Double>, List<Double>> drawHexagonBorders(int x, int y, List<Dir> directions, GraphicsContext g) {
-        g.save();
-        Point2D point2D = HexagonalTilingView.hexagonalToPlain(x, y);
-        g.translate(point2D.getX(), point2D.getY());
-
-        TileStyler<INode> styler = view.getStyler();
-
-        List<Double> xValues = new ArrayList();
-        List<Double> yValues = new ArrayList();
-        if (!styler.isVisible(x,y))
-            return new Tuple2<>(xValues, yValues);
-
-//        Color col = styler.getColor(x,y);
-//        g.setFill(col);
 //
-//        g.fillPolygon(this.x, this.y, this.x.length);
-
-
-        g.setLineCap(StrokeLineCap.ROUND);
-        Collections.reverse(directions);
-        for (Dir direction : directions) {
-            g.setLineWidth(styler.getBorderWidth(x, y, direction));
-            g.setStroke(styler.getBorderColor(x, y, direction));
-            int[] pointIndices = DIR_TO_POINTS[direction.ordinal()];
-            g.strokeLine(points[pointIndices[0]], points[pointIndices[1]], points[pointIndices[2]], points[pointIndices[3]]);
-            xValues.add(points[pointIndices[0]]);
-            xValues.add(points[pointIndices[2]]);
-
-            yValues.add(points[pointIndices[1]]);
-            yValues.add(points[pointIndices[3]]);
-        }
-
-        g.restore();
-        return new Tuple2<>(xValues, yValues);
-    }
+//    private Tuple2<List<Double>, List<Double>> drawHexagonBorders(int x, int y, List<Dir> directions, GraphicsContext g) {
+//        g.save();
+//        Point2D point2D = HexagonalTilingView.hexagonalToPlain(x, y);
+//        g.translate(point2D.getX(), point2D.getY());
+//
+//        TileStyler<INode> styler = view.getStyler();
+//
+//        List<Double> xValues = new ArrayList();
+//        List<Double> yValues = new ArrayList();
+//        if (!styler.isVisible(x,y))
+//            return new Tuple2<>(xValues, yValues);
+//
+////        Color col = styler.getColor(x,y);
+////        g.setFill(col);
+////
+////        g.fillPolygon(this.x, this.y, this.x.length);
+//
+//
+//        g.setLineCap(StrokeLineCap.ROUND);
+//        Collections.reverse(directions);
+//        for (Dir direction : directions) {
+//            g.setLineWidth(styler.getBorderWidth(x, y, direction));
+//            g.setStroke(styler.getBorderColor(x, y, direction));
+//            int[] pointIndices = DIR_TO_POINTS[direction.ordinal()];
+//            g.strokeLine(points[pointIndices[0]], points[pointIndices[1]], points[pointIndices[2]], points[pointIndices[3]]);
+//            xValues.add(points[pointIndices[0]]);
+//            xValues.add(points[pointIndices[2]]);
+//
+//            yValues.add(points[pointIndices[1]]);
+//            yValues.add(points[pointIndices[3]]);
+//        }
+//
+//        g.restore();
+//        return new Tuple2<>(xValues, yValues);
+//    }
 
     public void drawRegionHelper(Region regionToDraw, Point2D topleftBorder, Point2D bottomRightBorder)
     {
         drawIndex = 0;
+        totalDrawnBorder = 0;
         drawRegion(regionToDraw, topleftBorder, bottomRightBorder);
     }
 
@@ -133,12 +135,18 @@ public class RegionRenderer {
     public static Point2D roundToCoordinatesTo4Digits(Point2D point2D){
         return new Point2D(roundTo4Digits(point2D.getX()), roundTo4Digits(point2D.getY()));
     }
-
+    int totalDrawnBorder = 0;
     public void drawRegion(Region regionToDraw, Point2D topleftBorder, Point2D bottomRightBorder){
         TileStyler<INode> styler = view.getStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
         if(regionToDraw.isLeaf()) {
             g.save();
+//            if(totalDrawnBorder != maxDrawIndex){
+//                totalDrawnBorder++;
+//                g.restore();
+//                return;
+//            }
+//            totalDrawnBorder++;
 //            g.setLineWidth(2);
             LeafRegion<INode> leafRegion = (LeafRegion<INode>) regionToDraw;
 
@@ -179,7 +187,8 @@ public class RegionRenderer {
             for (Tuple2<Border<INode>, LeafRegion.BoundaryShape> boundaryShape : boundaryShapes) {
                 List<String> borderItemsDesc = new ArrayList<>();
 //                shapeAndDescrp.add(new Tuple2<>(Integer.toString(boundaryShape.first.getLevel()), boundaryShape.second));
-                String labelA = boundaryShape.first.getNodeA().getId();
+//                String labelA = boundaryShape.first.getNodeA().getId();
+                String labelA = boundaryShape.first.getNodeA()==  null ? "X" : boundaryShape.first.getNodeA().getId();
                 String labelB = boundaryShape.first.getNodeB()==  null ? "X" : boundaryShape.first.getNodeB().getId();
                 shapeAndDescrp.add(new Tuple2<>(labelA+ "/" + labelB, boundaryShape.second));
             }
@@ -188,8 +197,9 @@ public class RegionRenderer {
             int borderItemIndex = 0;
 //            for (Tuple2<List<String>, LeafRegion.BoundaryShape> boundaryShapeTuple : shapeAndDescrp){
             for (Tuple2<String, LeafRegion.BoundaryShape> boundaryShapeTuple : shapeAndDescrp){
+
                 LeafRegion.BoundaryShape boundaryShape = boundaryShapeTuple.second;
-                g.setLineWidth(2);
+
                 int borderLevel = boundaryShape.level;
                 if(borderLevel == 0){
                     g.setStroke(Color.BLACK);
@@ -200,7 +210,7 @@ public class RegionRenderer {
                 }else if(borderLevel == 3){
                     g.setStroke(Color.YELLOW);
                 }else{
-                    continue;
+                    g.setStroke(Color.GREY);
                 }
 //                g.setLineWidth( 4.0/ (boundaryShape.level + 1));
 //                boundaryShape.level
@@ -210,12 +220,17 @@ public class RegionRenderer {
                 double lastX = 0;
                 double lastY = 0;
 
+                g.setLineWidth(2);
                 g.strokePolyline(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
 
                 for (int i = 0; i < boundaryShape.xValues.length; i++) {
-
                     double x = boundaryShape.xValues[i];
                     double y = boundaryShape.yValues[i];
+                    if(i == 0 || i == boundaryShape.xValues.length - 1){
+                        g.setLineWidth(1);
+                        g.setFill(Color.GREEN);
+                        g.fillOval(x, y, 4, 4);
+                    }
                     lastX = x;
                     lastY = y;
 //                    if(i == 0){
@@ -223,13 +238,19 @@ public class RegionRenderer {
 //                    }else{
 //                        g.lineTo(x, y);
 //                    }
-//                    g.setLineWidth(1);
+
+                    g.setFont(new Font(g.getFont().getName(), 5));
+                    g.setLineWidth(0.3);
 //                    g.strokeText(Integer.toString(boundaryShape.level), x, y);
-//                    g.strokeText(Integer.toString(shapeIndex) + "/" + Integer.toString(i), x, y, 6);
+//                    g.strokeText(Integer.toString(shapeIndex) + "/" + Integer.toString(i), x, y);
 
                 }
+
+
                 g.setLineWidth(1);
-                g.strokeText(Integer.toString(shapeIndex), boundaryShape.xValues[boundaryShape.xValues.length/2], boundaryShape.yValues[boundaryShape.xValues.length/2]);
+                g.setFont(new Font(g.getFont().getName(), 10));
+//                g.strokeText(Integer.toString(shapeIndex), boundaryShape.xValues[boundaryShape.xValues.length/2], boundaryShape.yValues[boundaryShape.xValues.length/2]);
+
 //                g.strokeText(boundaryShapeTuple.first, lastX, lastY);
                 shapeIndex += 1;
 //                g.closePath();

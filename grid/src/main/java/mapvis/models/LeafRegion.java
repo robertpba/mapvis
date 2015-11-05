@@ -92,6 +92,7 @@ public class LeafRegion<T> extends Region<T> {
 
     public static double roundTo4Digits(double val){
         return Math.round(100.0 * val) / 100.0;
+//        return Math.round(1000.0 * val) / 1000.0;
     }
 
     public static Point2D roundToCoordinatesTo4Digits(Point2D point2D){

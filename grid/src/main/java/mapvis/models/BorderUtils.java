@@ -52,7 +52,7 @@ public class BorderUtils {
 
         int keySetSize = startToEnd.keySet().size();
 
-        List<Border.BorderItem> abstrBoundaries = new ArrayList<>();
+        List<Border.BorderItem> borderItems = new ArrayList<>();
         List<Border<T>> borders = new ArrayList<>();
         for(int i = 0; i < keySetSize; i++){
 
@@ -60,17 +60,18 @@ public class BorderUtils {
                 startPoint = startToEnd.keySet().iterator().next();
                 initialPoint = startPoint;
             }
+
             Point2D endPoint = startToEnd.get(startPoint);
             if(startPoint.equals(initialPoint) && i != 0){
                 System.out.println("Circle Detected!:" + i);
                 System.out.println("new Shape!\n------------------------");
 
                 Tuple2<Pos, Dir> abstrBorderItem = point2DToBorderAbstrBorder.get(initialPoint);
-                addBorderPartToList(lastPos, abstrBoundaries, abstrBorderItem);
+                addBorderPartToList(lastPos, borderItems, abstrBorderItem);
                 lastPos = abstrBorderItem.first;
 
-                borders.add(new Border<T>(abstrBoundaries));
-                abstrBoundaries = new ArrayList<>();
+                borders.add(new Border<T>(borderItems));
+                borderItems = new ArrayList<>();
 
                 startPoint = startToEnd.keySet().iterator().next();
                 initialPoint = startPoint;
@@ -80,8 +81,8 @@ public class BorderUtils {
                 //no circular boundary => found endpoint of boundary
                 lastPos = null;
 
-                borders.add(new Border<T>(abstrBoundaries));
-                abstrBoundaries = new ArrayList<>();
+                borders.add(new Border<T>(borderItems));
+                borderItems = new ArrayList<>();
 
                 startPoint = startToEnd.keySet().iterator().next();
                 initialPoint = startPoint;
@@ -89,7 +90,7 @@ public class BorderUtils {
                 System.out.println("detected end of boundary");
             }else{
                 Tuple2<Pos, Dir> abstrBorderItem = point2DToBorderAbstrBorder.get(startPoint);
-                addBorderPartToList(lastPos, abstrBoundaries, abstrBorderItem);
+                addBorderPartToList(lastPos, borderItems, abstrBorderItem);
                 lastPos = abstrBorderItem.first;
             }
 
@@ -98,7 +99,7 @@ public class BorderUtils {
             startPoint = endPoint;
         }
 //        System.out.println("Circle end!");
-        borders.add(new Border<T>(abstrBoundaries));
+        borders.add(new Border<T>(borderItems));
         return borders;
 
     }

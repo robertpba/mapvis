@@ -16,17 +16,17 @@ import java.util.List;
 /**
  * Created by dacc on 10/29/2015.
  */
-public class BorderDetector {
-    private final Region<INode> world;
-    private final Grid<INode> grid;
-    private final Tree2<INode> tree;
-    private final RandomColorStyler<INode> styler;
+public class BorderDetector<T> {
+    private final Region<T> world;
+    private final Grid<T> grid;
+    private final Tree2<T> tree;
+    private final RandomColorStyler<T> styler;
 
-    public BorderDetector(Region<INode> world, Grid<INode> grid, Tree2<INode> tree) {
+    public BorderDetector(Region<T> world, Grid<T> grid, Tree2<T> tree) {
         this.world = world;
         this.grid = grid;
         this.tree = tree;
-        styler = new RandomColorStyler<INode>(tree, grid,
+        styler = new RandomColorStyler<T>(tree, grid,
                 100,
                 Color.WHITE,
                 1);
@@ -36,40 +36,32 @@ public class BorderDetector {
         recursive(world);
     }
 
-    private void recursive(Region<INode> region){
+    private void recursive(Region<T> region){
         if (!region.isLeaf()) {
-            List<Region<INode>> childRegions = region.getChildRegions();
+            List<Region<T>> childRegions = region.getChildRegions();
             childRegions.forEach((o1) -> recursive(o1));
             return;
         }
 //        processLeaf((LeafRegion) region);
-        processLeafNew((LeafRegion<INode>) region);
+        processLeafNew((LeafRegion<T>) region);
     }
     int currLevel = 0;
-    private void processLeafNew(LeafRegion<INode> leafRegion) {
-        List<Border<INode>> splitBorders = new ArrayList<>();
+    private void processLeafNew(LeafRegion<T> leafRegion) {
+        List<Border<T>> splitBorders = new ArrayList<>();
         int prevLevel = -1;
-        int index = 0;
-//        System.out.println("Borders for " + leafRegion.getNodeItem().getLabel());
-        for (Border<INode> border : leafRegion.getBorders()) {
+        for (Border<T> border : leafRegion.getBorders()) {
 
-            Border<INode> currBorder = new Border<>();
+            Border<T> currBorder = new Border<>();
             Pos lastPos = null;
             List<String> levels = new ArrayList<>();
             for (Border.BorderItem borderItem : border.getBorderItems()) {
-                Tile<INode> t = grid.getTile(borderItem.borderItem.first.getX(), borderItem.borderItem.first.getY());
+                Tile<T> t = grid.getTile(borderItem.borderItem.first.getX(), borderItem.borderItem.first.getY());
                 List<Dir> listOfDirs = new ArrayList<>();
                 for (Dir dir : borderItem.borderItem.second) {
-                    index++;
                     int currLevel = styler.calcLevel(t.getX(), t.getY(), dir);
-
-//                    Tile<INode> tn = grid.getNeighbour(t.getX(), t.getX(), dir);
-//                    int currLevel = calcLevel(t, tn);
 
                     if(currLevel != prevLevel && prevLevel != -1){
                         //detected the beginning of new border
-                        //1. finish last border
-//                        System.out.println("Finish last Border at " + t.getPos() + " " + dir.toString());
                         if(listOfDirs.size() > 0){
                             listOfDirs.add(dir);
                             Border.BorderItem lastBorderItem = new Border.BorderItem(new Tuple2<>(lastPos, listOfDirs));
@@ -77,7 +69,7 @@ public class BorderDetector {
                             levels = new ArrayList<>();
 
                             currBorder.setNodeA(t.getItem());
-                            Tile<INode> tn = grid.getNeighbour(t.getX(), t.getY(), dir);
+                            Tile<T> tn = grid.getNeighbour(t.getX(), t.getY(), dir);
                             currBorder.setNodeB(tn.getItem());
 
                             currBorder.addBorderItem(lastBorderItem);
@@ -85,30 +77,21 @@ public class BorderDetector {
                             splitBorders.add(currBorder);
                         }
 
-//                        currBorder.setLevel(currLevel);
-//                        currLevel++;
-////
-////                        //2. create new one
-////                        System.out.println("Starting new Border at " + t.getPos() + " " + dir.toString());
-////                        lastPos = t.getPos();
-////                        prevLevel = currLevel;
+                        //2. create new one
                         currBorder = new Border<>();
                         currBorder.setLevel(currLevel);
                         listOfDirs = new ArrayList<>();
                         listOfDirs.add(dir);
                         levels.add(Integer.toString(currLevel));
-//                        continue;
                     }else if(prevLevel == -1){
-//                        System.out.println("Begining new Border at " + t.getPos() + " " + dir.toString());
                         //begin new border
-//                        currBorder = new Border<>();
-//                        listOfDirs = new ArrayList<>();
+                        currBorder = new Border<>();
+                        listOfDirs = new ArrayList<>();
 
                         listOfDirs.add(dir);
                         levels.add(Integer.toString(currLevel));
                         currBorder.setLevel(currLevel);
                     }else{
-//                        System.out.println("Continue Border at " + t.getPos() + " " + dir.toString());
                         //continue with old border
                         listOfDirs.add(dir);
                         levels.add(Integer.toString(currLevel));
@@ -119,7 +102,6 @@ public class BorderDetector {
                 }
 
                 if(listOfDirs.size() > 0){
-//                    System.out.println("Finishing Border at " + t.getPos() + Arrays.toString(listOfDirs.toArray()));
                     Border.BorderItem lastBorderItem = new Border.BorderItem(new Tuple2<>(t.getPos(), listOfDirs));
                     lastBorderItem.text = levels;
                     levels = new ArrayList<>();
@@ -127,13 +109,11 @@ public class BorderDetector {
                 }
             }
             if(currBorder.getBorderItems().size() > 0){
-                System.out.println("Adding curr Border");
-
                 Border.BorderItem borderItem = currBorder.getBorderItems().get(0);
-                Tile<INode> t = grid.getTile(borderItem.borderItem.first.getX(), borderItem.borderItem.first.getY());
+                Tile<T> t = grid.getTile(borderItem.borderItem.first.getX(), borderItem.borderItem.first.getY());
                 currBorder.setNodeA(t.getItem());
 
-                Tile<INode> tn = grid.getNeighbour(t.getX(), t.getY(), borderItem.borderItem.second.get(0));
+                Tile<T> tn = grid.getNeighbour(t.getX(), t.getY(), borderItem.borderItem.second.get(0));
                 currBorder.setNodeB(tn.getItem());
 
                 splitBorders.add(currBorder);
@@ -201,24 +181,24 @@ public class BorderDetector {
 //        leafRegion.setBorders(splitBorders);
 //    }
 
-    private void processLeaf(LeafRegion<INode> leafRegion) {
+    private void processLeaf(LeafRegion<T> leafRegion) {
 
-        List<Border<INode>> splitBorders = new ArrayList<>();
-        for (Border<INode> border : leafRegion.getBorders()) {
-            List<Border<INode>> splitBoder = splitBorderOnLevelChange(border);
+        List<Border<T>> splitBorders = new ArrayList<>();
+        for (Border<T> border : leafRegion.getBorders()) {
+            List<Border<T>> splitBoder = splitBorderOnLevelChange(border);
             splitBorders.addAll(splitBoder);
         }
     }
 
-    private List<Border<INode>> splitBorderOnLevelChange(Border<INode> border) {
-        List<Border<INode>> splitBorders = new ArrayList<>();
+    private List<Border<T>> splitBorderOnLevelChange(Border<T> border) {
+        List<Border<T>> splitBorders = new ArrayList<>();
         List<Border.BorderItem> tileToDirs = border.getBorderItems();
         int level = -1;
         int prevLevel = -1;
         int borderItemIndex = 0;
         int borderDirListIndex = 0;
         for (Border.BorderItem borderItem  : tileToDirs) {
-            Tile<INode> t = grid.getTile(borderItem.borderItem.first.getX(), borderItem.borderItem.first.getY());
+            Tile<T> t = grid.getTile(borderItem.borderItem.first.getX(), borderItem.borderItem.first.getY());
             for (Dir dir : borderItem.borderItem.second) {
                 level  = styler.calcLevel(t.getX(), t.getY(), dir);
 //

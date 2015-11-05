@@ -34,10 +34,14 @@ public class Border<T> {
         this.borderItems = new ArrayList<>();
     }
 
-    public Border(List<BorderItem> borderItems) {
-        this.level = -1;
+    public Border(List<BorderItem> borderItems, int level) {
+        this.level = level;
         this.isDrawn = false;
         this.borderItems = borderItems;
+    }
+
+    public Border(List<BorderItem> borderItems) {
+        this(borderItems, -1);
     }
 
     public Border splitBorder(int borderItemIndex, int borderDirListIndex) {

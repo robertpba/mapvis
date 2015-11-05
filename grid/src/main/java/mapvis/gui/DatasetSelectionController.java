@@ -6,16 +6,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import mapvis.Impl.HashMapGrid;
+import mapvis.Impl.RandomColorStyler;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
 import mapvis.models.Region;
-import mapvis.models.Tile;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -101,8 +104,14 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("generating map..");
         Region<INode> world = method1.get().Begin();
-        BorderDetector borderDetector = new BorderDetector(world, grid.get(), tree.get());
-        borderDetector.Begin();
+
+        BorderCreator<INode> borderCreator = new BorderCreator<>(world, grid.get(), tree.get(),
+                new RandomColorStyler<INode>(tree.get(), grid.get(), 100, Color.WHITE, 2)
+        );
+        borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionToBoundaries());
+//        BorderDetector<INode> borderDetector = new BorderDetector<>(world, grid.get(), tree.get());
+//        borderDetector.Begin();
+
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
