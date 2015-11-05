@@ -4,7 +4,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
 import mapvis.models.*;
@@ -32,18 +31,18 @@ public class RegionRenderer {
 
     private final Canvas canvas;
 
-    HexagonalTilingView view;
-
-    final double sideLength;
-
-    final double COS30 = Math.cos(Math.toRadians(30));
-    final double[] points;
-    final double[] x;
-    final double[] y;
-    int drawIndex;
-    int maxBorderLevelToShow;
-    Random rand = new Random(0);
+    private HexagonalTilingView view;
+    private final double sideLength;
+    private final double COS30 = Math.cos(Math.toRadians(30));
+    private final double[] points;
+    private final double[] x;
+    private final double[] y;
+    private int totalDrawnBorder = 0;
+    private int drawIndex;
+    public int maxBorderLevelToShow;
+    private Random rand = new Random(0);
     private RenderState currentRegionRenderState;
+    private final IBorderCoordinatesCalculator<INode> borderCoordinatesCalculatorImpl = new BorderCoordinatesCalculatorImpl<INode>();
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
         super();
@@ -152,7 +151,7 @@ public class RegionRenderer {
     public static Point2D roundToCoordinatesTo4Digits(Point2D point2D){
         return new Point2D(roundTo4Digits(point2D.getX()), roundTo4Digits(point2D.getY()));
     }
-    int totalDrawnBorder = 0;
+
     public void drawRegion(Region regionToDraw, Point2D topleftBorder, Point2D bottomRightBorder){
         TileStyler<INode> styler = view.getStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
@@ -172,14 +171,15 @@ public class RegionRenderer {
 //                g.restore();
 //                return;
 //            }
-            INode nodeItem = leafRegion.getNodeItem();
 //            Tile<INode> iNodeTile = leafRegion.getLeafElements().get(0);
 //            if(!iNodeTile.getItem().getLabel().equals("#5") && !iNodeTile.getItem().getLabel().equals("#4")){
 //                g.restore();
 //                return;
 //            }
 //            List<LeafRegion.BoundaryShape> boundaryShapes = leafRegion.computeCoordinates();
-            List<Tuple2<Border<INode>, LeafRegion.BoundaryShape>> boundaryShapes = leafRegion.computeCoordinates();
+            borderCoordinatesCalculatorImpl.setLeafRegion(leafRegion);
+            List<Tuple2<Border<INode>, LeafRegion.BoundaryShape>> boundaryShapes = borderCoordinatesCalculatorImpl.computeCoordinates();
+
             if(boundaryShapes.size() == 0){
                 g.restore();
                 return;
@@ -190,7 +190,6 @@ public class RegionRenderer {
 //            g.setLineWidth(2);
 //
 //            int shapeIndex = 0;
-
 //            for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
 //            List<Tuple2<List<String>, LeafRegion.BoundaryShape>> shapeAndDescrp = new ArrayList<>();
 //            for (Tuple2<Border<INode>, LeafRegion.BoundaryShape> boundaryShape : boundaryShapes) {
@@ -200,7 +199,6 @@ public class RegionRenderer {
 //                }
 //                shapeAndDescrp.add(new Tuple2<>(borderItemsDesc, boundaryShape.second));
 //            }
-
 //            List<Tuple2<String, LeafRegion.BoundaryShape>> shapeAndDescrp = new ArrayList<>();
 //            for (Tuple2<Border<INode>, LeafRegion.BoundaryShape> boundaryShape : boundaryShapes) {
 //                List<String> borderItemsDesc = new ArrayList<>();
@@ -210,8 +208,6 @@ public class RegionRenderer {
 //                String labelB = boundaryShape.first.getNodeB()==  null ? "X" : boundaryShape.first.getNodeB().getId();
 //                shapeAndDescrp.add(new Tuple2<>(labelA+ "/" + labelB, boundaryShape.second));
 //            }
-
-
             int borderItemIndex = 0;
 //            for (Tuple2<List<String>, LeafRegion.BoundaryShape> boundaryShapeTuple : shapeAndDescrp){
 //            for (Tuple2<String, LeafRegion.BoundaryShape> boundaryShapeTuple : shapeAndDescrp){
@@ -250,7 +246,6 @@ public class RegionRenderer {
 
                 g.setLineWidth(2);
                 g.strokePolyline(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
-
 //                for (int i = 0; i < boundaryShape.xValues.length; i++) {
 //                    double x = boundaryShape.xValues[i];
 //                    double y = boundaryShape.yValues[i];
@@ -285,7 +280,6 @@ public class RegionRenderer {
 //                g.setStroke(new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
 //                g.stroke();
             }
-
 //            for (Tuple2<Border<INode>, LeafRegion.BoundaryShape> boundaryShapeTuple : boundaryShapes){
 //            for (Tuple2<List<String>, LeafRegion.BoundaryShape> boundaryShapeTuple : shapeAndDescrp){
 //                LeafRegion.BoundaryShape boundaryShape = boundaryShapeTuple.second;
@@ -317,12 +311,6 @@ public class RegionRenderer {
 //                g.setStroke(new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
 //                g.stroke();
 //            }
-
-
-
-
-//            g.fill();
-
             g.restore();
         }else{
             for (Object iNodeRegion : regionToDraw.getChildRegions()) {

@@ -149,7 +149,7 @@ public class Method1<T> {
 //        List<Border<T>> borders = BorderUtils.orderBorders(tileAndDirectionsToDraw);
 
         LeafRegion<T> leafRegion = new LeafRegion<>(o);
-        leafRegionToBoundaries.add(new Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>>(leafRegion, tileAndDirectionsToDraw));
+        leafRegionToBoundaries.add(new Tuple2<>(leafRegion, tileAndDirectionsToDraw));
         leafItemToLeafRegion.put(o, leafRegion);
 //        for (Border border : borders) {
 //            leafRegion.addNewBorder(border);

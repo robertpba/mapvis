@@ -1,14 +1,9 @@
 package mapvis.models;
 
-import com.sun.deploy.util.ArrayUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import jdk.nashorn.internal.ir.LiteralNode;
-import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
-import mapvis.graphic.HexagonalTilingView;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -34,8 +29,12 @@ public class LeafRegion<T> extends Region<T> {
                 - sideLength,     0.0
     };
 
-    private Set<Border<T>> borders;
 
+    private Set<Border<T>> borders;
+    private List<Tile<T>> leafElements;
+    private List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw;
+    private Color color;
+    private List<BoundaryShape> boundaryShapes;
 
 
     public static class BoundaryShape2{
@@ -58,11 +57,6 @@ public class LeafRegion<T> extends Region<T> {
             this.text = new ArrayList<>();
         }
     }
-
-    List<Tile<T>> leafElements;
-    List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw;
-    Color color;
-    List<BoundaryShape> boundaryShapes;
 
     public LeafRegion(T treeItem) {
         super(Collections.<Region<T>>emptyList(), treeItem);
@@ -96,66 +90,10 @@ public class LeafRegion<T> extends Region<T> {
 
     public static double roundTo4Digits(double val){
         return Math.round(100.0 * val) / 100.0;
-//        return Math.round(1000.0 * val) / 1000.0;
     }
 
     public static Point2D roundToCoordinatesTo4Digits(Point2D point2D){
         return new Point2D(roundTo4Digits(point2D.getX()), roundTo4Digits(point2D.getY()));
-    }
-
-    public List<Tuple2<Border<T>, BoundaryShape>> computeCoordinates(){
-
-        List<Double> xValues = new ArrayList<>();
-        List<Double> yValues = new ArrayList<>();
-        List<BoundaryShape> computedBoundaryShapes = new ArrayList<>();
-        List<Tuple2<Border<T>, BoundaryShape>> result =  new ArrayList<>();
-
-        List<String> descriptionTexts = new ArrayList<>();
-        for (Border<T> border : borders) {
-            if(border.getBorderItems().size() == 0){
-                continue;
-            }
-            for (Border.BorderItem borderItem : border.getBorderItems()) {
-
-                int x = borderItem.borderItem.first.getX();
-                int y = borderItem.borderItem.first.getY();
-
-                Point2D point2D = HexagonalTilingView.hexagonalToPlain(x, y);
-
-                for (Dir direction : borderItem.borderItem.second) {
-
-                    int[] pointIndices = DIR_TO_POINTS[direction.ordinal()];
-                    double xStart = POINTS[pointIndices[0]] + point2D.getX();
-                    double yStart = POINTS[pointIndices[1]] + point2D.getY();
-
-                    Point2D startPoint = roundToCoordinatesTo4Digits(new Point2D(xStart, yStart));
-
-                    xValues.add(startPoint.getX());
-                    yValues.add(startPoint.getY());
-                }
-            }
-            BoundaryShape boundaryShape = new BoundaryShape(
-                    xValues.stream().mapToDouble(Double::doubleValue).toArray(),
-                    yValues.stream().mapToDouble(Double::doubleValue).toArray());
-            boundaryShape.text = descriptionTexts;
-
-            boundaryShape.level = border.getLevel();
-            result.add(new Tuple2<>(border, boundaryShape));
-//            computedBoundaryShapes.add(boundaryShape);
-
-//            System.out.println("X");
-//            for (Double xValue : xValues) {
-//                System.out.println(xValue);
-//            }
-//            System.out.println("Y");
-//            for (Double yValue : yValues) {
-//                System.out.println(yValue);
-//            }
-            xValues.clear();
-            yValues.clear();
-        }
-//        return computedBoundaryShapes;
-        return result;
     }
 
     public T getNodeItem() {

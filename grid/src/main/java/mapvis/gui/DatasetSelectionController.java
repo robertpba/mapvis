@@ -109,14 +109,12 @@ public class DatasetSelectionController implements Initializable {
                 new RandomColorStyler<INode>(tree.get(), grid.get(), 100, Color.WHITE, 2)
         );
         borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionToBoundaries());
-//        BorderDetector<INode> borderDetector = new BorderDetector<>(world, grid.get(), tree.get());
-//        borderDetector.Begin();
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
         chart.setWorld(world);
-//        chart.updateHexagonsWithCoastCache(world);
+        grid.get().resetGrid();
         chart.updateHexagons();
         logTextToInfoArea("rendering finished");
     }
