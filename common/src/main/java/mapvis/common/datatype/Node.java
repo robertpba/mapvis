@@ -99,4 +99,9 @@ public class Node implements INode {
         return node.getId().equals(this.getId());
 //        return super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode() * label.hashCode();
+    }
 }

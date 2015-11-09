@@ -93,7 +93,7 @@ public class ChartController implements Initializable  {
             if(newValue1 == null)
                 return;
             int maxDepth = newValue1.maxDepth;
-            labelLevelsToShowSlider.setMax(maxDepth);
+            labelLevelsToShowSlider.setMax(30);
             bordersLevelsToShowSlider.setMax(maxDepth);
             levelsToShowSlider.setMax(maxDepth);
         });

@@ -8,22 +8,19 @@ import java.util.List;
  */
 public class Region<T> {
     final T nodeItem;
+    private final int level;
+
     private List<Region<T>> childRegions;
-    private List<Tile<T>> borderElements;
 
-    public Region(List<Region<T>> enclosingElements, T nodeItem) {
-        this.childRegions = enclosingElements;
-        this.borderElements = new ArrayList<>();
+//    public Region(List<Region<T>> enclosingElements, T nodeItem) {
+//        this.childRegions = enclosingElements;
+//        this.nodeItem = nodeItem;
+//    }
+
+    public Region(List<Region<T>> childRegions, T nodeItem, int level) {
+        this.childRegions = childRegions;
         this.nodeItem = nodeItem;
-    }
-
-    private void computeBorder(){
-
-    }
-
-    public List<Tile<T>> findBorders(){
-        computeBorder();
-        return borderElements;
+        this.level = level;
     }
 
     public boolean isLeaf(){
@@ -32,5 +29,13 @@ public class Region<T> {
 
     public List<Region<T>> getChildRegions() {
         return childRegions;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public T getNodeItem() {
+        return nodeItem;
     }
 }

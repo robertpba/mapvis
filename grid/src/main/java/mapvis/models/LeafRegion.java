@@ -3,8 +3,12 @@ package mapvis.models;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tuple2;
+import mapvis.graphic.BorderCoordinatesCalcImpl;
+import mapvis.graphic.RegionRenderer;
 
 import java.util.*;
+
+import static mapvis.graphic.BorderCoordinatesCalcImpl.getRoundedPoint2DPointForBorderHexLocation;
 
 /**
  * Created by dacc on 10/26/2015.
@@ -31,11 +35,13 @@ public class LeafRegion<T> extends Region<T> {
 
 
     private Set<Border<T>> borders;
-    private List<Tile<T>> leafElements;
-    private List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw;
     private Color color;
     private List<BoundaryShape> boundaryShapes;
 
+    public LeafRegion(T o, int level) {
+        super(Collections.emptyList(), o, level);
+        this.borders = new HashSet<>();
+    }
 
     public static class BoundaryShape2{
         public List<Point2D> boundaryPoints;
@@ -45,30 +51,94 @@ public class LeafRegion<T> extends Region<T> {
         }
     }
 
-    public static class BoundaryShape{
+    public static class BoundaryShape<T>{
+        public Border<T> border;
         public double[] xValues;
         public double[] yValues;
         public List<String> text;
         public int level;
+        public boolean renderColored;
+        public Color color;
 
-        public BoundaryShape(double[] xValues, double[] yValues) {
+        public BoundaryShape(double[] xValues, double[] yValues, Border<T> border) {
             this.xValues = xValues;
             this.yValues = yValues;
             this.text = new ArrayList<>();
+            this.border = border;
+            this.renderColored = false;
+            this.color = Color.TRANSPARENT;
+        }
+        public Point2D getStartPoint(){
+            if(xValues.length > 0)
+                return new Point2D(xValues[0], yValues[0]);
+            return new Point2D(0, 0);
+        }
+
+        public Point2D getEndPoint(){
+            if(xValues.length > 0)
+                return new Point2D(xValues[xValues.length - 1], yValues[xValues.length - 1]);
+            return new Point2D(0, 0);
         }
     }
 
-    public LeafRegion(T treeItem) {
-        super(Collections.<Region<T>>emptyList(), treeItem);
-        this.borders = new HashSet<>();
-    }
+//    public LeafRegion(T treeItem) {
+//        super(Collections.<Region<T>>emptyList(), treeItem);
+//        this.borders = new HashSet<>();
+//    }
 
     public Set<Border<T>> getBorders() {
         return borders;
     }
-
+    static int filtered = 0;
     public void addBorder(Border<T> border) {
+        if(border.getBorderItems().size() == 0 || border == null)
+            return;
+
+        for (Border<T> tBorder : this.borders) {
+            if(isSameBorder(border, tBorder)){
+                filtered++;
+                System.out.println("filtered borders: " + filtered);
+                return;
+            }
+        }
         this.borders.add(border);
+
+    }
+
+    public static boolean isSameBorder(Border newBorder, Border existingBorder) {
+        if(newBorder == null || existingBorder == null)
+            return true;
+
+        if(newBorder.getNodeA() == null && existingBorder.getNodeA() != null)
+            return false;
+
+        if(newBorder.getNodeB() == null && existingBorder.getNodeB() != null)
+            return false;
+
+        if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))
+            return false;
+
+        if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
+            return false;
+
+        Point2D newBorderStartPoint = getRoundedPoint2DPointForBorderHexLocation(newBorder.getStartPoint());
+        Point2D existingBorderStartPoint = getRoundedPoint2DPointForBorderHexLocation(existingBorder.getStartPoint());
+
+        Point2D newBorderLastPoint = getRoundedPoint2DPointForBorderHexLocation(newBorder.getLastPoint());
+        Point2D existingBorderLastPoint = getRoundedPoint2DPointForBorderHexLocation(existingBorder.getLastPoint());
+        if(newBorderStartPoint.equals(existingBorderStartPoint) && newBorderLastPoint.equals(existingBorderLastPoint)
+                || newBorderStartPoint.equals(existingBorderLastPoint) && newBorderLastPoint.equals(existingBorderStartPoint)){
+            if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))
+                return false;
+            if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
+                return false;
+//            if( !newBorder.getNodeA().equals(existingBorder.getNodeA()) || !newBorder.getNodeB().equals(existingBorder.getNodeB()))
+//                return false;
+
+            return true;
+        }
+
+        return false;
     }
 
     public void addBorders(List<Border<T>> borders) {
@@ -78,14 +148,6 @@ public class LeafRegion<T> extends Region<T> {
     @Override
     public boolean isLeaf(){
         return true;
-    }
-
-    public List<Tile<T>> getLeafElements() {
-        return leafElements;
-    }
-
-    public List<Tuple2<Tile<T>, List<Dir>>> getTileAndDirectionsToDraw() {
-        return tileAndDirectionsToDraw;
     }
 
     public static double roundTo4Digits(double val){

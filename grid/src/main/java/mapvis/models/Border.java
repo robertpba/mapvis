@@ -1,7 +1,9 @@
 package mapvis.models;
 
 import com.sun.scenario.effect.impl.Renderer;
+import javafx.geometry.Point2D;
 import mapvis.common.datatype.Tuple2;
+import mapvis.graphic.BorderCoordinatesCalcImpl;
 import mapvis.graphic.RegionRenderer;
 
 import java.nio.ByteOrder;
@@ -23,6 +25,45 @@ public class Border<T> {
         public BorderItem(Tuple2<Pos, List<Dir>> borderItem) {
             this.borderItem = borderItem;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            System.out.println("Equals BorderItem");
+            if (obj == null || obj.getClass() != this.getClass())
+                return false;
+            BorderItem item = (BorderItem) obj;
+            if (borderItem.first.equals(item.borderItem.first) && borderItem.second.size() == item.borderItem.second.size()) {
+                int directionSize = borderItem.second.size();
+                if (directionSize > 0) {
+                    Dir firstOfThis = borderItem.second.get(0);
+                    Dir firstOfObj = item.borderItem.second.get(0);
+                    Dir lastOfThis = borderItem.second.get(directionSize - 1);
+                    Dir lastOfObj = item.borderItem.second.get(directionSize - 1);
+                    Point2D thisFirst2DPoint =
+                            BorderCoordinatesCalcImpl.getPoint2DPointForBorderHexLocation(borderItem.first.getX(), borderItem.first.getY(),
+                                    firstOfThis);
+                    Point2D objFirst2DPoint =
+                            BorderCoordinatesCalcImpl.getPoint2DPointForBorderHexLocation(item.borderItem.first.getX(), item.borderItem.first.getY(),
+                                    firstOfObj);
+                    Point2D thisLast2DPoint =
+                            BorderCoordinatesCalcImpl.getPoint2DPointForBorderHexLocation(borderItem.first.getX(), borderItem.first.getY(),
+                                    lastOfThis);
+                    Point2D objLast2DPoint =
+                            BorderCoordinatesCalcImpl.getPoint2DPointForBorderHexLocation(item.borderItem.first.getX(), item.borderItem.first.getY(),
+                                    lastOfObj);
+
+
+                    if (thisFirst2DPoint.equals(objFirst2DPoint) && thisLast2DPoint.equals(objLast2DPoint)
+                            || thisFirst2DPoint.equals(objLast2DPoint) && thisLast2DPoint.equals(objFirst2DPoint)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return false;
+        }
+
     }
 
     private int level;
@@ -108,13 +149,36 @@ public class Border<T> {
         this.level = level;
     }
 
-    public void setNodeA(T nodeA) {
-        this.nodeA = nodeA;
-    }
+    public void setNodes(T nodeA, T nodeB){
+        if(nodeA == null || nodeB == null){
+            if(nodeA == null){
+                this.nodeA = nodeB;
+                this.nodeB = null;
+            }else{
+                this.nodeA = nodeA;
+                this.nodeB = null;
+            }
+            return;
+        }
 
-    public void setNodeB(T nodeB) {
-        this.nodeB = nodeB;
+        int hashNodeA = nodeA.hashCode();
+        int hashNodeB = nodeB.hashCode();
+        if(hashNodeA < hashNodeB){
+            this.nodeA = nodeA;
+            this.nodeB = nodeB;
+        }else{
+            this.nodeA = nodeB;
+            this.nodeB = nodeA;
+        }
+        int i = 0;
     }
+//    public void setNodeA(T nodeA) {
+//        this.nodeA = nodeA;
+//    }
+//
+//    public void setNodeB(T nodeB) {
+//        this.nodeB = nodeB;
+//    }
 
     public RegionRenderer.RenderState getRenderState() {
         return renderState;
@@ -124,6 +188,26 @@ public class Border<T> {
         this.renderState = renderState;
     }
 
+    public Tuple2<Pos, Dir> getStartPoint(){
+        if(borderItems.isEmpty())
+            return null;
+        BorderItem borderItem = borderItems.get(0);
+        if(borderItem.borderItem.second.isEmpty())
+            return null;
+        Dir dir = borderItem.borderItem.second.get(0);
+        return new Tuple2<>(borderItem.borderItem.first, dir);
+    }
+
+    public Tuple2<Pos, Dir> getLastPoint(){
+        if(borderItems.isEmpty())
+            return null;
+        BorderItem borderItem = borderItems.get(borderItems.size() - 1);
+        if(borderItem.borderItem.second.isEmpty())
+            return null;
+        Dir dir = borderItem.borderItem.second.get(borderItem.borderItem.second.size() - 1);
+        return new Tuple2<>(borderItem.borderItem.first, dir);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj == null || obj.getClass() != this.getClass()){
@@ -131,26 +215,26 @@ public class Border<T> {
         }
         Border border = (Border) obj;
         //same referenced node?
-        if(     (border.getNodeA().equals(this.getNodeA()) && border.getNodeB().equals(this.getNodeB())) ||
-                (border.getNodeA().equals(this.getNodeB()) && border.getNodeB().equals(this.getNodeA()))){
-            //same size of borderItems?
+//        if(     (border.getNodeA().equals(this.getNodeA()) && border.getNodeB().equals(this.getNodeB())) ||
+//                (border.getNodeA().equals(this.getNodeB()) && border.getNodeB().equals(this.getNodeA()))){
+//            //same size of borderItems?
             if(borderItems.size() > 0 && borderItems.size() == border.getBorderItems().size()){
                 int endIndex = borderItems.size() - 1;
                 //same start/endpoints?
-                boolean sameBorderPointStart = borderItems.get(0).equals(borderItems.get(0));
-                boolean sameBorderPointEnd = borderItems.get(endIndex).equals(borderItems.get(endIndex));
+                boolean sameBorderPointStart = borderItems.get(0).equals(border.getBorderItems().get(0));
+                boolean sameBorderPointEnd = borderItems.get(endIndex).equals(border.getBorderItems().get(endIndex));
 
                 if(sameBorderPointStart && sameBorderPointEnd)
                     return true;
                 //same start/endpoints switched?
                 if(!sameBorderPointEnd && !sameBorderPointStart){
-                    sameBorderPointStart = borderItems.get(endIndex).equals(borderItems.get(0));
-                    sameBorderPointEnd = borderItems.get(0).equals(borderItems.get(endIndex));
+                    sameBorderPointStart = borderItems.get(endIndex).equals(border.getBorderItems().get(0));
+                    sameBorderPointEnd = borderItems.get(0).equals(border.getBorderItems().get(endIndex));
                     if(sameBorderPointStart && sameBorderPointEnd)
                         return true;
                 }
             }
-        }
+//        }
         return false;
     }
 }

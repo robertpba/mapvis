@@ -47,11 +47,11 @@ public class Method1<T> {
         Set<T> children = tree.getChildren(o);
         if (children.size() > 0) {
             List<Region<T>> childRegions = new ArrayList<>();
-            children.stream().filter(t1 -> tree.getWeight(t1) > 0).forEach(t2 -> childRegions.add(recursive(t2)));
+            children.stream().filter(t1 -> tree.getDepth(t1) > 0).forEach(t2 -> childRegions.add(recursive(t2)));
 
             //if (maxHexagonLevelToShow == 1)
             //addPadding(o,5);
-            return new Region<>(childRegions, o);
+            return new Region<>(childRegions, o, tree.getDepth(o));
         }
         return allocate(o);
     }
@@ -123,9 +123,7 @@ public class Method1<T> {
 
         List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw = new ArrayList<>();
 
-//        List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsOfBorder = new ArrayList<>();
         List<Tile<T>> borderTiles = new ArrayList<>();
-//        List<Border> borders = new ArrayList<>();
         for (Tile<T> tTile : prepare) {
             List<Dir> directions = regionGrid.getNeighborDirectionsFulfilling(tTile2 -> tTile2.isEmpty(), tTile.getX(), tTile.getY());
             if(directions.size() > 0){
@@ -138,22 +136,12 @@ public class Method1<T> {
                 return tTile1.getTag() == Tile.LAND && !tTile.getItem().equals(tTile1.getItem());
             }, tTile.getX(), tTile.getY());
 
-//            Border border = new Border();
-//            if(directions.size() > 0){
-//                Tuple2<Tile<T>, List<Dir>> tileDirectionsPair = new Tuple2<>(tTile, directions);
-////                border.addBorderItem(tTile);
-//                borderTiles.add(tTile);
-//            }
         }
 
-//        List<Border<T>> borders = BorderUtils.orderBorders(tileAndDirectionsToDraw);
-
-        LeafRegion<T> leafRegion = new LeafRegion<>(o);
+        LeafRegion<T> leafRegion = new LeafRegion<>(o, tree.getDepth(o));
         leafRegionToBoundaries.add(new Tuple2<>(leafRegion, tileAndDirectionsToDraw));
         leafItemToLeafRegion.put(o, leafRegion);
-//        for (Border border : borders) {
-//            leafRegion.addNewBorder(border);
-//        }
+
         return leafRegion;
     }
 

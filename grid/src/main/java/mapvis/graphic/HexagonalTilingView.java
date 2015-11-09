@@ -114,8 +114,8 @@ public class HexagonalTilingView extends Pane {
 
     public void updateHexagons(){
 //        System.out.println("updateHexagons");
-        if (getGrid() == null)
-            return;
+//        if (getGrid() == null)
+//            return;
         if(world != null)
             updateHexagonsWithCoastCache(world);
         return;
@@ -432,6 +432,7 @@ public class HexagonalTilingView extends Pane {
 
     private void onLabelLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         updateHexagons();
+        regionRenderer.shapeIndexToDraw = newValue.intValue();
     }
 
     //////////////////////////

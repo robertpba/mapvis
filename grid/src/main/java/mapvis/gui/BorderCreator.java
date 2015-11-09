@@ -2,7 +2,6 @@ package mapvis.gui;
 
 import javafx.geometry.Point2D;
 import mapvis.Impl.RandomColorStyler;
-import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
@@ -69,8 +68,7 @@ public class BorderCreator<T> {
             if(leafRegionListEntry.second.size() == 0){
                 continue;
             }
-            List<Border<T>> borders = orderBorders(leafRegionListEntry.first, leafRegionListEntry.second);
-//            leafRegionListEntry.first.addBorders(borders);
+            orderBorders(leafRegionListEntry.second);
         }
     }
 
@@ -116,23 +114,13 @@ public class BorderCreator<T> {
         return false;
     }
 
-//    private boolean isBorderChangeRequired(Point2D prevStartPoint, Point2D startPoint) {
-//        if(prevStartPoint == null)
-//            return false;
-//
-//        int borderLevelAtStartPoint = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(startPoint));
-//        int borderLevelAtPrevStartPoint = getBorderLevelAtPosition(point2DToBorderAbstrBorder.get(prevStartPoint));
-//        return borderLevelAtStartPoint != borderLevelAtPrevStartPoint;
-//    }
-
-    private List<Border<T>> orderBorders(LeafRegion first, List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
+    private void orderBorders(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
         initializeHashMaps();
         createStartPointToEndPointMapping(tileAndDirectionsToDraw);
 
         int keySetSize = startToEnd.keySet().size();
 
         List<Border.BorderItem> borderItems = new ArrayList<>();
-        List<Border<T>> borders = new ArrayList<>();
         Point2D prevStartPoint = null;
         for(int i = 0; i < keySetSize; i++){
             Point2D endPoint = null;
@@ -150,7 +138,8 @@ public class BorderCreator<T> {
                 //circle detected => close circular boundary
                 appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
 
-                borders.add(createBorder(borderItems, getBorderLevelAtPosition(prevStartPoint)));
+                createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
+                System.out.println("BorderCreator: Circle in iteration: " + i + "/" + keySetSize);
                 borderItems = new ArrayList<>();
 
                 //reinitialize with next point to continue with next boundaries if there
@@ -161,7 +150,7 @@ public class BorderCreator<T> {
 
            if(isBorderChangeRequired(prevStartPoint, startPoint)){
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
-               borders.add(createBorder(borderItems, getBorderLevelAtPosition(prevStartPoint)));
+               createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
                borderItems = new ArrayList<>();
 
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
@@ -176,24 +165,32 @@ public class BorderCreator<T> {
         if(circleDetected()){
             appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
         }
-        borders.add(createBorder(borderItems, getBorderLevelAtPosition(prevStartPoint)));
-        return borders;
-
+        createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
     }
 
-    private Border<T> createBorder(List<Border.BorderItem> borderItems, int borderLevel) {
+    private Border<T> createBorderAndAddtoLeaves(List<Border.BorderItem> borderItems, int borderLevel) {
         Tuple2<Pos, List<Dir>> borderItem = borderItems.get(0).borderItem;
         Tile<T> innerNodeItem = grid.getTile(borderItem.first.getX(), borderItem.first.getY());
         Tile<T> outerNodeItem = grid.getNeighbour(borderItem.first.getX(), borderItem.first.getY(), borderItem.second.get(0));
         Border<T> tBorder = new Border<T>(borderItems, borderLevel);
+
+        T nodeA = null;
+        T nodeB = null;
         if(innerNodeItem.getTag() == Tile.LAND){
-            tBorder.setNodeA(innerNodeItem.getItem());
+            nodeA = innerNodeItem.getItem();
+        }
+        if(outerNodeItem.getTag() == Tile.LAND){
+            nodeB = outerNodeItem.getItem();
+        }
+        tBorder.setNodes(nodeA, nodeB);
+
+        if(innerNodeItem.getTag() == Tile.LAND){
             leafNodeToLeafRegionMap.get(innerNodeItem.getItem()).addBorder(tBorder);
         }
         if(outerNodeItem.getTag() == Tile.LAND){
-            tBorder.setNodeB(outerNodeItem.getItem());
             leafNodeToLeafRegionMap.get(outerNodeItem.getItem()).addBorder(tBorder);
         }
+
         return tBorder;
     }
 

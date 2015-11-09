@@ -114,7 +114,7 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
         chart.setWorld(world);
-        grid.get().resetGrid();
+//        grid.get().resetGrid();
         chart.updateHexagons();
         logTextToInfoArea("rendering finished");
     }
