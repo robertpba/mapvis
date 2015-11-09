@@ -161,12 +161,12 @@ public class RegionRenderer {
         borderCoordinatesCalculatorImpl.setRegion(regionToDraw);
         Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculatorImpl.computeCoordinates(maxBorderLevelToShow);
         regionToBoundaryShapes = borderCoordinatesCalculatorImpl.getRegionToBoundaries();
-        List<Point2D> debugPoints = borderCoordinatesCalculatorImpl.getDebugPoints();
-        for (Point2D debugPoint : debugPoints) {
-            g.setFill(Color.GREEN);
-            g.fillOval(debugPoint.getX(), debugPoint.getY(), 10, 10);
-        }
-        System.out.println("EntySet" + regionToBoundaryShapes.entrySet().size());
+//        List<Point2D> debugPoints = borderCoordinatesCalculatorImpl.getDebugPoints();
+//        for (Point2D debugPoint : debugPoints) {
+//            g.setFill(Color.GREEN);
+//            g.fillOval(debugPoint.getX(), debugPoint.getY(), 10, 10);
+//        }
+//        System.out.println("EntySet" + regionToBoundaryShapes.entrySet().size());
 //            Color regionColor = view.getStyler().getColorByValue(nodeItem);
 //            g.setFillRule(FillRule.NON_ZERO);
 //            g.setLineWidth(2);
@@ -241,119 +241,169 @@ public class RegionRenderer {
 //        }
     }
 
-    private void fillPolygon(GraphicsContext g, Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple, List<List<LeafRegion.BoundaryShape>> boundaryShapes) {
-        for (List<LeafRegion.BoundaryShape> boundaryShapeList : boundaryShapes) {
-            Region<INode> border = boundaryShapeTuple.getKey();
-//                if(boundaryShapes.size() == 0){
-//                    g.restore();
-//                    return;
+    private void fillPolygon(GraphicsContext g, Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple,
+                             List<List<LeafRegion.BoundaryShape>> boundaryShapes) {
+
+        Region<INode> border = boundaryShapeTuple.getKey();
+        TileStyler<INode> styler = view.getStyler();
+        Color regionFillColor = styler.getColorByValue(border.getNodeItem());
+        g.setFill(regionFillColor);
+
+
+        boundaryShapes.forEach(boundaryShapes1 -> {
+            List<Double> xValues = new ArrayList<>();
+            List<Double> yValues = new ArrayList<>();
+            boundaryShapes1.stream().forEach(boundaryShape -> {
+                if(boundaryShape.coorinateNeedToBeReversed){
+                    for (int i = boundaryShape.xValues.length - 1; i >= 0; i--) {
+                        xValues.add(boundaryShape.xValues[i]);
+                        yValues.add(boundaryShape.yValues[i]);
+                    }
+                }else{
+                    for (int i = 0; i < boundaryShape.xValues.length; i++) {
+                        xValues.add(boundaryShape.xValues[i]);
+                        yValues.add(boundaryShape.yValues[i]);
+                    }
+                }
+
+            });
+            double[] xValuesArr = xValues.stream().mapToDouble(Double::doubleValue).toArray();
+            double[] yValuesArr = yValues.stream().mapToDouble(Double::doubleValue).toArray();
+//            System.out.println("Begin------------------------------------------------------");
+//            System.out.println("X");
+//            for (int i = 0; i < xValuesArr.length; i++) {
+//                System.out.println(xValuesArr[i]);
+//            }
+//            System.out.println("Y");
+//            for (int i = 0; i < yValuesArr.length; i++) {
+//                System.out.println(yValuesArr[i]);
+//            }
+//            System.out.println("EnD------------------------------------------------------");
+            g.fillPolygon(xValuesArr, yValuesArr, xValuesArr.length);
+            double borderWidth = styler.getBorderWidthByLevel(border.getLevel());
+            g.setLineWidth(borderWidth);
+            g.strokePolygon(xValuesArr, yValuesArr, xValuesArr.length);
+        });
+
+
+//        for (List<LeafRegion.BoundaryShape> boundaryShapeList : boundaryShapes) {
+//            int subRegionIndex = 0;
+//
+//
+//            boundaryShapeList.stream().forEach(boundaryShape -> {
+//                for (int i = 0; i < boundaryShape.xValues.length - 1; i++) {
+//                    xValues.add(boundaryShape.xValues[i]);
+//                    yValues.add(boundaryShape.yValues[i]);
 //                }
-//                System.out.println("Boundary Shapes: " + boundaryShapeList.size());
-            for (LeafRegion.BoundaryShape boundaryShape : boundaryShapeList) {
-
-                int borderLevel = border.getLevel();
-//                    System.out.println("Render Border Level: " + borderLevel);
-//                        if(boundaryShape.border.getRenderState() != currentRegionRenderState)
-//                            continue;
-                boundaryShape.border.setRenderState(getNextRenderState());
-
-                drawIndex++;
-
-                g.setStroke(Color.BLACK);
-//                    if(borderLevel == 0){
-//                        g.setStroke(Color.BLACK);
-//                    }else if(borderLevel == 1){
-//                        g.setStroke(Color.BLUE);
-//                    }else if(borderLevel == 2){
-//                        g.setStroke(Color.GREEN);
-//                    }else if(borderLevel == 3){
-//                        g.setStroke(Color.YELLOW);
-//                    }else{
-//                        g.setStroke(Color.GREY);
-//                    }
-                g.setLineWidth(2);
-                if(shapeIndexToDraw == totalDrawnBorder){
-                    g.setLineWidth(4);
-                    g.setStroke(Color.GREEN);
-                }else{
-                    g.setStroke(Color.BLACK);
-                    g.setLineWidth(2);
-                }
-
-                g.strokePolyline(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
-                double x1 = boundaryShape.xValues[0];
-                double y1 = boundaryShape.yValues[0];
-                double x2 = boundaryShape.xValues[boundaryShape.xValues.length -1];
-                double y2 = boundaryShape.yValues[boundaryShape.xValues.length -1];
-
-                g.setLineWidth(2);
-                g.setStroke(Color.BLACK);
-
-                if(boundaryShape.renderColored){
-                    g.setStroke(boundaryShape.color);
-                    g.setLineWidth(10);
-                    g.strokeOval(x1, y1, 9, 9);
-                }else{
-                    g.setStroke(Color.BLACK);
-                }
-//                    if(x1 == 5.0 && y1 == -8.66){
-//                        g.setStroke(Color.GREEN);
-//                        g.strokeOval(x1, y1, 9, 9);
-//                        g.setStroke(Color.BLACK);
-//                    }
-
-                g.strokeLine(x1, y1, x2, y2);
-
-                g.setLineWidth(2);
-                g.setStroke(Color.BLACK);
-                double midx = boundaryShape.xValues[(boundaryShape.xValues.length -1)/2];
-                double midy = boundaryShape.yValues[(boundaryShape.xValues.length -1)/2];
-
-                g.strokeText(Integer.toString(drawIndex), midx, midy);
-            }
-
-//                g.setLineWidth( 4.0/ (boundaryShape.level + 1));
-//                boundaryShape.level
-//                List<String> border = boundaryShapeTuple.first;
-//                g.beginPath();
-//                g.setFill(regionColor);
-//                double lastX = 0;
-//                double lastY = 0;
-
-
-//                for (int i = 0; i < boundaryShape.xValues.length; i++) {
-//                    double x = boundaryShape.xValues[i];
-//                    double y = boundaryShape.yValues[i];
-//                    if(i == 0 || i == boundaryShape.xValues.length - 1){
-//                        g.setLineWidth(1);
-//                        g.setFill(Color.GREEN);
-//                        g.fillOval(x, y, 4, 4);
-//                    }
-//                    lastX = x;
-//                    lastY = y;
-////                    if(i == 0){
-////                        g.moveTo(x, y);
-////                    }else{
-////                        g.lineTo(x, y);
+//            });
+//            double[] xValuesArr = xValues.stream().mapToDouble(Double::doubleValue).toArray();
+//            double[] yValuesArr = yValues.stream().mapToDouble(Double::doubleValue).toArray();
+//            g.strokePolygon(xValuesArr, yValuesArr, xValuesArr.length);
+////            g.fillPolygon();
+////            for (LeafRegion.BoundaryShape boundaryShape : boundaryShapeList) {
+////
+////                int borderLevel = border.getLevel();
+////
+////                boundaryShape.border.setRenderState(getNextRenderState());
+////
+////                drawIndex++;
+////
+////                g.setStroke(Color.BLACK);
+//////                    if(borderLevel == 0){
+//////                        g.setStroke(Color.BLACK);
+//////                    }else if(borderLevel == 1){
+//////                        g.setStroke(Color.BLUE);
+//////                    }else if(borderLevel == 2){
+//////                        g.setStroke(Color.GREEN);
+//////                    }else if(borderLevel == 3){
+//////                        g.setStroke(Color.YELLOW);
+//////                    }else{
+//////                        g.setStroke(Color.GREY);
+//////                    }
+////                g.setLineWidth(2);
+////                if(shapeIndexToDraw == totalDrawnBorder){
+////                    g.setLineWidth(4);
+////                    g.setStroke(Color.GREEN);
+////                }else{
+////                    g.setStroke(Color.BLACK);
+////                    g.setLineWidth(2);
+////                }
+////
+////                g.strokePolyline(boundaryShape.xValues, boundaryShape.yValues, boundaryShape.xValues.length);
+////                double x1 = boundaryShape.xValues[0];
+////                double y1 = boundaryShape.yValues[0];
+////                double x2 = boundaryShape.xValues[boundaryShape.xValues.length -1];
+////                double y2 = boundaryShape.yValues[boundaryShape.xValues.length -1];
+////
+////                g.setLineWidth(2);
+////                g.setStroke(Color.BLACK);
+////
+////                if(boundaryShape.renderColored){
+////                    g.setStroke(boundaryShape.color);
+////                    g.setLineWidth(10);
+////                    g.strokeOval(x1, y1, 9, 9);
+////                }else{
+////                    g.setStroke(Color.BLACK);
+////                }
+//////                    if(x1 == 5.0 && y1 == -8.66){
+//////                        g.setStroke(Color.GREEN);
+//////                        g.strokeOval(x1, y1, 9, 9);
+//////                        g.setStroke(Color.BLACK);
+//////                    }
+////
+////                g.strokeLine(x1, y1, x2, y2);
+////
+////                g.setLineWidth(2);
+////                g.setStroke(Color.BLACK);
+////                double midx = boundaryShape.xValues[(boundaryShape.xValues.length -1)/2];
+////                double midy = boundaryShape.yValues[(boundaryShape.xValues.length -1)/2];
+////
+////                g.strokeText(Integer.toString(drawIndex), midx, midy);
+////                subRegionIndex++;
+////            }
+//
+////                g.setLineWidth( 4.0/ (boundaryShape.level + 1));
+////                boundaryShape.level
+////                List<String> border = boundaryShapeTuple.first;
+////                g.beginPath();
+////                g.setFill(regionColor);
+////                double lastX = 0;
+////                double lastY = 0;
+//
+//
+////                for (int i = 0; i < boundaryShape.xValues.length; i++) {
+////                    double x = boundaryShape.xValues[i];
+////                    double y = boundaryShape.yValues[i];
+////                    if(i == 0 || i == boundaryShape.xValues.length - 1){
+////                        g.setLineWidth(1);
+////                        g.setFill(Color.GREEN);
+////                        g.fillOval(x, y, 4, 4);
 ////                    }
+////                    lastX = x;
+////                    lastY = y;
+//////                    if(i == 0){
+//////                        g.moveTo(x, y);
+//////                    }else{
+//////                        g.lineTo(x, y);
+//////                    }
+////
+////                    g.setFont(new Font(g.getFont().getName(), 5));
+////                    g.setLineWidth(0.3);
+//////                    g.strokeText(Integer.toString(boundaryShape.level), x, y);
+////                    g.strokeText(Integer.toString(shapeIndex) + "/" + Integer.toString(i), x, y);
+////
+////                }
 //
-//                    g.setFont(new Font(g.getFont().getName(), 5));
-//                    g.setLineWidth(0.3);
-////                    g.strokeText(Integer.toString(boundaryShape.level), x, y);
-//                    g.strokeText(Integer.toString(shapeIndex) + "/" + Integer.toString(i), x, y);
 //
-//                }
-
-
-//                g.setLineWidth(1);
-//                g.setFont(new Font(g.getFont().getName(), 10));
-////                g.strokeText(Integer.toString(shapeIndex), boundaryShape.xValues[boundaryShape.xValues.length/2], boundaryShape.yValues[boundaryShape.xValues.length/2]);
-//
-////                g.strokeText(boundaryShapeTuple.first, lastX, lastY);
-//                shapeIndex += 1;
-//                g.closePath();
-//                g.setStroke(new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
-//                g.stroke();
-        }
+////                g.setLineWidth(1);
+////                g.setFont(new Font(g.getFont().getName(), 10));
+//////                g.strokeText(Integer.toString(shapeIndex), boundaryShape.xValues[boundaryShape.xValues.length/2], boundaryShape.yValues[boundaryShape.xValues.length/2]);
+////
+//////                g.strokeText(boundaryShapeTuple.first, lastX, lastY);
+////                shapeIndex += 1;
+////                g.closePath();
+////                g.setStroke(new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0));
+////                g.stroke();
+//        }
     }
 }

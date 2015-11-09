@@ -46,16 +46,8 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
 
     private void computeCoordinates(Region<T> region, int maxLevelToDraw) {
         if( (region.isLeaf() && region.getLevel() < maxLevelToDraw) || (region.getLevel() == maxLevelToDraw) ){
-//        if( (region.getLevel() < maxLevelToDraw) || (region.getLevel() == maxLevelToDraw) ){
-//            System.out.println("Level: " + region.getLevel());
-//        if( region.getLevel() <= maxLevelToDraw){
             List<LeafRegion.BoundaryShape> boundaryShapes = null;
             boundaryShapes = collectBoundariesForRegion(region, maxLevelToDraw);
-//            if(region.getLevel() == maxLevelToDraw){
-//                boundaryShapes = collectBoundariesForRegion(region, maxLevelToDraw);
-//            }else{
-//                boundaryShapes = collectBoundariesForRegion(region, region.getLevel());
-//            }
 
             List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapesNew(boundaryShapes);
             regionToBoundaries.put(region, lists);
@@ -94,7 +86,6 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
                 //point to step from one boundary shape end to the start of the next boundary shape
                 currentBoundaryShape = undirectedEdgeHashMap.getNext();
                 currentPoint = currentBoundaryShape.getStartPoint();
-                boundaryShape.add(currentBoundaryShape);
             }else{
                 currentBoundaryShape = undirectedEdgeHashMap.getNextEdgeWithPivotPoint(currentPoint, currentBoundaryShape);
             }
@@ -125,8 +116,10 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
             //the boundary shapes are undirected => check if to continue with end or start point
             if(currentBoundaryShape.getStartPoint().equals(currentPoint)){
                 currentPoint = currentBoundaryShape.getEndPoint();
+                currentBoundaryShape.coorinateNeedToBeReversed = false;
             }else{
                 currentPoint = currentBoundaryShape.getStartPoint();
+                currentBoundaryShape.coorinateNeedToBeReversed = true;
             }
             //reverse edge with this information?
 

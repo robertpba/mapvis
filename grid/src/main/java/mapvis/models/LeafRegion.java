@@ -59,6 +59,7 @@ public class LeafRegion<T> extends Region<T> {
         public int level;
         public boolean renderColored;
         public Color color;
+        public boolean coorinateNeedToBeReversed;
 
         public BoundaryShape(double[] xValues, double[] yValues, Border<T> border) {
             this.xValues = xValues;
@@ -67,6 +68,7 @@ public class LeafRegion<T> extends Region<T> {
             this.border = border;
             this.renderColored = false;
             this.color = Color.TRANSPARENT;
+            this.coorinateNeedToBeReversed = false;
         }
         public Point2D getStartPoint(){
             if(xValues.length > 0)
@@ -79,6 +81,19 @@ public class LeafRegion<T> extends Region<T> {
                 return new Point2D(xValues[xValues.length - 1], yValues[xValues.length - 1]);
             return new Point2D(0, 0);
         }
+
+        @Override
+        public String toString() {
+            String result = "X" + "\n";
+            for (double xValue : xValues) {
+                result += xValue + "\n";
+            }
+            result += "Y" + "\n";
+            for (double yValue : yValues) {
+                result += yValue + "\n";
+            }
+            return result;
+        }
     }
 
 //    public LeafRegion(T treeItem) {
@@ -89,15 +104,13 @@ public class LeafRegion<T> extends Region<T> {
     public Set<Border<T>> getBorders() {
         return borders;
     }
-    static int filtered = 0;
+
     public void addBorder(Border<T> border) {
         if(border.getBorderItems().size() == 0 || border == null)
             return;
 
         for (Border<T> tBorder : this.borders) {
             if(isSameBorder(border, tBorder)){
-                filtered++;
-                System.out.println("filtered borders: " + filtered);
                 return;
             }
         }

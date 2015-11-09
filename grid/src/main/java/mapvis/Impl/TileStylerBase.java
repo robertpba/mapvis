@@ -171,12 +171,12 @@ public class TileStylerBase<T> implements TileStyler<T> {
 
 //        return getTree().getDepth(lca) + 1;
         int level = getTree().getDepth(lca) + 1;
-        if(level > maxBorderLevelToShow)
-            return 0;
+//        if(level > maxBorderLevelToShow)
+//            return 0;
         return level;
     }
 
-    protected double getBorderWidthByLevel(int l){
+    public double getBorderWidthByLevel(int l){
         return (4.0 - l)*(4.0 - l)/2;
     }
     protected Color getBorderColorByLevel(int l){

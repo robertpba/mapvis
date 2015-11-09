@@ -65,7 +65,7 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
     }
 
     @Override
-    protected double getBorderWidthByLevel(int l) {
+    public double getBorderWidthByLevel(int l) {
         return (depth + 1 - l)*(depth + 1 - l)/2.0;
     }
 
