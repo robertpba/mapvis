@@ -134,7 +134,7 @@ class HexagonRender {
 //        Color col = styler.getColor(x,y);
 //        g.setFill(col);
 //
-//        g.fillPolygon(this.x, this.y, this.x.length);
+//        g.drawArea(this.x, this.y, this.x.length);
 
         g.setLineCap(StrokeLineCap.ROUND);
         Collections.reverse(directions);

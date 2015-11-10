@@ -1,12 +1,10 @@
 package mapvis.models;
 
-import com.sun.scenario.effect.impl.Renderer;
 import javafx.geometry.Point2D;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.BorderCoordinatesCalcImpl;
-import mapvis.graphic.RegionRenderer;
+import mapvis.graphic.RegionBorderRenderer;
 
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -68,20 +66,20 @@ public class Border<T> {
 
     private int level;
 //    private boolean isDrawn;
-    private RegionRenderer.RenderState renderState;
+    private RegionBorderRenderer.RenderState renderState;
     private List<BorderItem> borderItems;
     private T nodeA;
     private T nodeB;
 
     public Border() {
         this.level = -1;
-        this.renderState = RegionRenderer.INITIAL_BORDER_RENDERSTATE;
+        this.renderState = RegionBorderRenderer.INITIAL_BORDER_RENDERSTATE;
         this.borderItems = new ArrayList<>();
     }
 
     public Border(List<BorderItem> borderItems, int level) {
         this.level = level;
-        this.renderState = RegionRenderer.INITIAL_BORDER_RENDERSTATE;
+        this.renderState = RegionBorderRenderer.INITIAL_BORDER_RENDERSTATE;
         this.borderItems = borderItems;
     }
 
@@ -180,11 +178,11 @@ public class Border<T> {
 //        this.nodeB = nodeB;
 //    }
 
-    public RegionRenderer.RenderState getRenderState() {
+    public RegionBorderRenderer.RenderState getRenderState() {
         return renderState;
     }
 
-    public void setRenderState(RegionRenderer.RenderState renderState) {
+    public void setRenderState(RegionBorderRenderer.RenderState renderState) {
         this.renderState = renderState;
     }
 
