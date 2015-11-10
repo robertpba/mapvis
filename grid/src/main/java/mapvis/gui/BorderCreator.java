@@ -2,6 +2,7 @@ package mapvis.gui;
 
 import javafx.geometry.Point2D;
 import mapvis.Impl.RandomColorStyler;
+import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
@@ -57,7 +58,8 @@ public class BorderCreator<T> {
 
                 Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xStart, yStart));
                 Point2D endPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xEnd, yEnd));
-
+                System.out.println(startPoint.getX() + "," + startPoint.getY());
+                System.out.println(endPoint.getY() + "," + endPoint.getY());
                 startToEnd.put(startPoint, endPoint);
                 point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(leafTile.first.getPos(), direction));
             }
@@ -80,18 +82,14 @@ public class BorderCreator<T> {
 
     private Point2D findStartPointAtBorderChange(){
         Iterator<Point2D> iterator = startToEnd.keySet().iterator();
-        startPoint = iterator.next();
-        Point2D prevStartPoint = null;
-        for(int i = 0; i < startToEnd.keySet().size(); i++){
-            if (isBorderChangeRequired(prevStartPoint, startPoint)) {
-                Point2D resultingEndpoint = startPoint;
-                startPoint = prevStartPoint;
-                return resultingEndpoint;
+        while (iterator.hasNext()){
+            startPoint = iterator.next();
+            Point2D endPoint = startToEnd.get(startPoint);
+            if (isBorderChangeRequired(startPoint, endPoint)) {
+                return endPoint;
             }
-
-            prevStartPoint = startPoint;
-            startPoint = startToEnd.get(startPoint);
         }
+        startPoint = startToEnd.keySet().iterator().next();
         return startToEnd.get(startPoint);
     }
 
@@ -138,10 +136,11 @@ public class BorderCreator<T> {
                 startToEnd.remove(startPoint);
             }
 
-            startPoints.add(startPoint);
 //            System.out.println("EndPoint: " + endPoint.getX() + ", " + endPoint.getY());
             if( circleDetected() && i != 0 ){
                 //circle detected => close circular boundary
+                startPoints.add(initialPoint);
+                startPoints.add(new Point2D(0, 0));
                 appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
 
                 createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
@@ -151,17 +150,22 @@ public class BorderCreator<T> {
                 //reinitialize with next point to continue with next boundaries if there
                 //are any left
                 endPoint = findStartPointAtBorderChange();
+                prevStartPoint = null;
                 initialPoint = startPoint;
                 startToEnd.remove(startPoint);
             }
 
            if(isBorderChangeRequired(prevStartPoint, startPoint)){
+               startPoints.add(startPoint);
+               startPoints.add(new Point2D(0, 0));
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
                createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
                borderItems = new ArrayList<>();
 
+               startPoints.add(startPoint);
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
            }else{
+               startPoints.add(startPoint);
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
            }
 
@@ -202,9 +206,17 @@ public class BorderCreator<T> {
 
         if(innerNodeItem.getTag() == Tile.LAND){
             leafNodeToLeafRegionMap.get(innerNodeItem.getItem()).addBorder(tBorder);
+            Node item = (Node) innerNodeItem.getItem();
+            if( ((Node)nodeA).getId().equals("5")){
+                System.out.printf("");
+            }
         }
         if(outerNodeItem.getTag() == Tile.LAND){
             leafNodeToLeafRegionMap.get(outerNodeItem.getItem()).addBorder(tBorder);
+            Node item = (Node) outerNodeItem.getItem();
+            if(((Node)nodeB).getId().equals("6")){
+                System.out.printf("");
+            }
         }
 
         return tBorder;
