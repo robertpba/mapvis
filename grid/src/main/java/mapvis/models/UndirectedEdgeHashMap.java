@@ -81,7 +81,7 @@ public class UndirectedEdgeHashMap {
     public LeafRegion.BoundaryShape getNextEdgeWithPivotPoint(Point2D pivotPoint, LeafRegion.BoundaryShape currentEdge){
         List<LeafRegion.BoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(pivotPoint);
         if(boundaryShapes == null){
-            System.out.println("Edge not FOUND!");
+//            System.out.println("Edge not FOUND!");
             return null;
         }
         for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
@@ -89,7 +89,7 @@ public class UndirectedEdgeHashMap {
                 return boundaryShape;
             }
         }
-        System.out.println("Edge not FOUND!");
+//        System.out.println("Edge not FOUND!");
         return null;
     }
 

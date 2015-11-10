@@ -101,7 +101,7 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
                 resultingBoundaryShape.add(boundaryShape);
                 undirectedEdgeHashMap.remove(currentBoundaryShape);
                 boundaryShape = new ArrayList<>();
-                System.out.println("circle found: " + i + "/" + (boundaryShapes.size() - 1));
+//                System.out.println("circle found: " + i + "/" + (boundaryShapes.size() - 1));
                 if(!undirectedEdgeHashMap.isEmpty()){
                     currentBoundaryShape = undirectedEdgeHashMap.getNext();
                 }else{

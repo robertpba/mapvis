@@ -58,8 +58,8 @@ public class BorderCreator<T> {
 
                 Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xStart, yStart));
                 Point2D endPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xEnd, yEnd));
-                System.out.println(startPoint.getX() + "," + startPoint.getY());
-                System.out.println(endPoint.getY() + "," + endPoint.getY());
+//                System.out.println(startPoint.getX() + "," + startPoint.getY());
+//                System.out.println(endPoint.getY() + "," + endPoint.getY());
                 startToEnd.put(startPoint, endPoint);
                 point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(leafTile.first.getPos(), direction));
             }
@@ -116,7 +116,7 @@ public class BorderCreator<T> {
     private void orderBorders(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
         initializeHashMaps();
         createStartPointToEndPointMapping(tileAndDirectionsToDraw);
-        System.out.println("Order Borders");
+//        System.out.println("Order Borders");
         int keySetSize = startToEnd.keySet().size();
 
         List<Border.BorderItem> borderItems = new ArrayList<>();
@@ -177,15 +177,15 @@ public class BorderCreator<T> {
             appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
         }
         createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
-        System.out.println("X");
-        for (Point2D point : startPoints) {
-            System.out.println(point.getX());
-        }
-        System.out.println("Y");
-        for (Point2D point : startPoints) {
-            System.out.println(point.getY());
-        }
-        System.out.println("Order Borders finished");
+//        System.out.println("X");
+//        for (Point2D point : startPoints) {
+//            System.out.println(point.getX());
+//        }
+//        System.out.println("Y");
+//        for (Point2D point : startPoints) {
+//            System.out.println(point.getY());
+//        }
+//        System.out.println("Order Borders finished");
     }
 
     private Border<T> createBorderAndAddtoLeaves(List<Border.BorderItem> borderItems, int borderLevel) {
