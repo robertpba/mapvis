@@ -71,7 +71,7 @@ public class DatasetSelectionController implements Initializable {
         inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
-            System.out.println("first: " + !("".equals(newValue)) + " " + !newValue.matches("[0-9]"));
+//            System.out.println("first: " + !("".equals(newValue)) + " " + !newValue.matches("[0-9]"));
             if (!"".equals(newValue) && !newValue.matches("[0-9]*")) {
                 dropLevelsTextField.setText(oldValue);
             }

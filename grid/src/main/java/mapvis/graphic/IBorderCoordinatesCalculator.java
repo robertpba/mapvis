@@ -18,5 +18,5 @@ public interface IBorderCoordinatesCalculator<T> {
     Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> getRegionToBoundaries();
 //    List<Tuple2<Border<T>, LeafRegion.BoundaryShape>> computeCoordinates();
 
-    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw);
+    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw, boolean b);
 }

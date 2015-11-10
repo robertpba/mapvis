@@ -35,30 +35,34 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
     }
 
     @Override
-    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw) {
+    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw, boolean doOrdering) {
         if(region == null)
             return new HashMap<>();
         debugPoints.clear();
         regionToBoundaries.clear();
-        computeCoordinates(region, maxLevelToDraw);
+        computeCoordinates(region, maxLevelToDraw, doOrdering);
         return regionToBoundaries;
     }
 
-    private void computeCoordinates(Region<T> region, int maxLevelToDraw) {
+    private void computeCoordinates(Region<T> region, int maxLevelToDraw, boolean doOrdering) {
+
         if( (region.isLeaf() && region.getLevel() < maxLevelToDraw) || (region.getLevel() == maxLevelToDraw) ){
             List<LeafRegion.BoundaryShape> boundaryShapes = null;
             boundaryShapes = collectBoundariesForRegion(region, maxLevelToDraw);
 
-            List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapesNew(boundaryShapes);
-            regionToBoundaries.put(region, lists);
-
-//            List<List<LeafRegion.BoundaryShape>> bShapeList = new ArrayList<>();
-//            bShapeList.add(boundaryShapes);
-//            regionToBoundaries.put(region, bShapeList);
+            if(doOrdering){
+                List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapesNew(boundaryShapes);
+                regionToBoundaries.put(region, lists);
+            }else{
+                List<List<LeafRegion.BoundaryShape>> bShapeList = new ArrayList<>();
+                bShapeList.add(boundaryShapes);
+                regionToBoundaries.put(region, bShapeList);
+            }
         }else if(region.getLevel() < maxLevelToDraw){
-            region.getChildRegions().forEach(tRegion -> computeCoordinates(tRegion, maxLevelToDraw));
+            region.getChildRegions().forEach(tRegion -> computeCoordinates(tRegion, maxLevelToDraw, doOrdering));
         }
     }
+
 
     Random random = new Random(0);
 
@@ -95,6 +99,7 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
                     || currentBoundaryShape.getStartPoint().equals(currentBoundaryShape.getEndPoint())
                     ){
                 resultingBoundaryShape.add(boundaryShape);
+                undirectedEdgeHashMap.remove(currentBoundaryShape);
                 boundaryShape = new ArrayList<>();
                 System.out.println("circle found: " + i + "/" + (boundaryShapes.size() - 1));
                 if(!undirectedEdgeHashMap.isEmpty()){

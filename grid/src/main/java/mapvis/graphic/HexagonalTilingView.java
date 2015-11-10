@@ -433,7 +433,7 @@ public class HexagonalTilingView extends Pane {
 
     private void onLabelLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         updateHexagons();
-//        regionRenderer.shapeIndexToDraw = newValue.intValue();
+        regionRenderer.shapeIndexToDraw = newValue.intValue();
     }
 
     //////////////////////////

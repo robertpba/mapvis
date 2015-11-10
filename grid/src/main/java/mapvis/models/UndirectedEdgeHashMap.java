@@ -30,12 +30,14 @@ public class UndirectedEdgeHashMap {
     }
 
     public void remove(LeafRegion.BoundaryShape boundaryShape){
-        if(boundaryShape.getStartPoint().equals(boundaryShape.getEndPoint())){
-            removePointFromHashMap(boundaryShape.getStartPoint(), boundaryShape);
-        }else{
+//        if(boundaryShape.getStartPoint().equals(boundaryShape.getEndPoint())){
+//            removePointFromHashMap(boundaryShape.getStartPoint(), boundaryShape);
+//        }else{
+        if(boundaryShape == null)
+            return;
             removePointFromHashMap(boundaryShape.getStartPoint(), boundaryShape);
             removePointFromHashMap(boundaryShape.getEndPoint(), boundaryShape);
-        }
+//        }
     }
 
     private void removePointFromHashMap(Point2D keyPointToRemove, LeafRegion.BoundaryShape boundaryShape) {
@@ -64,8 +66,9 @@ public class UndirectedEdgeHashMap {
                     return;
                 }
             }
-            if(startToConnectedBoundaryShape.get(pointToPut).size() > 2){
-                System.out.println("Already full!!");
+            if(startToConnectedBoundaryShape.get(pointToPut).size() >= 2){
+                System.out.println("Already full!!: " + pointToPut.getX() + " " + pointToPut.getY());
+                boundaryShape.renderColored = true;
             }else{
                 startToConnectedBoundaryShape.get(pointToPut).add(boundaryShape);
             }

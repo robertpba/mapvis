@@ -231,7 +231,7 @@ public class BorderCoordinatesCalculatorImpl<T> implements IBorderCoordinatesCal
     }
 
     @Override
-    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw) {
+    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw, boolean b) {
         if(region == null)
             return new HashMap<>();
         debugPoints.clear();

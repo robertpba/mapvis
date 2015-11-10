@@ -57,6 +57,7 @@ public class BorderCreator<T> {
 
                 Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xStart, yStart));
                 Point2D endPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xEnd, yEnd));
+
                 startToEnd.put(startPoint, endPoint);
                 point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(leafTile.first.getPos(), direction));
             }
@@ -117,11 +118,12 @@ public class BorderCreator<T> {
     private void orderBorders(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
         initializeHashMaps();
         createStartPointToEndPointMapping(tileAndDirectionsToDraw);
-
+        System.out.println("Order Borders");
         int keySetSize = startToEnd.keySet().size();
 
         List<Border.BorderItem> borderItems = new ArrayList<>();
         Point2D prevStartPoint = null;
+        List<Point2D> startPoints = new ArrayList<>();
         for(int i = 0; i < keySetSize; i++){
             Point2D endPoint = null;
 
@@ -129,11 +131,15 @@ public class BorderCreator<T> {
                 //initialize with new startpoint
                 endPoint = findBeginningBorderChange();
                 initialPoint = startPoint;
+                startToEnd.remove(startPoint);
             }else{
                 //continue with last startpoint
                 endPoint = startToEnd.get(startPoint);
+                startToEnd.remove(startPoint);
             }
 
+            startPoints.add(startPoint);
+//            System.out.println("EndPoint: " + endPoint.getX() + ", " + endPoint.getY());
             if( circleDetected() && i != 0 ){
                 //circle detected => close circular boundary
                 appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
@@ -146,6 +152,7 @@ public class BorderCreator<T> {
                 //are any left
                 endPoint = findStartPointAtBorderChange();
                 initialPoint = startPoint;
+                startToEnd.remove(startPoint);
             }
 
            if(isBorderChangeRequired(prevStartPoint, startPoint)){
@@ -166,6 +173,15 @@ public class BorderCreator<T> {
             appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
         }
         createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
+        System.out.println("X");
+        for (Point2D point : startPoints) {
+            System.out.println(point.getX());
+        }
+        System.out.println("Y");
+        for (Point2D point : startPoints) {
+            System.out.println(point.getY());
+        }
+        System.out.println("Order Borders finished");
     }
 
     private Border<T> createBorderAndAddtoLeaves(List<Border.BorderItem> borderItems, int borderLevel) {
