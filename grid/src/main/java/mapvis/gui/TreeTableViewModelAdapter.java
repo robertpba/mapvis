@@ -2,7 +2,6 @@ package mapvis.gui;
 
 import javafx.scene.control.TreeItem;
 import mapvis.common.datatype.INode;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 
 public class TreeTableViewModelAdapter {

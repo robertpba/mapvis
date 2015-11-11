@@ -3,9 +3,6 @@ package mapvis.treeGenerator;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by dacc on 10/23/2015.
  */

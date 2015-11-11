@@ -9,10 +9,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Node;
 import mapvis.treeGenerator.ITreeGenerator;
 import mapvis.treeGenerator.TreeGeneratorSizeOneLeaves;
-import mapvis.treeGenerator.TreeGeneratorSummedLeaves;
 import mapvis.treeGenerator.UDCParser;
 import org.yaml.snakeyaml.Yaml;
 

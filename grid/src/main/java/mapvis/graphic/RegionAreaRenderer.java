@@ -41,7 +41,7 @@ public class RegionAreaRenderer {
             for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
 
 
-                if (partialRegionBoundary.coorinateNeedToBeReversed) {
+                if (partialRegionBoundary.coordinateNeedToBeReversed) {
                     for (int i = partialRegionBoundary.xValues.length - 1; i >= 0; i--) {
                         if (firstDraw) {
                             graphicsContext.moveTo(partialRegionBoundary.xValues[i], partialRegionBoundary.yValues[i]);

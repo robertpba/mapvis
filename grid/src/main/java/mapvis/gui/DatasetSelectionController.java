@@ -5,8 +5,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -17,7 +17,6 @@ import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
 import mapvis.models.Region;
-
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -71,7 +70,6 @@ public class DatasetSelectionController implements Initializable {
         inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
-//            System.out.println("first: " + !("".equals(newValue)) + " " + !newValue.matches("[0-9]"));
             if (!"".equals(newValue) && !newValue.matches("[0-9]*")) {
                 dropLevelsTextField.setText(oldValue);
             }

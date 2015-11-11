@@ -3,7 +3,6 @@ package mapvis.gui;
 import javafx.event.ActionEvent;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Node;
 
 import java.io.FileNotFoundException;
 

@@ -15,7 +15,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 import mapvis.Drawer;
 import mapvis.common.datatype.INode;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.TreeStatistics;
 import mapvis.graphic.HexagonalTilingView;
@@ -93,8 +92,7 @@ public class ChartController implements Initializable  {
             if(newValue1 == null)
                 return;
             int maxDepth = newValue1.maxDepth;
-//            labelLevelsToShowSlider.setMax(maxDepth);
-            labelLevelsToShowSlider.setMax(10);
+            labelLevelsToShowSlider.setMax(maxDepth);
             bordersLevelsToShowSlider.setMax(maxDepth);
             levelsToShowSlider.setMax(maxDepth);
         });

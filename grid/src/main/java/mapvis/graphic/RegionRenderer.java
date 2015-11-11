@@ -5,17 +5,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.INode;
-import mapvis.models.*;
+import mapvis.models.LeafRegion;
+import mapvis.models.Region;
+import mapvis.models.Tile;
 
-
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dacc on 10/26/2015.
  */
 public class RegionRenderer {
-    private final RegionAreaRenderer regionAreaRenderer;
-    private final RegionBorderRenderer regionBorderRenderer;
 
     public HexagonalTilingView getView() {
         return view;
@@ -39,17 +39,14 @@ public class RegionRenderer {
     private final double[] points;
     private final double[] x;
     private final double[] y;
-    private int totalDrawnBorder = 0;
-    private int drawIndex;
     public int maxBorderLevelToShow;
-    public int shapeIndexToDraw = 0;
-    private Random rand = new Random(0);
+    private final RegionAreaRenderer regionAreaRenderer;
+    private final RegionBorderRenderer regionBorderRenderer;
 
     private final IBorderCoordinatesCalculator<INode> borderCoordinatesCalculatorImpl = new BorderCoordinatesCalcImpl<>();
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
         super();
-        drawIndex = 0;
         maxBorderLevelToShow = 1;
         System.out.println("Creating: " + this.getClass().getName());
         this.sideLength = view.SideLength;
@@ -95,9 +92,6 @@ public class RegionRenderer {
 
     public void drawRegionHelper(Region regionToDraw, Point2D topleftBorder, Point2D bottomRightBorder)
     {
-
-        drawIndex = 0;
-        totalDrawnBorder = 0;
         regionAreaRenderer.initForNextRenderingPhase();
         regionBorderRenderer.initForNextRenderingPhase();
         drawRegion(regionToDraw, topleftBorder, bottomRightBorder);

@@ -12,7 +12,6 @@ import mapvis.Impl.RampColorStyler;
 import mapvis.Impl.RandomColorStyler;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;

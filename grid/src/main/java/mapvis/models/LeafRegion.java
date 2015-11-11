@@ -2,9 +2,6 @@ package mapvis.models;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import mapvis.common.datatype.Tuple2;
-import mapvis.graphic.BorderCoordinatesCalcImpl;
-import mapvis.graphic.RegionRenderer;
 
 import java.util.*;
 
@@ -59,7 +56,7 @@ public class LeafRegion<T> extends Region<T> {
         public int level;
         public boolean renderColored;
         public Color color;
-        public boolean coorinateNeedToBeReversed;
+        public boolean coordinateNeedToBeReversed;
 
         public BoundaryShape(double[] xValues, double[] yValues, Border<T> border) {
             this.xValues = xValues;
@@ -68,7 +65,7 @@ public class LeafRegion<T> extends Region<T> {
             this.border = border;
             this.renderColored = false;
             this.color = Color.TRANSPARENT;
-            this.coorinateNeedToBeReversed = false;
+            this.coordinateNeedToBeReversed = false;
         }
         public Point2D getStartPoint(){
             if(xValues.length > 0)
@@ -95,11 +92,6 @@ public class LeafRegion<T> extends Region<T> {
             return result;
         }
     }
-
-//    public LeafRegion(T treeItem) {
-//        super(Collections.<Region<T>>emptyList(), treeItem);
-//        this.borders = new HashSet<>();
-//    }
 
     public Set<Border<T>> getBorders() {
         return borders;
@@ -145,17 +137,11 @@ public class LeafRegion<T> extends Region<T> {
                 return false;
             if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
                 return false;
-//            if( !newBorder.getNodeA().equals(existingBorder.getNodeA()) || !newBorder.getNodeB().equals(existingBorder.getNodeB()))
-//                return false;
 
             return true;
         }
 
         return false;
-    }
-
-    public void addBorders(List<Border<T>> borders) {
-        this.borders.addAll(borders);
     }
 
     @Override

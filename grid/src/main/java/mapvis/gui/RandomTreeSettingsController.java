@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.NodeUtils;
 import mapvis.treeGenerator.RandomTreeGenerator;
 

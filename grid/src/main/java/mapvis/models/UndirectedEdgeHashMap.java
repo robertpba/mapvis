@@ -2,9 +2,7 @@ package mapvis.models;
 
 import javafx.geometry.Point2D;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by dacc on 11/6/2015.

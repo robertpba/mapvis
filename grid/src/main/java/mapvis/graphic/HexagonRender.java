@@ -5,13 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import mapvis.common.datatype.INode;
-import mapvis.common.datatype.Node;
 import mapvis.models.Dir;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 class HexagonRender {
     static final int[][] DIR_TO_POINTS = new int[][]{

@@ -1,6 +1,5 @@
 package mapvis.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,13 +8,7 @@ import java.util.List;
 public class Region<T> {
     final T nodeItem;
     private final int level;
-
     private List<Region<T>> childRegions;
-
-//    public Region(List<Region<T>> enclosingElements, T nodeItem) {
-//        this.childRegions = enclosingElements;
-//        this.nodeItem = nodeItem;
-//    }
 
     public Region(List<Region<T>> childRegions, T nodeItem, int level) {
         this.childRegions = childRegions;

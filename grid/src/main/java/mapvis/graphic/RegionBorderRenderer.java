@@ -6,17 +6,19 @@ import mapvis.models.LeafRegion;
 import java.util.List;
 
 public class RegionBorderRenderer {
+
     public static final RenderState INITIAL_BORDER_RENDERSTATE = RenderState.StateA;
     private int totalDrawnBorder;
     private int drawIndex;
+    private final GraphicsContext graphicsContext;
+    private RenderState currentRegionRenderState;
+
 
     public enum RenderState{
         StateA,
         StateB
     }
 
-    private final GraphicsContext graphicsContext;
-    private RenderState currentRegionRenderState;
 
     public RegionBorderRenderer(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
@@ -60,7 +62,4 @@ public class RegionBorderRenderer {
         System.out.println("Drawn Borders " + drawIndex + " of " + totalDrawnBorder);
     }
 
-    public RenderState getCurrentRegionRenderState() {
-        return currentRegionRenderState;
-    }
 }

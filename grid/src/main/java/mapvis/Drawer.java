@@ -1,7 +1,6 @@
 package mapvis;
 
 import mapvis.common.datatype.INode;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
