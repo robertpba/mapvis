@@ -113,10 +113,14 @@ public class RegionRenderer {
 
         g.save();
         borderCoordinatesCalculatorImpl.setRegion(regionToDraw);
+
         boolean disableOrdering = false;
+        regionBorderRenderer.setIsSingleSideBorderRenderingEnabled(true);
+
         Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculatorImpl.
                 computeCoordinates(maxBorderLevelToShow, !disableOrdering);
         regionToBoundaryShapes = borderCoordinatesCalculatorImpl.getRegionToBoundaries();
+
 
 
         for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
@@ -132,7 +136,6 @@ public class RegionRenderer {
                 Color regionFillColor = styler.getColorByValue(boundaryShapeTuple.getKey().getNodeItem());
                 regionAreaRenderer.drawArea(styler, boundaryShapes, regionFillColor);
                 regionBorderRenderer.drawBorder(styler, boundaryShapes);
-
             }
         }
         g.setFill(Color.GREEN);

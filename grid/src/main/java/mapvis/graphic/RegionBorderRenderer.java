@@ -12,6 +12,7 @@ public class RegionBorderRenderer {
     private int drawIndex;
     private final GraphicsContext graphicsContext;
     private RenderState currentRegionRenderState;
+    private boolean isSingleSideBorderRenderingEnabled;
 
 
     public enum RenderState{
@@ -23,7 +24,7 @@ public class RegionBorderRenderer {
     public RegionBorderRenderer(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.currentRegionRenderState = INITIAL_BORDER_RENDERSTATE;
-
+        this.isSingleSideBorderRenderingEnabled = true;
     }
 
     private RenderState getNextRenderState(){
@@ -40,7 +41,7 @@ public class RegionBorderRenderer {
     void drawBorder(TileStyler styler, List<List<LeafRegion.BoundaryShape>> regionBorders) {
         for (List<LeafRegion.BoundaryShape> regionParts : regionBorders) {
             for (LeafRegion.BoundaryShape regionPart : regionParts) {
-                if (regionPart.border.getRenderState() == currentRegionRenderState) {
+                if ( !isSingleSideBorderRenderingEnabled  || regionPart.border.getRenderState() == currentRegionRenderState) {
                     int level = regionPart.border.getLevel();
                     graphicsContext.setLineWidth(styler.getBorderWidthByLevel(level));
                     graphicsContext.strokePolyline(regionPart.xValues, regionPart.yValues, regionPart.xValues.length);
@@ -62,4 +63,11 @@ public class RegionBorderRenderer {
         System.out.println("Drawn Borders " + drawIndex + " of " + totalDrawnBorder);
     }
 
+    public void setIsSingleSideBorderRenderingEnabled(boolean isSingleSideBorderRenderingEnabled) {
+        this.isSingleSideBorderRenderingEnabled = isSingleSideBorderRenderingEnabled;
+    }
+
+    public boolean isSingleSideBorderRenderingEnabled() {
+        return isSingleSideBorderRenderingEnabled;
+    }
 }

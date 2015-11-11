@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 
 import java.util.*;
 
+import static mapvis.graphic.BorderCoordinatesCalcImpl.getPoint2DPointForBorderHexLocation;
 import static mapvis.graphic.BorderCoordinatesCalcImpl.getRoundedPoint2DPointForBorderHexLocation;
 
 /**

@@ -29,7 +29,7 @@ public class RegionAreaRenderer {
 
         graphicsContext.beginPath();
         regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
-
+        graphicsContext.moveTo(0, 0);
         for (List<LeafRegion.BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
 //            if(drawIndex != shapeIndexToDraw)
 //                continue;
@@ -63,6 +63,7 @@ public class RegionAreaRenderer {
 
             }
         }
+
 
         graphicsContext.closePath();
 //        g.stroke();
