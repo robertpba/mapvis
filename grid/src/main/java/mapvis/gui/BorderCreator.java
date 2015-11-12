@@ -121,7 +121,7 @@ public class BorderCreator<T> {
         boolean circleDetected = false;
         List<Border.BorderItem> borderItems = new ArrayList<>();
         Point2D prevStartPoint = null;
-        List<Point2D> startPoints = new ArrayList<>();
+//        List<Point2D> startPoints = new ArrayList<>();
         for(int i = 0; i < keySetSize; i++){
             Point2D endPoint = null;
 
@@ -141,8 +141,8 @@ public class BorderCreator<T> {
             if( circleDetected() && i != 0 ){
                 circleDetected = true;
                 //circle detected => close circular boundary
-                startPoints.add(initialPoint);
-                startPoints.add(new Point2D(0, 0));
+//                startPoints.add(initialPoint);
+//                startPoints.add(new Point2D(0, 0));
                 appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
 
                 createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
@@ -159,16 +159,16 @@ public class BorderCreator<T> {
             }
 
            if(isBorderChangeRequired(prevStartPoint, startPoint)){
-               startPoints.add(startPoint);
-               startPoints.add(new Point2D(0, 0));
+//               startPoints.add(startPoint);
+//               startPoints.add(new Point2D(0, 0));
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
                createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
                borderItems = new ArrayList<>();
 
-               startPoints.add(startPoint);
+//               startPoints.add(startPoint);
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
            }else{
-               startPoints.add(startPoint);
+//               startPoints.add(startPoint);
                appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
            }
             checkPoint(startPoint);
@@ -182,7 +182,7 @@ public class BorderCreator<T> {
 
             appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
 //            borderItems = new ArrayList<>();
-            startPoints.add(initialPoint);
+//            startPoints.add(initialPoint);
         }
         checkPoint(startPoint);
 
@@ -194,13 +194,13 @@ public class BorderCreator<T> {
 //            createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
 //        }
 
-        List<Double> xValues = new ArrayList<>();
-        List<Double> yValues = new ArrayList<>();
-        startPoints.forEach(point2D ->  {
-            xValues.add(point2D.getX());
-            yValues.add(point2D.getY());
-        });
-        RegionRenderer.printCoordinates(xValues, yValues, "StartSjpe", "endSHape");
+//        List<Double> xValues = new ArrayList<>();
+//        List<Double> yValues = new ArrayList<>();
+//        startPoints.forEach(point2D ->  {
+//            xValues.add(point2D.getX());
+//            yValues.add(point2D.getY());
+//        });
+//        RegionRenderer.printCoordinates(xValues, yValues, "StartSjpe", "endSHape");
     }
 
     private void checkPoint(Point2D pointToCheck) {

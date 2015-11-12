@@ -20,20 +20,20 @@ public class Border<T> {
     }
 
     private int level;
-    private RegionBorderRenderer.RenderState renderState;
+    private int renderID;
     private List<BorderItem> borderItems;
     private T nodeA;
     private T nodeB;
 
     public Border() {
         this.level = -1;
-        this.renderState = RegionBorderRenderer.INITIAL_BORDER_RENDERSTATE;
+        this.renderID = -1;
         this.borderItems = new ArrayList<>();
     }
 
     public Border(List<BorderItem> borderItems, int level) {
+        this.renderID = -1;
         this.level = level;
-        this.renderState = RegionBorderRenderer.INITIAL_BORDER_RENDERSTATE;
         this.borderItems = borderItems;
     }
 
@@ -80,12 +80,12 @@ public class Border<T> {
         }
     }
 
-    public RegionBorderRenderer.RenderState getRenderState() {
-        return renderState;
+    public int getRenderID() {
+        return renderID;
     }
 
-    public void setRenderState(RegionBorderRenderer.RenderState renderState) {
-        this.renderState = renderState;
+    public void setRenderID(int renderID) {
+        this.renderID = renderID;
     }
 
     public Tuple2<Pos, Dir> getStartPoint(){

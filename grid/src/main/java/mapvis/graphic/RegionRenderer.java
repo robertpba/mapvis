@@ -131,11 +131,11 @@ public class RegionRenderer {
 //                continue;
             List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
             if(disableOrdering){
-                regionBorderRenderer.drawBorder(styler, boundaryShapes);
+                regionBorderRenderer.drawBorder(styler, boundaryShapes, view);
             }else {
                 Color regionFillColor = styler.getColorByValue(boundaryShapeTuple.getKey().getNodeItem());
                 regionAreaRenderer.drawArea(styler, boundaryShapes, regionFillColor);
-                regionBorderRenderer.drawBorder(styler, boundaryShapes);
+                regionBorderRenderer.drawBorder(styler, boundaryShapes, view);
             }
         }
         g.setFill(Color.GREEN);

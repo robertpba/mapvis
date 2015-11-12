@@ -1,60 +1,53 @@
 package mapvis.graphic;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import mapvis.models.LeafRegion;
 
 import java.util.List;
+import java.util.Random;
 
 public class RegionBorderRenderer {
 
-    public static final RenderState INITIAL_BORDER_RENDERSTATE = RenderState.StateA;
+//    public static final RenderState INITIAL_BORDER_RENDERSTATE = RenderState.StateA;
     private int totalDrawnBorder;
     private int drawIndex;
     private final GraphicsContext graphicsContext;
-    private RenderState currentRegionRenderState;
+    private int renderID;
+    private Random renderIDRandomGen;
     private boolean isSingleSideBorderRenderingEnabled;
-
-
-    public enum RenderState{
-        StateA,
-        StateB
-    }
 
 
     public RegionBorderRenderer(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
-        this.currentRegionRenderState = INITIAL_BORDER_RENDERSTATE;
+        this.renderIDRandomGen = new Random(0);
         this.isSingleSideBorderRenderingEnabled = true;
     }
 
-    private RenderState getNextRenderState(){
-        switch (currentRegionRenderState) {
-            case StateA:
-                return RenderState.StateB;
-            case StateB:
-                return RenderState.StateA;
-        }
-        return null;
+    private int getNextRenderID(){
+        return renderIDRandomGen.nextInt();
     }
 
 
-    void drawBorder(TileStyler styler, List<List<LeafRegion.BoundaryShape>> regionBorders) {
+    void drawBorder(TileStyler styler, List<List<LeafRegion.BoundaryShape>> regionBorders, HexagonalTilingView view) {
+        ObservableList<Node> children = view.getChildren();
         for (List<LeafRegion.BoundaryShape> regionParts : regionBorders) {
             for (LeafRegion.BoundaryShape regionPart : regionParts) {
-                if ( !isSingleSideBorderRenderingEnabled  || regionPart.border.getRenderState() == currentRegionRenderState) {
+                if ( !isSingleSideBorderRenderingEnabled  || regionPart.border.getRenderID() != renderID) {
                     int level = regionPart.border.getLevel();
                     graphicsContext.setLineWidth(styler.getBorderWidthByLevel(level));
                     graphicsContext.strokePolyline(regionPart.xValues, regionPart.yValues, regionPart.xValues.length);
                     drawIndex++;
                 }
-                regionPart.border.setRenderState(currentRegionRenderState);
+                regionPart.border.setRenderID(renderID);
                 totalDrawnBorder++;
             }
         }
     }
 
     public void initForNextRenderingPhase() {
-        this.currentRegionRenderState = getNextRenderState();
+        this.renderID = getNextRenderID();
         this.drawIndex = 0;
         this.totalDrawnBorder = 0;
     }
