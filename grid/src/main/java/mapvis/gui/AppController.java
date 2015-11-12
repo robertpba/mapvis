@@ -7,12 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
-import mapvis.Impl.HashMapGrid;
-import mapvis.Impl.RampColorStyler;
-import mapvis.Impl.RandomColorStyler;
+import mapvis.Impl.*;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Tree2;
+import mapvis.graphic.IRegionStyler;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;
 
@@ -49,16 +48,13 @@ public class AppController implements Initializable {
 
         ObjectBinding db = new ObjectBinding() {
             {
-                super.bind(chartController.levelsToShowSlider.valueProperty(),
-                        chartController.colorPicker.valueProperty(),
+                super.bind(
                         chartController.colorschemeProperty(),
                         tree,
                         grid
                 );
             }
-
-            private RandomColorStyler randomStyler;
-            private RampColorStyler rampColorStyler;
+            private RandomRegionColorStyler<INode> randomRegionStyler;
             @Override
             protected Object computeValue() {
                 System.out.println("requesting styler");
@@ -67,42 +63,50 @@ public class AppController implements Initializable {
                 if (grid.get() == null)
                     grid.set(new HashMapGrid<>());
 
-                String s = chartController.colorschemeProperty().get();
-                if (s == null) s = "random";
-
-                if (s.equals("random")){
-                    if(randomStyler == null){
-                        randomStyler = new RandomColorStyler<>(tree.get(), grid.get(),
-                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-                                chartController.colorPicker.valueProperty().get(),
-                                1);
-                    }else{
-                        randomStyler.resetStyler(tree.get(), grid.get(),
-                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-                                chartController.colorPicker.valueProperty().get(),
-                                1);
-                    }
-                    return randomStyler;
+                if(randomRegionStyler == null){
+                    randomRegionStyler = new RandomRegionColorStyler<>(
+                            tree, chartController.colorPicker.valueProperty(),
+                            chartController.bordersLevelsToShowSlider.valueProperty(),
+                            chartController.levelsToShowSlider.valueProperty(), 1);
                 }
+                return randomRegionStyler;
 
-                if (s.equals("ramp")){
-                    if(rampColorStyler == null){
-                        rampColorStyler = new RampColorStyler<>(tree.get(), grid.get(),
-                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-                                chartController.colorPicker.valueProperty().get());
-                    }else{
-                        rampColorStyler.resetStyler(tree.get(), grid.get(),
-                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-                                chartController.colorPicker.valueProperty().get());
-                    }
-                    return rampColorStyler;
-                }
-                throw new RuntimeException();
+//                String s = chartController.colorschemeProperty().get();
+//                if (s == null) s = "random";
+//
+//                if (s.equals("random")){
+//                    if(randomStyler == null){
+//                        randomStyler = new RandomColorStyler<>(tree.get(), grid.get(),
+//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
+//                                chartController.colorPicker.valueProperty().get(),
+//                                1);
+//                    }else{
+//                        randomStyler.resetStyler(tree.get(), grid.get(),
+//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
+//                                chartController.colorPicker.valueProperty().get(),
+//                                1);
+//                    }
+//                    return randomStyler;
+//                }
+//
+//                if (s.equals("ramp")){
+//                    if(rampColorStyler == null){
+//                        rampColorStyler = new RampColorStyler<>(tree.get(), grid.get(),
+//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
+//                                chartController.colorPicker.valueProperty().get());
+//                    }else{
+//                        rampColorStyler.resetStyler(tree.get(), grid.get(),
+//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
+//                                chartController.colorPicker.valueProperty().get());
+//                    }
+//                    return rampColorStyler;
+//                }
+//                throw new RuntimeException();
             }
         };
-        //tileStyler.bind(db);
 
-        chartController.chart.stylerProperty().bind(db);
+        chartController.chart.regionStylerProperty().bind(db);
+
 
         datasetSelectionController.chart = chartController.chart;
         chartController.treeStatisticsProperty().bind(datasetSelectionController.lastTreeStatistics);

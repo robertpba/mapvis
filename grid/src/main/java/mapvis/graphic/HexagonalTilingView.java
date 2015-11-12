@@ -12,9 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurve;
-import javafx.scene.shape.CubicCurveBuilder;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
@@ -38,11 +35,14 @@ public class HexagonalTilingView extends Pane {
 
     private ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
     private ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
-    private ObjectProperty<TileStyler<INode>> styler = new SimpleObjectProperty<>();
+//    private ObjectProperty<TileStyler<INode>> styler = new SimpleObjectProperty<>();
+    private ObjectProperty<IRegionStyler<INode>> regionStyler = new SimpleObjectProperty<>();
 
 
     private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private IntegerProperty maxLevelOfLabelsToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
+    private IntegerProperty maxLevelOfRegionsToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
+
     private BooleanProperty areLabelsShown = new SimpleBooleanProperty(true);
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     private DoubleProperty originX = new SimpleDoubleProperty(0);
@@ -64,10 +64,13 @@ public class HexagonalTilingView extends Pane {
         originX.addListener(this::onOriginXChange);
         originY.addListener(this::onOriginYChange);
         zoom.addListener(this::onZoomChange);
-        styler.addListener(this::onStylerChange);
+//        styler.addListener(this::onStyler);
+        regionStyler.addListener(this::onRegionAreaStyler);
+
         areLabelsShown.addListener(this::onShowLabelsChanged);
         maxLevelOfBordersToShow.addListener(this::onBorderLevelsToShowChanged);
         maxLevelOfLabelsToShow.addListener(this::onLabelLevelsToShowChanged);
+        maxLevelOfRegionsToShow.addListener(this::onRegionLevelsToShowChanged);
     }
 
     private void initHexagonTilingView(){
@@ -77,7 +80,7 @@ public class HexagonalTilingView extends Pane {
         canvas.widthProperty().bind(this.widthProperty());
         canvas.heightProperty().bind(this.heightProperty());
 
-        render = new HexagonRender(this);
+//        render = new HexagonRender(this);
         regionRenderer = new RegionRenderer(this, canvas);
         getChildren().addAll(canvas);
 
@@ -119,6 +122,7 @@ public class HexagonalTilingView extends Pane {
 //        System.out.println("updateHexagons");
 //        if (getGrid() == null)
 //            return;
+
         if(world != null)
             updateHexagonsWithCoastCache(world);
         return;
@@ -236,93 +240,93 @@ public class HexagonalTilingView extends Pane {
     }
 
     public void save(String filename) throws IOException {
-        if (getGrid() == null)
-            return;
-
-        int margin = 2;
-
-        int minx = grid.get().getMinX() - margin;
-        int miny = grid.get().getMinY() - margin;
-        int maxx = grid.get().getMaxX() + margin;
-        int maxy = grid.get().getMaxY() + margin;
-
-        System.out.printf("h x[%d:%d] y:[%d:%d]\n",
-                minx, maxx, miny, maxy);
-
-        Point2D topleft = hexagonalToPlain(minx, miny);
-        Point2D botright = hexagonalToPlain(maxx, maxy);
-
-        System.out.printf("p x[%d:%d] y:[%d:%d]\n",
-                (int)topleft.getX(), (int)botright.getX(),
-                (int)topleft.getY(), (int)botright.getY());
-
-        double scale = 1.0;
-        double w = (botright.getX()-topleft.getX())*scale;
-        double h = (botright.getY()-topleft.getY())*scale;
-
-        Canvas c1 = new Canvas(w, h);
-        GraphicsContext g = c1.getGraphicsContext2D();
-        g.setFill(styler.get().getBackground());
-        g.fillRect(0, 0, w, h);
-
-        System.out.printf("w:%d, h:%d, xy[%d:%d]\n",(int)w, (int)h,
-                (int)(topleft.getX()),
-                (int)(topleft.getY())
-
-        );
-        g.save();
-
-        g.scale(scale, scale);
-        g.translate(-topleft.getX(), -topleft.getY());
-
-        List<Tile<INode>> tiles = new ArrayList<>();
-
-        grid.get().foreach(t -> {
-            if (t.getX() >= minx
-                    && t.getX() <= maxx
-                    && t.getY() >= miny
-                    && t.getY() <= maxy)
-
-            updateHexagon(t.getX(), t.getY(), g);
-
-            if (t.getItem() != null && t.getTag() == Tile.LAND)
-                tiles.add(t);
-        });
-
-        Map<INode, Pos> posmap = mapLabelPos(tiles);
-        //drawLabels(posmap, g);
-
-
-        WritableImage wim = new WritableImage((int)w, (int)h);
-        c1.snapshot(null, wim);
-        File file = new File(filename);
-
-        ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
-
-
-        g.restore();
+//        if (getGrid() == null)
+//            return;
+//
+//        int margin = 2;
+//
+//        int minx = grid.get().getMinX() - margin;
+//        int miny = grid.get().getMinY() - margin;
+//        int maxx = grid.get().getMaxX() + margin;
+//        int maxy = grid.get().getMaxY() + margin;
+//
+//        System.out.printf("h x[%d:%d] y:[%d:%d]\n",
+//                minx, maxx, miny, maxy);
+//
+//        Point2D topleft = hexagonalToPlain(minx, miny);
+//        Point2D botright = hexagonalToPlain(maxx, maxy);
+//
+//        System.out.printf("p x[%d:%d] y:[%d:%d]\n",
+//                (int)topleft.getX(), (int)botright.getX(),
+//                (int)topleft.getY(), (int)botright.getY());
+//
+//        double scale = 1.0;
+//        double w = (botright.getX()-topleft.getX())*scale;
+//        double h = (botright.getY()-topleft.getY())*scale;
+//
+//        Canvas c1 = new Canvas(w, h);
+//        GraphicsContext g = c1.getGraphicsContext2D();
+//        g.setFill(regionStyler.get().getBackground());
+//        g.fillRect(0, 0, w, h);
+//
+//        System.out.printf("w:%d, h:%d, xy[%d:%d]\n",(int)w, (int)h,
+//                (int)(topleft.getX()),
+//                (int)(topleft.getY())
+//
+//        );
+//        g.save();
+//
+//        g.scale(scale, scale);
+//        g.translate(-topleft.getX(), -topleft.getY());
+//
+//        List<Tile<INode>> tiles = new ArrayList<>();
+//
+//        grid.get().foreach(t -> {
+//            if (t.getX() >= minx
+//                    && t.getX() <= maxx
+//                    && t.getY() >= miny
+//                    && t.getY() <= maxy)
+//
+//            updateHexagon(t.getX(), t.getY(), g);
+//
+//            if (t.getItem() != null && t.getTag() == Tile.LAND)
+//                tiles.add(t);
+//        });
+//
+//        Map<INode, Pos> posmap = mapLabelPos(tiles);
+//        //drawLabels(posmap, g);
+//
+//
+//        WritableImage wim = new WritableImage((int)w, (int)h);
+//        c1.snapshot(null, wim);
+//        File file = new File(filename);
+//
+//        ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
+//
+//
+//        g.restore();
     }
 
-    private void drawHexagonBorders(int x, int y, List<Dir> directions, GraphicsContext g) {
-        g.save();
-        Point2D point2D = hexagonalToPlain(x, y);
-        g.translate(point2D.getX(), point2D.getY());
-
-        render.drawPointsOfHexagon(g, x, y, directions);
-
-        g.restore();
-    }
-
-    private void updateHexagon(int x, int y, GraphicsContext g) {
-
-        g.save();
-        Point2D point2D = hexagonalToPlain(x, y);
-        g.translate(point2D.getX(), point2D.getY());
-
-        render.drawHexagon(g, x, y);
-
-        g.restore();
-    }
+//    private void drawHexagonBorders(int x, int y, List<Dir> directions, GraphicsContext g) {
+//        g.save();
+//        Point2D point2D = hexagonalToPlain(x, y);
+//        g.translate(point2D.getX(), point2D.getY());
+//
+//        render.drawPointsOfHexagon(g, x, y, directions);
+//
+//        g.restore();
+//    }
+//
+//    private void updateHexagon(int x, int y, GraphicsContext g) {
+//
+//        g.save();
+//        Point2D point2D = hexagonalToPlain(x, y);
+//        g.translate(point2D.getX(), point2D.getY());
+//
+//        render.drawHexagon(g, x, y);
+//
+//        g.restore();
+//    }
 
 
     public ObjectProperty<Grid<INode>> gridProperty() { return this.grid; }
@@ -333,9 +337,19 @@ public class HexagonalTilingView extends Pane {
     public final Tree2<INode> getTree() { return this.treeProperty().get(); }
     public final void setTree(Tree2<INode> tree) { this.treeProperty().set(tree); }
 
-    public ObjectProperty<TileStyler<INode>> stylerProperty() { return this.styler; }
-    public final TileStyler<INode> getStyler() { return this.stylerProperty().get(); }
-    public final void setStyler(TileStyler<INode> styler) { this.stylerProperty().set(styler); }
+//    public ObjectProperty<TileStyler<INode>> stylerProperty() { return this.styler; }
+//    public final TileStyler<INode> getStyler() { return this.stylerProperty().get(); }
+//    public final void setStyler(TileStyler<INode> styler) { this.stylerProperty().set(styler); }
+
+    public IRegionStyler<INode> getRegionStyler() {
+        return regionStyler.get();
+    }
+    public ObjectProperty<IRegionStyler<INode>> regionStylerProperty() {
+        return regionStyler;
+    }
+    public void setRegionStyler(IRegionStyler<INode> regionStyler) {
+        this.regionStyler.set(regionStyler);
+    }
 
     public DoubleProperty zoomProperty() { return this.zoom; }
     public final double getZoom() { return this.zoomProperty().get(); }
@@ -352,6 +366,16 @@ public class HexagonalTilingView extends Pane {
     public BooleanProperty areLabelsShownProperty() { return this.areLabelsShown; }
     public final boolean getAreLabelsShownProperty() { return this.areLabelsShownProperty().get(); }
     public final void setAreLabelsShownProperty(boolean y) { this.areLabelsShownProperty().set(y); }
+
+    public int getMaxLevelOfRegionsToShow() {
+        return maxLevelOfRegionsToShow.get();
+    }
+    public void setMaxLevelOfRegionsToShow(int maxLevelOfRegionsToShow) {
+        this.maxLevelOfRegionsToShow.set(maxLevelOfRegionsToShow);
+    }
+    public IntegerProperty maxLevelOfRegionsToShowProperty() {
+        return maxLevelOfRegionsToShow;
+    }
 
     public int getMaxLevelOfBordersToShow() {return maxLevelOfBordersToShow.get(); }
     public IntegerProperty maxLevelOfBordersToShowProperty() { return maxLevelOfBordersToShow;}
@@ -419,15 +443,20 @@ public class HexagonalTilingView extends Pane {
         translateTransform = Affine.translate(originX.get(), newValue.doubleValue());
         updateHexagons();
     }
-    private void onStylerChange(ObservableValue<? extends TileStyler<INode>> observable,
-                        TileStyler<INode> oldValue, TileStyler<INode> newValue){
+    private void onStyler(ObservableValue<? extends TileStyler<INode>> observable,
+                                    TileStyler<INode> oldValue, TileStyler<INode> newValue){
+        updateHexagons();
+    }
+    private void onRegionAreaStyler(ObservableValue<? extends IRegionAreaStyler<INode>> observable,
+                                    IRegionAreaStyler<INode> oldValue, IRegionAreaStyler<INode> newValue){
         updateHexagons();
     }
     private void onShowLabelsChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
         updateHexagons();
     }
     private void onBorderLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
-        regionRenderer.maxBorderLevelToShow = newValue.intValue();
+//        regionRenderer.maxBorderLevelToShow = newValue.intValue();
+//        regionStyler.get().setMaxBorderLevelToShow(newValue.intValue());
 //        styler.get().setMaxBorderLevelToShow(newValue.intValue());
 
         updateHexagons();
@@ -437,6 +466,11 @@ public class HexagonalTilingView extends Pane {
     private void onLabelLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         updateHexagons();
     }
+    private void onRegionLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+//        regionStyler.get().setMaxRegionLevelToShow(newValue.intValue());
+        updateHexagons();
+    }
+
 
     //////////////////////////
 
@@ -486,9 +520,8 @@ public class HexagonalTilingView extends Pane {
     public void updateHexagonsWithCoastCache(Region<INode> region) {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
-        g.setFill(styler.get().getBackground());
+        g.setFill(regionStyler.get().getBackground());
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //Rectangle2D rect = viewport.get();
 
         Bounds rect = getLayoutBounds();
         double x0 = - originXProperty().get()/zoomProperty().get();

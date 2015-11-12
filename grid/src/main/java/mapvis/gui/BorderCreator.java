@@ -26,14 +26,12 @@ public class BorderCreator<T> {
     private final Region<T> world;
     private final Grid<T> grid;
     private final Tree2<T> tree;
-    private final RandomColorStyler<T> styler;
 
-    public BorderCreator(Region<T> world, Grid<T> grid, Tree2<T> tree, Map<T, LeafRegion<T>> leafNodeToLeafRegionMap, RandomColorStyler<T> styler) {
+    public BorderCreator(Region<T> world, Grid<T> grid, Tree2<T> tree, Map<T, LeafRegion<T>> leafNodeToLeafRegionMap) {
         this.world = world;
         this.grid = grid;
         this.tree = tree;
         this.leafNodeToLeafRegionMap = leafNodeToLeafRegionMap;
-        this.styler = styler;
         initializeHashMaps();
     }
 
@@ -258,7 +256,29 @@ public class BorderCreator<T> {
     }
 
     private int getBorderLevelAtPosition(Tuple2<Pos, Dir> addedBorderPart) {
-        return styler.calcLevel(addedBorderPart.first.getX(), addedBorderPart.first.getY(), addedBorderPart.second);
+        return calcLevel(addedBorderPart.first.getX(), addedBorderPart.first.getY(), addedBorderPart.second);
+    }
+
+    public int calcLevel(int x, int y, Dir dir){
+        //calc level of border at tile position and direction
+        Tile<T> t = grid.getTile(x, y);
+        Tile<T> tn = grid.getNeighbour(x, y, dir);
+        if (t.getItem() == null || tn.getItem() == null || t.getItem() == tn.getItem())
+            return 0;
+        if (t.getTag() == Tile.SEA)
+            return 0;
+        if (tn.getTag() == Tile.SEA)
+            return 0;
+
+
+        T lca = tree.getLCA(t.getItem(), tn.getItem());
+        if (lca == null) return 0;
+
+//        return getTree().getDepth(lca) + 1;
+        int level = tree.getDepth(lca) + 1;
+//        if(level > maxBorderLevelToShow)
+//            return 0;
+        return level;
     }
 
     private void appendBorderStepToBorderItemListToStartingAtPos(List<Border.BorderItem> borderItems, Point2D pointToAdd) {

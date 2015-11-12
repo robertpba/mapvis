@@ -9,32 +9,50 @@ import java.util.*;
 /**
  * Created by dacc on 11/6/2015.
  */
-public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculator {
+public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculator {
 
+    private final HexagonalTilingView view;
     private Region<T> region;
     private List<Point2D> debugPoints;
-    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaries = new HashMap<>();
+    private Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaries = new HashMap<>();
+    private IRegionStyler regionStyler;
 
-    public BorderCoordinatesCalcImpl() {
+    public BorderCoordinatesCalcImpl(HexagonalTilingView view) {
         debugPoints = new ArrayList<>();
+        this.view = view;
     }
 
     @Override
-    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw, boolean doOrdering) {
+    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean doOrdering) {
         if(region == null)
             return new HashMap<>();
 
+        regionStyler = view.getRegionStyler();
         debugPoints.clear();
         regionToBoundaries.clear();
-        computeCoordinates(region, maxLevelToDraw, doOrdering);
+        computeCoordinates(region, doOrdering);
         return regionToBoundaries;
     }
 
-    private void computeCoordinates(Region<T> region, int maxLevelToDraw, boolean doOrdering) {
+    public boolean hasRegionChildrenWithAreasOrBordersToShow(Region<T> region) {
+        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+        return region.getLevel() < maxLevel;
+    }
 
-        if( (region.isLeaf() && region.getLevel() < maxLevelToDraw) || (region.getLevel() == maxLevelToDraw) ){
-            List<LeafRegion.BoundaryShape> boundaryShapes = null;
-            boundaryShapes = collectBoundariesForRegion(region, maxLevelToDraw);
+    public boolean hasRegionAreasOrBordersToShow(Region<T> region) {
+        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+        return (region.isLeaf() && region.getLevel() < maxLevel ) || (region.getLevel() == maxLevel);
+    }
+
+    private boolean hasBorderElementsToShow(Border<T> border) {
+        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+        return border.getLevel() <= maxLevel;
+    }
+
+    private void computeCoordinates(Region<T> region, boolean doOrdering) {
+
+        if( hasRegionAreasOrBordersToShow(region) ){
+            List<LeafRegion.BoundaryShape> boundaryShapes = collectBoundariesForRegion(region);
 
             if(doOrdering){
                 List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapesNew(boundaryShapes);
@@ -44,8 +62,8 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
                 bShapeList.add(boundaryShapes);
                 regionToBoundaries.put(region, bShapeList);
             }
-        }else if(region.getLevel() < maxLevelToDraw){
-            region.getChildRegions().forEach(tRegion -> computeCoordinates(tRegion, maxLevelToDraw, doOrdering));
+        }else if(hasRegionChildrenWithAreasOrBordersToShow(region)){
+            region.getChildRegions().forEach(tRegion -> computeCoordinates(tRegion, doOrdering));
         }
     }
 
@@ -108,18 +126,18 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
         return resultingBoundaryShape;
     }
 
-    private List<LeafRegion.BoundaryShape> collectBoundariesForRegion(Region<T> region, int levelToShow){
+    private List<LeafRegion.BoundaryShape> collectBoundariesForRegion(Region<T> region){
         if(!region.isLeaf()){
             List<LeafRegion.BoundaryShape> resultingCollection = new ArrayList<>();
-            region.getChildRegions().forEach(tRegion ->  resultingCollection.addAll(collectBoundariesForRegion(tRegion, levelToShow)));
+            region.getChildRegions().forEach(tRegion ->  resultingCollection.addAll(collectBoundariesForRegion(tRegion)));
             return resultingCollection;
         }
-        List<LeafRegion.BoundaryShape> boundaryShapes = calcBoundaryShapeForLeafRegion((LeafRegion<T>) region, levelToShow);
+        List<LeafRegion.BoundaryShape> boundaryShapes = calcBoundaryShapeForLeafRegion((LeafRegion<T>) region);
 
         return boundaryShapes;
     }
 
-    private List<LeafRegion.BoundaryShape> calcBoundaryShapeForLeafRegion(LeafRegion<T> leafRegion, int levelToShow) {
+    private List<LeafRegion.BoundaryShape> calcBoundaryShapeForLeafRegion(LeafRegion<T> leafRegion) {
         List<Double> xValues = new ArrayList<>();
         List<Double> yValues = new ArrayList<>();
 
@@ -128,11 +146,11 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
         List<String> descriptionTexts = new ArrayList<>();
 
         for (Border<T> border : leafRegion.getBorders()) {
+
             if (border.getBorderItems().size() == 0) {
                 continue;
             }
-
-            if (border.getLevel() > levelToShow) {
+            if(!hasBorderElementsToShow(border)) {
                 continue;
             }
 
@@ -190,13 +208,13 @@ public class BorderCoordinatesCalcImpl<T> implements  IBorderCoordinatesCalculat
     }
 
     @Override
-    public List<Point2D> getDebugPoints() {
-        return debugPoints;
+    public void setRegionStyler(IRegionStyler regionStyler) {
+        this.regionStyler = regionStyler;
     }
 
     @Override
-    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> getRegionToBoundaries() {
-        return regionToBoundaries;
+    public List<Point2D> getDebugPoints() {
+        return debugPoints;
     }
 
 }

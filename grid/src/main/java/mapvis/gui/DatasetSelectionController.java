@@ -9,9 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import mapvis.Impl.HashMapGrid;
-import mapvis.Impl.RandomColorStyler;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
@@ -103,8 +101,7 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea("generating map..");
         Region<INode> world = method1.get().Begin();
 
-        BorderCreator<INode> borderCreator = new BorderCreator<INode>(world, grid.get(), tree.get(), method1.get().getItemToRegioMap(),
-                new RandomColorStyler<INode>(tree.get(), grid.get(), 100, Color.WHITE, 2)
+        BorderCreator<INode> borderCreator = new BorderCreator<INode>(world, grid.get(), tree.get(), method1.get().getItemToRegioMap()
         );
         borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionToBoundaries());
 
@@ -112,7 +109,7 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
         chart.setWorld(world);
-//        grid.get().resetGrid();
+        grid.get().resetGrid();
         chart.updateHexagons();
         logTextToInfoArea("rendering finished");
     }

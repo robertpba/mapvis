@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.FillRule;
 import mapvis.common.datatype.INode;
 import mapvis.models.LeafRegion;
+import mapvis.models.Region;
 
 import java.util.List;
 
@@ -15,12 +16,9 @@ public class RegionAreaRenderer {
         this.graphicsContext = regionRenderer;
     }
 
-    void drawArea(TileStyler<INode> styler, List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes,
-                  Color regionFillColor) {
 
-//        Region<INode> border = boundaryShapeTuple.getKey();
-//        TileStyler<INode> styler = graphicsContext.getView().getStyler();
-
+    public void drawArea(IRegionStyler<INode> regionStyler, Region<INode> regionToDraw, List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes) {
+        Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);
 
@@ -39,7 +37,6 @@ public class RegionAreaRenderer {
 //            drawIndex++;
             boolean firstDraw = true;
             for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
-
 
                 if (partialRegionBoundary.coordinateNeedToBeReversed) {
                     for (int i = partialRegionBoundary.xValues.length - 1; i >= 0; i--) {
@@ -75,4 +72,5 @@ public class RegionAreaRenderer {
 
     public void finishRenderingPhase() {
     }
+
 }

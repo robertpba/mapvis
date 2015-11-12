@@ -14,9 +14,9 @@ public interface IBorderCoordinatesCalculator<T> {
 
     void setRegion(Region<T> region);
 
+    void setRegionStyler(IRegionStyler regionStyler);
+
     List<Point2D> getDebugPoints();
 
-    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> getRegionToBoundaries();
-
-    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(int maxLevelToDraw, boolean orderBorders);
+    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean orderBorders);
 }

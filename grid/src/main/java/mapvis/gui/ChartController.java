@@ -73,6 +73,8 @@ public class ChartController implements Initializable  {
                 .bindBidirectional(chart.maxLevelOfBordersToShowProperty());
         labelLevelsToShowSlider.valueProperty()
                 .bindBidirectional(chart.maxLevelOfLabelsToShowProperty());
+        levelsToShowSlider.valueProperty()
+                .bindBidirectional(chart.maxLevelOfRegionsToShowProperty());
         grid.bindBidirectional(chart.gridProperty());
         tree.bindBidirectional(chart.treeProperty());
 
@@ -98,7 +100,7 @@ public class ChartController implements Initializable  {
             levelsToShowSlider.setMax(maxDepth);
         });
 
-        levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
+//        levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 

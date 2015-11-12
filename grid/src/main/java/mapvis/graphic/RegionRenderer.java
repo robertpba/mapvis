@@ -43,7 +43,7 @@ public class RegionRenderer {
     private final RegionAreaRenderer regionAreaRenderer;
     private final RegionBorderRenderer regionBorderRenderer;
 
-    private final IBorderCoordinatesCalculator<INode> borderCoordinatesCalculatorImpl = new BorderCoordinatesCalcImpl<>();
+    private final IBorderCoordinatesCalculator<INode> borderCoordinatesCalculator;
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
         super();
@@ -54,6 +54,7 @@ public class RegionRenderer {
         this.canvas = canvas;
         regionAreaRenderer = new RegionAreaRenderer(canvas.getGraphicsContext2D());
         regionBorderRenderer = new RegionBorderRenderer(canvas.getGraphicsContext2D());
+        borderCoordinatesCalculator = new BorderCoordinatesCalcImpl<>(view);
         points = new double[]{
                 - sideLength/2, - sideLength*COS30, //  0 - 1
                 sideLength/2, - sideLength*COS30,  // 5  c  2
@@ -108,18 +109,17 @@ public class RegionRenderer {
     }
 
     public void drawRegion(Region regionToDraw, Point2D topleftBorder, Point2D bottomRightBorder){
-        TileStyler<INode> styler = view.getStyler();
+//        TileStyler<INode> styler = view.getStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
 
         g.save();
-        borderCoordinatesCalculatorImpl.setRegion(regionToDraw);
+        borderCoordinatesCalculator.setRegion(regionToDraw);
 
         boolean disableOrdering = false;
         regionBorderRenderer.setIsSingleSideBorderRenderingEnabled(true);
 
-        Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculatorImpl.
-                computeCoordinates(maxBorderLevelToShow, !disableOrdering);
-        regionToBoundaryShapes = borderCoordinatesCalculatorImpl.getRegionToBoundaries();
+        Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculator.
+                computeCoordinates(!disableOrdering);
 
 
 
@@ -130,29 +130,15 @@ public class RegionRenderer {
 //            if(drawIndex >= shapeIndexToDraw)
 //                continue;
             List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+            IRegionStyler<INode> regionStyler = view.getRegionStyler();
             if(disableOrdering){
-                regionBorderRenderer.drawBorder(styler, boundaryShapes, view);
+                regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
             }else {
-                Color regionFillColor = styler.getColorByValue(boundaryShapeTuple.getKey().getNodeItem());
-                regionAreaRenderer.drawArea(styler, boundaryShapes, regionFillColor);
-                regionBorderRenderer.drawBorder(styler, boundaryShapes, view);
+                regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
+                regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
             }
         }
-        g.setFill(Color.GREEN);
 
         g.restore();
-    }
-
-    public static void printCoordinates(List<Double> xValues, List<Double> yValues, String startText, String endText) {
-        System.out.println(startText);
-        System.out.println("XVal");
-        for (Double xValue : xValues) {
-            System.out.println(xValue);
-        }
-        System.out.println("YVal");
-        for (Double xValue : yValues) {
-            System.out.println(xValue);
-        }
-        System.out.println(endText);
     }
 }
