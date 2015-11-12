@@ -17,11 +17,6 @@ import java.util.Map;
  */
 public class RegionRenderer {
 
-    public HexagonalTilingView getView() {
-        return view;
-    }
-
-
     static final int[][] DIR_TO_POINTS = new int[][]{
             new int[]{ 0,  1,  2,  3},
             new int[]{10, 11,  0,  1},
@@ -32,6 +27,7 @@ public class RegionRenderer {
     };
 
     private final Canvas canvas;
+    private final RegionLabelRenderer regionLabelRenderer;
 
     private HexagonalTilingView view;
     private final double sideLength;
@@ -54,6 +50,7 @@ public class RegionRenderer {
         this.canvas = canvas;
         regionAreaRenderer = new RegionAreaRenderer(canvas.getGraphicsContext2D());
         regionBorderRenderer = new RegionBorderRenderer(canvas.getGraphicsContext2D());
+        regionLabelRenderer = new RegionLabelRenderer(canvas.getGraphicsContext2D());
         borderCoordinatesCalculator = new BorderCoordinatesCalcImpl<>(view);
         points = new double[]{
                 - sideLength/2, - sideLength*COS30, //  0 - 1
@@ -121,24 +118,33 @@ public class RegionRenderer {
         Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculator.
                 computeCoordinates(!disableOrdering);
 
-
-
         for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-
-//            totalDrawnBorder++;
-//            drawIndex++;
-//            if(drawIndex >= shapeIndexToDraw)
-//                continue;
             List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
             IRegionStyler<INode> regionStyler = view.getRegionStyler();
             if(disableOrdering){
                 regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
             }else {
                 regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
-                regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
             }
+        }
+        for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+            List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+            Region<INode> region = boundaryShapeTuple.getKey();
+            IRegionStyler<INode> regionStyler = view.getRegionStyler();
+            regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
+        }
+
+        for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+            List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+            Region<INode> region = boundaryShapeTuple.getKey();
+            IRegionStyler<INode> regionStyler = view.getRegionStyler();
+            regionLabelRenderer.drawLabels(regionStyler, region, boundaryShapes);
         }
 
         g.restore();
+    }
+
+    public HexagonalTilingView getView() {
+        return view;
     }
 }

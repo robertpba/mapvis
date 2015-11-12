@@ -32,6 +32,7 @@ public class RegionBorderRenderer {
 
 
     public void drawBorder(IRegionStyler<INode> styler, List<List<LeafRegion.BoundaryShape>> regionBorders, HexagonalTilingView view) {
+//        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 
         for (List<LeafRegion.BoundaryShape> regionParts : regionBorders) {
@@ -48,6 +49,7 @@ public class RegionBorderRenderer {
                 totalDrawnBorder++;
             }
         }
+//        graphicsContext.restore();
     }
 
     public void initForNextRenderingPhase() {

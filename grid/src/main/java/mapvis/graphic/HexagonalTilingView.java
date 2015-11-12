@@ -455,19 +455,13 @@ public class HexagonalTilingView extends Pane {
         updateHexagons();
     }
     private void onBorderLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
-//        regionRenderer.maxBorderLevelToShow = newValue.intValue();
-//        regionStyler.get().setMaxBorderLevelToShow(newValue.intValue());
-//        styler.get().setMaxBorderLevelToShow(newValue.intValue());
-
         updateHexagons();
-
     }
 
     private void onLabelLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         updateHexagons();
     }
     private void onRegionLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
-//        regionStyler.get().setMaxRegionLevelToShow(newValue.intValue());
         updateHexagons();
     }
 

@@ -274,10 +274,8 @@ public class BorderCreator<T> {
         T lca = tree.getLCA(t.getItem(), tn.getItem());
         if (lca == null) return 0;
 
-//        return getTree().getDepth(lca) + 1;
         int level = tree.getDepth(lca) + 1;
-//        if(level > maxBorderLevelToShow)
-//            return 0;
+
         return level;
     }
 
