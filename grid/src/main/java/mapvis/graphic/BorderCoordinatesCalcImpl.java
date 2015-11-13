@@ -16,6 +16,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
     private List<Point2D> debugPoints;
     private Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaries = new HashMap<>();
     private IRegionStyler regionStyler;
+    private int maxLevelToCollect;
 
     public BorderCoordinatesCalcImpl(HexagonalTilingView view) {
         debugPoints = new ArrayList<>();
@@ -23,30 +24,33 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
     }
 
     @Override
-    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean doOrdering) {
+    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean doOrdering, int levelToCollect) {
         if(region == null)
             return new HashMap<>();
-
         regionStyler = view.getRegionStyler();
         debugPoints.clear();
         regionToBoundaries.clear();
+        maxLevelToCollect = levelToCollect;
         computeCoordinates(region, doOrdering);
         return regionToBoundaries;
     }
 
+
     public boolean hasRegionChildrenWithAreasOrBordersToShow(Region<T> region) {
-        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
-        return region.getLevel() < maxLevel;
+//        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+
+        return region.getLevel() < maxLevelToCollect;
     }
 
     public boolean hasRegionAreasOrBordersToShow(Region<T> region) {
-        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
-        return (region.isLeaf() && region.getLevel() < maxLevel ) || (region.getLevel() == maxLevel);
+//        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+
+        return (region.isLeaf() && region.getLevel() < maxLevelToCollect ) || (region.getLevel() == maxLevelToCollect);
     }
 
     private boolean hasBorderElementsToShow(Border<T> border) {
-        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
-        return border.getLevel() <= maxLevel;
+//        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+        return border.getLevel() <= maxLevelToCollect;
     }
 
     private void computeCoordinates(Region<T> region, boolean doOrdering) {

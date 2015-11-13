@@ -47,7 +47,7 @@ public class ChartController implements Initializable  {
     private ChoiceBox labelLevelsToShowChoiceBox;
 
     @FXML
-    private CheckBox showLabelsCheckBox;
+    protected CheckBox showLabelsCheckBox;
 
     private ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
     private ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();

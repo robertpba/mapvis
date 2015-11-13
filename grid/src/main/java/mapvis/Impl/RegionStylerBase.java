@@ -3,8 +3,6 @@ package mapvis.Impl;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.IRegionAreaStyler;
-import mapvis.graphic.IRegionBorderStyler;
 import mapvis.graphic.IRegionStyler;
 import mapvis.models.Border;
 import mapvis.models.Region;
@@ -14,17 +12,23 @@ import mapvis.models.Region;
  */
 public class RegionStylerBase<T> implements IRegionStyler<T> {
 
+
     protected ObjectProperty<Tree2<T>> tree;
     protected DoubleProperty maxBorderLevelToShow;
     protected DoubleProperty maxRegionLevelToShow;
+    protected DoubleProperty maxLabelLevelToShow;
+    protected BooleanProperty showLabels;
 
     public RegionStylerBase(ObjectProperty<Tree2<T>> tree,
                             DoubleProperty maxBorderLevelToShow,
-                            DoubleProperty maxRegionLevelToShow) {
+                            DoubleProperty maxRegionLevelToShow,
+                            DoubleProperty maxLabelLevelToShow, BooleanProperty showLabels) {
         System.out.println("Creating: " + this.getClass().getName());
         this.tree = tree;
         this.maxBorderLevelToShow = maxBorderLevelToShow;
         this.maxRegionLevelToShow = maxRegionLevelToShow;
+        this.maxLabelLevelToShow = maxLabelLevelToShow;
+        this.showLabels = showLabels;
     }
 
     @Override
@@ -96,6 +100,13 @@ public class RegionStylerBase<T> implements IRegionStyler<T> {
         return maxRegionLevelToShow.intValue();
     }
 
+    @Override
+    public boolean isLabelVisible(Region<T> region) {
+        if(region.getLevel() <= maxLabelLevelToShow.intValue())
+            return true;
+        return false;
+    }
+
 //    @Override
 //    public void setMaxRegionLevelToShow(int maxRegionLevelToShow) {
 //        this.maxRegionLevelToShow = maxRegionLevelToShow;
@@ -128,5 +139,24 @@ public class RegionStylerBase<T> implements IRegionStyler<T> {
 
     public void setMaxRegionLevelToShow(int maxRegionLevelToShow) {
         this.maxRegionLevelToShow.set(maxRegionLevelToShow);
+    }
+
+    @Override
+    public int getMaxLabelLevelToShow() {
+        return maxLabelLevelToShow.intValue();
+    }
+    public void setMaxLabelLevelToShow(double maxLabelLevelToShow) {
+        this.maxLabelLevelToShow.set(maxLabelLevelToShow);
+    }
+    public DoubleProperty maxLabelLevelToShowProperty() {
+        return maxLabelLevelToShow;
+    }
+
+    @Override
+    public boolean getShowLabels() {
+        return showLabels.get();
+    }
+    public BooleanProperty showLabelsProperty() {
+        return showLabels;
     }
 }

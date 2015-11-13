@@ -111,34 +111,34 @@ public class RegionRenderer {
 
         g.save();
         borderCoordinatesCalculator.setRegion(regionToDraw);
-
-        boolean disableOrdering = false;
         regionBorderRenderer.setIsSingleSideBorderRenderingEnabled(true);
 
+        boolean disableOrdering = false;
+        IRegionStyler<INode> regionStyler = view.getRegionStyler();
+        int maxLevelToCollect = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+
         Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculator.
-                computeCoordinates(!disableOrdering);
+                computeCoordinates(!disableOrdering, maxLevelToCollect);
 
         for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
             List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
-            IRegionStyler<INode> regionStyler = view.getRegionStyler();
-            if(disableOrdering){
-                regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
-            }else {
-                regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
-            }
+            regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
         }
         for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
             List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
             Region<INode> region = boundaryShapeTuple.getKey();
-            IRegionStyler<INode> regionStyler = view.getRegionStyler();
             regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
         }
 
-        for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-            List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
-            Region<INode> region = boundaryShapeTuple.getKey();
-            IRegionStyler<INode> regionStyler = view.getRegionStyler();
-            regionLabelRenderer.drawLabels(regionStyler, region, boundaryShapes);
+        if(regionStyler.getShowLabels()){
+            if(maxLevelToCollect != regionStyler.getMaxLabelLevelToShow()){
+                regionToBoundaryShapes = borderCoordinatesCalculator.computeCoordinates(false, regionStyler.getMaxLabelLevelToShow());
+            }
+            for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+                List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+                Region<INode> region = boundaryShapeTuple.getKey();
+                regionLabelRenderer.drawLabels(regionStyler, region, boundaryShapes);
+            }
         }
 
         g.restore();

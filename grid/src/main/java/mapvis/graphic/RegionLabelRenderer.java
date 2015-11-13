@@ -27,6 +27,9 @@ public class RegionLabelRenderer {
 
     public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<LeafRegion.BoundaryShape>> boundaryShapes) {
 //        graphicsContext.save();
+        if(!regionStyler.isLabelVisible(region)){
+            return;
+        }
         Point2D labelPos = null;
         INode nodeItem = region.getNodeItem();
         if(!iNodeToLabelPos.containsKey(nodeItem)){
@@ -42,20 +45,21 @@ public class RegionLabelRenderer {
 //        graphicsContext.restore();
     }
 
+//    private Point2D calcLabelPos(Region<INode> region) {
+//        region.g
+//    calc label position just by using the position of the tiles
+//    }
+
     private Point2D calcLabelPos(List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes) {
         double sumXValues = 0;
         double sumYValues = 0;
         int numOfCoords = 0;
         for (List<LeafRegion.BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
-//            if(drawIndex != shapeIndexToDraw)
-//                continue;
             if (regionBoundaryShape.size() == 0)
                 continue;
 
-//            drawIndex++;
-            boolean firstDraw = true;
             for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
-                for (int i = partialRegionBoundary.xValues.length - 1; i >= 0; i--) {
+                for (int i = 0; i < partialRegionBoundary.xValues.length; i++) {
                     double xValue = partialRegionBoundary.xValues[i];
                     double yValue = partialRegionBoundary.yValues[i];
                     sumXValues += xValue;

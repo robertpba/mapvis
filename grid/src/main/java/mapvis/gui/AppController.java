@@ -67,7 +67,10 @@ public class AppController implements Initializable {
                     randomRegionStyler = new RandomRegionColorStyler<>(
                             tree, chartController.colorPicker.valueProperty(),
                             chartController.bordersLevelsToShowSlider.valueProperty(),
-                            chartController.levelsToShowSlider.valueProperty(), 1);
+                            chartController.levelsToShowSlider.valueProperty(),
+                            chartController.labelLevelsToShowSlider.valueProperty(),
+                            chartController.showLabelsCheckBox.selectedProperty(),
+                            1);
                 }
                 return randomRegionStyler;
 

@@ -19,5 +19,7 @@ public interface IRegionAreaStyler<T> {
 
     int getMaxRegionLevelToShow();
 
+    boolean isLabelVisible(Region<T> region);
+
 //    void setMaxRegionLevelToShow(int maxRegionLevelToShow);
 }

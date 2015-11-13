@@ -1,5 +1,6 @@
 package mapvis.Impl;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -24,8 +25,9 @@ public class RandomRegionColorStyler<T> extends RegionStylerBase<T> {
 
     public RandomRegionColorStyler(ObjectProperty<Tree2<T>> tree, ObjectProperty<Color> background,
                                    DoubleProperty maxBorderLevelToShow, DoubleProperty maxRegionLevelToShow,
+                                   DoubleProperty labelLevelToShow, BooleanProperty showLabels,
                                    int seed) {
-        super(tree, maxBorderLevelToShow, maxRegionLevelToShow);
+        super(tree, maxBorderLevelToShow, maxRegionLevelToShow, labelLevelToShow, showLabels);
         this.background = background;
         this.rand = new Random(seed);
         rec(tree.get().getRoot());
