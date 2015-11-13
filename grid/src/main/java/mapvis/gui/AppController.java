@@ -55,6 +55,7 @@ public class AppController implements Initializable {
                 );
             }
             private RandomRegionColorStyler<INode> randomRegionStyler;
+            private RampRegionColorStyler<INode> rampRegionStyler;
             @Override
             protected Object computeValue() {
                 System.out.println("requesting styler");
@@ -63,48 +64,37 @@ public class AppController implements Initializable {
                 if (grid.get() == null)
                     grid.set(new HashMapGrid<>());
 
-                if(randomRegionStyler == null){
-                    randomRegionStyler = new RandomRegionColorStyler<>(
-                            tree, chartController.colorPicker.valueProperty(),
-                            chartController.bordersLevelsToShowSlider.valueProperty(),
-                            chartController.levelsToShowSlider.valueProperty(),
-                            chartController.labelLevelsToShowSlider.valueProperty(),
-                            chartController.showLabelsCheckBox.selectedProperty(),
-                            1);
-                }
-                return randomRegionStyler;
+                String s = chartController.colorschemeProperty().get();
 
-//                String s = chartController.colorschemeProperty().get();
-//                if (s == null) s = "random";
-//
-//                if (s.equals("random")){
-//                    if(randomStyler == null){
-//                        randomStyler = new RandomColorStyler<>(tree.get(), grid.get(),
-//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-//                                chartController.colorPicker.valueProperty().get(),
-//                                1);
-//                    }else{
-//                        randomStyler.resetStyler(tree.get(), grid.get(),
-//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-//                                chartController.colorPicker.valueProperty().get(),
-//                                1);
-//                    }
-//                    return randomStyler;
-//                }
-//
-//                if (s.equals("ramp")){
-//                    if(rampColorStyler == null){
-//                        rampColorStyler = new RampColorStyler<>(tree.get(), grid.get(),
-//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-//                                chartController.colorPicker.valueProperty().get());
-//                    }else{
-//                        rampColorStyler.resetStyler(tree.get(), grid.get(),
-//                                (int) chartController.levelsToShowSlider.valueProperty().get(),
-//                                chartController.colorPicker.valueProperty().get());
-//                    }
-//                    return rampColorStyler;
-//                }
-//                throw new RuntimeException();
+                if (s == null) s = "random";
+
+                if (s.equals("random")){
+                    if(randomRegionStyler == null){
+                        randomRegionStyler = new RandomRegionColorStyler<>(
+                                tree, chartController.colorPicker.valueProperty(),
+                                chartController.bordersLevelsToShowSlider.valueProperty(),
+                                chartController.levelsToShowSlider.valueProperty(),
+                                chartController.labelLevelsToShowSlider.valueProperty(),
+                                chartController.showLabelsCheckBox.selectedProperty(),
+                                1);
+                    }
+                    return randomRegionStyler;
+                }
+
+                if (s.equals("ramp")){
+                    if(rampRegionStyler == null){
+                        rampRegionStyler = new RampRegionColorStyler<>(
+                                tree, chartController.colorPicker.valueProperty(),
+                                chartController.bordersLevelsToShowSlider.valueProperty(),
+                                chartController.levelsToShowSlider.valueProperty(),
+                                chartController.labelLevelsToShowSlider.valueProperty(),
+                                chartController.showLabelsCheckBox.selectedProperty(),
+                                1);
+                    }
+                    return rampRegionStyler;
+                }
+
+                throw new RuntimeException();
             }
         };
 
