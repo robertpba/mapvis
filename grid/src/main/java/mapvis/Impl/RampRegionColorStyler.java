@@ -18,8 +18,6 @@ import java.util.Random;
  */
 public class RampRegionColorStyler<T> extends RegionStylerBase<T> {
     public int depth;
-    private Map<T, Color> map = new HashMap<>();
-    private Random rand;
     private ObjectProperty<Color> background;
 
     public RampRegionColorStyler(ObjectProperty<Tree2<T>> tree, ObjectProperty<Color> background,
@@ -28,35 +26,8 @@ public class RampRegionColorStyler<T> extends RegionStylerBase<T> {
                                    int seed) {
         super(tree, maxBorderLevelToShow, maxRegionLevelToShow, labelLevelToShow, showLabels);
         this.background = background;
-        this.rand = new Random(seed);
-        rec(tree.get().getRoot());
-        this.tree.addListener((observable, oldValue, newValue) -> rec(tree.get().getRoot()));
     }
 
-    private void rec(T node){
-        if (node == null)
-            return;
-
-//        Color color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1.0);
-        int level = getMaxRegionLevelToShow();
-        double upper = (6 - level) * 100;
-        double lower = 0;
-        double x = tree.get().getWeight(node);
-        x = Math.max(lower, x);
-        x = Math.min(x, upper);
-
-        x = (x - lower) / (upper - lower);
-
-        Color color = Color.color(x, 0.0, 0.0);
-
-        map.put(node, color);
-
-        for (T child : tree.get().getChildren(node)) {
-            rec(child);
-        }
-
-        depth = Math.max(tree.get().getDepth(node), depth);
-    }
 
     @Override
     public Color getColor(Region<T> region) {
@@ -68,17 +39,29 @@ public class RampRegionColorStyler<T> extends RegionStylerBase<T> {
 
             return getColorByValue(pathToNode.get(indexOfParentWithMaxLevelToShow));
         }
-        return super.getColor(region);
+        return getColorByValue(region.getNodeItem());
     }
 
     @Override
-    public Color getColorByValue(T v) {
-        return map.get(v);
+    public Color getColorByValue(T node) {
+        int level = maxRegionLevelToShow.intValue();
+
+        double upper = (6 - level) * 100;
+        double lower = 0;
+        double x = tree.get().getWeight(node);
+        x = Math.max(lower, x);
+        x = Math.min(x, upper);
+
+        x = (x - lower) / (upper - lower);
+
+        Color color = Color.color(x, 0.0, 0.0);
+
+        return color;
     }
 
     @Override
     public double getBorderWidthByLevel(int l) {
-        return  Math.pow(depth + 1 - l, 1.2)/2.0;
+        return Math.pow(depth + 1 - l, 1.2)/2.0;
     }
 
     @Override
