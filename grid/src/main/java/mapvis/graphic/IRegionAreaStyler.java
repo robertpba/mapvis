@@ -8,12 +8,11 @@ import mapvis.models.Region;
  */
 public interface IRegionAreaStyler<T> {
 
-//    boolean hasRegionVisibleChildren(Region<T> region);
     boolean isRegionVisible(Region<T> region);
-    Color getColor(Region<T> region);
-    Color getBackground();
 
-//    void setMaxBorderLevelToShow(int maxBorderLevelToShow);
+    Color getColor(Region<T> region);
+
+    Color getBackground();
 
     int getMaxBorderLevelToShow();
 
@@ -21,5 +20,8 @@ public interface IRegionAreaStyler<T> {
 
     boolean isLabelVisible(Region<T> region);
 
-//    void setMaxRegionLevelToShow(int maxRegionLevelToShow);
+    int getMaxLabelLevelToShow();
+
+    boolean getShowLabels();
+
 }

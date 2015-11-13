@@ -23,13 +23,27 @@
                         <FlowPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                             <children>
                         <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" />
-                                <Slider fx:id="levelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxBorders" />
-                                <Slider fx:id="bordersLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLabels" />
-                                <Slider fx:id="labelLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+                            <GridPane prefHeight="90.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <Slider fx:id="levelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
 
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxBorders" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <Slider fx:id="bordersLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="1" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLabels" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <Slider fx:id="labelLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" />
+                            </children>
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="182.0" minWidth="10.0" prefWidth="86.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="287.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                            </GridPane>
                                 <CheckBox fx:id="showLabelsCheckBox" mnemonicParsing="false" text="Show Labels"/>
                         <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
                            <toggleGroup>

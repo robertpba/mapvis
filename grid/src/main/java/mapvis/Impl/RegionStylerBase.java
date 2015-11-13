@@ -54,18 +54,6 @@ public class RegionStylerBase<T> implements IRegionStyler<T> {
         return Color.RED;
     }
 
-//    public Tree2<T> getTree() {
-//        return tree;
-//    }
-//
-//    public void setTree(Tree2<T> tree) {
-//        this.tree = tree;
-//    }
-//
-//    void resetStyler(Tree2<T> tree){
-//        this.tree = tree;
-//    }
-
     public double getBorderWidthByLevel(int l){
         return (4.0 - l)*(4.0 - l)/2;
     }
@@ -85,11 +73,6 @@ public class RegionStylerBase<T> implements IRegionStyler<T> {
         return Color.BLACK;
     }
 
-//    @Override
-//    public void setMaxBorderLevelToShow(int maxBorderLevelToShow) {
-//        this.maxBorderLevelToShow = maxBorderLevelToShow;
-//    }
-
     @Override
     public int getMaxBorderLevelToShow() {
         return maxBorderLevelToShow.intValue();
@@ -106,12 +89,6 @@ public class RegionStylerBase<T> implements IRegionStyler<T> {
             return true;
         return false;
     }
-
-//    @Override
-//    public void setMaxRegionLevelToShow(int maxRegionLevelToShow) {
-//        this.maxRegionLevelToShow = maxRegionLevelToShow;
-//    }
-
 
     public Tree2<T> getTree() {
         return tree.get();

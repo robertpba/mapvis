@@ -37,19 +37,14 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
 
 
     public boolean hasRegionChildrenWithAreasOrBordersToShow(Region<T> region) {
-//        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
-
         return region.getLevel() < maxLevelToCollect;
     }
 
     public boolean hasRegionAreasOrBordersToShow(Region<T> region) {
-//        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
-
         return (region.isLeaf() && region.getLevel() < maxLevelToCollect ) || (region.getLevel() == maxLevelToCollect);
     }
 
     private boolean hasBorderElementsToShow(Border<T> border) {
-//        int maxLevel = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
         return border.getLevel() <= maxLevelToCollect;
     }
 
