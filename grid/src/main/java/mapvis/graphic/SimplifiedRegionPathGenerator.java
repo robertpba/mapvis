@@ -9,17 +9,19 @@ import mapvis.models.LeafRegion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimplyfiedRegionPathGenerator implements IRegionPathGenerator {
+public class SimplifiedRegionPathGenerator implements IRegionPathGenerator {
     private final GraphicsContext graphicsContext;
+    private final float tolerance;
+    private final boolean useHighQuality;
 
-    public SimplyfiedRegionPathGenerator(GraphicsContext graphicsContext) {
+    public SimplifiedRegionPathGenerator(GraphicsContext graphicsContext, float tolerance, boolean useHighQuality) {
+        this.tolerance = tolerance;
+        this.useHighQuality = useHighQuality;
         this.graphicsContext = graphicsContext;
     }
 
-    public List<Point2D[]> drawRegionPaths(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
-        List<Point2D[]> simplyfiedShape = new ArrayList<>();
-
-//        boolean firstDraw = true;
+    public List<Point2D[]> generatePathForBoundaryShape(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
+        List<Point2D[]> simplifiedShape = new ArrayList<>();
         for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
             List<Point2D> shapePoints = new ArrayList<Point2D>();
 
@@ -28,14 +30,13 @@ public class SimplyfiedRegionPathGenerator implements IRegionPathGenerator {
                 double yValue = partialRegionBoundary.getYValueAtIndex(i);
 
                 shapePoints.add(new Point2D(xValue, yValue));
-//                firstDraw = addPathPoint(shapePoints, firstDraw, partialRegionBoundary, i);
             }
 
             Point2D[] point2Ds = simplifyPoints(shapePoints);
-            simplyfiedShape.add(point2Ds);
+            simplifiedShape.add(point2Ds);
         }
 
-        return simplyfiedShape;
+        return simplifiedShape;
     }
 
 
@@ -51,25 +52,8 @@ public class SimplyfiedRegionPathGenerator implements IRegionPathGenerator {
                 return point.getY();
             }
         });
-        float tolerance = 4.5f;
-        boolean qualityHigh = false;
-        return simplify.simplify(points.toArray(new Point2D[points.size()]), tolerance, qualityHigh);
+
+        return simplify.simplify(points.toArray(new Point2D[points.size()]), tolerance, useHighQuality);
     }
 
-
-    private void drawSimplifiedPoints(List<Point2D[]> point2Ds) {
-        boolean firstDraw = true;
-
-        for (Point2D[] point2DArray : point2Ds) {
-            for (Point2D point : point2DArray) {
-                if (firstDraw) {
-                    graphicsContext.moveTo(point.getX(), point.getY());
-                    firstDraw = false;
-                } else {
-                    graphicsContext.lineTo(point.getX(), point.getY());
-                }
-            }
-
-        }
-    }
 }

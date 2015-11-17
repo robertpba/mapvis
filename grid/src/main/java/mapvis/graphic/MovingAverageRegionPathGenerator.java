@@ -2,7 +2,6 @@ package mapvis.graphic;
 
 import javafx.geometry.Point2D;
 import mapvis.models.LeafRegion;
-import mapvis.models.Region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +10,14 @@ import java.util.List;
  * Created by dacc on 11/16/2015.
  */
 public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
-    private int averWindowSize;
+    private int averageWindowSize;
 
-    public MovingAverageRegionPathGenerator(int averWindowSize){
-        this.averWindowSize = averWindowSize;
+    public MovingAverageRegionPathGenerator(int avergeWindowSize){
+        this.averageWindowSize = avergeWindowSize;
     }
 
     @Override
-    public List<Point2D[]> drawRegionPaths(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
         List<Point2D[]> result = new ArrayList<>();
 
         for (int shapeIndex = 0; shapeIndex < regionBoundaryShape.size(); shapeIndex++) {
@@ -38,7 +37,7 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
                     numOfValues++;
                 }
                 Point2D avgPoint = new Point2D(sumXValues / numOfValues, sumYValues / numOfValues);
-                avgPartOfShape[boundaryShape.getShapeLength() - 1] = new Point2D(0, 0);
+//                avgPartOfShape[boundaryShape.getShapeLength() - 1] = new Point2D(0, 0);
                 if(boundaryStep == 0 && shapeIndex != 0){
                     Point2D[] prevShape = result.get(shapeIndex - 1);
                     prevShape[prevShape.length - 1] = avgPoint;
@@ -53,7 +52,6 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
         Point2D[] firstSec = result.get(0);
         Point2D[] lastSec = result.get(result.size() - 1);
         lastSec[lastSec.length - 1] = firstSec[0];
-
 
         return result;
     }

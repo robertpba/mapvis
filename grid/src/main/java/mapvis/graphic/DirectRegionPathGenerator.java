@@ -18,7 +18,7 @@ public class DirectRegionPathGenerator implements IRegionPathGenerator {
     }
 
     @Override
-    public List<Point2D[]> drawRegionPaths(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
         List<Point2D[]> shapePoints = new ArrayList<>();
         for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
             Point2D[] partialShapPoints = new Point2D[partialRegionBoundary.getShapeLength()];
@@ -29,19 +29,4 @@ public class DirectRegionPathGenerator implements IRegionPathGenerator {
         }
         return shapePoints;
     }
-//
-//    private boolean drawPath(boolean firstDraw, LeafRegion.BoundaryShape partialRegionBoundary, int i) {
-//        double xValue = partialRegionBoundary.xValues[i];
-//        double yValue = partialRegionBoundary.yValues[i];
-//
-//        if (firstDraw) {
-//            graphicsContext.moveTo(xValue, yValue);
-//            firstDraw = false;
-//        } else {
-//            graphicsContext.lineTo(xValue, yValue);
-//        }
-//        return firstDraw;
-//    }
-
-
 }
