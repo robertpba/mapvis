@@ -51,8 +51,8 @@ public class LeafRegion<T> extends Region<T> {
 
     public static class BoundaryShape<T>{
         public Border<T> border;
-        public double[] xValues;
-        public double[] yValues;
+        private double[] xValues;
+        private  double[] yValues;
         public List<String> text;
         public int level;
         public boolean renderColored;
@@ -68,6 +68,11 @@ public class LeafRegion<T> extends Region<T> {
             this.color = Color.TRANSPARENT;
             this.coordinateNeedToBeReversed = false;
         }
+
+        public int getShapeLength(){
+            return xValues.length;
+        }
+
         public Point2D getStartPoint(){
             if(xValues.length > 0)
                 return new Point2D(xValues[0], yValues[0]);
@@ -78,6 +83,30 @@ public class LeafRegion<T> extends Region<T> {
             if(xValues.length > 0)
                 return new Point2D(xValues[xValues.length - 1], yValues[xValues.length - 1]);
             return new Point2D(0, 0);
+        }
+
+        public double getXValueAtIndex(int index){
+            if(coordinateNeedToBeReversed){
+                return xValues[xValues.length - 1 - index];
+            }else{
+                return xValues[index];
+            }
+        }
+
+        public double getYValueAtIndex(int index){
+            if(coordinateNeedToBeReversed){
+                return yValues[yValues.length - 1 - index];
+            }else{
+                return yValues[index];
+            }
+        }
+
+        public double[] getxValues() {
+            return xValues;
+        }
+
+        public double[] getyValues() {
+            return yValues;
         }
 
         @Override

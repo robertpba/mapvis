@@ -3,6 +3,7 @@ package mapvis.graphic;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.StrokeLineJoin;
 import mapvis.common.datatype.INode;
 import mapvis.models.LeafRegion;
 
@@ -34,13 +35,13 @@ public class RegionBorderRenderer {
     public void drawBorder(IRegionStyler<INode> styler, List<List<LeafRegion.BoundaryShape>> regionBorders, HexagonalTilingView view) {
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
-
+//        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
         for (List<LeafRegion.BoundaryShape> regionParts : regionBorders) {
             for (LeafRegion.BoundaryShape regionPart : regionParts) {
                 if ( !isSingleSideBorderRenderingEnabled  || regionPart.border.getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.border)){
                         graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.border));
-                        graphicsContext.strokePolyline(regionPart.xValues, regionPart.yValues, regionPart.xValues.length);
+                        graphicsContext.strokePolyline(regionPart.getxValues(), regionPart.getyValues(), regionPart.getShapeLength());
                         drawIndex++;
                     }
                 }

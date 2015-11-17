@@ -59,9 +59,9 @@ public class RegionLabelRenderer {
                 continue;
 
             for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
-                for (int i = 0; i < partialRegionBoundary.xValues.length; i++) {
-                    double xValue = partialRegionBoundary.xValues[i];
-                    double yValue = partialRegionBoundary.yValues[i];
+                for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
+                    double xValue = partialRegionBoundary.getXValueAtIndex(i);
+                    double yValue = partialRegionBoundary.getYValueAtIndex(i);
                     sumXValues += xValue;
                     sumYValues += yValue;
                     numOfCoords++;

@@ -15,5 +15,6 @@ dependencies {
     compile 'org.apache.xmlgraphics:batik-svggen:1.7'
     compile 'org.apache.xmlgraphics:batik-dom:1.7'
     compile 'org.apache.xmlgraphics:batik-swing:1.7'
+    compile 'com.goebl:simplify:1.0.0'
 
 }
