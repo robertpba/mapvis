@@ -19,6 +19,7 @@ public class BorderCreator<T> {
     private Map<Point2D, Tuple2<Pos, Dir>> borderStartPointToGridCoordinates;
 
     private Point2D startPoint = null;
+    private Point2D endPoint = null;
     private Point2D initialPoint = null;
     private Pos lastPos = null;
 
@@ -86,12 +87,11 @@ public class BorderCreator<T> {
         //iterate through the each of the edges defining the border of a region
         //use the start to endpoint hash maps to find the next edge
         for(int i = 0; i < keySetSize; i++){
-            Point2D endPoint = null;
 
             if(i == 0){
                 //initialize with new start point
-                endPoint = findBeginningBorderChange();
-                initialPoint = startPoint;
+                reinitializeAtBorderChangeStartPoint();
+
                 //remove passed start point to detect circles
                 startToEndPointOfTileBorderEdges.remove(startPoint);
             }else{
@@ -110,9 +110,8 @@ public class BorderCreator<T> {
                 //reinitialize with next point to continue with next border if there
                 //are any left; start at a position where the level of one border changes
                 currBorderCoordinates = new ArrayList<>();
-                endPoint = findBeginningBorderChange();
+                reinitializeAtBorderChangeStartPoint();
                 prevStartPoint = null;
-                initialPoint = startPoint;
                 startToEndPointOfTileBorderEdges.remove(startPoint);
             }
 
@@ -130,7 +129,7 @@ public class BorderCreator<T> {
                 appendBorderStepToBorderCollectionAtPos(currBorderCoordinates, startPoint);
             }
 
-            //endpoint of current edge is the new start point;
+            //continue processing along border edge at current end point
             prevStartPoint = startPoint;
             startPoint = endPoint;
         }
@@ -144,9 +143,10 @@ public class BorderCreator<T> {
         createBorderAndAddtoLeaveRegion(currBorderCoordinates);
     }
 
-    private Point2D findBeginningBorderChange(){
+    private void reinitializeAtBorderChangeStartPoint(){
         startPoint = findStartPointAtBorderChange();
-        return startToEndPointOfTileBorderEdges.get(startPoint);
+        endPoint = startToEndPointOfTileBorderEdges.get(startPoint);
+        initialPoint = startPoint;
     }
 
     /**
