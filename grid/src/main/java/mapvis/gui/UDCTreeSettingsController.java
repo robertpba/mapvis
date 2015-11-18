@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
  */
 public class UDCTreeSettingsController implements Initializable, IDatasetGeneratorController {
 
+    public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";
+    
     @FXML
     private CheckBox dumpToFileCheckbox;
 
@@ -50,7 +52,7 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
 
     @Override
     public MPTreeImp<INode> generateTree(ActionEvent event) {
-        parser.configure("D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf");
+        parser.initialize(UDC_FILE_PATH);
         INode udcNodes = parser.generateUDCCathegories();
         treeGenerator.setRootNode(udcNodes);
         INode connectedUDCTree = treeGenerator.genTree();

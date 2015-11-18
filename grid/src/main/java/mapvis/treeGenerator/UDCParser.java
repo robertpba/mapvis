@@ -19,12 +19,17 @@ import java.util.List;
 
 /**
  * Created by dacc on 10/22/2015.
+ * This class is used to parse the UDC Summary Linked Data
+ * to create a tree of INodes. The UDC Summary Linked Data
+ * is available on http://www.udcdata.info/.
  */
 public class UDCParser {
+
     private String path;
     private List<INode> UDCRootNodes;
     private HashMap<String, List<INode>> parentToSubnode;
     private INode rootNode;
+    private boolean showEntireUDC = true;
 
     public UDCParser() {
         this.path = null;
@@ -32,7 +37,7 @@ public class UDCParser {
         this.parentToSubnode = new HashMap<>();
     }
 
-    public void configure(String path){
+    public void initialize(String path){
         this.UDCRootNodes.clear();
         this.parentToSubnode.clear();
         this.path = path;
@@ -40,12 +45,19 @@ public class UDCParser {
     }
 
     public INode generateUDCCathegories(){
+        if(path == null)
+            return new Node("0", "empty Path");
+
         if(this.rootNode == null) {
             try {
                 readUDC();
-                resolveCathegoryToChildrenRelations();
+                resolveCategoryToChildrenRelations();
             } catch (ParserConfigurationException e) {
-                e.printStackTrace();
+                System.out.println("UDC Summary Parsing failed (ParserConfig): " + e.getMessage());
+            } catch (SAXException e) {
+                System.out.println("UDC Summary Parsing failed (SAX): " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("UDC Summary Parsing failed (IO): " + e.getMessage());
             }
         }
         return rootNode;
@@ -53,16 +65,20 @@ public class UDCParser {
 
 
     private void setChildrenOfNode(INode node){
+        //query children of parent node
         List<INode> children = parentToSubnode.get(node.getId());
         if(children == null)
-            return;
+            return; //leaf
+
+        //process children
         node.setChildren(children);
         children.forEach(childNode -> setChildrenOfNode(childNode));
     }
 
-    private void resolveCathegoryToChildrenRelations() {
-        boolean showEntireUDC = true;
+    private void resolveCategoryToChildrenRelations() {
+
         if(showEntireUDC) {
+            //UDC Summary contains AUXILIARY TABLES and MAIN TABLES
             Node udcNode = new Node("-", "UDC");
             int sizeUDCNode = 0;
             for (INode rootNode : UDCRootNodes) {
@@ -76,6 +92,7 @@ public class UDCParser {
             }
             rootNode = udcNode;
         }else{
+            //create Tree only containing MAIN TABLES of UDC Summary
             INode mainTableRootNode = null;
             for(INode rootNode: UDCRootNodes){
                 if("MAIN TABLES".equals(rootNode.getLabel())){
@@ -86,43 +103,45 @@ public class UDCParser {
             if(mainTableRootNode == null)
                 return;
 
-            List<INode> firstOrderCathegories = parentToSubnode.get(mainTableRootNode.getId());
-            firstOrderCathegories.stream().forEach(node -> {
+            //recursively set children
+            List<INode> firstOrderCategories = parentToSubnode.get(mainTableRootNode.getId());
+            firstOrderCategories.stream().forEach(node -> {
                 setChildrenOfNode(node);
             });
-            mainTableRootNode.setChildren(firstOrderCathegories);
-            rootNode = mainTableRootNode;
 
+            mainTableRootNode.setChildren(firstOrderCategories);
+            rootNode = mainTableRootNode;
         }
     }
 
-    private void readUDC() throws ParserConfigurationException {
+    /**
+     * Parses the UDC Linked Data Summary at the specified path and
+     * stores the parent to child mapping in parentToSubnode;
+     * UDC RootNodes are stored in UDCRootNodes
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
+    private void readUDC() throws ParserConfigurationException, IOException, SAXException {
+        //Create DOM parser to read to parse the XML
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
-        try {
-//            FileInputStream in = new FileInputStream(new File("D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf"));
-            FileInputStream in = new FileInputStream(new File(path));
-            Document doc = db.parse(in, "UTF-8");
-            NodeList nList = doc.getElementsByTagName("skos:Concept");
+        FileInputStream in = new FileInputStream(new File(path));
+        Document doc = db.parse(in, "UTF-8");
 
-            System.out.println("----------------------------");
+        //query first oder hierarchy
+        NodeList nList = doc.getElementsByTagName("skos:Concept");
 
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                org.w3c.dom.Node nNode = nList.item(temp);
-                if (nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    processConceptNode(eElement);
-
-                }
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            org.w3c.dom.Node nNode = nList.item(temp);
+            //process each concept
+            if (nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                processConceptNode(eElement);
             }
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
-    static int processedConceptNodes = 0;
 
     private void processConceptNode(Element conceptNode)  {
         NodeList childNodes = conceptNode.getChildNodes();
@@ -131,6 +150,7 @@ public class UDCParser {
         String englishLabel = "";
 
         for (int conceptNodeChildIndex = 0; conceptNodeChildIndex < childNodes.getLength(); conceptNodeChildIndex++) {
+            //process XML attributes to set parentNode (skos:broader) and label (skos:prefLabel)
             if(childNodes.item(conceptNodeChildIndex).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE){
                 Element conceptNodeElement = (Element) childNodes.item(conceptNodeChildIndex);
                 switch (conceptNodeElement.getNodeName()){
@@ -138,30 +158,28 @@ public class UDCParser {
                         parentNodeID = conceptNodeElement.getAttribute("rdf:resource");
                         break;
                     case "skos:prefLabel":
+                        //select english description label
                         if( conceptNodeElement.getAttribute("xml:lang").equals("en")){
                             englishLabel = conceptNodeElement.getTextContent();
                         }
                         break;
-
                 }
             }
         }
+
         Node node = new Node(conceptName, englishLabel);
         if(parentNodeID.isEmpty()){
+            //no parent node => one of the two UDC root nodes found
             UDCRootNodes.add(node);
         }else{
+            //store parent of node in HashMap to reconstruct the tree afterwards
             List<INode> treeNodeList = parentToSubnode.get(parentNodeID);
             if(treeNodeList == null){
+                //entry for parent does not yet exist
                 treeNodeList = new ArrayList<INode>();
                 parentToSubnode.put(parentNodeID, treeNodeList);
             }
             treeNodeList.add(node);
         }
-//        try {
-//            csvWriter.write(conceptName  + "," + parentNodeID + "," + englishLabel + "\n");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("Concept: " + conceptName + " Parent: " + parentNodeID + " Label: " + englishLabel);
     }
 }
