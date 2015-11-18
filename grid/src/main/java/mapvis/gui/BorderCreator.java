@@ -1,12 +1,8 @@
 package mapvis.gui;
 
 import javafx.geometry.Point2D;
-import mapvis.Impl.RandomColorStyler;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
-import mapvis.graphic.HexagonalTilingView;
-import mapvis.graphic.RegionRenderer;
 import mapvis.models.*;
 
 import java.util.*;
@@ -40,36 +36,29 @@ public class BorderCreator<T> {
         this.point2DToBorderAbstrBorder = new HashMap<>();
     }
 
-    private void createStartPointToEndPointMapping(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw) {
-        for (Tuple2<Tile<T>, List<Dir>> leafTile : tileAndDirectionsToDraw) {
-            int x = leafTile.first.getX();
-            int y = leafTile.first.getY();
+    private void createStartPointToEndPointMapping(List<GridCoordinateCollection> tileAndDirectionsToDraw) {
+        for (GridCoordinateCollection borderCoordinates : tileAndDirectionsToDraw) {
 
-            Point2D point2D = HexagonalTilingView.hexagonalToPlain(x, y);
+            for (Dir direction : borderCoordinates.getDirections()) {
 
-            for (Dir direction : leafTile.second) {
+                Point2D startPoint = GridCoordinateCollection.calcStartPointForBorderEdge(borderCoordinates.getTilePos(), direction);
+                Point2D endPoint = GridCoordinateCollection.calcEndPointForBorderEdge(borderCoordinates.getTilePos(), direction);
 
-                int[] pointIndices = LeafRegion.DIR_TO_POINTS[direction.ordinal()];
-                double xStart = LeafRegion.POINTS[pointIndices[0]] + point2D.getX();
-                double xEnd = LeafRegion.POINTS[pointIndices[2]] + point2D.getX();
-                double yStart = LeafRegion.POINTS[pointIndices[1]] + point2D.getY();
-                double yEnd = LeafRegion.POINTS[pointIndices[3]] + point2D.getY();
-
-                Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xStart, yStart));
-                Point2D endPoint = LeafRegion.roundToCoordinatesTo4Digits(new Point2D(xEnd, yEnd));
+                startPoint = LeafRegion.roundToCoordinatesTo4Digits(startPoint);
+                endPoint = LeafRegion.roundToCoordinatesTo4Digits(endPoint);
 
                 startToEnd.put(startPoint, endPoint);
-                point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(leafTile.first.getPos(), direction));
+                point2DToBorderAbstrBorder.put(startPoint, new Tuple2<>(borderCoordinates.getTilePos(), direction));
             }
         }
     }
 
-    public void orderBordersOfLeaves(List<Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>>> leafRegionsToBorders){
-        for (Tuple2<LeafRegion, List<Tuple2<Tile<T>, List<Dir>>>> leafRegionListEntry : leafRegionsToBorders) {
-            if(leafRegionListEntry.second.size() == 0){
+    public void orderBordersOfLeaves(List<List<GridCoordinateCollection>> leafRegionsToBorders){
+        for (List<GridCoordinateCollection> leafRegionBoundaryCoordinates : leafRegionsToBorders) {
+            if(leafRegionBoundaryCoordinates.size() == 0){
                 continue;
             }
-            orderBorders(leafRegionListEntry.second);
+            orderBorders(leafRegionBoundaryCoordinates);
         }
     }
 
@@ -111,15 +100,14 @@ public class BorderCreator<T> {
         return false;
     }
 
-    private void orderBorders(List<Tuple2<Tile<T>, List<Dir>>> tileAndDirectionsToDraw){
+    private void orderBorders(List<GridCoordinateCollection> borderCoordinates){
         initializeHashMaps();
-        createStartPointToEndPointMapping(tileAndDirectionsToDraw);
-//        System.out.println("Order Borders");
+        createStartPointToEndPointMapping(borderCoordinates);
+
         int keySetSize = startToEnd.keySet().size();
-        boolean circleDetected = false;
-        List<Border.BorderItem> borderItems = new ArrayList<>();
+        List<GridCoordinateCollection> currBorderCoordinates = new ArrayList<>();
         Point2D prevStartPoint = null;
-//        List<Point2D> startPoints = new ArrayList<>();
+
         for(int i = 0; i < keySetSize; i++){
             Point2D endPoint = null;
 
@@ -133,19 +121,13 @@ public class BorderCreator<T> {
                 endPoint = startToEnd.get(startPoint);
                 startToEnd.remove(startPoint);
             }
-            checkPoint(startPoint);
-            checkPoint(endPoint);
-
             if( circleDetected() && i != 0 ){
-                circleDetected = true;
                 //circle detected => close circular boundary
-//                startPoints.add(initialPoint);
-//                startPoints.add(new Point2D(0, 0));
-                appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
+                appendBorderStepToBorderCollectionAtPos(currBorderCoordinates, initialPoint);
 
-                createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
+                createBorderAndAddtoLeaves(currBorderCoordinates, getBorderLevelAtPosition(prevStartPoint));
                 System.out.println("BorderCreator: Circle in iteration: " + i + "/" + keySetSize);
-                borderItems = new ArrayList<>();
+                currBorderCoordinates = new ArrayList<>();
 
                 //reinitialize with next point to continue with next boundaries if there
                 //are any left
@@ -157,89 +139,52 @@ public class BorderCreator<T> {
             }
 
            if(isBorderChangeRequired(prevStartPoint, startPoint)){
-//               startPoints.add(startPoint);
-//               startPoints.add(new Point2D(0, 0));
-               appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
-               createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
-               borderItems = new ArrayList<>();
+               appendBorderStepToBorderCollectionAtPos(currBorderCoordinates, startPoint);
+               createBorderAndAddtoLeaves(currBorderCoordinates, getBorderLevelAtPosition(prevStartPoint));
+               currBorderCoordinates = new ArrayList<>();
 
-//               startPoints.add(startPoint);
-               appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
+               appendBorderStepToBorderCollectionAtPos(currBorderCoordinates, startPoint);
            }else{
-//               startPoints.add(startPoint);
-               appendBorderStepToBorderItemListToStartingAtPos(borderItems, startPoint);
+               appendBorderStepToBorderCollectionAtPos(currBorderCoordinates, startPoint);
            }
-            checkPoint(startPoint);
-            checkPoint(endPoint);
             prevStartPoint = startPoint;
             startPoint = endPoint;
         }
 
         if(circleDetected()){
-            checkPoint(startPoint);
-
-            appendBorderStepToBorderItemListToStartingAtPos(borderItems, initialPoint);
-//            borderItems = new ArrayList<>();
-//            startPoints.add(initialPoint);
+            appendBorderStepToBorderCollectionAtPos(currBorderCoordinates, initialPoint);
         }
-        checkPoint(startPoint);
 
-//        if(!circleDetected)
-//        if( !(initialPoint.getX() == 25 && initialPoint.getY() == 8.66 && prevStartPoint.getX() == 20.0 && prevStartPoint.getY() == 17.32) )
-            createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
-
-//        if(borderItems.size() > 0){
-//            createBorderAndAddtoLeaves(borderItems, getBorderLevelAtPosition(prevStartPoint));
-//        }
-
-//        List<Double> xValues = new ArrayList<>();
-//        List<Double> yValues = new ArrayList<>();
-//        startPoints.forEach(point2D ->  {
-//            xValues.add(point2D.getX());
-//            yValues.add(point2D.getY());
-//        });
-//        RegionRenderer.printCoordinates(xValues, yValues, "StartSjpe", "endSHape");
+        createBorderAndAddtoLeaves(currBorderCoordinates, getBorderLevelAtPosition(prevStartPoint));
     }
 
-    private void checkPoint(Point2D pointToCheck) {
-        if(pointToCheck != null && pointToCheck.getX() == 20.0 && pointToCheck.getY() == 0.0){
-            System.out.println();
-        }
-    }
+    private Border<T> createBorderAndAddtoLeaves(List<GridCoordinateCollection> borderCoordinates, int borderLevel) {
+        GridCoordinateCollection borderCoordinateColl = borderCoordinates.get(0);
+        Pos tilePos = borderCoordinateColl.getTilePos();
 
-    private Border<T> createBorderAndAddtoLeaves(List<Border.BorderItem> borderItems, int borderLevel) {
-        Tuple2<Pos, List<Dir>> borderItem = borderItems.get(0).borderItem;
-        Tile<T> innerNodeItem = grid.getTile(borderItem.first.getX(), borderItem.first.getY());
-        Tile<T> outerNodeItem = grid.getNeighbour(borderItem.first.getX(), borderItem.first.getY(), borderItem.second.get(0));
-        Border<T> tBorder = new Border<T>(borderItems, borderLevel);
+        Tile<T> innerNodeItem = grid.getTile(tilePos.getX(), tilePos.getY());
+        Tile<T> outerNodeItem = grid.getNeighbour(tilePos.getX(), tilePos.getY(), borderCoordinateColl.getDirections().get(0));
+
+        Border<T> tBorder = new Border<T>(borderCoordinates, borderLevel);
 
         T nodeA = null;
         T nodeB = null;
         if(innerNodeItem.getTag() == Tile.LAND){
             nodeA = innerNodeItem.getItem();
         }
+
         if(outerNodeItem.getTag() == Tile.LAND){
             nodeB = outerNodeItem.getItem();
         }
+
         tBorder.setNodes(nodeA, nodeB);
 
         if(innerNodeItem.getTag() == Tile.LAND){
             leafNodeToLeafRegionMap.get(innerNodeItem.getItem()).addBorder(tBorder);
-//            Node item = (Node) innerNodeItem.getItem();
-//            if( ((Node)nodeA).getId().equals("7")){
-//                System.out.printf("");
-//            }
-        }
-        if(outerNodeItem.getTag() == Tile.LAND){
-            leafNodeToLeafRegionMap.get(outerNodeItem.getItem()).addBorder(tBorder);
-//            Node item = (Node) outerNodeItem.getItem();
-//            if(((Node)nodeB).getId().equals("4")){
-//                System.out.printf("");
-//            }
         }
 
-        if(nodeA != null && nodeB != null && ((Node)tBorder.getNodeA()).getId().equals("7") && ((Node)tBorder.getNodeB()).getId().equals("4")){
-            System.out.printf("");
+        if(outerNodeItem.getTag() == Tile.LAND){
+            leafNodeToLeafRegionMap.get(outerNodeItem.getItem()).addBorder(tBorder);
         }
 
         return tBorder;
@@ -279,21 +224,21 @@ public class BorderCreator<T> {
         return level;
     }
 
-    private void appendBorderStepToBorderItemListToStartingAtPos(List<Border.BorderItem> borderItems, Point2D pointToAdd) {
-        Tuple2<Pos, Dir> abstrBorderItem = point2DToBorderAbstrBorder.get(pointToAdd);
-        addBorderPartToList(lastPos, borderItems, abstrBorderItem);
+    private void appendBorderStepToBorderCollectionAtPos(List<GridCoordinateCollection> borderCoordinates, Point2D pointToAdd) {
+        Tuple2<Pos, Dir> abstBorderPos = point2DToBorderAbstrBorder.get(pointToAdd);
+        addBorderPartToList(lastPos, borderCoordinates, abstBorderPos);
     }
 
 
-    private void addBorderPartToList(Pos lastPos, List<Border.BorderItem> borderItems, Tuple2<Pos, Dir> abstrBorderItem) {
-        if(borderItems.size() > 0 && borderItems.get(borderItems.size() - 1).borderItem.first.equals(abstrBorderItem.first)){
+    private void addBorderPartToList(Pos lastPos, List<GridCoordinateCollection> borderCoordinates, Tuple2<Pos, Dir> abstractPosition) {
+        if(borderCoordinates.size() > 0 && borderCoordinates.get(borderCoordinates.size() - 1).getTilePos().equals(abstractPosition.first)){
             //append to previous list
-            Tuple2<Pos, List<Dir>> borderItem = borderItems.get(borderItems.size() - 1).borderItem;
-            borderItem.second.add(abstrBorderItem.second);
+            GridCoordinateCollection gridCoordinateCollection = borderCoordinates.get(borderCoordinates.size() - 1);
+            gridCoordinateCollection.addDirection(abstractPosition.second);
         }else{
             List<Dir> dirList = new ArrayList<>();
-            dirList.add(abstrBorderItem.second);
-            borderItems.add(new Border.BorderItem(new Tuple2<>(abstrBorderItem.first, dirList)));
+            dirList.add(abstractPosition.second);
+            borderCoordinates.add(new GridCoordinateCollection(abstractPosition.first, dirList));
         }
     }
 }

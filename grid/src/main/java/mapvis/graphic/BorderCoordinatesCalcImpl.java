@@ -146,22 +146,19 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
 
         for (Border<T> border : leafRegion.getBorders()) {
 
-            if (border.getBorderItems().size() == 0) {
+            if (border.getBorderCoordinates().size() == 0) {
                 continue;
             }
             if(!hasBorderElementsToShow(border)) {
                 continue;
             }
 
-            for (Border.BorderItem borderItem : border.getBorderItems()) {
-
-                int x = borderItem.borderItem.first.getX();
-                int y = borderItem.borderItem.first.getY();
-
-                for (Dir direction : borderItem.borderItem.second) {
+            for (GridCoordinateCollection gridCoordinateCollection : border.getBorderCoordinates()) {
+                for (Dir direction : gridCoordinateCollection.getDirections()) {
 
                     Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(
-                            getPoint2DPointForBorderHexLocation(x, y, direction)
+                            GridCoordinateCollection.calcStartPointForBorderEdge(gridCoordinateCollection.getTilePos(),
+                                    direction)
                     );
 
                     xValues.add(startPoint.getX());
@@ -184,22 +181,6 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
         return result;
     }
 
-    public static Point2D getRoundedPoint2DPointForBorderHexLocation(Tuple2<Pos, Dir> abstractPos){
-        return getRoundedPoint2DPointForBorderHexLocation(abstractPos.first.getX(), abstractPos.first.getY(), abstractPos.second);
-    }
-
-    public static Point2D getRoundedPoint2DPointForBorderHexLocation(int x, int y, Dir direction){
-        return LeafRegion.roundToCoordinatesTo4Digits(getPoint2DPointForBorderHexLocation(x, y, direction));
-    }
-
-    public static Point2D getPoint2DPointForBorderHexLocation(int x, int y, Dir direction) {
-        int[] pointIndices = LeafRegion.DIR_TO_POINTS[direction.ordinal()];
-        Point2D point2D = HexagonalTilingView.hexagonalToPlain(x, y);
-        double xStart = LeafRegion.POINTS[pointIndices[0]] + point2D.getX();
-        double yStart = LeafRegion.POINTS[pointIndices[1]] + point2D.getY();
-
-        return new Point2D(xStart, yStart);
-    }
 
     @Override
     public void setRegion(Region region) {

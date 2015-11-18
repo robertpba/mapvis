@@ -20,7 +20,7 @@ public class RegionAreaRenderer {
     private final static float SIMPLIFICATION_TOLERANCE = 4.55f;
     private final static float BEZIER_CURVE_SMOOTHNESS = 0.3f;
 
-    private final static boolean USE_BEZIER_CURVE = true;
+    private final static boolean USE_BEZIER_CURVE = false;
 
     private final static boolean DRAW_ORIGINAL_SHAPE = false;
     private final static boolean FILL_SHAPE = true;
@@ -36,8 +36,8 @@ public class RegionAreaRenderer {
         this.graphicsContext = graphicsContext;
 
 //        this.regionBoundaryPointsGenerator = new SimplifiedRegionPathGenerator(graphicsContext, SIMPLIFICATION_TOLERANCE, USE_HIGH_QUALITY_SIMPLIFICATION);
-        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
-//        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
+//        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
+        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
         this.originalBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 

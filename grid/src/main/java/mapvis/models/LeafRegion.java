@@ -4,32 +4,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 import java.util.*;
-
-import static mapvis.graphic.BorderCoordinatesCalcImpl.getPoint2DPointForBorderHexLocation;
-import static mapvis.graphic.BorderCoordinatesCalcImpl.getRoundedPoint2DPointForBorderHexLocation;
-
 /**
  * Created by dacc on 10/26/2015.
  */
 public class LeafRegion<T> extends Region<T> {
-    public static final int[][] DIR_TO_POINTS = new int[][]{
-            new int[]{ 0,  1,  2,  3},
-            new int[]{10, 11,  0,  1},
-            new int[]{ 2,  3,  4,  5},
-            new int[]{ 8,  9, 10, 11},
-            new int[]{ 4,  5,  6, 7},
-            new int[]{ 6,  7,  8,  9},
-    };
-    static final double COS30 = Math.cos(Math.toRadians(30));
-    static final double sideLength = 10;
-    public static final double[] POINTS = new double[]{
-        - sideLength/2, - sideLength*COS30, //  0 - 1
-                sideLength/2, - sideLength*COS30,  // 5  c  2
-                sideLength,     0.0,               //  4 - 3
-                sideLength/2,   sideLength*COS30,
-                - sideLength/2,   sideLength*COS30,
-                - sideLength,     0.0
-    };
 
 
     private Set<Border<T>> borders;
@@ -128,7 +106,7 @@ public class LeafRegion<T> extends Region<T> {
     }
 
     public void addBorder(Border<T> border) {
-        if(border.getBorderItems().size() == 0 || border == null)
+        if(border.getBorderCoordinates().size() == 0 || border == null)
             return;
 
         for (Border<T> tBorder : this.borders) {
@@ -156,11 +134,12 @@ public class LeafRegion<T> extends Region<T> {
         if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
             return false;
 
-        Point2D newBorderStartPoint = getRoundedPoint2DPointForBorderHexLocation(newBorder.getStartPoint());
-        Point2D existingBorderStartPoint = getRoundedPoint2DPointForBorderHexLocation(existingBorder.getStartPoint());
+        Point2D newBorderStartPoint = LeafRegion.roundToCoordinatesTo4Digits(newBorder.getStartPoint());
+        Point2D existingBorderStartPoint = LeafRegion.roundToCoordinatesTo4Digits(existingBorder.getStartPoint());
 
-        Point2D newBorderLastPoint = getRoundedPoint2DPointForBorderHexLocation(newBorder.getLastPoint());
-        Point2D existingBorderLastPoint = getRoundedPoint2DPointForBorderHexLocation(existingBorder.getLastPoint());
+        Point2D newBorderLastPoint = LeafRegion.roundToCoordinatesTo4Digits(newBorder.getLastPoint());
+        Point2D existingBorderLastPoint = LeafRegion.roundToCoordinatesTo4Digits(existingBorder.getLastPoint());
+
         if(newBorderStartPoint.equals(existingBorderStartPoint) && newBorderLastPoint.equals(existingBorderLastPoint)
                 || newBorderStartPoint.equals(existingBorderLastPoint) && newBorderLastPoint.equals(existingBorderStartPoint)){
             if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))

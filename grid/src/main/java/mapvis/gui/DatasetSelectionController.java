@@ -101,9 +101,8 @@ public class DatasetSelectionController implements Initializable {
         logTextToInfoArea("generating map..");
         Region<INode> world = method1.get().Begin();
 
-        BorderCreator<INode> borderCreator = new BorderCreator<INode>(world, grid.get(), tree.get(), method1.get().getItemToRegioMap()
-        );
-        borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionToBoundaries());
+        BorderCreator<INode> borderCreator = new BorderCreator<>(world, grid.get(), tree.get(), method1.get().getItemToRegionMap());
+        borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionBoundaryCoordinates());
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);

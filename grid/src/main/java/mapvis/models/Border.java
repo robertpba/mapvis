@@ -1,5 +1,6 @@
 package mapvis.models;
 
+import javafx.geometry.Point2D;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.RegionBorderRenderer;
 
@@ -12,33 +13,28 @@ import java.util.List;
  */
 public class Border<T> {
 
-    public static class BorderItem{
-        public Tuple2<Pos, List<Dir>> borderItem;
-        public BorderItem(Tuple2<Pos, List<Dir>> borderItem) {
-            this.borderItem = borderItem;
-        }
-    }
-
     private int level;
     private int renderID;
-    private List<BorderItem> borderItems;
+
     private T nodeA;
     private T nodeB;
+
+    private List<GridCoordinateCollection> borderCoordinates;
 
     public Border() {
         this.level = -1;
         this.renderID = -1;
-        this.borderItems = new ArrayList<>();
+        this.borderCoordinates = new ArrayList<>();
     }
 
-    public Border(List<BorderItem> borderItems, int level) {
+    public Border(List<GridCoordinateCollection> borderCoordinates, int level) {
         this.renderID = -1;
         this.level = level;
-        this.borderItems = borderItems;
+        this.borderCoordinates = borderCoordinates;
     }
 
-    public List<BorderItem> getBorderItems() {
-        return Collections.unmodifiableList(borderItems);
+    public List<GridCoordinateCollection> getBorderCoordinates() {
+        return Collections.unmodifiableList(borderCoordinates);
     }
 
     public T getNodeA() {
@@ -88,24 +84,29 @@ public class Border<T> {
         this.renderID = renderID;
     }
 
-    public Tuple2<Pos, Dir> getStartPoint(){
-        if(borderItems.isEmpty())
+    public Point2D getStartPoint(){
+        if(borderCoordinates.isEmpty())
             return null;
-        BorderItem borderItem = borderItems.get(0);
-        if(borderItem.borderItem.second.isEmpty())
+
+        GridCoordinateCollection borderCoordinates = this.borderCoordinates.get(0);
+        if(borderCoordinates.getDirections().isEmpty())
             return null;
-        Dir dir = borderItem.borderItem.second.get(0);
-        return new Tuple2<>(borderItem.borderItem.first, dir);
+
+        Dir dir = borderCoordinates.getDirections().get(0);
+        return GridCoordinateCollection.calcStartPointForBorderEdge(borderCoordinates.getTilePos(), dir);
     }
 
-    public Tuple2<Pos, Dir> getLastPoint(){
-        if(borderItems.isEmpty())
+    public Point2D getLastPoint(){
+        if(borderCoordinates.isEmpty())
             return null;
-        BorderItem borderItem = borderItems.get(borderItems.size() - 1);
-        if(borderItem.borderItem.second.isEmpty())
+        GridCoordinateCollection borderCoordinate = this.borderCoordinates.get(this.borderCoordinates.size() - 1);
+
+        List<Dir> directions = borderCoordinate.getDirections();
+        if(directions.isEmpty())
             return null;
-        Dir dir = borderItem.borderItem.second.get(borderItem.borderItem.second.size() - 1);
-        return new Tuple2<>(borderItem.borderItem.first, dir);
+
+        Dir dir = directions.get(directions.size() - 1);
+        return GridCoordinateCollection.calcStartPointForBorderEdge(borderCoordinate.getTilePos(), dir);
     }
 
 }
