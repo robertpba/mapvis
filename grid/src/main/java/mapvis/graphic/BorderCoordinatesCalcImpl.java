@@ -1,7 +1,6 @@
 package mapvis.graphic;
 
 import javafx.geometry.Point2D;
-import mapvis.common.datatype.Tuple2;
 import mapvis.models.*;
 
 import java.util.*;
@@ -27,6 +26,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
     public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean doOrdering, int levelToCollect) {
         if(region == null)
             return new HashMap<>();
+
         regionStyler = view.getRegionStyler();
         debugPoints.clear();
         regionToBoundaries.clear();
@@ -54,7 +54,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
             List<LeafRegion.BoundaryShape> boundaryShapes = collectBoundariesForRegion(region);
 
             if(doOrdering){
-                List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapesNew(boundaryShapes);
+                List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapes(boundaryShapes);
                 regionToBoundaries.put(region, lists);
             }else{
                 List<List<LeafRegion.BoundaryShape>> bShapeList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
         }
     }
 
-    private List<List<LeafRegion.BoundaryShape>> orderBoundaryShapesNew(List<LeafRegion.BoundaryShape> boundaryShapes) {
+    private List<List<LeafRegion.BoundaryShape>> orderBoundaryShapes(List<LeafRegion.BoundaryShape> boundaryShapes) {
         if(boundaryShapes.isEmpty())
             return Collections.emptyList();
 
@@ -169,6 +169,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
                     xValues.stream().mapToDouble(Double::doubleValue).toArray(),
                     yValues.stream().mapToDouble(Double::doubleValue).toArray(),
                     border);
+
             boundaryShape.text = descriptionTexts;
 
             boundaryShape.level = border.getLevel();

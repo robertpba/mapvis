@@ -44,11 +44,11 @@ public class RandomNodeGen {
             while (n-- > 0) {
                 Node child = generateSubTree(level+1);
                 node.getChildren().add(child);
-                size += (double) child.getVal("size");
+                size += child.getSize();
             }
         }
 
-        node.setVal("size", size);
+        node.setSize(size);
         return node;
     }
 

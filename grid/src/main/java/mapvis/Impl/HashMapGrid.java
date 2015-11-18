@@ -12,16 +12,15 @@ import java.util.stream.Collectors;
 
 public class HashMapGrid<T> implements Grid<T> {
 
+    private Map<Pos, Tile<T>> map = new HashMap<>();
+
+    private int minX;
+    private int minY;
+    private int maxX;
+    private int maxY;
+
     public HashMapGrid() {
-//        System.out.println("Creating: " + this.getClass().getName());
     }
-
-    Map<Pos, Tile<T>> map = new HashMap<>();
-
-    int minX;
-    int minY;
-    int maxX;
-    int maxY;
 
     @Override
     public int getMinY() {

@@ -54,7 +54,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
             return;
         }
         selectedDirectory = selectedFolder;
-        treeGenerator.configure(new FilesystemNode(selectedFolder.getPath()));
+        treeGenerator.setRootNode(new FilesystemNode(selectedFolder.getPath()));
         System.out.printf("Path:" + selectedFolder.getPath());
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
     }

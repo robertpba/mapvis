@@ -7,7 +7,17 @@ import mapvis.common.datatype.INode;
  */
 public interface ITreeGenerator {
 
-    void configure(INode rootNode);
+    /**
+     * sets the root node required to process the tree
+     * @param rootNode of the tree
+     */
+    void setRootNode(INode rootNode);
 
+    /**
+     * generates the tree using the defined rootNode by
+     * querying the children of the rootNode until leaves
+     * are reached
+     * @return the rootNode of the generated Tree
+     */
     INode genTree();
 }

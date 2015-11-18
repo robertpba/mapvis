@@ -27,15 +27,15 @@ public class TreeGeneratorSizeOneLeaves implements ITreeGenerator {
         for (INode child : iNode.getChildren()) {
             // for directories the sum of the size of the subfolders is used
             processSizeOfINode(child);
-            leafCounter += (double) child.getVal("size");
+            leafCounter += child.getSize();
         }
 
-        iNode.setVal("size", leafCounter);
+        iNode.setSize(leafCounter);
         iNode.setNodeState(INode.NodeState.connectedToTree);
     }
 
     @Override
-    public void configure(INode rootNode){
+    public void setRootNode(INode rootNode){
         this.rootNode = rootNode;
     }
 

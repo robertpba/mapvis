@@ -29,7 +29,7 @@ public class TreeGeneratorSummedLeaves implements ITreeGenerator {
             if(child.getNodeType() == INode.NodeType.Node){
                 processSizeOfINode(child);
                 filteredChildren.add(child);
-                countChildLeafsOfNode += (double) child.getVal("size");
+                countChildLeafsOfNode += child.getSize();
                 // files are counted
             }else if(child.getNodeType() == INode.NodeType.Leaf){
                 countDirectLeafsOfNode += 1.0;
@@ -44,12 +44,12 @@ public class TreeGeneratorSummedLeaves implements ITreeGenerator {
             filteredChildren.add(dummyChildForDirectFilesInFolder);
         }
         iNode.setChildren(filteredChildren);
-        iNode.setVal("size", countDirectLeafsOfNode + countChildLeafsOfNode);
+        iNode.setSize(countDirectLeafsOfNode + countChildLeafsOfNode);
         iNode.setNodeState(INode.NodeState.connectedToTree);
     }
 
     @Override
-    public void configure(INode rootNode){
+    public void setRootNode(INode rootNode){
         this.rootNode = rootNode;
     }
 

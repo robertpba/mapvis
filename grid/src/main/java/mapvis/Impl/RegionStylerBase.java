@@ -12,7 +12,6 @@ import mapvis.models.Region;
  */
 public class RegionStylerBase<T> implements IRegionStyler<T> {
 
-
     protected ObjectProperty<Tree2<T>> tree;
     protected DoubleProperty maxBorderLevelToShow;
     protected DoubleProperty maxRegionLevelToShow;
@@ -20,15 +19,13 @@ public class RegionStylerBase<T> implements IRegionStyler<T> {
     protected BooleanProperty showLabels;
 
     public RegionStylerBase(ObjectProperty<Tree2<T>> tree,
-                            DoubleProperty maxBorderLevelToShow,
-                            DoubleProperty maxRegionLevelToShow,
-                            DoubleProperty maxLabelLevelToShow, BooleanProperty showLabels) {
+                            TileStylerBase.StylerUIElements stylerUIElements) {
         System.out.println("Creating: " + this.getClass().getName());
         this.tree = tree;
-        this.maxBorderLevelToShow = maxBorderLevelToShow;
-        this.maxRegionLevelToShow = maxRegionLevelToShow;
-        this.maxLabelLevelToShow = maxLabelLevelToShow;
-        this.showLabels = showLabels;
+        this.maxBorderLevelToShow = stylerUIElements.getMaxBorderLevelToShow();
+        this.maxRegionLevelToShow = stylerUIElements.getMaxRegionLevelToShow();
+        this.maxLabelLevelToShow = stylerUIElements.getLabelLevelToShow();
+        this.showLabels = stylerUIElements.getShowLabels();
     }
 
     @Override

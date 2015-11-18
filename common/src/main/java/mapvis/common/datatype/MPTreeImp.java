@@ -215,7 +215,7 @@ public class MPTreeImp<T> implements Tree2<T> {
 
     private static void recAddChild(MPTreeImp<INode> tree, INode node){
         for (INode child : node.getChildren()) {
-            tree.addChild(node, child, (int)(double)child.getVal("size"));
+            tree.addChild(node, child, (int) child.getSize());
             recAddChild(tree, child);
         }
     }

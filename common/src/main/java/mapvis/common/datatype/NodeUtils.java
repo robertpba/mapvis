@@ -128,7 +128,7 @@ public class NodeUtils {
         if (sizeKey == null) sizeKey = "size";
 
         if (root.getChildren().isEmpty())
-            return (double) root.getVal("size");
+            return root.getSize();
 
         double size = 0;
 
