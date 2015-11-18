@@ -29,6 +29,7 @@ public class RegionAreaRenderer {
     private final IRegionPathGenerator regionBoundaryPointsGenerator;
     private final Consumer<List<Point2D[]>> directPolyLineRenderer;
     private final Consumer<List<Point2D[]>> bezierCurveRenderer;
+    private final Consumer<List<Point2D[]>> quadricCurveRenderer;
     private final IRegionPathGenerator originalBoundaryPointsGenerator;
 
     public RegionAreaRenderer(GraphicsContext graphicsContext) {
@@ -40,8 +41,34 @@ public class RegionAreaRenderer {
 
         this.originalBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
+        this.quadricCurveRenderer = (shapePointArr) -> {
+            boolean firstRenderPass = true;
+            Point2D firstPoint = null;
+            Point2D currentPoint = null;
+            Point2D nextPoint = null;
+            for (int i = 0; i < shapePointArr.size(); i++) {
+                Point2D[] point2Ds = shapePointArr.get(i);
+                for (int j = 0; j < point2Ds.length - 2; j++) {
+                    if(firstRenderPass){
+                        double xMid = (point2Ds[0].getX() + point2Ds[1].getX()) / 2;
+                        double yMid = (point2Ds[0].getY() + point2Ds[1].getY()) / 2;
 
-        directPolyLineRenderer = (shapePointArr) -> {
+                        graphicsContext.moveTo(xMid, yMid);
+                        firstPoint = new Point2D(xMid, yMid);
+                        firstRenderPass = false;
+                    }
+                    currentPoint = point2Ds[j];
+                    nextPoint = point2Ds[j + 1];
+                    double xMid = (currentPoint.getX() + nextPoint.getX()) / 2;
+                    double yMid = (currentPoint.getY() + nextPoint.getY()) / 2;
+                    graphicsContext.quadraticCurveTo(currentPoint.getX(), currentPoint.getY(), xMid, yMid);
+                }
+            }
+            graphicsContext.quadraticCurveTo(nextPoint.getX(), nextPoint.getY(), firstPoint.getX(), firstPoint.getY());
+        };
+
+        this.directPolyLineRenderer = (shapePointArr) -> {
+
             boolean firstRenderPass = true;
             for (Point2D[] point2Ds : shapePointArr) {
                 for (Point2D point2D : point2Ds) {
@@ -55,7 +82,7 @@ public class RegionAreaRenderer {
             }
         };
 
-        bezierCurveRenderer = (shapePointArr) -> {
+        this.bezierCurveRenderer = (shapePointArr) -> {
             drawSpline(graphicsContext, shapePointArr, BEZIER_CURVE_SMOOTHNESS);
         };
     }
@@ -79,7 +106,8 @@ public class RegionAreaRenderer {
 
             List<Point2D[]> shapePoints = regionBoundaryPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
             if(USE_BEZIER_CURVE){
-                this.bezierCurveRenderer.accept(shapePoints);
+//                this.bezierCurveRenderer.accept(shapePoints);
+                this.quadricCurveRenderer.accept(shapePoints);
             }else{
                 this.directPolyLineRenderer.accept(shapePoints);
             }
@@ -109,7 +137,6 @@ public class RegionAreaRenderer {
                 continue;
 
             List<Point2D[]> originalShapePoints = originalBoundaryPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
-
 //            this.bezierCurveRenderer.accept(shapePoints);
             this.directPolyLineRenderer.accept(originalShapePoints );
             this.graphicsContext.setStroke(Color.BLACK);
