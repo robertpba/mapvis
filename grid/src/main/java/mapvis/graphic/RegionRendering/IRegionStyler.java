@@ -1,6 +1,4 @@
-package mapvis.graphic;
-
-import mapvis.models.Region;
+package mapvis.graphic.RegionRendering;
 
 /**
  * Created by dacc on 11/12/2015.

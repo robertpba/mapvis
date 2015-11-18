@@ -2,32 +2,33 @@ package mapvis.graphic;
 
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
+import mapvis.graphic.HexagonRendering.HexagonRender;
+import mapvis.graphic.HexagonRendering.HexagonTreeRender;
+import mapvis.graphic.HexagonRendering.TileStyler;
+import mapvis.graphic.RegionRendering.IRegionAreaStyler;
+import mapvis.graphic.RegionRendering.IRegionStyler;
+import mapvis.graphic.RegionRendering.RegionRenderer;
 import mapvis.models.*;
 
-import javax.imageio.ImageIO;
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
 
 public class HexagonalTilingView extends Pane {
 
-    static final double COS30 = Math.cos(Math.toRadians(30));
-    static final double SideLength = 10;
+    protected static final double COS30 = Math.cos(Math.toRadians(30));
+    public static final double SideLength = 10;
+    private final HexagonTreeRender hexagonTreeRender;
 
     private HexagonRender render;
     private RegionRenderer regionRenderer;
@@ -35,7 +36,7 @@ public class HexagonalTilingView extends Pane {
 
     private ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
     private ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
-//    private ObjectProperty<TileStyler<INode>> styler = new SimpleObjectProperty<>();
+    private ObjectProperty<TileStyler<INode>> styler = new SimpleObjectProperty<>();
     private ObjectProperty<IRegionStyler<INode>> regionStyler = new SimpleObjectProperty<>();
 
 
@@ -51,7 +52,6 @@ public class HexagonalTilingView extends Pane {
 
 
     public HexagonalTilingView(){
-        super();
         System.out.println("Creating: " + this.getClass().getName());
 
         initHexagonTilingView();
@@ -65,6 +65,7 @@ public class HexagonalTilingView extends Pane {
         originY.addListener(this::onOriginYChange);
         zoom.addListener(this::onZoomChange);
 //        styler.addListener(this::onStyler);
+        hexagonTreeRender = new HexagonTreeRender(this, styler, grid, tree);
         regionStyler.addListener(this::onRegionAreaStyler);
 
         areLabelsShown.addListener(this::onShowLabelsChanged);
@@ -84,7 +85,7 @@ public class HexagonalTilingView extends Pane {
         regionRenderer = new RegionRenderer(this, canvas);
         getChildren().addAll(canvas);
 
-        updateHexagons();
+//        hexagonTreeRender.updateHexagons();
     }
 
     public static Point2D hexagonalToPlain(int x, int y){
@@ -119,214 +120,29 @@ public class HexagonalTilingView extends Pane {
     }
 
     public void updateHexagons(){
-//        System.out.println("updateHexagons");
-//        if (getGrid() == null)
-//            return;
-
         if(world != null)
             updateHexagonsWithCoastCache(world);
-        return;
+    }
 
-        //canvas = new Canvas(getWidth(),getHeight());
-
-//        GraphicsContext g = canvas.getGraphicsContext2D();
+//    public void updateHexagons(){
+////        System.out.println("updateHexagons");
 //
-//        g.setFill(styler.get().getBackground());
-//        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+//        //canvas = new Canvas(getWidth(),getHeight());
+//
 //        //Rectangle2D rect = viewport.get();
 //
-//        Bounds rect = getLayoutBounds();
-//        double x0 = - originXProperty().get()/zoomProperty().get();
-//        double y0 = - originYProperty().get()/zoomProperty().get();
-//        double x1 = (getWidth() - originXProperty().get())/zoomProperty().get();
-//        double y1 = (getHeight()- originYProperty().get())/zoomProperty().get();
-//
-//        Point2D tl = planeToHexagonal(x0, y0);
-//        Point2D br = planeToHexagonal(x1, y1);
-//        g.save();
-//
-//        g.translate(originXProperty().get(), originYProperty().get());
-//        g.scale(zoomProperty().get(), zoomProperty().get());
-//
-//        List<Tile<INode>> tiles = new ArrayList<>();
-//
-//        grid.get().foreach(t -> {
-//            if (isTileVisibleOnScreen(t, tl, br)) {
-//                updateHexagon(t.getX(), t.getY(), g);
-//            }
-//            if (t.getItem() != null && t.getTag() == Tile.LAND)
-//                tiles.add(t);
-//        });
-//        if(areLabelsShown.get()){
-//            Map<INode, Pos> posmap = mapLabelPos(tiles);
-//            drawLabels(posmap, g);
-//        }
-//
 //        //getDirectChildren().setAll(canvas);
-//        g.restore();
-    }
+//        hexagonTreeRender.updateHexagons();
+//    }
 
-    private boolean isTileVisibleOnScreen(Tile<INode> tile, Point2D topleftBorder, Point2D bottomRightBorder)
-    {
-        return tile.getX() > topleftBorder.getX()
-                && tile.getX() < bottomRightBorder.getX()
-                && tile.getY() > topleftBorder.getY()
-                && tile.getY() < bottomRightBorder.getY();
-    }
-
-    private void drawLabels(Map<INode, Pos> posmap, GraphicsContext g){
-        for (Map.Entry<INode, Pos> entry : posmap.entrySet()) {
-            INode node = entry.getKey();
-            Pos pos = entry.getValue();
-            Point2D point2D = hexagonalToPlain(pos.getX(), pos.getY());
-            //System.out.printf("%s\n", node.name);
-            int level = tree.get().getDepth(node);
-
-            if (level == 0 || level > maxLevelOfLabelsToShow.get())
-                continue;
-            int fontSize = (int) (80 / Math.log(level + 1));
-            g.setFont(new Font(fontSize));
-//            if (level == 1)
-//                g.setFont(new Font(80));
-//            else if (level == 2)
-//                g.setFont(new Font(42));
-//            else if (level == 3)
-//                g.setFont(new Font(28));
-//            else
-//                continue;
-
-            g.setFill(Color.BLACK);
-            g.fillText(node.getLabel(), point2D.getX(), point2D.getY());
-        }
-    }
-
-
-    Map<INode, Pos> mapLabelPos(Collection<Tile<INode>> tiles){
-        Map<INode, List<Pos>> map = new HashMap<>();
-
-        for (Tile<INode> tile : tiles) {
-            INode item = tile.getItem();
-            if (item == null || tile.getTag() != Tile.LAND)
-                continue;
-
-            List<INode> pathToNode = tree.get().getPathToNode(item);
-
-            for (INode node : pathToNode) {
-                List<Pos> poslist = map.get(node);
-                if (poslist == null)
-                    map.put(node, poslist= new ArrayList<>());
-
-                poslist.add(tile.getPos());
-            }
-
-        }
-
-        Map<INode, Pos> posmap= new HashMap<>();
-
-        for (Map.Entry<INode, List<Pos>> entry : map.entrySet()) {
-            int x=0; int y=0; int n=0;
-
-            for (Pos pos : entry.getValue()) {
-                x += pos.getX();
-                y += pos.getY();
-                n++;
-            }
-
-            Pos pos = new Pos(x/n,y/n);
-            posmap.put(entry.getKey(), pos);
-        }
-
-        return  posmap;
-    }
-
+    @FXML
     public void save(String filename) throws IOException {
-//        if (getGrid() == null)
-//            return;
-//
-//        int margin = 2;
-//
-//        int minx = grid.get().getMinX() - margin;
-//        int miny = grid.get().getMinY() - margin;
-//        int maxx = grid.get().getMaxX() + margin;
-//        int maxy = grid.get().getMaxY() + margin;
-//
-//        System.out.printf("h x[%d:%d] y:[%d:%d]\n",
-//                minx, maxx, miny, maxy);
-//
-//        Point2D topleft = hexagonalToPlain(minx, miny);
-//        Point2D botright = hexagonalToPlain(maxx, maxy);
-//
-//        System.out.printf("p x[%d:%d] y:[%d:%d]\n",
-//                (int)topleft.getX(), (int)botright.getX(),
-//                (int)topleft.getY(), (int)botright.getY());
-//
-//        double scale = 1.0;
-//        double w = (botright.getX()-topleft.getX())*scale;
-//        double h = (botright.getY()-topleft.getY())*scale;
-//
-//        Canvas c1 = new Canvas(w, h);
-//        GraphicsContext g = c1.getGraphicsContext2D();
-//        g.setFill(regionStyler.get().getBackground());
-//        g.fillRect(0, 0, w, h);
-//
-//        System.out.printf("w:%d, h:%d, xy[%d:%d]\n",(int)w, (int)h,
-//                (int)(topleft.getX()),
-//                (int)(topleft.getY())
-//
-//        );
-//        g.save();
-//
-//        g.scale(scale, scale);
-//        g.translate(-topleft.getX(), -topleft.getY());
-//
-//        List<Tile<INode>> tiles = new ArrayList<>();
-//
-//        grid.get().foreach(t -> {
-//            if (t.getX() >= minx
-//                    && t.getX() <= maxx
-//                    && t.getY() >= miny
-//                    && t.getY() <= maxy)
-//
-//            updateHexagon(t.getX(), t.getY(), g);
-//
-//            if (t.getItem() != null && t.getTag() == Tile.LAND)
-//                tiles.add(t);
-//        });
-//
-//        Map<INode, Pos> posmap = mapLabelPos(tiles);
-//        //drawLabels(posmap, g);
-//
-//
-//        WritableImage wim = new WritableImage((int)w, (int)h);
-//        c1.snapshot(null, wim);
-//        File file = new File(filename);
-//
-//        ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
-//
-//
-//        g.restore();
-    }
 
-//    private void drawHexagonBorders(int x, int y, List<Dir> directions, GraphicsContext g) {
-//        g.save();
-//        Point2D point2D = hexagonalToPlain(x, y);
-//        g.translate(point2D.getX(), point2D.getY());
-//
-//        render.drawPointsOfHexagon(g, x, y, directions);
-//
-//        g.restore();
-//    }
-//
-//    private void updateHexagon(int x, int y, GraphicsContext g) {
-//
-//        g.save();
-//        Point2D point2D = hexagonalToPlain(x, y);
-//        g.translate(point2D.getX(), point2D.getY());
-//
-//        render.drawHexagon(g, x, y);
-//
-//        g.restore();
-//    }
+        //drawLabels(posmap, g);
+
+
+        hexagonTreeRender.save(filename);
+    }
 
 
     public ObjectProperty<Grid<INode>> gridProperty() { return this.grid; }
@@ -533,7 +349,11 @@ public class HexagonalTilingView extends Pane {
         g.restore();
     }
 
-    public void setWorld(Region<INode> world) {
-        this.world = world;
+    public void setRootRegion(Region<INode> rootRegion) {
+        this.world = rootRegion;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 }

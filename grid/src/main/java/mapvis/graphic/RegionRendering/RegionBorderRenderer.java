@@ -1,10 +1,8 @@
-package mapvis.graphic;
+package mapvis.graphic.RegionRendering;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.StrokeLineJoin;
 import mapvis.common.datatype.INode;
+import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.LeafRegion;
 
 import java.util.List;

@@ -1,6 +1,7 @@
-package mapvis.graphic;
+package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
+import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.*;
 
 import java.util.*;

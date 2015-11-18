@@ -1,6 +1,7 @@
 package mapvis.models;
 
 import javafx.geometry.Point2D;
+import mapvis.models.LeafRegion;
 
 import java.util.*;
 

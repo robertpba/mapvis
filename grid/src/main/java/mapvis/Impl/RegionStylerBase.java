@@ -3,7 +3,7 @@ package mapvis.Impl;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.IRegionStyler;
+import mapvis.graphic.RegionRendering.IRegionStyler;
 import mapvis.models.Border;
 import mapvis.models.Region;
 

@@ -5,7 +5,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.TileStyler;
+import mapvis.graphic.HexagonRendering.TileStyler;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
 import mapvis.models.Tile;

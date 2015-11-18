@@ -1,4 +1,4 @@
-package mapvis.graphic;
+package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -88,7 +88,7 @@ public class RegionAreaRenderer {
     }
 
 
-    public void drawArea(IRegionStyler<INode> regionStyler, Region<INode> regionToDraw, List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes) {
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);

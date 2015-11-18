@@ -1,9 +1,10 @@
-package mapvis.graphic;
+package mapvis.graphic.RegionRendering;
 
 import com.goebl.simplify.PointExtractor;
 import com.goebl.simplify.Simplify;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import mapvis.graphic.RegionRendering.IRegionPathGenerator;
 import mapvis.models.LeafRegion;
 
 import java.util.ArrayList;

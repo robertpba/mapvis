@@ -1,6 +1,7 @@
-package mapvis.graphic;
+package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
+import mapvis.graphic.RegionRendering.IRegionStyler;
 import mapvis.models.LeafRegion;
 import mapvis.models.Region;
 

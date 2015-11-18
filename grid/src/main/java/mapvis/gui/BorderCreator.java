@@ -10,6 +10,10 @@ import java.util.*;
 
 /**
  * Created by dacc on 11/4/2015.
+ * This class creates the borders for the LeafRegions created by Method1. Therefore,
+ * the HexagonTiles on the borders of leaf regions are processed by "stepping" along the edges
+ * of the HexagonTiles. For each region, a new border/bordersection is created for each neighboring
+ * region.
  */
 public class BorderCreator<T> {
 

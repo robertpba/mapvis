@@ -1,4 +1,4 @@
-package mapvis.graphic;
+package mapvis.graphic.HexagonRendering;
 
 import javafx.scene.paint.Color;
 import mapvis.models.Dir;
