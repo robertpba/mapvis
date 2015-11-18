@@ -23,37 +23,33 @@ import java.util.Set;
 
 public class DatasetSelectionController implements Initializable {
     private static final String INFO_AREA_PROCESS_SEPARATOR = "-------------";
-    public TextArea infoArea;
-    public Button generateTreeButton;
 
+    //data objects
     public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
     public ObjectProperty<Method1<INode>> method1 = new SimpleObjectProperty<>();
+    public SimpleObjectProperty<TreeStatistics> lastTreeStatistics;
 
     public HexagonalTilingView chart;
 
-    IDatasetGeneratorController activeDatasetGenerator;
+    private IDatasetGeneratorController selectedDatasetGenerator;
 
+    @FXML
+    private TextArea infoArea;
+    @FXML
+    private Button generateTreeButton;
     @FXML
     private TextField dropLevelsTextField;
-
     @FXML
     private ComboBox<IDatasetGeneratorController> inputSourceComboBox;
-
     @FXML
     private RandomTreeSettingsController randomTreeSettingsController;
-
     @FXML
     private FilesystemTreeSettingsController filesystemTreeSettingsController;
-
     @FXML
     private UDCTreeSettingsController udcTreeSettingsController;
-
     @FXML
     private LoadDumpedTreeSettingsController loadDumpedTreeSettingsController;
-
-    public SimpleObjectProperty<TreeStatistics> lastTreeStatistics;
-//    private TreeStatistics lastTreeStatistics;
 
     public DatasetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -62,31 +58,37 @@ public class DatasetSelectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatasetSelectionController");
+        //add all controller which allow for tree generation to the combo box
         inputSourceComboBox.getItems().addAll(
                 filesystemTreeSettingsController, randomTreeSettingsController,
-                udcTreeSettingsController, loadDumpedTreeSettingsController);
+                udcTreeSettingsController, loadDumpedTreeSettingsController
+        );
         inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
+        //only allow numerical values for the "drop Levels" button
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
             if (!"".equals(newValue) && !newValue.matches("[0-9]*")) {
                 dropLevelsTextField.setText(oldValue);
             }
         });
+
         lastTreeStatistics = new SimpleObjectProperty<>();
     }
 
-    private IDatasetGeneratorController getActiveDatasetGenerator() {
+    private IDatasetGeneratorController getSelectedDatasetGenerator() {
         return inputSourceComboBox.getSelectionModel().getSelectedItem();
     }
 
     @FXML
     private void onSelectionChanged(ActionEvent event) {
-        activeDatasetGenerator = getActiveDatasetGenerator();
-        if(activeDatasetGenerator == null){
+        selectedDatasetGenerator = getSelectedDatasetGenerator();
+        if(selectedDatasetGenerator == null){
             return;
         }
         inputSourceComboBox.getItems().stream().forEach(iDatasetGeneratorController ->{
-            if(activeDatasetGenerator.equals(iDatasetGeneratorController)){
+            //enable/disable all controllers according to the selection, so only the
+            //UI of the recent selected datasetcontroller is shown
+            if(selectedDatasetGenerator.equals(iDatasetGeneratorController)){
                 iDatasetGeneratorController.setVisible(true);
             }else{
                 iDatasetGeneratorController.setVisible(false);
@@ -99,17 +101,21 @@ public class DatasetSelectionController implements Initializable {
         long startTime = System.currentTimeMillis();
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("generating map..");
-        Region<INode> world = method1.get().Begin();
 
-        BorderCreator<INode> borderCreator = new BorderCreator<>(world, grid.get(), tree.get(), method1.get().getItemToRegionMap());
-        borderCreator.orderBordersOfLeaves(method1.get().getLeafRegionBoundaryCoordinates());
+        //generate regions of visualization
+        Region<INode> rootRegion = method1.get().Begin();
+        //reconstruct the borders
+        BorderCreator<INode> borderCreator = new BorderCreator<>(method1.get());
+        borderCreator.createBorders();
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
-        chart.setWorld(world);
+
+        chart.setWorld(rootRegion);
         grid.get().resetGrid();
         chart.updateHexagons();
+
         logTextToInfoArea("rendering finished");
     }
 
@@ -117,12 +123,12 @@ public class DatasetSelectionController implements Initializable {
     private void generateTree(ActionEvent event) {
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("reading data..");
-        if(activeDatasetGenerator == null){
+        if(selectedDatasetGenerator == null){
             return;
         }
         MPTreeImp<INode> generatedTree = null;
         try {
-            generatedTree = activeDatasetGenerator.generateTree(event);
+            generatedTree = selectedDatasetGenerator.generateTree(event);
         } catch (FileNotFoundException e) {
             logTextToInfoArea("reading data failed: " + e);
             return;

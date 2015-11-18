@@ -1,8 +1,6 @@
 package mapvis.models;
 
 import javafx.geometry.Point2D;
-import mapvis.common.datatype.Tuple2;
-import mapvis.graphic.RegionBorderRenderer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +17,7 @@ public class Border<T> {
     private T nodeA;
     private T nodeB;
 
-    private List<GridCoordinateCollection> borderCoordinates;
+    private List<TileBorder> borderCoordinates;
 
     public Border() {
         this.level = -1;
@@ -27,13 +25,13 @@ public class Border<T> {
         this.borderCoordinates = new ArrayList<>();
     }
 
-    public Border(List<GridCoordinateCollection> borderCoordinates, int level) {
+    public Border(List<TileBorder> borderCoordinates, int level) {
         this.renderID = -1;
         this.level = level;
         this.borderCoordinates = borderCoordinates;
     }
 
-    public List<GridCoordinateCollection> getBorderCoordinates() {
+    public List<TileBorder> getBorderCoordinates() {
         return Collections.unmodifiableList(borderCoordinates);
     }
 
@@ -88,25 +86,25 @@ public class Border<T> {
         if(borderCoordinates.isEmpty())
             return null;
 
-        GridCoordinateCollection borderCoordinates = this.borderCoordinates.get(0);
+        TileBorder borderCoordinates = this.borderCoordinates.get(0);
         if(borderCoordinates.getDirections().isEmpty())
             return null;
 
         Dir dir = borderCoordinates.getDirections().get(0);
-        return GridCoordinateCollection.calcStartPointForBorderEdge(borderCoordinates.getTilePos(), dir);
+        return TileBorder.calcStartPointForBorderEdge(borderCoordinates.getTilePos(), dir);
     }
 
     public Point2D getLastPoint(){
         if(borderCoordinates.isEmpty())
             return null;
-        GridCoordinateCollection borderCoordinate = this.borderCoordinates.get(this.borderCoordinates.size() - 1);
+        TileBorder borderCoordinate = this.borderCoordinates.get(this.borderCoordinates.size() - 1);
 
         List<Dir> directions = borderCoordinate.getDirections();
         if(directions.isEmpty())
             return null;
 
         Dir dir = directions.get(directions.size() - 1);
-        return GridCoordinateCollection.calcStartPointForBorderEdge(borderCoordinate.getTilePos(), dir);
+        return TileBorder.calcStartPointForBorderEdge(borderCoordinate.getTilePos(), dir);
     }
 
 }

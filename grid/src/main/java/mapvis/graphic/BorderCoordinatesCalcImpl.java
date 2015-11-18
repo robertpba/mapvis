@@ -153,11 +153,11 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
                 continue;
             }
 
-            for (GridCoordinateCollection gridCoordinateCollection : border.getBorderCoordinates()) {
-                for (Dir direction : gridCoordinateCollection.getDirections()) {
+            for (TileBorder tileBorder : border.getBorderCoordinates()) {
+                for (Dir direction : tileBorder.getDirections()) {
 
                     Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(
-                            GridCoordinateCollection.calcStartPointForBorderEdge(gridCoordinateCollection.getTilePos(),
+                            TileBorder.calcStartPointForBorderEdge(tileBorder.getTilePos(),
                                     direction)
                     );
 

@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class UDCTreeSettingsController implements Initializable, IDatasetGeneratorController {
 
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";
-    
+
     @FXML
     private CheckBox dumpToFileCheckbox;
 

@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Created by dacc on 11/18/2015.
  */
-public class GridCoordinateCollection {
+public class TileBorder {
+
     public static final int[][] DIR_TO_POINTS = new int[][]{
             new int[]{ 0,  1,  2,  3},
             new int[]{10, 11,  0,  1},
@@ -31,12 +32,12 @@ public class GridCoordinateCollection {
     private Pos tilePos;
     private List<Dir> directions;
 
-    public GridCoordinateCollection(Pos tilePos, List<Dir> directions) {
+    public TileBorder(Pos tilePos, List<Dir> directions) {
         this.tilePos = tilePos;
         this.directions = directions;
     }
 
-    public GridCoordinateCollection(Pos tilePos){
+    public TileBorder(Pos tilePos){
         this(tilePos, new ArrayList<>());
     }
 

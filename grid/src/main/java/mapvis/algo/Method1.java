@@ -20,9 +20,10 @@ public class Method1<T> {
     public Tree2<T> tree;
     public CoastCache<T> cache;
     public Grid<T> grid;
+
     private Region<T> rootRegion;
-    private Map<T, LeafRegion<T>> leafItemToLeafRegion;
-    private List<List<GridCoordinateCollection>> leafRegionBoundaryCoordinates;
+    private Map<T, LeafRegion<T>> leafNodeItemToLeafRegion;
+    private List<List<TileBorder>> leafRegionBoundaryCoordinates;
 
     private Random random = new Random(1);
     public double beta = 3;
@@ -33,7 +34,7 @@ public class Method1<T> {
         this.grid = grid;
         this.cache = new CoastCache<>(grid, tree);
         this.leafRegionBoundaryCoordinates = new ArrayList<>();
-        this.leafItemToLeafRegion = new HashMap<>();
+        this.leafNodeItemToLeafRegion = new HashMap<>();
     }
 
     /**
@@ -42,7 +43,7 @@ public class Method1<T> {
      * the node. The node size is defined in the tree as the
      * sum of the sizes of its child nodes.
      * In addition, the mapping of node to LeafRegion is stored and
-     * the coordinates of the boundaries as @GridCoordinateCollection.
+     * the coordinates of the boundaries as @TileBorder.
      * @return the created root region with connected children
      */
     public Region<T> Begin(){
@@ -148,7 +149,7 @@ public class Method1<T> {
             System.out.printf("Insufficient space: %s\n", o.toString());
         }
 
-        List<GridCoordinateCollection> gridCoordinatesOfBorderTiles = new ArrayList<>();
+        List<TileBorder> gridCoordinatesOfBorderTiles = new ArrayList<>();
         List<Tile<T>> borderTiles = new ArrayList<>();
 
         //find the coordinates of the hexagontiles/edges at the border of the
@@ -156,8 +157,8 @@ public class Method1<T> {
         for (Tile<T> tTile : prepare) {
             List<Dir> dirsAtBorderTiles = regionGrid.getNeighborDirectionsFulfilling(tTile2 -> tTile2.isEmpty(), tTile.getX(), tTile.getY());
             if(dirsAtBorderTiles.size() > 0){
-                GridCoordinateCollection gridCoordinateCollection = new GridCoordinateCollection(tTile.getPos(), dirsAtBorderTiles);
-                gridCoordinatesOfBorderTiles.add(gridCoordinateCollection);
+                TileBorder tileBorder = new TileBorder(tTile.getPos(), dirsAtBorderTiles);
+                gridCoordinatesOfBorderTiles.add(tileBorder);
                 borderTiles.add(tTile);
             }
 //            //collect all tiles with their directions to neighbors which have border to an tile of a different node
@@ -168,7 +169,7 @@ public class Method1<T> {
 
         LeafRegion<T> leafRegion = new LeafRegion<>(o, tree.getDepth(o));
         leafRegionBoundaryCoordinates.add(gridCoordinatesOfBorderTiles);
-        leafItemToLeafRegion.put(o, leafRegion);
+        leafNodeItemToLeafRegion.put(o, leafRegion);
 
         return leafRegion;
     }
@@ -208,11 +209,15 @@ public class Method1<T> {
         return (int)Math.pow(beta, n);
     }
 
-    public List<List<GridCoordinateCollection>> getLeafRegionBoundaryCoordinates() {
+    public List<List<TileBorder>> getLeafRegionBoundaryCoordinates() {
         return leafRegionBoundaryCoordinates;
     }
 
-    public Map<T, LeafRegion<T>> getItemToRegionMap() {
-        return leafItemToLeafRegion;
+    public Map<T, LeafRegion<T>> getLeafNodeItemToRegionMap() {
+        return leafNodeItemToLeafRegion;
+    }
+
+    public Region<T> getRootRegion() {
+        return rootRegion;
     }
 }

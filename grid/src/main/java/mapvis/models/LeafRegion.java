@@ -30,7 +30,7 @@ public class LeafRegion<T> extends Region<T> {
     public static class BoundaryShape<T>{
         public Border<T> border;
         private double[] xValues;
-        private  double[] yValues;
+        private double[] yValues;
         public List<String> text;
         public int level;
         public boolean renderColored;
@@ -134,11 +134,11 @@ public class LeafRegion<T> extends Region<T> {
         if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
             return false;
 
-        Point2D newBorderStartPoint = LeafRegion.roundToCoordinatesTo4Digits(newBorder.getStartPoint());
-        Point2D existingBorderStartPoint = LeafRegion.roundToCoordinatesTo4Digits(existingBorder.getStartPoint());
+        Point2D newBorderStartPoint = roundToCoordinatesTo4Digits(newBorder.getStartPoint());
+        Point2D existingBorderStartPoint = roundToCoordinatesTo4Digits(existingBorder.getStartPoint());
 
-        Point2D newBorderLastPoint = LeafRegion.roundToCoordinatesTo4Digits(newBorder.getLastPoint());
-        Point2D existingBorderLastPoint = LeafRegion.roundToCoordinatesTo4Digits(existingBorder.getLastPoint());
+        Point2D newBorderLastPoint = roundToCoordinatesTo4Digits(newBorder.getLastPoint());
+        Point2D existingBorderLastPoint = roundToCoordinatesTo4Digits(existingBorder.getLastPoint());
 
         if(newBorderStartPoint.equals(existingBorderStartPoint) && newBorderLastPoint.equals(existingBorderLastPoint)
                 || newBorderStartPoint.equals(existingBorderLastPoint) && newBorderLastPoint.equals(existingBorderStartPoint)){

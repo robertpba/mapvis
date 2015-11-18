@@ -45,7 +45,6 @@ public class ChartController implements Initializable  {
 
     @FXML
     private ChoiceBox labelLevelsToShowChoiceBox;
-
     @FXML
     protected CheckBox showLabelsCheckBox;
 
