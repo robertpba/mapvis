@@ -11,7 +11,6 @@ import mapvis.Impl.*;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.IRegionStyler;
 import mapvis.graphic.TileStyler;
 import mapvis.models.Grid;
 
@@ -56,6 +55,17 @@ public class AppController implements Initializable {
             }
             private RandomRegionColorStyler<INode> randomRegionStyler;
             private RampRegionColorStyler<INode> rampRegionStyler;
+
+            private TileStylerBase.StylerUIElements createStylerUIElements(){
+                return new TileStylerBase.StylerUIElements(
+                        chartController.colorPicker.valueProperty(),
+                        chartController.bordersLevelsToShowSlider.valueProperty(),
+                        chartController.levelsToShowSlider.valueProperty(),
+                        chartController.labelLevelsToShowSlider.valueProperty(),
+                        chartController.showLabelsCheckBox.selectedProperty()
+                );
+            }
+
             @Override
             protected Object computeValue() {
                 System.out.println("requesting styler");
@@ -71,12 +81,8 @@ public class AppController implements Initializable {
                 if (s.equals("random")){
                     if(randomRegionStyler == null){
                         randomRegionStyler = new RandomRegionColorStyler<>(
-                                tree, chartController.colorPicker.valueProperty(),
-                                chartController.bordersLevelsToShowSlider.valueProperty(),
-                                chartController.levelsToShowSlider.valueProperty(),
-                                chartController.labelLevelsToShowSlider.valueProperty(),
-                                chartController.showLabelsCheckBox.selectedProperty(),
-                                1);
+                                tree, createStylerUIElements()
+                                , 1);
                     }
                     return randomRegionStyler;
                 }
@@ -84,12 +90,7 @@ public class AppController implements Initializable {
                 if (s.equals("ramp")){
                     if(rampRegionStyler == null){
                         rampRegionStyler = new RampRegionColorStyler<>(
-                                tree, chartController.colorPicker.valueProperty(),
-                                chartController.bordersLevelsToShowSlider.valueProperty(),
-                                chartController.levelsToShowSlider.valueProperty(),
-                                chartController.labelLevelsToShowSlider.valueProperty(),
-                                chartController.showLabelsCheckBox.selectedProperty(),
-                                1);
+                                tree, createStylerUIElements());
                     }
                     return rampRegionStyler;
                 }

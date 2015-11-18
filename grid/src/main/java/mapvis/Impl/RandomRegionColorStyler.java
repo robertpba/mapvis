@@ -1,11 +1,7 @@
 package mapvis.Impl;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
-import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.models.Region;
 
@@ -23,12 +19,10 @@ public class RandomRegionColorStyler<T> extends RegionStylerBase<T> {
     private Random rand;
     private ObjectProperty<Color> background;
 
-    public RandomRegionColorStyler(ObjectProperty<Tree2<T>> tree, ObjectProperty<Color> background,
-                                   DoubleProperty maxBorderLevelToShow, DoubleProperty maxRegionLevelToShow,
-                                   DoubleProperty labelLevelToShow, BooleanProperty showLabels,
-                                   int seed) {
-        super(tree, maxBorderLevelToShow, maxRegionLevelToShow, labelLevelToShow, showLabels);
-        this.background = background;
+    public RandomRegionColorStyler(ObjectProperty<Tree2<T>> tree,
+                                   TileStylerBase.StylerUIElements stylerUIElements, int seed) {
+        super(tree, stylerUIElements);
+        this.background = stylerUIElements.getBackground();
         this.rand = new Random(seed);
         rec(tree.get().getRoot());
         this.tree.addListener((observable, oldValue, newValue) -> rec(tree.get().getRoot()));
@@ -84,4 +78,5 @@ public class RandomRegionColorStyler<T> extends RegionStylerBase<T> {
     public void setBackground(Color background) {
         this.background.set(background);
     }
+
 }

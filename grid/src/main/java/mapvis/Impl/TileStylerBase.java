@@ -1,5 +1,8 @@
 package mapvis.Impl;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.TileStyler;
@@ -186,4 +189,39 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return Color.RED;
     }
 
+    public static class StylerUIElements {
+        private final ObjectProperty<Color> background;
+        private final DoubleProperty maxBorderLevelToShow;
+        private final DoubleProperty maxRegionLevelToShow;
+        private final DoubleProperty labelLevelToShow;
+        private final BooleanProperty showLabels;
+
+        public StylerUIElements(ObjectProperty<Color> background, DoubleProperty maxBorderLevelToShow, DoubleProperty maxRegionLevelToShow, DoubleProperty labelLevelToShow, BooleanProperty showLabels) {
+            this.background = background;
+            this.maxBorderLevelToShow = maxBorderLevelToShow;
+            this.maxRegionLevelToShow = maxRegionLevelToShow;
+            this.labelLevelToShow = labelLevelToShow;
+            this.showLabels = showLabels;
+        }
+
+        public ObjectProperty<Color> getBackground() {
+            return background;
+        }
+
+        public DoubleProperty getMaxBorderLevelToShow() {
+            return maxBorderLevelToShow;
+        }
+
+        public DoubleProperty getMaxRegionLevelToShow() {
+            return maxRegionLevelToShow;
+        }
+
+        public DoubleProperty getLabelLevelToShow() {
+            return labelLevelToShow;
+        }
+
+        public BooleanProperty getShowLabels() {
+            return showLabels;
+        }
+    }
 }

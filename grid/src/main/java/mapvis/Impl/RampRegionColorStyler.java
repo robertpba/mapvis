@@ -1,17 +1,11 @@
 package mapvis.Impl;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
-import mapvis.models.Grid;
 import mapvis.models.Region;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by dacc on 11/13/2015.
@@ -20,14 +14,10 @@ public class RampRegionColorStyler<T> extends RegionStylerBase<T> {
     public int depth;
     private ObjectProperty<Color> background;
 
-    public RampRegionColorStyler(ObjectProperty<Tree2<T>> tree, ObjectProperty<Color> background,
-                                   DoubleProperty maxBorderLevelToShow, DoubleProperty maxRegionLevelToShow,
-                                   DoubleProperty labelLevelToShow, BooleanProperty showLabels,
-                                   int seed) {
-        super(tree, maxBorderLevelToShow, maxRegionLevelToShow, labelLevelToShow, showLabels);
-        this.background = background;
+    public RampRegionColorStyler(ObjectProperty<Tree2<T>> tree, TileStylerBase.StylerUIElements stylerUIElements) {
+        super(tree, stylerUIElements);
+        background = stylerUIElements.getBackground();
     }
-
 
     @Override
     public Color getColor(Region<T> region) {
