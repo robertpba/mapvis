@@ -2,7 +2,7 @@ package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import mapvis.models.LeafRegion;
+import mapvis.models.BoundaryShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,12 @@ public class DirectRegionPathGenerator implements IRegionPathGenerator {
     }
 
     @Override
-    public List<Point2D[]> generatePathForBoundaryShape(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape) {
         List<Point2D[]> shapePoints = new ArrayList<>();
-        for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
+        for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
             Point2D[] partialShapPoints = new Point2D[partialRegionBoundary.getShapeLength()];
             for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-                partialShapPoints[i] = new Point2D(partialRegionBoundary.getXValueAtIndex(i), partialRegionBoundary.getYValueAtIndex(i));
+                partialShapPoints[i] = new Point2D(partialRegionBoundary.getXCoordinateAtIndex(i), partialRegionBoundary.getYCoordinateAtIndex(i));
             }
             shapePoints.add(partialShapPoints);
         }

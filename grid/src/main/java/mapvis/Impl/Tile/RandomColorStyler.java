@@ -54,8 +54,8 @@ public class RandomColorStyler<T> extends TileStylerBase<T> {
     }
 
     @Override
-    public Color getColorByValue(T v) {
-        return map.get(v);
+    public Color getColorByValue(T nodeItem) {
+        return map.get(nodeItem);
     }
 
     @Override

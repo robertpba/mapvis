@@ -10,6 +10,9 @@ import java.util.List;
 
 /**
  * Created by dacc on 11/13/2015.
+ * RampRegionColor styler assigns the color of each Region with respect
+ * to the depth/level of each node in the tree. For higher levels/depth
+ * values the color of the region becomes darker.
  */
 public class RampRegionColorStyler<T> extends RegionStylerBase<T> {
     public int depth;

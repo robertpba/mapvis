@@ -19,6 +19,8 @@ import java.util.ResourceBundle;
 
 /**
  * Created by dacc on 10/22/2015.
+ * This Controller is responsible for the loading a tree dumped to file
+ * according to the UI settings.
  */
 public class LoadDumpedTreeSettingsController implements Initializable, IDatasetGeneratorController {
 
@@ -28,7 +30,6 @@ public class LoadDumpedTreeSettingsController implements Initializable, IDataset
     private TextField selectedFileTextfield;
 
     private File selectedFile;
-
     private FileChooser fileChooser;
     private Yaml yaml;
 

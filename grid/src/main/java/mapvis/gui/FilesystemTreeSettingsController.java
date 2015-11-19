@@ -19,6 +19,8 @@ import java.util.ResourceBundle;
 
 /**
  * Created by dacc on 10/9/2015.
+ * This Controller is responsible for the generation of the FilesystemTree
+ * according to the UI.
  */
 public class FilesystemTreeSettingsController implements Initializable, IDatasetGeneratorController {
 
@@ -55,7 +57,6 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
         }
         selectedDirectory = selectedFolder;
         treeGenerator.setRootNode(new FilesystemNode(selectedFolder.getPath()));
-        System.out.printf("Path:" + selectedFolder.getPath());
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
     }
 

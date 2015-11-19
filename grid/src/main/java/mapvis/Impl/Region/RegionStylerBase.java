@@ -10,6 +10,10 @@ import mapvis.models.Region;
 
 /**
  * Created by dacc on 11/12/2015.
+ * This styles defines BackgroundColor of the Scene, BorderWidths,
+ * Labeling of Regions. It ensures that the rendering of Borders,
+ * Region Colors and Labels is performed according to the selections
+ * in the UI.
  */
 public class RegionStylerBase<T> implements IRegionStyler<T> {
 

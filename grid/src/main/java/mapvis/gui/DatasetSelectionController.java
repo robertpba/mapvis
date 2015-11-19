@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import mapvis.Impl.HashMapGrid;
+import mapvis.Impl.Region.BorderCreator;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
@@ -17,11 +18,13 @@ import mapvis.models.ConfigurationConstants;
 import mapvis.models.Grid;
 import mapvis.models.Region;
 
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 
+/**
+ * This Controller is controls the selection of the TreeGenerators and delegates
+ * the generation of the tree to the responsible @IDatasetGeneratorController
+ */
 public class DatasetSelectionController implements Initializable {
     private static final String INFO_AREA_PROCESS_SEPARATOR = "-------------";
 
@@ -127,19 +130,19 @@ public class DatasetSelectionController implements Initializable {
     @FXML
     private void generateTree(ActionEvent event) {
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
-        logTextToInfoArea("reading data..");
+        logTextToInfoArea("generating tree..");
         if(selectedDatasetGenerator == null){
             return;
         }
         MPTreeImp<INode> generatedTree = null;
         try {
             generatedTree = selectedDatasetGenerator.generateTree(event);
-        } catch (FileNotFoundException e) {
-            logTextToInfoArea("reading data failed: " + e);
+        } catch (Exception e) {
+            logTextToInfoArea("tenerating tree failed: " + e);
             return;
         }
         setTreeModel(generatedTree);
-        logTextToInfoArea("reading data finished");
+        logTextToInfoArea("tree generation finished");
         lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
         logTextToInfoArea(lastTreeStatistics.get() != null ?
                 lastTreeStatistics.get().createStatisticsOverview(true)
@@ -154,7 +157,7 @@ public class DatasetSelectionController implements Initializable {
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 
-        Set<INode> leaves = tree.get().getLeaves();
+//        Set<INode> leaves = tree.get().getLeaves();
 //        logTextToInfoArea(String.format("%d leaves", leaves.size()));
     }
 
@@ -164,9 +167,11 @@ public class DatasetSelectionController implements Initializable {
             int levelsToDrop = Integer.parseInt(dropLevelsTextField.getText());
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Dropping levels > " + levelsToDrop);
+
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
             TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
             TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics.get(), cappedTreeStatistics);
+
             MPTreeImp<INode> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
             lastTreeStatistics.set(cappedTreeStatistics);
@@ -174,12 +179,16 @@ public class DatasetSelectionController implements Initializable {
                 logTextToInfoArea("Error dropping levels");
                 return;
             }
+
             logTextToInfoArea("Dropping finished");
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("New Tree:");
+
             logTextToInfoArea(lastTreeStatistics.get().createStatisticsOverview(false));
+
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Diff to last tree:");
+
             logTextToInfoArea(diffTreeStatistics.createStatisticsOverview(true));
         }catch (NumberFormatException ex){
             return;

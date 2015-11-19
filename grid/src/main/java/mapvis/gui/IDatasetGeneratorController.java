@@ -10,7 +10,13 @@ import java.io.FileNotFoundException;
  * Created by dacc on 10/12/2015.
  */
 public interface IDatasetGeneratorController {
+
     void setVisible(boolean isVisible);
-    MPTreeImp<INode> generateTree(ActionEvent event) throws FileNotFoundException;
+
+    MPTreeImp<INode> generateTree(ActionEvent event) throws Exception;
+
+    /**
+     * @return the name of the generated Tree type
+     */
     String toString();
 }

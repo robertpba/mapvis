@@ -16,6 +16,10 @@ import mapvis.treeGenerator.RandomTreeGenerator;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This Controller is responsible for the generation of the
+ * RandomTree according to the UI.
+ */
 public class RandomTreeSettingsController implements Initializable, IDatasetGeneratorController {
     @FXML
     private TextField weightField;

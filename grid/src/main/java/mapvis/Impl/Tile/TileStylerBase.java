@@ -122,11 +122,6 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return Color.AQUAMARINE;
     }
 
-    @Override
-    public void setMaxBorderLevelToShow(int maxBorderLevelToShow) {
-        this.maxBorderLevelToShow = maxBorderLevelToShow;
-    }
-
 
     private TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
@@ -186,7 +181,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
     protected Color getBorderColorByLevel(int l){
         return Color.BLACK;
     }
-    public Color getColorByValue(T v) {
+    public Color getColorByValue(T nodeItem) {
         return Color.RED;
     }
 

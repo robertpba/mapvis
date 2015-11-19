@@ -60,7 +60,11 @@
         </VBox>
     </bottom>
     <center>
-        <HexagonalTilingView fx:id="chart" BorderPane.alignment="CENTER">
-        </HexagonalTilingView>
+        <VBox BorderPane.alignment="CENTER">
+        <children>
+            <HexagonalTilingView fx:id="chart" BorderPane.alignment="CENTER">
+            </HexagonalTilingView>
+        </children>
+        </VBox>
     </center>
 </BorderPane>

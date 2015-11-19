@@ -12,6 +12,11 @@ import mapvis.models.Dir;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class is resonsible to render a hexagon
+ * at the provided position on the screen. Rendering
+ * is performed according to the provided @TileStyler.
+ */
 public class HexagonRender {
     static final int[][] DIR_TO_POINTS = new int[][]{
             new int[]{ 0,  1,  2,  3},

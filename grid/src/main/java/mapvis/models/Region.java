@@ -6,6 +6,10 @@ import java.util.List;
 
 /**
  * Created by dacc on 10/26/2015.
+ * Region are created for each Node in the tree. Regions
+ * have store their subregions as childRegions. The borders
+ * the region can be calculated by accumulating the border
+ * segements stored in the LeafRegions of its children.
  */
 public class Region<T> {
     final T nodeItem;

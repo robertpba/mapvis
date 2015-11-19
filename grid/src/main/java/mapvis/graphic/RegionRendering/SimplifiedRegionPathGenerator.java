@@ -4,8 +4,7 @@ import com.goebl.simplify.PointExtractor;
 import com.goebl.simplify.Simplify;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import mapvis.graphic.RegionRendering.IRegionPathGenerator;
-import mapvis.models.LeafRegion;
+import mapvis.models.BoundaryShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,14 @@ public class SimplifiedRegionPathGenerator implements IRegionPathGenerator {
         this.graphicsContext = graphicsContext;
     }
 
-    public List<Point2D[]> generatePathForBoundaryShape(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape) {
         List<Point2D[]> simplifiedShape = new ArrayList<>();
-        for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
+        for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
             List<Point2D> shapePoints = new ArrayList<Point2D>();
 
             for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-                double xValue = partialRegionBoundary.getXValueAtIndex(i);
-                double yValue = partialRegionBoundary.getYValueAtIndex(i);
+                double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
+                double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);
 
                 shapePoints.add(new Point2D(xValue, yValue));
             }

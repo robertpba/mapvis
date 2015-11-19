@@ -3,7 +3,7 @@ package mapvis.graphic.RegionRendering;
 import javafx.scene.canvas.GraphicsContext;
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.LeafRegion;
+import mapvis.models.BoundaryShape;
 
 import java.util.List;
 import java.util.Random;
@@ -30,16 +30,16 @@ public class RegionBorderRenderer {
     }
 
 
-    public void drawBorder(IRegionStyler<INode> styler, List<List<LeafRegion.BoundaryShape>> regionBorders, HexagonalTilingView view) {
+    public void drawBorder(IRegionStyler<INode> styler, List<List<BoundaryShape>> regionBorders, HexagonalTilingView view) {
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
-        for (List<LeafRegion.BoundaryShape> regionParts : regionBorders) {
-            for (LeafRegion.BoundaryShape regionPart : regionParts) {
+        for (List<BoundaryShape> regionParts : regionBorders) {
+            for (BoundaryShape regionPart : regionParts) {
                 if ( !isSingleSideBorderRenderingEnabled  || regionPart.border.getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.border)){
                         graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.border));
-                        graphicsContext.strokePolyline(regionPart.getxValues(), regionPart.getyValues(), regionPart.getShapeLength());
+                        graphicsContext.strokePolyline(regionPart.getXCoords(), regionPart.getYCoords(), regionPart.getShapeLength());
                         drawIndex++;
                     }
                 }

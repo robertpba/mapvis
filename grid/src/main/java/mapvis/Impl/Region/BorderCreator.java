@@ -1,4 +1,4 @@
-package mapvis.gui;
+package mapvis.Impl.Region;
 
 import javafx.geometry.Point2D;
 import mapvis.algo.Method1;

@@ -8,6 +8,12 @@ import java.util.List;
 
 /**
  * Created by dacc on 11/18/2015.
+ * @TileBorder stores a segment of a @Border. A @TileBorder
+ * stores the position in the grid and a List of Directions.
+ * The directions define the edges along the hexagon as in an
+ * abstract manner. Concrete screen coordinates of the edges
+ * can be calculated using the @TileBorder#calcStartPointForBorderEdge
+ * and @TileBorder#calcEndPointForBorderEdge methods.
  */
 public class TileBorder {
 

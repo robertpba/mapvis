@@ -2,6 +2,7 @@ package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
 import mapvis.graphic.RegionRendering.IRegionStyler;
+import mapvis.models.BoundaryShape;
 import mapvis.models.LeafRegion;
 import mapvis.models.Region;
 
@@ -19,5 +20,5 @@ public interface IBorderCoordinatesCalculator<T> {
 
     List<Point2D> getDebugPoints();
 
-    Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean orderBorders, int levelToCollect);
+    Map<Region<T>, List<List<BoundaryShape>>> computeCoordinates(boolean orderBorders, int levelToCollect);
 }

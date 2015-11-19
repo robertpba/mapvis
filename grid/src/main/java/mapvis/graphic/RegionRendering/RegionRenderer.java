@@ -11,6 +11,7 @@ import javafx.scene.shape.*;
 
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.BoundaryShape;
 import mapvis.models.LeafRegion;
 import mapvis.models.Region;
 import mapvis.models.Tile;
@@ -125,18 +126,18 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         IRegionStyler<INode> regionStyler = view.getRegionStyler();
         int maxLevelToCollect = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
 
-        Map<Region<INode>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculator.
+        Map<Region<INode>, List<List<BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculator.
                 computeCoordinates(!disableOrdering, maxLevelToCollect);
 //        GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
 
 //
-        for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-            List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+        for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+            List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
             regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
         }
 //
-//        for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-//            List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+//        for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+//            List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
 //            Region<INode> region = boundaryShapeTuple.getKey();
 //            regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
 //        }
@@ -145,8 +146,8 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 //            if(maxLevelToCollect != regionStyler.getMaxLabelLevelToShow()){
 //                regionToBoundaryShapes = borderCoordinatesCalculator.computeCoordinates(false, regionStyler.getMaxLabelLevelToShow());
 //            }
-//            for (Map.Entry<Region<INode>, List<List<LeafRegion.BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-//                List<List<LeafRegion.BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
+//            for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+//                List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
 //                Region<INode> region = boundaryShapeTuple.getKey();
 //                regionLabelRenderer.drawLabels(regionStyler, region, boundaryShapes);
 //            }

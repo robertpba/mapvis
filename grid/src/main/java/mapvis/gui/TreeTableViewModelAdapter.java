@@ -4,6 +4,10 @@ import javafx.scene.control.TreeItem;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 
+/**
+ * @TreeTableViewModelAdapter is used to visualize the
+ * tree in the TreeViewer
+ */
 public class TreeTableViewModelAdapter {
     private Tree2<INode> tree;
 

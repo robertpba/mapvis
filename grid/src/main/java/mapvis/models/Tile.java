@@ -1,5 +1,13 @@
 package mapvis.models;
 
+/**
+ * A tile corresponds to a Hexagon in the Visualization.
+ * It stored the Tile position in the grid and the Node
+ * Element of the Tree as item.
+ * Depending on the visualization the Hexagon/Tile may be
+ * occupied (LAND) or not (Empty, Sea)
+ * @param <T>
+ */
 public class Tile<T> {
     private T item;
     private int tag;

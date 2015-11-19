@@ -14,7 +14,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
     private final HexagonalTilingView view;
     private Region<T> region;
     private List<Point2D> debugPoints;
-    private Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> regionToBoundaries = new HashMap<>();
+    private Map<Region<T>, List<List<BoundaryShape>>> regionToBoundaries = new HashMap<>();
     private IRegionStyler regionStyler;
     private int maxLevelToCollect;
 
@@ -24,7 +24,7 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
     }
 
     @Override
-    public Map<Region<T>, List<List<LeafRegion.BoundaryShape>>> computeCoordinates(boolean doOrdering, int levelToCollect) {
+    public Map<Region<T>, List<List<BoundaryShape>>> computeCoordinates(boolean doOrdering, int levelToCollect) {
         if(region == null)
             return new HashMap<>();
 
@@ -52,13 +52,13 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
     private void computeCoordinates(Region<T> region, boolean doOrdering) {
 
         if( hasRegionAreasOrBordersToShow(region) ){
-            List<LeafRegion.BoundaryShape> boundaryShapes = collectBoundariesForRegion(region);
+            List<BoundaryShape> boundaryShapes = collectBoundariesForRegion(region);
 
             if(doOrdering){
-                List<List<LeafRegion.BoundaryShape>> lists = orderBoundaryShapes(boundaryShapes);
+                List<List<BoundaryShape>> lists = orderBoundaryShapes(boundaryShapes);
                 regionToBoundaries.put(region, lists);
             }else{
-                List<List<LeafRegion.BoundaryShape>> bShapeList = new ArrayList<>();
+                List<List<BoundaryShape>> bShapeList = new ArrayList<>();
                 bShapeList.add(boundaryShapes);
                 regionToBoundaries.put(region, bShapeList);
             }
@@ -67,22 +67,22 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
         }
     }
 
-    private List<List<LeafRegion.BoundaryShape>> orderBoundaryShapes(List<LeafRegion.BoundaryShape> boundaryShapes) {
+    private List<List<BoundaryShape>> orderBoundaryShapes(List<BoundaryShape> boundaryShapes) {
         if(boundaryShapes.isEmpty())
             return Collections.emptyList();
 
         UndirectedEdgeHashMap undirectedEdgeHashMap = new UndirectedEdgeHashMap();
-        for (LeafRegion.BoundaryShape boundaryShape : boundaryShapes) {
+        for (BoundaryShape boundaryShape : boundaryShapes) {
             undirectedEdgeHashMap.put(boundaryShape);
         }
 
 
-        List<LeafRegion.BoundaryShape> boundaryShape = new ArrayList<>();
+        List<BoundaryShape> boundaryShape = new ArrayList<>();
 
-        List<List<LeafRegion.BoundaryShape>> resultingBoundaryShape = new ArrayList<>();
+        List<List<BoundaryShape>> resultingBoundaryShape = new ArrayList<>();
 
         Point2D currentPoint = null;
-        LeafRegion.BoundaryShape currentBoundaryShape = null;
+        BoundaryShape currentBoundaryShape = null;
         for (int i = 0; i < boundaryShapes.size(); i++) {
             if(i == 0){
                 //get any start edge/boundary shape and initial the current point
@@ -126,24 +126,22 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
         return resultingBoundaryShape;
     }
 
-    private List<LeafRegion.BoundaryShape> collectBoundariesForRegion(Region<T> region){
+    private List<BoundaryShape> collectBoundariesForRegion(Region<T> region){
         if(!region.isLeaf()){
-            List<LeafRegion.BoundaryShape> resultingCollection = new ArrayList<>();
+            List<BoundaryShape> resultingCollection = new ArrayList<>();
             region.getChildRegions().forEach(tRegion ->  resultingCollection.addAll(collectBoundariesForRegion(tRegion)));
             return resultingCollection;
         }
-        List<LeafRegion.BoundaryShape> boundaryShapes = calcBoundaryShapeForLeafRegion((LeafRegion<T>) region);
+        List<BoundaryShape> boundaryShapes = calcBoundaryShapeForLeafRegion((LeafRegion<T>) region);
 
         return boundaryShapes;
     }
 
-    private List<LeafRegion.BoundaryShape> calcBoundaryShapeForLeafRegion(LeafRegion<T> leafRegion) {
+    private List<BoundaryShape> calcBoundaryShapeForLeafRegion(LeafRegion<T> leafRegion) {
         List<Double> xValues = new ArrayList<>();
         List<Double> yValues = new ArrayList<>();
 
-        List<LeafRegion.BoundaryShape> result = new ArrayList<>();
-
-        List<String> descriptionTexts = new ArrayList<>();
+        List<BoundaryShape> result = new ArrayList<>();
 
         for (Border<T> border : leafRegion.getBorders()) {
 
@@ -166,12 +164,10 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
                     yValues.add(startPoint.getY());
                 }
             }
-            LeafRegion.BoundaryShape boundaryShape = new LeafRegion.BoundaryShape(
+            BoundaryShape boundaryShape = new BoundaryShape(
                     xValues.stream().mapToDouble(Double::doubleValue).toArray(),
                     yValues.stream().mapToDouble(Double::doubleValue).toArray(),
                     border);
-
-            boundaryShape.text = descriptionTexts;
 
             boundaryShape.level = border.getLevel();
             result.add(boundaryShape);

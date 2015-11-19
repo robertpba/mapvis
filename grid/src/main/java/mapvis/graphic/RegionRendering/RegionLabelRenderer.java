@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
-import mapvis.models.LeafRegion;
+import mapvis.models.BoundaryShape;
 import mapvis.models.Region;
 
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class RegionLabelRenderer {
         this.iNodeToLabelPos = new HashMap<>();
     }
 
-    public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<LeafRegion.BoundaryShape>> boundaryShapes) {
+    public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<BoundaryShape>> boundaryShapes) {
 //        graphicsContext.save();
         if(!regionStyler.isLabelVisible(region)){
             return;
@@ -50,18 +50,18 @@ public class RegionLabelRenderer {
 //    calc label position just by using the position of the tiles
 //    }
 
-    private Point2D calcLabelPos(List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes) {
+    private Point2D calcLabelPos(List<List<BoundaryShape>> regionBoundaryShapes) {
         double sumXValues = 0;
         double sumYValues = 0;
         int numOfCoords = 0;
-        for (List<LeafRegion.BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
+        for (List<BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
             if (regionBoundaryShape.size() == 0)
                 continue;
 
-            for (LeafRegion.BoundaryShape partialRegionBoundary : regionBoundaryShape) {
+            for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
                 for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-                    double xValue = partialRegionBoundary.getXValueAtIndex(i);
-                    double yValue = partialRegionBoundary.getYValueAtIndex(i);
+                    double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
+                    double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);
                     sumXValues += xValue;
                     sumYValues += yValue;
                     numOfCoords++;

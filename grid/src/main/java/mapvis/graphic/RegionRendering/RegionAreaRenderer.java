@@ -2,18 +2,15 @@ package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.*;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Pair;
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.BoundaryShape;
 import mapvis.models.ConfigurationConstants;
-import mapvis.models.LeafRegion;
 import mapvis.models.Region;
-import org.apache.batik.ext.awt.geom.Quadradic;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -25,7 +22,7 @@ public class RegionAreaRenderer {
     private final IRegionPathGenerator regionBoundaryPointsGenerator;
     private final Consumer<List<Point2D[]>> directPolyLineRenderer;
     private final Consumer<List<Point2D[]>> bezierCurveRenderer;
-    private final BiConsumer<List<LeafRegion.BoundaryShape>, Color> quadricCurveRenderer;
+    private final BiConsumer<List<BoundaryShape>, Color> quadricCurveRenderer;
     private final IRegionPathGenerator originalBorderPointsGenerator;
     private final HexagonalTilingView view;
     public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
@@ -47,7 +44,7 @@ public class RegionAreaRenderer {
             boolean firstRenderPass = true;
 
             for (int i = 0; i < boundaryShapesOfRegion.size(); i++) {
-                LeafRegion.BoundaryShape boundaryShape = boundaryShapesOfRegion.get(i);
+                BoundaryShape boundaryShape = boundaryShapesOfRegion.get(i);
                 if(boundaryShape.getShapeLength() == 2){
 //                    graphicsContext.moveTo(boundaryShape[0].getX(), boundaryShape[0].getY());
 //                    graphicsContext.lineTo(boundaryShape[1].getX(), boundaryShape[1].getY());
@@ -59,18 +56,18 @@ public class RegionAreaRenderer {
 
                 for (int j = 0; j < boundaryShape.getShapeLength() - 2; j++) {
                     if(firstRenderPass){
-                        xMid = (boundaryShape.getXValueAtIndex(0) + boundaryShape.getXValueAtIndex(1)) / 2;
-                        yMid = (boundaryShape.getYValueAtIndex(0) + boundaryShape.getYValueAtIndex(1)) / 2;
+                        xMid = (boundaryShape.getXCoordinateAtIndex(0) + boundaryShape.getXCoordinateAtIndex(1)) / 2;
+                        yMid = (boundaryShape.getYCoordinateAtIndex(0) + boundaryShape.getYCoordinateAtIndex(1)) / 2;
 
                         graphicsContext.moveTo(xMid, yMid);
                         firstPoint = new Point2D(xMid, yMid);
                         firstRenderPass = false;
                     }
 
-                    xMid = (boundaryShape.getXValueAtIndex(j) + boundaryShape.getXValueAtIndex(j + 1)) / 2;
-                    yMid = (boundaryShape.getYValueAtIndex(j) + boundaryShape.getYValueAtIndex(j + 1)) / 2;
+                    xMid = (boundaryShape.getXCoordinateAtIndex(j) + boundaryShape.getXCoordinateAtIndex(j + 1)) / 2;
+                    yMid = (boundaryShape.getYCoordinateAtIndex(j) + boundaryShape.getYCoordinateAtIndex(j + 1)) / 2;
 
-                    graphicsContext.quadraticCurveTo(boundaryShape.getXValueAtIndex(j), boundaryShape.getYValueAtIndex(j), xMid, yMid);
+                    graphicsContext.quadraticCurveTo(boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j), xMid, yMid);
                 }
 //                xMid = (xMid + nextPoint.getX())/2;
 //                yMid = (yMid + nextPoint.getY())/2;
@@ -152,7 +149,7 @@ public class RegionAreaRenderer {
     }
 
 
-    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<LeafRegion.BoundaryShape>> regionBoundaryShapes) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<BoundaryShape>> regionBoundaryShapes) {
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);
@@ -163,7 +160,7 @@ public class RegionAreaRenderer {
         regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
         graphicsContext.beginPath();
 
-        for (List<LeafRegion.BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
+        for (List<BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
 
             if (regionBoundaryShape.size() == 0)
                 continue;
@@ -195,7 +192,7 @@ public class RegionAreaRenderer {
             return;
 
         graphicsContext.beginPath();
-        for (List<LeafRegion.BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
+        for (List<BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
 
             if (regionBoundaryShape.size() == 0)
                 continue;

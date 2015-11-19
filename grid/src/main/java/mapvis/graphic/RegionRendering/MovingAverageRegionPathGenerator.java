@@ -1,7 +1,7 @@
 package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
-import mapvis.models.LeafRegion;
+import mapvis.models.BoundaryShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,11 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
     }
 
     @Override
-    public List<Point2D[]> generatePathForBoundaryShape(List<LeafRegion.BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape) {
         List<Point2D[]> result = new ArrayList<>();
 
         for (int shapeIndex = 0; shapeIndex < regionBoundaryShape.size(); shapeIndex++) {
-            LeafRegion.BoundaryShape boundaryShape = regionBoundaryShape.get(shapeIndex);
+            BoundaryShape boundaryShape = regionBoundaryShape.get(shapeIndex);
             Point2D[] avgPartOfShape = new Point2D[boundaryShape.getShapeLength()];
 
             for (int boundaryStep = 0; boundaryStep < boundaryShape.getShapeLength() - 1; boundaryStep++) {
@@ -31,14 +31,14 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
 
                 for (int windowsIndex = 0; windowsIndex < 2; windowsIndex++) {
                     int currIndex = boundaryStep + windowsIndex;
-                    sumXValues += boundaryShape.getXValueAtIndex(currIndex);
-                    sumYValues += boundaryShape.getYValueAtIndex(currIndex);
+                    sumXValues += boundaryShape.getXCoordinateAtIndex(currIndex);
+                    sumYValues += boundaryShape.getYCoordinateAtIndex(currIndex);
 
                     numOfValues++;
                 }
 
-                boundaryShape.setXValueAtIndex(boundaryStep, sumXValues / numOfValues);
-                boundaryShape.setYValueAtIndex(boundaryStep, sumYValues / numOfValues);
+                boundaryShape.setXCoordinateAtIndex(boundaryStep, sumXValues / numOfValues);
+                boundaryShape.setYCoordinateAtIndex(boundaryStep, sumYValues / numOfValues);
 
                 Point2D avgPoint = new Point2D(sumXValues / numOfValues, sumYValues / numOfValues);
 
@@ -46,9 +46,9 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
                     Point2D[] prevShape = result.get(shapeIndex - 1);
                     prevShape[prevShape.length - 1] = avgPoint;
 
-                    LeafRegion.BoundaryShape prevBoundaryShape = regionBoundaryShape.get(shapeIndex - 1);
-                    prevBoundaryShape.setYValueAtIndex(prevBoundaryShape.getShapeLength() -1, avgPoint.getY());
-                    prevBoundaryShape.setXValueAtIndex(prevBoundaryShape.getShapeLength() - 1, avgPoint.getX());
+                    BoundaryShape prevBoundaryShape = regionBoundaryShape.get(shapeIndex - 1);
+                    prevBoundaryShape.setYCoordinateAtIndex(prevBoundaryShape.getShapeLength() - 1, avgPoint.getY());
+                    prevBoundaryShape.setXCoordinateAtIndex(prevBoundaryShape.getShapeLength() - 1, avgPoint.getX());
                 }
                 avgPartOfShape[boundaryStep] = avgPoint;
 
@@ -61,10 +61,10 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
         Point2D[] lastSec = result.get(result.size() - 1);
         lastSec[lastSec.length - 1] = firstSec[0];
 
-        LeafRegion.BoundaryShape firstBoundaryShape = regionBoundaryShape.get(0);
-        LeafRegion.BoundaryShape lastBoundaryShape = regionBoundaryShape.get(regionBoundaryShape.size() - 1);
-        lastBoundaryShape.setXValueAtIndex(lastBoundaryShape.getShapeLength() - 1, firstBoundaryShape.getXValueAtIndex(0));
-        lastBoundaryShape.setYValueAtIndex(lastBoundaryShape.getShapeLength() - 1, firstBoundaryShape.getYValueAtIndex(0));
+        BoundaryShape firstBoundaryShape = regionBoundaryShape.get(0);
+        BoundaryShape lastBoundaryShape = regionBoundaryShape.get(regionBoundaryShape.size() - 1);
+        lastBoundaryShape.setXCoordinateAtIndex(lastBoundaryShape.getShapeLength() - 1, firstBoundaryShape.getXCoordinateAtIndex(0));
+        lastBoundaryShape.setYCoordinateAtIndex(lastBoundaryShape.getShapeLength() - 1, firstBoundaryShape.getYCoordinateAtIndex(0));
 
         return result;
     }

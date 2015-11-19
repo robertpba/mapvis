@@ -21,6 +21,8 @@ import java.util.ResourceBundle;
 
 /**
  * Created by dacc on 10/20/2015.
+ * This Controller is responsible to trigger the generation of the
+ * UDC Tree according to the UI.
  */
 public class UDCTreeSettingsController implements Initializable, IDatasetGeneratorController {
 

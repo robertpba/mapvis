@@ -13,6 +13,9 @@ import java.util.Random;
 
 /**
  * Created by dacc on 11/12/2015.
+ * RandomRegionColorStyler assigns a random color to each region. In case
+ * a maximum region level is defined, ChildRegions/Nodes get the color of the
+ * highest visualized parent region.
  */
 public class RandomRegionColorStyler<T> extends RegionStylerBase<T> {
     public int depth;

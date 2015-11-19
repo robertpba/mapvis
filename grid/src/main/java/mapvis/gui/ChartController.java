@@ -24,6 +24,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This Controller is responsible for the Hexagon-Region visualization.
+ * It delegates the UI controls to the @HexagonalTilingView which is responsible
+ * for rendering of the visualization.
+ */
 public class ChartController implements Initializable  {
     @FXML
     public HexagonalTilingView chart;
@@ -93,6 +98,7 @@ public class ChartController implements Initializable  {
         treeStatistics.addListener((observable2, oldValue1, newValue1) -> {
             if(newValue1 == null)
                 return;
+
             int maxDepth = newValue1.maxDepth;
             labelLevelsToShowSlider.setMax(maxDepth);
             bordersLevelsToShowSlider.setMax(maxDepth);
@@ -127,6 +133,7 @@ public class ChartController implements Initializable  {
     public void onChooseRandom(ActionEvent event){
         colorscheme.set("random");
     }
+
     @FXML
     public void onChooseRamp(ActionEvent event){
         colorscheme.set("ramp");

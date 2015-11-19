@@ -8,12 +8,22 @@ import java.util.List;
 
 /**
  * Created by dacc on 10/28/2015.
+ * Border basically store a @TileBorders. A border is the
+ * concatenation of subsequent @TileBorders. The border separate
+ * one Region by another. The concatenation of all Borders around
+ * one Region defines the Area of the Region. However, the Border
+ * datastructure only saves that segment of the entire boundary
+ * Shape of a Region where the two separated Regions stay the same.
  */
 public class Border<T> {
 
+    //the level as defined by the two separated Regions
     private int level;
     private int renderID;
 
+    //Nodeitems of the Tree belonging to the two separated Regions
+    //nodeA and nodeB are assigned according to their hash values
+    //to be able to filter the borders created for neighboring regions
     private T nodeA;
     private T nodeB;
 
@@ -62,7 +72,7 @@ public class Border<T> {
             }
             return;
         }
-
+        //use hash code to order them
         int hashNodeA = nodeA.hashCode();
         int hashNodeB = nodeB.hashCode();
         if(hashNodeA < hashNodeB){
