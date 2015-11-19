@@ -13,6 +13,7 @@ import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.ConfigurationConstants;
 import mapvis.models.Grid;
 import mapvis.models.Region;
 
@@ -106,7 +107,7 @@ public class DatasetSelectionController implements Initializable {
         Region<INode> rootRegion = method1.get().Begin();
 
         //reconstruct the borders if using region rendering
-        if(HexagonalTilingView.USE_REGION_RENDERING){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
             BorderCreator<INode> borderCreator = new BorderCreator<>(method1.get());
             borderCreator.createBorders();
 

@@ -9,6 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
+import mapvis.models.ConfigurationConstants;
 import mapvis.treeGenerator.ITreeGenerator;
 import mapvis.treeGenerator.TreeGeneratorSizeOneLeaves;
 import mapvis.treeGenerator.UDCParser;
@@ -22,8 +23,6 @@ import java.util.ResourceBundle;
  * Created by dacc on 10/20/2015.
  */
 public class UDCTreeSettingsController implements Initializable, IDatasetGeneratorController {
-
-    public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";
 
     @FXML
     private CheckBox dumpToFileCheckbox;
@@ -52,7 +51,7 @@ public class UDCTreeSettingsController implements Initializable, IDatasetGenerat
 
     @Override
     public MPTreeImp<INode> generateTree(ActionEvent event) {
-        parser.initialize(UDC_FILE_PATH);
+        parser.initialize(ConfigurationConstants.UDC_FILE_PATH);
         INode udcNodes = parser.generateUDCCathegories();
         treeGenerator.setRootNode(udcNodes);
         INode connectedUDCTree = treeGenerator.genTree();

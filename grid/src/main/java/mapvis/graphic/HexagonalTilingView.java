@@ -25,7 +25,6 @@ import mapvis.models.*;
 import java.io.IOException;
 
 public class HexagonalTilingView extends Pane {
-    public static final boolean USE_REGION_RENDERING = true;
 
     protected static final double COS30 = Math.cos(Math.toRadians(30));
     public static final double SideLength = 10;
@@ -78,7 +77,7 @@ public class HexagonalTilingView extends Pane {
         canvas.widthProperty().bind(this.widthProperty());
         canvas.heightProperty().bind(this.heightProperty());
 
-        if(USE_REGION_RENDERING){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
             renderer = new RegionRenderer(this, canvas);
         }else {
             renderer = new HexagonTreeRender(this, tileStyler, grid, tree);
@@ -122,7 +121,7 @@ public class HexagonalTilingView extends Pane {
     public void updateHexagons() {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
-        if(this.USE_REGION_RENDERING){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
             g.setFill(getRegionStyler().getBackground());
         }else{
             g.setFill(getTileStyler().getBackground());

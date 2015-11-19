@@ -8,10 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import mapvis.Impl.*;
+import mapvis.Impl.Region.RampRegionColorStyler;
+import mapvis.Impl.Region.RandomRegionColorStyler;
+import mapvis.Impl.Tile.RampColorStyler;
+import mapvis.Impl.Tile.RandomColorStyler;
+import mapvis.Impl.Tile.TileStylerBase;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.ConfigurationConstants;
 import mapvis.models.Grid;
 
 import java.net.URL;
@@ -43,7 +48,7 @@ public class AppController implements Initializable {
         tree.bindBidirectional(chartController.treeProperty());
         grid.bindBidirectional(chartController.gridProperty());
 
-        if(HexagonalTilingView.USE_REGION_RENDERING){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
             ObjectBinding db = createRegionStylerObjectBinder();
             chartController.chart.regionStylerProperty().bind(db);
         }else {

@@ -8,6 +8,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.util.Pair;
 import mapvis.common.datatype.INode;
+import mapvis.models.ConfigurationConstants;
 import mapvis.models.LeafRegion;
 import mapvis.models.Region;
 
@@ -16,14 +17,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class RegionAreaRenderer {
-    private final static boolean USE_HIGH_QUALITY_SIMPLIFICATION = true;
-    private final static float SIMPLIFICATION_TOLERANCE = 4.55f;
-    private final static float BEZIER_CURVE_SMOOTHNESS = 0.3f;
-
-    private final static boolean USE_BEZIER_CURVE = false;
-
-    private final static boolean DRAW_ORIGINAL_SHAPE = false;
-    private final static boolean FILL_SHAPE = true;
 
     private final GraphicsContext graphicsContext;
     private final IRegionPathGenerator regionBoundaryPointsGenerator;
@@ -83,7 +76,7 @@ public class RegionAreaRenderer {
         };
 
         this.bezierCurveRenderer = (shapePointArr) -> {
-            drawSpline(graphicsContext, shapePointArr, BEZIER_CURVE_SMOOTHNESS);
+            drawSpline(graphicsContext, shapePointArr, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
         };
     }
 
@@ -105,7 +98,7 @@ public class RegionAreaRenderer {
                 continue;
 
             List<Point2D[]> shapePoints = regionBoundaryPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
-            if(USE_BEZIER_CURVE){
+            if(ConfigurationConstants.USE_BEZIER_CURVE){
 //                this.bezierCurveRenderer.accept(shapePoints);
                 this.quadricCurveRenderer.accept(shapePoints);
             }else{
@@ -115,7 +108,7 @@ public class RegionAreaRenderer {
 
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
         graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
-        if(DRAW_ORIGINAL_SHAPE){
+        if(ConfigurationConstants.DRAW_ORIGINAL_SHAPE){
             this.graphicsContext.setStroke(Color.RED);
         }else{
             this.graphicsContext.setStroke(Color.BLACK);
@@ -123,11 +116,11 @@ public class RegionAreaRenderer {
 
 
         graphicsContext.stroke();
-        if(FILL_SHAPE){
+        if(ConfigurationConstants.FILL_SHAPE){
             graphicsContext.fill();
         }
 
-        if(!DRAW_ORIGINAL_SHAPE)
+        if(!ConfigurationConstants.DRAW_ORIGINAL_SHAPE)
             return;
 
         graphicsContext.beginPath();
