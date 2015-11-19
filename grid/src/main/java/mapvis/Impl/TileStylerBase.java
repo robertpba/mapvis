@@ -53,9 +53,10 @@ public class TileStylerBase<T> implements TileStyler<T> {
         this.tree = tree;
     }
 
-    void resetStyler(Tree2<T> tree, Grid<T> grid){
+    void resetStyler(Tree2<T> tree, Grid<T> grid, int maxBorderLevelToShow){
         this.tree = tree;
         this.grid = grid;
+        this.maxBorderLevelToShow = maxBorderLevelToShow;
     }
 
     @Override
@@ -174,8 +175,8 @@ public class TileStylerBase<T> implements TileStyler<T> {
 
 //        return getTree().getDepth(lca) + 1;
         int level = getTree().getDepth(lca) + 1;
-//        if(level > maxBorderLevelToShow)
-//            return 0;
+        if(level > maxBorderLevelToShow)
+            return 0;
         return level;
     }
 

@@ -104,16 +104,20 @@ public class DatasetSelectionController implements Initializable {
 
         //generate regions of visualization
         Region<INode> rootRegion = method1.get().Begin();
-        //reconstruct the borders
-        BorderCreator<INode> borderCreator = new BorderCreator<>(method1.get());
-        borderCreator.createBorders();
+
+        //reconstruct the borders if using region rendering
+        if(HexagonalTilingView.USE_REGION_RENDERING){
+            BorderCreator<INode> borderCreator = new BorderCreator<>(method1.get());
+            borderCreator.createBorders();
+
+            grid.get().resetGrid();
+            chart.setRootRegion(rootRegion);
+        }
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
 
-        chart.setRootRegion(rootRegion);
-        grid.get().resetGrid();
         chart.updateHexagons();
 
         logTextToInfoArea("rendering finished");

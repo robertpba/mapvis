@@ -19,24 +19,25 @@ import mapvis.graphic.HexagonRendering.HexagonTreeRender;
 import mapvis.graphic.HexagonRendering.TileStyler;
 import mapvis.graphic.RegionRendering.IRegionAreaStyler;
 import mapvis.graphic.RegionRendering.IRegionStyler;
+import mapvis.graphic.RegionRendering.ITreeVisualizationRenderer;
 import mapvis.graphic.RegionRendering.RegionRenderer;
 import mapvis.models.*;
 
 import java.io.IOException;
 
 public class HexagonalTilingView extends Pane {
+    public static final boolean USE_REGION_RENDERING = true;
 
     protected static final double COS30 = Math.cos(Math.toRadians(30));
     public static final double SideLength = 10;
-    private final HexagonTreeRender hexagonTreeRender;
 
-    private HexagonRender render;
-    private RegionRenderer regionRenderer;
+    private ITreeVisualizationRenderer renderer;
+
     private Canvas canvas;
 
     private ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
     private ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
-    private ObjectProperty<TileStyler<INode>> styler = new SimpleObjectProperty<>();
+    private ObjectProperty<TileStyler<INode>> tileStyler = new SimpleObjectProperty<>();
     private ObjectProperty<IRegionStyler<INode>> regionStyler = new SimpleObjectProperty<>();
 
 
@@ -48,8 +49,6 @@ public class HexagonalTilingView extends Pane {
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     private DoubleProperty originX = new SimpleDoubleProperty(0);
     private DoubleProperty originY = new SimpleDoubleProperty(0);
-    private Region<INode> world;
-
 
     public HexagonalTilingView(){
         System.out.println("Creating: " + this.getClass().getName());
@@ -64,8 +63,7 @@ public class HexagonalTilingView extends Pane {
         originX.addListener(this::onOriginXChange);
         originY.addListener(this::onOriginYChange);
         zoom.addListener(this::onZoomChange);
-//        styler.addListener(this::onStyler);
-        hexagonTreeRender = new HexagonTreeRender(this, styler, grid, tree);
+
         regionStyler.addListener(this::onRegionAreaStyler);
 
         areLabelsShown.addListener(this::onShowLabelsChanged);
@@ -81,11 +79,13 @@ public class HexagonalTilingView extends Pane {
         canvas.widthProperty().bind(this.widthProperty());
         canvas.heightProperty().bind(this.heightProperty());
 
-//        render = new HexagonRender(this);
-        regionRenderer = new RegionRenderer(this, canvas);
-        getChildren().addAll(canvas);
+        if(USE_REGION_RENDERING){
+            renderer = new RegionRenderer(this, canvas);
+        }else {
+            renderer = new HexagonTreeRender(this, tileStyler, grid, tree);
+        }
 
-//        hexagonTreeRender.updateHexagons();
+        getChildren().addAll(canvas);
     }
 
     public static Point2D hexagonalToPlain(int x, int y){
@@ -99,6 +99,7 @@ public class HexagonalTilingView extends Pane {
 
         return new Point2D(cx, cy);
     }
+
     public static Point2D planeToHexagonal(double x, double y){
         double cx = x / 3 * 2 / SideLength;
         int nx = (int) Math.round(cx);
@@ -119,29 +120,33 @@ public class HexagonalTilingView extends Pane {
         return new Point2D(x1, y1);
     }
 
-    public void updateHexagons(){
-        if(world != null)
-            updateHexagonsWithCoastCache(world);
-    }
+    public void updateHexagons() {
 
-//    public void updateHexagons(){
-////        System.out.println("updateHexagons");
-//
-//        //canvas = new Canvas(getWidth(),getHeight());
-//
-//        //Rectangle2D rect = viewport.get();
-//
-//        //getDirectChildren().setAll(canvas);
-//        hexagonTreeRender.updateHexagons();
-//    }
+        GraphicsContext g = canvas.getGraphicsContext2D();
+        g.setFill(regionStyler.get().getBackground());
+        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        Bounds rect = getLayoutBounds();
+        double x0 = - originXProperty().get()/zoomProperty().get();
+        double y0 = - originYProperty().get()/zoomProperty().get();
+        double x1 = (getWidth() - originXProperty().get())/zoomProperty().get();
+        double y1 = (getHeight()- originYProperty().get())/zoomProperty().get();
+
+        Point2D tl = planeToHexagonal(x0, y0);
+        Point2D br = planeToHexagonal(x1, y1);
+        g.save();
+
+        g.translate(originXProperty().get(), originYProperty().get());
+        g.scale(zoomProperty().get(), zoomProperty().get());
+
+        renderer.renderScene(tl, br);
+
+        g.restore();
+    }
 
     @FXML
     public void save(String filename) throws IOException {
-
-        //drawLabels(posmap, g);
-
-
-        hexagonTreeRender.save(filename);
+//        renderer.save(filename);
     }
 
 
@@ -153,9 +158,9 @@ public class HexagonalTilingView extends Pane {
     public final Tree2<INode> getTree() { return this.treeProperty().get(); }
     public final void setTree(Tree2<INode> tree) { this.treeProperty().set(tree); }
 
-//    public ObjectProperty<TileStyler<INode>> stylerProperty() { return this.styler; }
-//    public final TileStyler<INode> getStyler() { return this.stylerProperty().get(); }
-//    public final void setStyler(TileStyler<INode> styler) { this.stylerProperty().set(styler); }
+    public ObjectProperty<TileStyler<INode>> stylerProperty() { return this.tileStyler; }
+    public final TileStyler<INode> getStyler() { return this.stylerProperty().get(); }
+    public final void setStyler(TileStyler<INode> tileStyler) { this.stylerProperty().set(tileStyler); }
 
     public IRegionStyler<INode> getRegionStyler() {
         return regionStyler.get();
@@ -327,30 +332,8 @@ public class HexagonalTilingView extends Pane {
         zoom(pivot, scale);
     }
 
-    public void updateHexagonsWithCoastCache(Region<INode> region) {
-
-        GraphicsContext g = canvas.getGraphicsContext2D();
-        g.setFill(regionStyler.get().getBackground());
-        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        Bounds rect = getLayoutBounds();
-        double x0 = - originXProperty().get()/zoomProperty().get();
-        double y0 = - originYProperty().get()/zoomProperty().get();
-        double x1 = (getWidth() - originXProperty().get())/zoomProperty().get();
-        double y1 = (getHeight()- originYProperty().get())/zoomProperty().get();
-
-        Point2D tl = planeToHexagonal(x0, y0);
-        Point2D br = planeToHexagonal(x1, y1);
-        g.save();
-
-        g.translate(originXProperty().get(), originYProperty().get());
-        g.scale(zoomProperty().get(), zoomProperty().get());
-        regionRenderer.drawRegionHelper(region, tl, br);
-        g.restore();
-    }
-
     public void setRootRegion(Region<INode> rootRegion) {
-        this.world = rootRegion;
+        this.renderer.configure(rootRegion);
     }
 
     public Canvas getCanvas() {

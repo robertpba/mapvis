@@ -23,8 +23,6 @@ public class HexagonRender {
     };
     private final ObjectProperty<TileStyler<INode>> tileStyler;
 
-    private final HexagonalTilingView view;
-
     final double sideLength;
 
     final double COS30 = Math.cos(Math.toRadians(30));
@@ -36,8 +34,6 @@ public class HexagonRender {
         super();
         System.out.println("Creating: " + this.getClass().getName());
         this.sideLength = view.SideLength;
-        this.view = view;
-
         points = new double[]{
                 - sideLength/2, - sideLength*COS30, //  0 - 1
                   sideLength/2, - sideLength*COS30,  // 5  c  2

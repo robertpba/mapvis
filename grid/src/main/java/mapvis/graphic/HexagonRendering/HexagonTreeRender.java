@@ -14,6 +14,7 @@ import mapvis.common.datatype.Tree2;
 import mapvis.graphic.HexagonRendering.HexagonRender;
 import mapvis.graphic.HexagonRendering.TileStyler;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.graphic.RegionRendering.ITreeVisualizationRenderer;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
 import mapvis.models.Pos;
@@ -24,12 +25,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class HexagonTreeRender {
+public class HexagonTreeRender implements ITreeVisualizationRenderer {
     private final HexagonalTilingView hexagonalTilingView;
     private ObjectProperty<TileStyler<INode>> styler;
     private ObjectProperty<Grid<INode>> grid;
     private ObjectProperty<Tree2<INode>> tree;
     HexagonRender hexagonRender;
+
     public HexagonTreeRender(HexagonalTilingView hexagonalTilingView,
                              ObjectProperty<TileStyler<INode>> styler,
                              ObjectProperty<Grid<INode>> grid,
@@ -41,36 +43,17 @@ public class HexagonTreeRender {
         this.hexagonRender = new HexagonRender(hexagonalTilingView, styler);
     }
 
-    public void updateHexagons() {
-//        System.out.println("updateHexagons");
-        if (hexagonalTilingView.getGrid() == null)
+    @Override
+    public void renderScene(Point2D topleftBorder, Point2D bottomRightBorder) {
+        if (hexagonalTilingView.getGrid() == null || styler.get() == null)
             return;
 
-        //canvas = new Canvas(getWidth(),getHeight());
-
         GraphicsContext g = hexagonalTilingView.getCanvas().getGraphicsContext2D();
-
-        g.setFill(styler.get().getBackground());
-        g.fillRect(0, 0, hexagonalTilingView.getCanvas().getWidth(), hexagonalTilingView.getCanvas().getHeight());
-        //Rectangle2D rect = viewport.get();
-
-        Bounds rect = hexagonalTilingView.getLayoutBounds();
-        double x0 = -hexagonalTilingView.originXProperty().get() / hexagonalTilingView.zoomProperty().get();
-        double y0 = -hexagonalTilingView.originYProperty().get() / hexagonalTilingView.zoomProperty().get();
-        double x1 = (hexagonalTilingView.getWidth() - hexagonalTilingView.originXProperty().get()) / hexagonalTilingView.zoomProperty().get();
-        double y1 = (hexagonalTilingView.getHeight() - hexagonalTilingView.originYProperty().get()) / hexagonalTilingView.zoomProperty().get();
-
-        Point2D tl = HexagonalTilingView.planeToHexagonal(x0, y0);
-        Point2D br = HexagonalTilingView.planeToHexagonal(x1, y1);
-        g.save();
-
-        g.translate(hexagonalTilingView.originXProperty().get(), hexagonalTilingView.originYProperty().get());
-        g.scale(hexagonalTilingView.zoomProperty().get(), hexagonalTilingView.zoomProperty().get());
 
         List<Tile<INode>> tiles = new ArrayList<Tile<INode>>();
 
         grid.get().foreach(t -> {
-            if (isTileVisibleOnScreen(t, tl, br)) {
+            if (isTileVisibleOnScreen(t, topleftBorder, bottomRightBorder)) {
                 updateHexagon(t.getX(), t.getY(), g);
             }
             if (t.getItem() != null && t.getTag() == Tile.LAND)
@@ -81,8 +64,12 @@ public class HexagonTreeRender {
             drawLabels(posmap, g);
         }
 
-        //getDirectChildren().setAll(canvas);
         g.restore();
+    }
+
+    @Override
+    public void configure(Object input) {
+
     }
 
     private boolean isTileVisibleOnScreen(Tile<INode> tile, Point2D topleftBorder, Point2D bottomRightBorder) {

@@ -15,13 +15,14 @@ import java.util.Map;
 /**
  * Created by dacc on 10/26/2015.
  */
-public class RegionRenderer {
+public class RegionRenderer implements ITreeVisualizationRenderer {
 
     private final Canvas canvas;
     private final RegionLabelRenderer regionLabelRenderer;
     private final HexagonalTilingView view;
     private final RegionAreaRenderer regionAreaRenderer;
     private final RegionBorderRenderer regionBorderRenderer;
+    private Region regionToDraw;
 
     private final IBorderCoordinatesCalculator<INode> borderCoordinatesCalculator;
 
@@ -45,15 +46,26 @@ public class RegionRenderer {
     }
 
 
-    public void drawRegionHelper(final Region regionToDraw, final Point2D topleftBorder, final Point2D bottomRightBorder) {
+    @Override
+    public void renderScene(final Point2D topleftBorder, final Point2D bottomRightBorder) {
         regionAreaRenderer.initForNextRenderingPhase();
         regionBorderRenderer.initForNextRenderingPhase();
-        drawRegion(regionToDraw, topleftBorder, bottomRightBorder);
+        drawRegion(topleftBorder, bottomRightBorder);
         regionAreaRenderer.finishRenderingPhase();
         regionBorderRenderer.finishRenderingPhase();
     }
 
-    public void drawRegion(final Region regionToDraw, final Point2D topleftBorder, final Point2D bottomRightBorder) {
+    @Override
+    public void configure(Object input) {
+        if(input == null)
+            return;
+
+        if(input instanceof Region){
+            this.setRootRegion((Region<INode>) input);
+        }
+    }
+
+    public void drawRegion(final Point2D topleftBorder, final Point2D bottomRightBorder) {
 //        TileStyler<INode> styler = view.getStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
 
@@ -95,4 +107,7 @@ public class RegionRenderer {
         g.restore();
     }
 
+    public void setRootRegion(Region<INode> rootRegion) {
+        this.regionToDraw = rootRegion;
+    }
 }

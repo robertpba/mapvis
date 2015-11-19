@@ -26,8 +26,8 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
         rec(tree.getRoot(), null);
     }
 
-    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background){
-        super.resetStyler(tree, grid);
+    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int maxBorderLevelToShow){
+        super.resetStyler(tree, grid, maxBorderLevelToShow);
         initSyler(level, background);
     }
 
