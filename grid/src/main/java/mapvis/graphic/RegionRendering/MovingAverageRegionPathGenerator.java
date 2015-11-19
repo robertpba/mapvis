@@ -36,22 +36,35 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
 
                     numOfValues++;
                 }
+
+                boundaryShape.setXValueAtIndex(boundaryStep, sumXValues / numOfValues);
+                boundaryShape.setYValueAtIndex(boundaryStep, sumYValues / numOfValues);
+
                 Point2D avgPoint = new Point2D(sumXValues / numOfValues, sumYValues / numOfValues);
-//                avgPartOfShape[boundaryShape.getShapeLength() - 1] = new Point2D(0, 0);
+
                 if(boundaryStep == 0 && shapeIndex != 0){
                     Point2D[] prevShape = result.get(shapeIndex - 1);
                     prevShape[prevShape.length - 1] = avgPoint;
+
+                    LeafRegion.BoundaryShape prevBoundaryShape = regionBoundaryShape.get(shapeIndex - 1);
+                    prevBoundaryShape.setYValueAtIndex(prevBoundaryShape.getShapeLength() -1, avgPoint.getY());
+                    prevBoundaryShape.setXValueAtIndex(prevBoundaryShape.getShapeLength() - 1, avgPoint.getX());
                 }
                 avgPartOfShape[boundaryStep] = avgPoint;
 
             }
-
             //implement overlapping average calculation directly
             result.add(avgPartOfShape);
+
         }
         Point2D[] firstSec = result.get(0);
         Point2D[] lastSec = result.get(result.size() - 1);
         lastSec[lastSec.length - 1] = firstSec[0];
+
+        LeafRegion.BoundaryShape firstBoundaryShape = regionBoundaryShape.get(0);
+        LeafRegion.BoundaryShape lastBoundaryShape = regionBoundaryShape.get(regionBoundaryShape.size() - 1);
+        lastBoundaryShape.setXValueAtIndex(lastBoundaryShape.getShapeLength() - 1, firstBoundaryShape.getXValueAtIndex(0));
+        lastBoundaryShape.setYValueAtIndex(lastBoundaryShape.getShapeLength() - 1, firstBoundaryShape.getYValueAtIndex(0));
 
         return result;
     }

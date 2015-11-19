@@ -1,15 +1,19 @@
 package mapvis.graphic;
 
+import com.sun.javafx.geom.AreaOp;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Path;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.INode;
@@ -47,6 +51,11 @@ public class HexagonalTilingView extends Pane {
     private DoubleProperty zoom = new SimpleDoubleProperty(1);
     private DoubleProperty originX = new SimpleDoubleProperty(0);
     private DoubleProperty originY = new SimpleDoubleProperty(0);
+    private Group panel;
+
+    public Group getPanel() {
+        return panel;
+    }
 
     public HexagonalTilingView(){
         System.out.println("Creating: " + this.getClass().getName());
@@ -73,6 +82,8 @@ public class HexagonalTilingView extends Pane {
     private void initHexagonTilingView(){
         setPrefHeight(1000);
         setPrefWidth(1000);
+//        this.setMaxWidth(500);
+//        this.setMaxHeight(50);
         canvas = new Canvas();
         canvas.widthProperty().bind(this.widthProperty());
         canvas.heightProperty().bind(this.heightProperty());
@@ -82,8 +93,23 @@ public class HexagonalTilingView extends Pane {
         }else {
             renderer = new HexagonTreeRender(this, tileStyler, grid, tree);
         }
+//        panel = new Group();
+//        panel.prefHeight(1000);
+//        panel.prefWidth(1000);
+//
+//        double width = getWidth();
+//        double width1 = getLayoutBounds().getWidth();
+//
+//
+//        Scene scene = new Scene(panel, 1000, 1000);
 
+//
+//        Path path = new Path();
+//
+//        getChildren().addAll(panel);
         getChildren().addAll(canvas);
+
+
     }
 
     public static Point2D hexagonalToPlain(int x, int y){
@@ -128,7 +154,7 @@ public class HexagonalTilingView extends Pane {
         }
 
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
+//
         Bounds rect = getLayoutBounds();
         double x0 = - originXProperty().get()/zoomProperty().get();
         double y0 = - originYProperty().get()/zoomProperty().get();
@@ -138,11 +164,16 @@ public class HexagonalTilingView extends Pane {
         Point2D tl = planeToHexagonal(x0, y0);
         Point2D br = planeToHexagonal(x1, y1);
         g.save();
-
+//
         g.translate(originXProperty().get(), originYProperty().get());
         g.scale(zoomProperty().get(), zoomProperty().get());
-
+//        panel.getChildren().clear();
+//        panel.setTranslateX(originXProperty().get());
+//        panel.setTranslateY(originYProperty().get());
+//        panel.setScaleX(zoomProperty().get());
+//        panel.setScaleY(zoomProperty().get());
         renderer.renderScene(tl, br);
+//        renderer.renderScene(new Point2D(3, 3), new Point2D(3, 3));
 
         g.restore();
     }

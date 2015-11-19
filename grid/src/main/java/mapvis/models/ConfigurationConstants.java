@@ -12,9 +12,10 @@ public class ConfigurationConstants {
     public static final boolean USE_HIGH_QUALITY_SIMPLIFICATION = true;
     public static final float SIMPLIFICATION_TOLERANCE = 4.55f;
     public static final float BEZIER_CURVE_SMOOTHNESS = 0.3f;
-    public static final boolean USE_BEZIER_CURVE = false;
+
+    public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
-    public static final boolean FILL_SHAPE = true;
+    public static final boolean FILL_SHAPE = false;
 
     //UDC Tree
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";

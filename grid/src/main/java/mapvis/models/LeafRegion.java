@@ -79,12 +79,36 @@ public class LeafRegion<T> extends Region<T> {
             }
         }
 
+        public void setXValueAtIndex(int index, double value){
+            if(coordinateNeedToBeReversed){
+                xValues[xValues.length - 1 - index] = value;
+            }else{
+                xValues[index] = value;
+            }
+        }
+
+        public void setYValueAtIndex(int index, double value){
+            if(coordinateNeedToBeReversed){
+                yValues[yValues.length - 1 - index] = value;
+            }else{
+                yValues[index] = value;
+            }
+        }
+
         public double[] getxValues() {
             return xValues;
         }
 
         public double[] getyValues() {
             return yValues;
+        }
+
+        public void setxValues(double[] xValues) {
+            this.xValues = xValues;
+        }
+
+        public void setyValues(double[] yValues) {
+            this.yValues = yValues;
         }
 
         @Override

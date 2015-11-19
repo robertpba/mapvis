@@ -1,19 +1,22 @@
 package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.*;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.FillRule;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.*;
 import javafx.util.Pair;
 import mapvis.common.datatype.INode;
+import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.ConfigurationConstants;
 import mapvis.models.LeafRegion;
 import mapvis.models.Region;
+import org.apache.batik.ext.awt.geom.Quadradic;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class RegionAreaRenderer {
@@ -22,43 +25,111 @@ public class RegionAreaRenderer {
     private final IRegionPathGenerator regionBoundaryPointsGenerator;
     private final Consumer<List<Point2D[]>> directPolyLineRenderer;
     private final Consumer<List<Point2D[]>> bezierCurveRenderer;
-    private final Consumer<List<Point2D[]>> quadricCurveRenderer;
-    private final IRegionPathGenerator originalBoundaryPointsGenerator;
-
-    public RegionAreaRenderer(GraphicsContext graphicsContext) {
+    private final BiConsumer<List<LeafRegion.BoundaryShape>, Color> quadricCurveRenderer;
+    private final IRegionPathGenerator originalBorderPointsGenerator;
+    private final HexagonalTilingView view;
+    public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
         this.graphicsContext = graphicsContext;
 
 //        this.regionBoundaryPointsGenerator = new SimplifiedRegionPathGenerator(graphicsContext, SIMPLIFICATION_TOLERANCE, USE_HIGH_QUALITY_SIMPLIFICATION);
-//        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
-        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
+        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
+//        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
-        this.originalBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
+        this.originalBorderPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
-        this.quadricCurveRenderer = (shapePointArr) -> {
-            boolean firstRenderPass = true;
+        this.view = view;
+
+        this.quadricCurveRenderer = (boundaryShapesOfRegion, fillColor) -> {
+
             Point2D firstPoint = null;
             Point2D currentPoint = null;
             Point2D nextPoint = null;
-            for (int i = 0; i < shapePointArr.size(); i++) {
-                Point2D[] point2Ds = shapePointArr.get(i);
-                for (int j = 0; j < point2Ds.length - 2; j++) {
+            boolean firstRenderPass = true;
+
+            for (int i = 0; i < boundaryShapesOfRegion.size(); i++) {
+                LeafRegion.BoundaryShape boundaryShape = boundaryShapesOfRegion.get(i);
+                if(boundaryShape.getShapeLength() == 2){
+//                    graphicsContext.moveTo(boundaryShape[0].getX(), boundaryShape[0].getY());
+//                    graphicsContext.lineTo(boundaryShape[1].getX(), boundaryShape[1].getY());
+                    continue;
+                }
+
+                double xMid = 0;
+                double yMid = 0;
+
+                for (int j = 0; j < boundaryShape.getShapeLength() - 2; j++) {
                     if(firstRenderPass){
-                        double xMid = (point2Ds[0].getX() + point2Ds[1].getX()) / 2;
-                        double yMid = (point2Ds[0].getY() + point2Ds[1].getY()) / 2;
+                        xMid = (boundaryShape.getXValueAtIndex(0) + boundaryShape.getXValueAtIndex(1)) / 2;
+                        yMid = (boundaryShape.getYValueAtIndex(0) + boundaryShape.getYValueAtIndex(1)) / 2;
 
                         graphicsContext.moveTo(xMid, yMid);
                         firstPoint = new Point2D(xMid, yMid);
                         firstRenderPass = false;
                     }
-                    currentPoint = point2Ds[j];
-                    nextPoint = point2Ds[j + 1];
-                    double xMid = (currentPoint.getX() + nextPoint.getX()) / 2;
-                    double yMid = (currentPoint.getY() + nextPoint.getY()) / 2;
-                    graphicsContext.quadraticCurveTo(currentPoint.getX(), currentPoint.getY(), xMid, yMid);
+
+                    xMid = (boundaryShape.getXValueAtIndex(j) + boundaryShape.getXValueAtIndex(j + 1)) / 2;
+                    yMid = (boundaryShape.getYValueAtIndex(j) + boundaryShape.getYValueAtIndex(j + 1)) / 2;
+
+                    graphicsContext.quadraticCurveTo(boundaryShape.getXValueAtIndex(j), boundaryShape.getYValueAtIndex(j), xMid, yMid);
                 }
+//                xMid = (xMid + nextPoint.getX())/2;
+//                yMid = (yMid + nextPoint.getY())/2;
+//                graphicsContext.quadraticCurveTo(xMid, yMid, nextPoint.getX(), nextPoint.getY());
+//                graphicsContext.setFill(Color.RED);
+//                graphicsContext.fillOval(xMid, yMid, 4, 4);
+//
+//                graphicsContext.setFill(Color.YELLOW);
+//                graphicsContext.fillOval(nextPoint.getX(), nextPoint.getY(), 4, 4);
             }
-            graphicsContext.quadraticCurveTo(nextPoint.getX(), nextPoint.getY(), firstPoint.getX(), firstPoint.getY());
+
+//            graphicsContext.quadraticCurveTo(nextPoint.getX(), nextPoint.getY(), firstPoint.getX(), firstPoint.getY());
         };
+//
+//        this.quadricCurveRenderer = (shapePointArr, fillColor) -> {
+//
+//            Point2D firstPoint = null;
+//            Point2D currentPoint = null;
+//            Point2D nextPoint = null;
+//            boolean firstRenderPass = true;
+//
+//            for (int i = 0; i < shapePointArr.size(); i++) {
+//                Point2D[] point2Ds = shapePointArr.get(i);
+//                if(point2Ds.length == 2){
+////                    graphicsContext.moveTo(point2Ds[0].getX(), point2Ds[0].getY());
+////                    graphicsContext.lineTo(point2Ds[1].getX(), point2Ds[1].getY());
+//                    continue;
+//                }
+//
+//                double xMid = 0;
+//                double yMid = 0;
+//
+//                for (int j = 0; j < point2Ds.length - 2; j++) {
+//                    if(firstRenderPass){
+//                        xMid = (point2Ds[0].getX() + point2Ds[1].getX()) / 2;
+//                        yMid = (point2Ds[0].getY() + point2Ds[1].getY()) / 2;
+//
+//                        graphicsContext.moveTo(xMid, yMid);
+//                        firstPoint = new Point2D(xMid, yMid);
+//                        firstRenderPass = false;
+//                    }
+//                    currentPoint = point2Ds[j];
+//                    nextPoint = point2Ds[j + 1];
+//                    xMid = (currentPoint.getX() + nextPoint.getX()) / 2;
+//                    yMid = (currentPoint.getY() + nextPoint.getY()) / 2;
+//                    graphicsContext.quadraticCurveTo(currentPoint.getX(), currentPoint.getY(), xMid, yMid);
+//                }
+//                xMid = (xMid + nextPoint.getX())/2;
+//                yMid = (yMid + nextPoint.getY())/2;
+//                graphicsContext.quadraticCurveTo(xMid, yMid, nextPoint.getX(), nextPoint.getY());
+//                graphicsContext.setFill(Color.RED);
+//                graphicsContext.fillOval(xMid, yMid, 4, 4);
+//
+//                graphicsContext.setFill(Color.YELLOW);
+//                graphicsContext.fillOval(nextPoint.getX(), nextPoint.getY(), 4, 4);
+//            }
+//
+////            graphicsContext.quadraticCurveTo(nextPoint.getX(), nextPoint.getY(), firstPoint.getX(), firstPoint.getY());
+//        };
 
         this.directPolyLineRenderer = (shapePointArr) -> {
 
@@ -100,7 +171,7 @@ public class RegionAreaRenderer {
             List<Point2D[]> shapePoints = regionBoundaryPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
             if(ConfigurationConstants.USE_BEZIER_CURVE){
 //                this.bezierCurveRenderer.accept(shapePoints);
-                this.quadricCurveRenderer.accept(shapePoints);
+                this.quadricCurveRenderer.accept(regionBoundaryShape, regionFillColor);
             }else{
                 this.directPolyLineRenderer.accept(shapePoints);
             }
@@ -129,9 +200,9 @@ public class RegionAreaRenderer {
             if (regionBoundaryShape.size() == 0)
                 continue;
 
-            List<Point2D[]> originalShapePoints = originalBoundaryPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
+            List<Point2D[]> originalShapePoints = originalBorderPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
 //            this.bezierCurveRenderer.accept(shapePoints);
-            this.directPolyLineRenderer.accept(originalShapePoints );
+            this.directPolyLineRenderer.accept(originalShapePoints);
             this.graphicsContext.setStroke(Color.BLACK);
         }
 
