@@ -66,7 +66,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
     }
 
     public void drawRegion(final Point2D topleftBorder, final Point2D bottomRightBorder) {
-//        TileStyler<INode> styler = view.getStyler();
+//        TileStyler<INode> styler = view.getTileStyler();
         GraphicsContext g = canvas.getGraphicsContext2D();
 
         g.save();

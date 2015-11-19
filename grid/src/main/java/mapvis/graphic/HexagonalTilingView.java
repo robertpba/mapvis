@@ -14,7 +14,6 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.HexagonRendering.HexagonRender;
 import mapvis.graphic.HexagonRendering.HexagonTreeRender;
 import mapvis.graphic.HexagonRendering.TileStyler;
 import mapvis.graphic.RegionRendering.IRegionAreaStyler;
@@ -123,7 +122,12 @@ public class HexagonalTilingView extends Pane {
     public void updateHexagons() {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
-        g.setFill(regionStyler.get().getBackground());
+        if(this.USE_REGION_RENDERING){
+            g.setFill(getRegionStyler().getBackground());
+        }else{
+            g.setFill(getTileStyler().getBackground());
+        }
+
         g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         Bounds rect = getLayoutBounds();
@@ -158,9 +162,9 @@ public class HexagonalTilingView extends Pane {
     public final Tree2<INode> getTree() { return this.treeProperty().get(); }
     public final void setTree(Tree2<INode> tree) { this.treeProperty().set(tree); }
 
-    public ObjectProperty<TileStyler<INode>> stylerProperty() { return this.tileStyler; }
-    public final TileStyler<INode> getStyler() { return this.stylerProperty().get(); }
-    public final void setStyler(TileStyler<INode> tileStyler) { this.stylerProperty().set(tileStyler); }
+    public ObjectProperty<TileStyler<INode>> tileStylerProperty() { return this.tileStyler; }
+    public final TileStyler<INode> getTileStyler() { return this.tileStylerProperty().get(); }
+    public final void setTileStyler(TileStyler<INode> tileStyler) { this.tileStylerProperty().set(tileStyler); }
 
     public IRegionStyler<INode> getRegionStyler() {
         return regionStyler.get();

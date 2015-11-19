@@ -11,7 +11,7 @@ import mapvis.Impl.*;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.HexagonRendering.TileStyler;
+import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.Grid;
 
 import java.net.URL;
@@ -34,8 +34,6 @@ public class AppController implements Initializable {
 
     public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
     public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<TileStyler<INode>> tileStyler = new SimpleObjectProperty<>();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,11 +43,13 @@ public class AppController implements Initializable {
         tree.bindBidirectional(chartController.treeProperty());
         grid.bindBidirectional(chartController.gridProperty());
 
-        ObjectBinding db = createRegionStylerObjectBinder();
-
-        chartController.chart.regionStylerProperty().bind(db);
-        ObjectBinding tileStylerObjectBinding = createTileStylerObjectBinding();
-        chartController.chart.stylerProperty().bind(tileStylerObjectBinding);
+        if(HexagonalTilingView.USE_REGION_RENDERING){
+            ObjectBinding db = createRegionStylerObjectBinder();
+            chartController.chart.regionStylerProperty().bind(db);
+        }else {
+            ObjectBinding tileStylerObjectBinding = createTileStylerObjectBinding();
+            chartController.chart.tileStylerProperty().bind(tileStylerObjectBinding);
+        }
 
         datasetSelectionController.chart = chartController.chart;
         chartController.treeStatisticsProperty().bind(datasetSelectionController.lastTreeStatistics);
