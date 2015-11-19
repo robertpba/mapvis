@@ -1,7 +1,8 @@
-package mapvis.Impl;
+package mapvis.Impl.Region;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
+import mapvis.Impl.Tile.TileStylerBase;
 import mapvis.common.datatype.Tree2;
 import mapvis.models.Region;
 

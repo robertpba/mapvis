@@ -23,15 +23,14 @@ public class HashMapGrid<T> implements Grid<T> {
     }
 
     @Override
-    public int getMinY() {
-        return minY;
-    }
-
-    @Override
     public void resetGrid() {
         map.clear();
     }
 
+    @Override
+    public int getMinY() {
+        return minY;
+    }
     @Override
     public int getMinX() {
         return minX;
@@ -53,7 +52,6 @@ public class HashMapGrid<T> implements Grid<T> {
         minY = Math.min(minY, tile.getY());
         maxY = Math.max(maxY, tile.getY());
     }
-
 
     @Override
     public Tile<T> getTile(Pos pos) {

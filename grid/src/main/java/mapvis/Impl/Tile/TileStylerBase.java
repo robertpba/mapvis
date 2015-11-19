@@ -1,4 +1,4 @@
-package mapvis.Impl;
+package mapvis.Impl.Tile;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -53,7 +53,7 @@ public class TileStylerBase<T> implements TileStyler<T> {
         this.tree = tree;
     }
 
-    void resetStyler(Tree2<T> tree, Grid<T> grid, int maxBorderLevelToShow){
+    public void resetStyler(Tree2<T> tree, Grid<T> grid, int maxBorderLevelToShow){
         this.tree = tree;
         this.grid = grid;
         this.maxBorderLevelToShow = maxBorderLevelToShow;

@@ -1,4 +1,4 @@
-package mapvis.Impl;
+package mapvis.Impl.Tile;
 
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
