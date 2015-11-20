@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by dacc on 11/16/2015.
  */
-public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
+public class MovingAverageRegionPathGenerator<T> implements IRegionPathGenerator<T> {
     private int averageWindowSize;
 
     public MovingAverageRegionPathGenerator(int avergeWindowSize){
@@ -17,7 +17,7 @@ public class MovingAverageRegionPathGenerator implements IRegionPathGenerator {
     }
 
     @Override
-    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape) {
         List<Point2D[]> result = new ArrayList<>();
 
         for (int shapeIndex = 0; shapeIndex < regionBoundaryShape.size(); shapeIndex++) {

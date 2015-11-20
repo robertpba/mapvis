@@ -9,6 +9,6 @@ import java.util.List;
 /**
  * Created by dacc on 11/16/2015.
  */
-public interface IRegionPathGenerator {
-    List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape);
+public interface IRegionPathGenerator<T> {
+    List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape);
 }

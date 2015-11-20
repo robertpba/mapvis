@@ -9,7 +9,7 @@ import mapvis.models.BoundaryShape;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimplifiedRegionPathGenerator implements IRegionPathGenerator {
+public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T> {
     private final GraphicsContext graphicsContext;
     private final float tolerance;
     private final boolean useHighQuality;
@@ -20,7 +20,7 @@ public class SimplifiedRegionPathGenerator implements IRegionPathGenerator {
         this.graphicsContext = graphicsContext;
     }
 
-    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape) {
         List<Point2D[]> simplifiedShape = new ArrayList<>();
         for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
             List<Point2D> shapePoints = new ArrayList<Point2D>();

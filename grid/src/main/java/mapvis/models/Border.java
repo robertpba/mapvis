@@ -27,6 +27,9 @@ public class Border<T> {
     private T nodeA;
     private T nodeB;
 
+    private boolean reverseForNodeARequired;
+    private boolean reverseForNodeBRequired;
+
     private List<TileBorder> borderCoordinates;
 
     public Border() {
@@ -117,4 +120,47 @@ public class Border<T> {
         return TileBorder.calcStartPointForBorderEdge(borderCoordinate.getTilePos(), dir);
     }
 
+    public BoundaryShape<T> calcBoundaryShape(){
+        List<Double> xCoordinates = new ArrayList<>();
+        List<Double> yCoordinates = new ArrayList<>();
+        for (TileBorder tileBorder : borderCoordinates) {
+            for (Dir direction : tileBorder.getDirections()) {
+                Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(
+                        TileBorder.calcStartPointForBorderEdge(tileBorder.getTilePos(),
+                                direction)
+                );
+
+                xCoordinates.add(startPoint.getX());
+                yCoordinates.add(startPoint.getY());
+            }
+        }
+        BoundaryShape<T> boundaryShape = new BoundaryShape(
+                xCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
+                yCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
+                this);
+
+        boundaryShape.level = this.level;
+        return boundaryShape;
+    }
+
+    public void setReverseRequiredForNode(boolean reverseRequired, T node) {
+        if(node.equals(nodeA)){
+            this.reverseForNodeARequired = reverseRequired;
+        }else if(node.equals(nodeB)){
+            this.reverseForNodeBRequired = reverseRequired;
+        }else{
+            System.out.println("node matching failed!!");
+        }
+    }
+
+    public boolean isReverseForNodeRequired(T node){
+        if(node.equals(nodeA)){
+            return reverseForNodeARequired;
+        }else if(node.equals(nodeB)){
+            return reverseForNodeBRequired;
+        }else{
+            System.out.println("node matching failed!!");
+        }
+        return false;
+    }
 }

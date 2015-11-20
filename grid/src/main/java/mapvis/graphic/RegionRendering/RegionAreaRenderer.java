@@ -20,9 +20,9 @@ public class RegionAreaRenderer {
 
     private final GraphicsContext graphicsContext;
     private final IRegionPathGenerator regionBoundaryPointsGenerator;
-    private final BiConsumer<List<BoundaryShape>, Color> directPolyLineRenderer;
-    private final BiConsumer<List<BoundaryShape>, Color> bezierCurveRenderer;
-    private final BiConsumer<List<BoundaryShape>, Color> quadricCurveRenderer;
+    private final BiConsumer<List<BoundaryShape<INode>>, Color> directPolyLineRenderer;
+    private final BiConsumer<List<BoundaryShape<INode>>, Color> bezierCurveRenderer;
+    private final BiConsumer<List<BoundaryShape<INode>>, Color> quadricCurveRenderer;
     private final IRegionPathGenerator originalBorderPointsGenerator;
     private final HexagonalTilingView view;
     public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
@@ -147,14 +147,34 @@ public class RegionAreaRenderer {
             boolean firstRenderPass = true;
             for (BoundaryShape boundaryShape : boundaryShapesOfRegion) {
                 for (int i = 0; i < boundaryShape.getXCoords().length; i++) {
-                    if(firstRenderPass){
+                    if (firstRenderPass) {
                         graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
                         firstRenderPass = false;
-                    }else{
+                    } else {
                         graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
                     }
                 }
             }
+//            int shape = 0;
+//            for (BoundaryShape boundaryShape : boundaryShapesOfRegion) {
+//                for (int i = 0; i < boundaryShape.getXCoords().length; i++) {
+//                    if(firstRenderPass){
+//                        graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+//                        firstRenderPass = false;
+//                    }else{
+//                        graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+//                    }
+//                }
+//                graphicsContext.strokeLine(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(),
+//                        boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint());
+//
+//                graphicsContext.strokeLine(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(),
+//                        boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint());
+//
+//                graphicsContext.strokeText("" + shape, (boundaryShape.getXCoordinateStartpoint() + boundaryShape.getXCoordinateEndpoint())/2
+//                        , (boundaryShape.getYCoordinateStartpoint() + boundaryShape.getYCoordinateEndpoint()) / 2);
+//                shape++;
+//            }
         };
 
         this.bezierCurveRenderer = (boundaryShapesOfRegion, fillColor) -> {
@@ -163,7 +183,7 @@ public class RegionAreaRenderer {
     }
 
 
-    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<BoundaryShape>> regionBoundaryShapes) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<BoundaryShape<INode>>> regionBoundaryShapes) {
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);
@@ -174,7 +194,7 @@ public class RegionAreaRenderer {
         regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
         graphicsContext.beginPath();
 
-        for (List<BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
+        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
 
             if (regionBoundaryShape.size() == 0)
                 continue;
@@ -212,7 +232,7 @@ public class RegionAreaRenderer {
             return;
 
         graphicsContext.beginPath();
-        for (List<BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
+        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
 
             if (regionBoundaryShape.size() == 0)
                 continue;
@@ -229,7 +249,7 @@ public class RegionAreaRenderer {
 //        graphicsContext.fill();
     }
 
-    private void drawSpline(GraphicsContext graphicsContext, List<BoundaryShape> boundaryShapesOfRegion, Color fillColor, float bezierCurveSmoothness) {
+    private void drawSpline(GraphicsContext graphicsContext, List<BoundaryShape<INode>> boundaryShapesOfRegion, Color fillColor, float bezierCurveSmoothness) {
         List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
 
         List<Point2D> inputPointList = new ArrayList<>();

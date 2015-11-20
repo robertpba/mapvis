@@ -16,6 +16,7 @@ import mapvis.models.LeafRegion;
 import mapvis.models.Region;
 import mapvis.models.Tile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -74,6 +75,8 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
     public void drawRegion(final Point2D topleftBorder, final Point2D bottomRightBorder) {
 
+        if(regionToDraw == null)
+            return;
         GraphicsContext g = canvas.getGraphicsContext2D();
 //        Path path = new Path();
 //
@@ -126,15 +129,32 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         IRegionStyler<INode> regionStyler = view.getRegionStyler();
         int maxLevelToCollect = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
 
-        Map<Region<INode>, List<List<BoundaryShape>>> regionToBoundaryShapes = borderCoordinatesCalculator.
-                computeCoordinates(!disableOrdering, maxLevelToCollect);
+//        Map<Region<INode>, List<List<BoundaryShape<INode>>>> regionToBoundaryShapes = borderCoordinatesCalculator.
+//                computeCoordinates(!disableOrdering, maxLevelToCollect);
+
+        List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxLevelToCollect);
+
+//        Map<Region<INode>, List<List<BoundaryShape<INode>>>> regionToBoundaryShapesNew = new HashMap<>();
+
+//        for (Region<INode> region : childRegionsAtLevel) {
+//            List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+//           regionToBoundaryShapesNew.put(region, boundaryShape);
+//        }
+
+        for (Region<INode> region : childRegionsAtLevel) {
+            List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+
+            regionAreaRenderer.drawArea(regionStyler, region, boundaryShape);
+        }
+
+
 //        GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
 
-//
-        for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-            List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
-            regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
-        }
+
+//        for (Map.Entry<Region<INode>, List<List<BoundaryShape<INode>>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
+//            List<List<BoundaryShape<INode>>> boundaryShapes = boundaryShapeTuple.getValue();
+//            regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
+//        }
 //
 //        for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
 //            List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();

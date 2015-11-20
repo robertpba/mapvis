@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by dacc on 11/16/2015.
  */
-public class DirectRegionPathGenerator implements IRegionPathGenerator {
+public class DirectRegionPathGenerator<T> implements IRegionPathGenerator<T> {
     private final GraphicsContext graphicsContext;
 
     public DirectRegionPathGenerator(GraphicsContext graphicsContext) {
@@ -18,7 +18,7 @@ public class DirectRegionPathGenerator implements IRegionPathGenerator {
     }
 
     @Override
-    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape> regionBoundaryShape) {
+    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape) {
         List<Point2D[]> shapePoints = new ArrayList<>();
         for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
             Point2D[] partialShapPoints = new Point2D[partialRegionBoundary.getShapeLength()];
