@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Created by dacc on 11/6/2015.
  */
-public class BoundaryShapeSorter  {
+public class BoundaryShapeSorter {
 
     public static <T> List<List<BoundaryShape<T>>> orderBoundaryShapes(List<BoundaryShape<T>> boundaryShapes) {
         if(boundaryShapes.isEmpty())

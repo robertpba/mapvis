@@ -27,9 +27,6 @@ public class Border<T> {
     private T nodeA;
     private T nodeB;
 
-    private boolean reverseForNodeARequired;
-    private boolean reverseForNodeBRequired;
-
     private List<TileBorder> borderCoordinates;
 
     public Border() {
@@ -141,26 +138,5 @@ public class Border<T> {
 
         boundaryShape.level = this.level;
         return boundaryShape;
-    }
-
-    public void setReverseRequiredForNode(boolean reverseRequired, T node) {
-        if(node.equals(nodeA)){
-            this.reverseForNodeARequired = reverseRequired;
-        }else if(node.equals(nodeB)){
-            this.reverseForNodeBRequired = reverseRequired;
-        }else{
-            System.out.println("node matching failed!!");
-        }
-    }
-
-    public boolean isReverseForNodeRequired(T node){
-        if(node.equals(nodeA)){
-            return reverseForNodeARequired;
-        }else if(node.equals(nodeB)){
-            return reverseForNodeBRequired;
-        }else{
-            System.out.println("node matching failed!!");
-        }
-        return false;
     }
 }

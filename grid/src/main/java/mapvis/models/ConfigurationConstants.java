@@ -18,7 +18,7 @@ public class ConfigurationConstants {
         Quadric,
         Direct
     };
-    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Direct;
+    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Bezier;
 
     public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
