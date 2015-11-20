@@ -20,17 +20,18 @@ public class RegionAreaRenderer {
 
     private final GraphicsContext graphicsContext;
     private final IRegionPathGenerator regionBoundaryPointsGenerator;
-    private final Consumer<List<Point2D[]>> directPolyLineRenderer;
-    private final Consumer<List<Point2D[]>> bezierCurveRenderer;
+    private final BiConsumer<List<BoundaryShape>, Color> directPolyLineRenderer;
+    private final BiConsumer<List<BoundaryShape>, Color> bezierCurveRenderer;
     private final BiConsumer<List<BoundaryShape>, Color> quadricCurveRenderer;
     private final IRegionPathGenerator originalBorderPointsGenerator;
     private final HexagonalTilingView view;
     public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
         this.graphicsContext = graphicsContext;
 
-//        this.regionBoundaryPointsGenerator = new SimplifiedRegionPathGenerator(graphicsContext, SIMPLIFICATION_TOLERANCE, USE_HIGH_QUALITY_SIMPLIFICATION);
-        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
-//        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
+//        this.regionBoundaryPointsGenerator = new SimplifiedRegionPathGenerator(graphicsContext,
+//                ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
+//        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
+        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
         this.originalBorderPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
@@ -46,8 +47,8 @@ public class RegionAreaRenderer {
             for (int i = 0; i < boundaryShapesOfRegion.size(); i++) {
                 BoundaryShape boundaryShape = boundaryShapesOfRegion.get(i);
                 if(boundaryShape.getShapeLength() == 2){
-//                    graphicsContext.moveTo(boundaryShape[0].getX(), boundaryShape[0].getY());
-//                    graphicsContext.lineTo(boundaryShape[1].getX(), boundaryShape[1].getY());
+//                    graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(0), boundaryShape.getYCoordinateAtIndex(0));
+//                    graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(1), boundaryShape.getYCoordinateAtIndex(1));
                     continue;
                 }
 
@@ -128,23 +129,23 @@ public class RegionAreaRenderer {
 ////            graphicsContext.quadraticCurveTo(nextPoint.getX(), nextPoint.getY(), firstPoint.getX(), firstPoint.getY());
 //        };
 
-        this.directPolyLineRenderer = (shapePointArr) -> {
+        this.directPolyLineRenderer = (boundaryShapesOfRegion, fillColor) -> {
 
             boolean firstRenderPass = true;
-            for (Point2D[] point2Ds : shapePointArr) {
-                for (Point2D point2D : point2Ds) {
+            for (BoundaryShape boundaryShape : boundaryShapesOfRegion) {
+                for (int i = 0; i < boundaryShape.getXCoords().length; i++) {
                     if(firstRenderPass){
-                        graphicsContext.moveTo(point2D.getX(), point2D.getY());
+                        graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
                         firstRenderPass = false;
                     }else{
-                        graphicsContext.lineTo(point2D.getX(), point2D.getY());
+                        graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
                     }
                 }
             }
         };
 
-        this.bezierCurveRenderer = (shapePointArr) -> {
-            drawSpline(graphicsContext, shapePointArr, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
+        this.bezierCurveRenderer = (boundaryShapesOfRegion, fillColor) -> {
+            drawSpline(graphicsContext, boundaryShapesOfRegion, fillColor, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
         };
     }
 
@@ -167,10 +168,10 @@ public class RegionAreaRenderer {
 
             List<Point2D[]> shapePoints = regionBoundaryPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
             if(ConfigurationConstants.USE_BEZIER_CURVE){
-//                this.bezierCurveRenderer.accept(shapePoints);
+//                this.bezierCurveRenderer.accept(regionBoundaryShape, regionFillColor);
                 this.quadricCurveRenderer.accept(regionBoundaryShape, regionFillColor);
             }else{
-                this.directPolyLineRenderer.accept(shapePoints);
+                this.directPolyLineRenderer.accept(regionBoundaryShape, regionFillColor);
             }
         }
 
@@ -199,7 +200,7 @@ public class RegionAreaRenderer {
 
             List<Point2D[]> originalShapePoints = originalBorderPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
 //            this.bezierCurveRenderer.accept(shapePoints);
-            this.directPolyLineRenderer.accept(originalShapePoints);
+            this.directPolyLineRenderer.accept(regionBoundaryShape, regionFillColor);
             this.graphicsContext.setStroke(Color.BLACK);
         }
 
@@ -207,6 +208,50 @@ public class RegionAreaRenderer {
         graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
         graphicsContext.stroke();
 //        graphicsContext.fill();
+    }
+
+    private void drawSpline(GraphicsContext graphicsContext, List<BoundaryShape> boundaryShapesOfRegion, Color fillColor, float bezierCurveSmoothness) {
+        List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
+
+        List<Point2D> inputPointList = new ArrayList<>();
+        BoundaryShape lastBoundaryShape = boundaryShapesOfRegion.get(boundaryShapesOfRegion.size() - 1);
+        Point2D lastPoint = new Point2D(lastBoundaryShape.getXCoordinateEndpoint(), lastBoundaryShape.getYCoordinateEndpoint());
+        inputPointList.add(lastPoint);
+
+        for (int i = 0; i < boundaryShapesOfRegion.size(); i++) {
+            BoundaryShape boundaryStep = boundaryShapesOfRegion.get(i);
+            for (int j = 0; j < boundaryStep.getShapeLength(); j++) {
+                inputPointList.add(new Point2D(boundaryStep.getXCoordinateAtIndex(j), boundaryStep.getYCoordinateAtIndex(j)));
+            }
+        }
+
+        Point2D firstPoint = inputPointList.get(0);
+        inputPointList.add(firstPoint);
+
+        Point2D[] points = inputPointList.toArray(new Point2D[inputPointList.size()]);
+        int n = points.length;
+
+        for (int i = 0; i < n - 2; i++) {
+            Pair<Point2D, Point2D> controlPoints = getControlPoints(points[i], points[i + 1], points[i + 2], bezierCurveSmoothness);
+            cp.add(controlPoints.getKey());
+            cp.add(controlPoints.getValue());
+        }
+        cp.add(cp.get(cp.size() - 2));
+        cp.add(cp.get(cp.size() - 1));
+
+        Point2D[] controlPoints = cp.toArray(new Point2D[cp.size()]);
+
+        for (int j = 1; j < n - 1; j++) {
+            if(j == 1){
+                graphicsContext.moveTo(points[j].getX(), points[j].getY());
+            }
+            Point2D controlPoint1 = controlPoints[2 * j - 1];
+            Point2D controlPoint2 = controlPoints[2 * j];
+
+            graphicsContext.bezierCurveTo(controlPoint1.getX(), controlPoint1.getY(),
+                    controlPoint2.getX(), controlPoint2.getY(),
+                    points[j + 1].getX(), points[j + 1].getY());
+        }
     }
 
     void drawSpline(GraphicsContext ctx, List<Point2D[]> input, double t) {

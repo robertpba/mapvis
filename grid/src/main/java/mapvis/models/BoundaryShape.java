@@ -17,15 +17,15 @@ public class BoundaryShape<T>{
     public Color color;
 
     //BoundaryShapes are according to Region-Borders. Region-Borders may have ordering of the coordinates depending
-    //the region to be rendered => coordinateNeedToBeReversed is true if the stored xCoordinates, yCoordinates have to be reversed
+    //the region to be rendered => coordinatesNeedToBeReversed is true if the stored xCoordinates, yCoordinates have to be reversed
     //for rendering. Only then the concatenated coordinates can be connected to a correct path
-    public boolean coordinateNeedToBeReversed;
+    public boolean coordinatesNeedToBeReversed;
 
     public BoundaryShape(double[] xCoords, double[] yCoords, Border<T> border) {
         this.xCoords = xCoords;
         this.yCoords = yCoords;
         this.border = border;
-        this.coordinateNeedToBeReversed = false;
+        this.coordinatesNeedToBeReversed = false;
     }
 
     public int getShapeLength(){
@@ -40,12 +40,29 @@ public class BoundaryShape<T>{
 
     public Point2D getEndPoint(){
         if(xCoords.length > 0)
-            return new Point2D(xCoords[xCoords.length - 1], yCoords[xCoords.length - 1]);
+            return new Point2D(xCoords[xCoords.length - 1], yCoords[yCoords.length - 1]);
         return new Point2D(0, 0);
     }
 
+    public double getXCoordinateEndpoint(){
+        return getXCoordinateAtIndex(xCoords.length - 1);
+    }
+
+    public double getYCoordinateEndpoint(){
+        return getYCoordinateAtIndex(xCoords.length - 1);
+    }
+
+    public double getXCoordinateStartpoint(){
+        return getXCoordinateAtIndex(0);
+    }
+
+    public double getYCoordinateStartpoint(){
+        return getYCoordinateAtIndex(0);
+    }
+
+
     public double getXCoordinateAtIndex(int index){
-        if(coordinateNeedToBeReversed){
+        if(coordinatesNeedToBeReversed){
             return xCoords[xCoords.length - 1 - index];
         }else{
             return xCoords[index];
@@ -53,7 +70,7 @@ public class BoundaryShape<T>{
     }
 
     public double getYCoordinateAtIndex(int index){
-        if(coordinateNeedToBeReversed){
+        if(coordinatesNeedToBeReversed){
             return yCoords[yCoords.length - 1 - index];
         }else{
             return yCoords[index];
@@ -61,7 +78,7 @@ public class BoundaryShape<T>{
     }
 
     public void setXCoordinateAtIndex(int index, double value){
-        if(coordinateNeedToBeReversed){
+        if(coordinatesNeedToBeReversed){
             xCoords[xCoords.length - 1 - index] = value;
         }else{
             xCoords[index] = value;
@@ -69,7 +86,7 @@ public class BoundaryShape<T>{
     }
 
     public void setYCoordinateAtIndex(int index, double value){
-        if(coordinateNeedToBeReversed){
+        if(coordinatesNeedToBeReversed){
             yCoords[yCoords.length - 1 - index] = value;
         }else{
             yCoords[index] = value;

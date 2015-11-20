@@ -15,7 +15,7 @@ public class ConfigurationConstants {
 
     public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
-    public static final boolean FILL_SHAPE = false;
+    public static final boolean FILL_SHAPE = true;
 
     //UDC Tree
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";

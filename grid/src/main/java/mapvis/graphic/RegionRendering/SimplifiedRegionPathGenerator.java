@@ -33,6 +33,19 @@ public class SimplifiedRegionPathGenerator implements IRegionPathGenerator {
             }
 
             Point2D[] point2Ds = simplifyPoints(shapePoints);
+            double[] simpliyfiedXCoords = new double[point2Ds.length];
+            double[] simpliyfiedYCoords = new double[point2Ds.length];
+
+            int i = 0;
+            for (Point2D point2D : point2Ds) {
+                simpliyfiedXCoords[i] = point2D.getX();
+                simpliyfiedYCoords[i] = point2D.getY();
+                i++;
+            }
+            partialRegionBoundary.setXCoords(simpliyfiedXCoords);
+            partialRegionBoundary.setYCoords(simpliyfiedYCoords);
+            partialRegionBoundary.coordinatesNeedToBeReversed = false;
+
             simplifiedShape.add(point2Ds);
         }
 

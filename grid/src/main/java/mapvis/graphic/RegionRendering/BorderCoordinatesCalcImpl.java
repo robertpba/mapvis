@@ -111,10 +111,10 @@ public class BorderCoordinatesCalcImpl<T> implements IBorderCoordinatesCalculato
             //the boundary shapes are undirected => check if to continue with end or start point
             if(currentBoundaryShape.getStartPoint().equals(currentPoint)){
                 currentPoint = currentBoundaryShape.getEndPoint();
-                currentBoundaryShape.coordinateNeedToBeReversed = false;
+                currentBoundaryShape.coordinatesNeedToBeReversed = false;
             }else{
                 currentPoint = currentBoundaryShape.getStartPoint();
-                currentBoundaryShape.coordinateNeedToBeReversed = true;
+                currentBoundaryShape.coordinatesNeedToBeReversed = true;
             }
 
             undirectedEdgeHashMap.remove(currentBoundaryShape);
