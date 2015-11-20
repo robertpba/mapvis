@@ -13,6 +13,13 @@ public class ConfigurationConstants {
     public static final float SIMPLIFICATION_TOLERANCE = 4.55f;
     public static final float BEZIER_CURVE_SMOOTHNESS = 0.3f;
 
+    public enum RenderingMethod{
+        Bezier,
+        Quadric,
+        Direct
+    };
+    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Direct;
+
     public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
     public static final boolean FILL_SHAPE = true;
