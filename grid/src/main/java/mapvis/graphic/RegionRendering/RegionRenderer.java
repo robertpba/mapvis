@@ -32,8 +32,6 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
     private final RegionBorderRenderer regionBorderRenderer;
     private Region regionToDraw;
 
-    private final IBorderCoordinatesCalculator<INode> borderCoordinatesCalculator;
-
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
         System.out.println("Creating: " + this.getClass().getName());
 
@@ -42,7 +40,6 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         this.regionAreaRenderer = new RegionAreaRenderer(canvas.getGraphicsContext2D(), view);
         this.regionBorderRenderer = new RegionBorderRenderer(canvas.getGraphicsContext2D());
         this.regionLabelRenderer = new RegionLabelRenderer(canvas.getGraphicsContext2D());
-        this.borderCoordinatesCalculator = new BorderCoordinatesCalcImpl<>(view);
     }
 
 
@@ -122,24 +119,13 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 //            return;
 
         g.save();
-        borderCoordinatesCalculator.setRegion(regionToDraw);
         regionBorderRenderer.setIsSingleSideBorderRenderingEnabled(true);
 //
         boolean disableOrdering = false;
         IRegionStyler<INode> regionStyler = view.getRegionStyler();
         int maxLevelToCollect = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
 
-//        Map<Region<INode>, List<List<BoundaryShape<INode>>>> regionToBoundaryShapes = borderCoordinatesCalculator.
-//                computeCoordinates(!disableOrdering, maxLevelToCollect);
-
         List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxLevelToCollect);
-
-//        Map<Region<INode>, List<List<BoundaryShape<INode>>>> regionToBoundaryShapesNew = new HashMap<>();
-
-//        for (Region<INode> region : childRegionsAtLevel) {
-//            List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
-//           regionToBoundaryShapesNew.put(region, boundaryShape);
-//        }
 
         for (Region<INode> region : childRegionsAtLevel) {
             List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
