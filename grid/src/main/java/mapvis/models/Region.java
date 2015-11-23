@@ -52,13 +52,13 @@ public class Region<T> {
     }
 
     public List<List<BoundaryShape<T>>> getBoundaryShape(){
-
-        List<Border<T>> resultingCollection = new ArrayList<>();
-        childRegions.forEach(tRegion -> resultingCollection.addAll(getBordersForLevel(level)));
-
         List<BoundaryShape<T>> boundaryShapes = new ArrayList<>();
-        for (Border<T> tBorder : resultingCollection) {
-            boundaryShapes.add(tBorder.calcBoundaryShape());
+
+        for (Region<T> childRegion : childRegions) {
+            List<Border<T>> bordersForLevel = childRegion.getBordersForLevel(level);
+            for (Border<T> tBorder : bordersForLevel) {
+                boundaryShapes.add(tBorder.calcBoundaryShape());
+            }
         }
 
         return BoundaryShapeSorter.orderBoundaryShapes(boundaryShapes);

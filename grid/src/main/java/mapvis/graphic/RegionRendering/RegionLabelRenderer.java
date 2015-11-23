@@ -25,7 +25,7 @@ public class RegionLabelRenderer {
         this.iNodeToLabelPos = new HashMap<>();
     }
 
-    public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<BoundaryShape>> boundaryShapes) {
+    public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<BoundaryShape<INode>>> boundaryShapes) {
 //        graphicsContext.save();
         if(!regionStyler.isLabelVisible(region)){
             return;
@@ -50,11 +50,11 @@ public class RegionLabelRenderer {
 //    calc label position just by using the position of the tiles
 //    }
 
-    private Point2D calcLabelPos(List<List<BoundaryShape>> regionBoundaryShapes) {
+    private Point2D calcLabelPos(List<List<BoundaryShape<INode>>> regionBoundaryShapes) {
         double sumXValues = 0;
         double sumYValues = 0;
         int numOfCoords = 0;
-        for (List<BoundaryShape> regionBoundaryShape : regionBoundaryShapes) {
+        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
             if (regionBoundaryShape.size() == 0)
                 continue;
 

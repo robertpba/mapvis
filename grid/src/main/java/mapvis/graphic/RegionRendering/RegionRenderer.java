@@ -148,16 +148,15 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 //            regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
 //        }
 //
-//        if(regionStyler.getShowLabels()){
-//            if(maxLevelToCollect != regionStyler.getMaxLabelLevelToShow()){
-//                regionToBoundaryShapes = borderCoordinatesCalculator.computeCoordinates(false, regionStyler.getMaxLabelLevelToShow());
-//            }
-//            for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-//                List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
-//                Region<INode> region = boundaryShapeTuple.getKey();
-//                regionLabelRenderer.drawLabels(regionStyler, region, boundaryShapes);
-//            }
-//        }
+        if(regionStyler.getShowLabels()){
+            if(regionStyler.getShowLabels()){
+                for (Region<INode> region : childRegionsAtLevel) {
+                    List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+
+                    regionLabelRenderer.drawLabels(regionStyler, region, boundaryShape);
+                }
+            }
+        }
 
         g.restore();
     }

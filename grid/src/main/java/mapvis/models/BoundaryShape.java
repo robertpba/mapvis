@@ -2,6 +2,12 @@ package mapvis.models;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import mapvis.common.datatype.INode;
+import mapvis.common.datatype.Node;
+import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.Tuple2;
+
+import java.util.List;
 
 /**
  * Created by dacc on 11/19/2015.
@@ -28,6 +34,32 @@ public class BoundaryShape<T>{
         this.coordinatesNeedToBeReversed = false;
     }
 
+    public Tuple2<T, T> getSeperatedRegionsID(int maxLevel, Tree2<T> tree){
+        T nodeA = border.getNodeA();
+        T nodeB = border.getNodeB();
+        T regionNodeA = null;
+        T regionNodeB = null;
+        if(nodeA != null){
+            List<T> pathToNodeA = tree.getPathToNode(nodeA);
+
+            if(maxLevel >= pathToNodeA.size()){
+                regionNodeA = nodeA;
+            }else{
+                regionNodeA = pathToNodeA.get(maxLevel);
+            }
+
+        }
+        if(nodeB != null){
+            List<T> pathToNodeB = tree.getPathToNode(nodeB);
+
+            if(maxLevel >= pathToNodeB.size()){
+                regionNodeB = nodeB;
+            }else{
+                regionNodeB = pathToNodeB.get(maxLevel);
+            }
+        }
+        return new Tuple2<>(regionNodeA, regionNodeB);
+    }
     public int getShapeLength(){
         return xCoords.length;
     }

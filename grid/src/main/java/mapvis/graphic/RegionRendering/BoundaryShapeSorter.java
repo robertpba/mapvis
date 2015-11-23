@@ -1,6 +1,7 @@
 package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
+import mapvis.common.datatype.Tree2;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.*;
 
@@ -70,4 +71,8 @@ public class BoundaryShapeSorter {
         return resultingBoundaryShape;
     }
 
+
+//    public static <T> List<List<BoundaryShape<T>>> summarizeBoundaryShapes(List<List<BoundaryShape<T>>>  boundaryShapes, Tree2<T> tree) {
+//
+//    }
 }
