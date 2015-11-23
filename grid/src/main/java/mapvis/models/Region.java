@@ -1,7 +1,5 @@
 package mapvis.models;
 
-import javafx.geometry.Point2D;
-import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.RegionRendering.BoundaryShapeSorter;
 
 import java.util.ArrayList;
@@ -56,7 +54,7 @@ public class Region<T> {
     public List<List<BoundaryShape<T>>> getBoundaryShape(){
 
         List<Border<T>> resultingCollection = new ArrayList<>();
-        childRegions.forEach(tRegion -> resultingCollection.addAll(getBoundaryShapeForLevel(level)));
+        childRegions.forEach(tRegion -> resultingCollection.addAll(getBordersForLevel(level)));
 
         List<BoundaryShape<T>> boundaryShapes = new ArrayList<>();
         for (Border<T> tBorder : resultingCollection) {
@@ -67,9 +65,9 @@ public class Region<T> {
     }
 
 
-    protected List<Border<T>> getBoundaryShapeForLevel(int level){
+    protected List<Border<T>> getBordersForLevel(int level){
         List<Border<T>> resultingCollection = new ArrayList<>();
-        childRegions.forEach(tRegion -> resultingCollection.addAll(tRegion.getBoundaryShapeForLevel(level)));
+        childRegions.forEach(tRegion -> resultingCollection.addAll(tRegion.getBordersForLevel(level)));
         return resultingCollection;
     }
 }

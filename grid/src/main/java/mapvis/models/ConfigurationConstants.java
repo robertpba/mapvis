@@ -18,11 +18,11 @@ public class ConfigurationConstants {
         Quadric,
         Direct
     };
-    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Bezier;
+    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Quadric;
 
     public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
-    public static final boolean FILL_SHAPE = true;
+    public static final boolean FILL_SHAPE = false;
 
     //UDC Tree
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";

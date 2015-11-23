@@ -1,5 +1,6 @@
 package mapvis.graphic.RegionRendering;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
@@ -32,6 +33,45 @@ public class RegionAreaRenderer {
     private class QuadraticCurveBoundaryShapeRenderer<T> implements BoundaryShapeRenderer<T>{
         @Override
         public void renderBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape, Color fillColor) {
+            List<List<Point2D>> borderLevelChangeShapes = new ArrayList<>();
+            int prevLevel = -1;
+            int prevLevelNodeA = -1;
+            int prevLevelNodeB = -1;
+            List<Point2D> currList = new ArrayList<>();
+            for (BoundaryShape<T> tBoundaryShape : regionBoundaryShape) {
+                for (int j = 0; j < tBoundaryShape.getShapeLength(); j++) {
+                    if ( (prevLevel != -1) && (tBoundaryShape.level != prevLevel) ) {
+                        if(currList.size() != 0){
+                            currList.add(new Point2D(tBoundaryShape.getXCoordinateAtIndex(j), tBoundaryShape.getYCoordinateAtIndex(j)));
+                            borderLevelChangeShapes.add(currList);
+                            currList = new ArrayList<>();
+                        }
+                        currList.add(new Point2D(tBoundaryShape.getXCoordinateAtIndex(j), tBoundaryShape.getYCoordinateAtIndex(j)));
+                    } else {
+                        currList.add(new Point2D(tBoundaryShape.getXCoordinateAtIndex(j), tBoundaryShape.getYCoordinateAtIndex(j)));
+                    }
+                    prevLevel = tBoundaryShape.level;
+
+                }
+                graphicsContext.setStroke(Color.RED);
+                graphicsContext.strokeLine(tBoundaryShape.getXCoordinateStartpoint(), tBoundaryShape.getYCoordinateStartpoint(),
+                        tBoundaryShape.getXCoordinateEndpoint(), tBoundaryShape.getYCoordinateEndpoint());
+
+                graphicsContext.strokeText(
+                        Integer.toString(tBoundaryShape.level),
+                        (tBoundaryShape.getXCoordinateStartpoint() + tBoundaryShape.getXCoordinateEndpoint()) / 2,
+                        (tBoundaryShape.getYCoordinateStartpoint() + tBoundaryShape.getYCoordinateEndpoint()) / 2
+                );
+
+
+//                borderLevelChangeShapes.add(currList);
+//                currList = new ArrayList<>();
+            }
+            if(currList.size() > 0){
+                borderLevelChangeShapes.add(currList);
+            }
+
+
             Point2D firstPoint = null;
             Point2D currentPoint = null;
             Point2D nextPoint = null;
@@ -41,40 +81,50 @@ public class RegionAreaRenderer {
             double nextXCoord = 0;
             double nextYCoord = 0;
 
-            for (int i = 0; i < regionBoundaryShape.size(); i++) {
-                BoundaryShape boundaryShape = regionBoundaryShape.get(i);
-                if(boundaryShape.getShapeLength() == 2){
-//                    graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(0), boundaryShape.getYCoordinateAtIndex(0));
-//                    graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(1), boundaryShape.getYCoordinateAtIndex(1));
-                    continue;
-                }
+            Point2D lastLineTo = null;
+            Point2D prevPoint = null;
+            prevLevelNodeA = -1;
+
+            for (int i = 0; i < borderLevelChangeShapes.size(); i++) {
+                List<Point2D> boundaryShape = borderLevelChangeShapes.get(i);
 
                 double xMid = 0;
                 double yMid = 0;
 
-                for (int j = 0; j < boundaryShape.getShapeLength() - 2; j++) {
-                    if(firstRenderPass){
-                        xMid = (boundaryShape.getXCoordinateAtIndex(0) + boundaryShape.getXCoordinateAtIndex(1)) / 2;
-                        yMid = (boundaryShape.getYCoordinateAtIndex(0) + boundaryShape.getYCoordinateAtIndex(1)) / 2;
-
+                for (int j = 0; j < (boundaryShape.size() - 1); j++) {
+                    if (firstRenderPass) {
+                        xMid = (boundaryShape.get(0).getX() + boundaryShape.get(1).getX()) / 2;
+                        yMid = (boundaryShape.get(0).getY() + boundaryShape.get(1).getY()) / 2;
+                        firstPoint = boundaryShape.get(0);
+                        lastLineTo = firstPoint;
                         graphicsContext.moveTo(xMid, yMid);
-                        firstPoint = new Point2D(xMid, yMid);
+//                        firstPoint = new Point2D(xMid, yMid);
+
                         firstRenderPass = false;
                     }
 
-                    currXCoord = boundaryShape.getXCoordinateAtIndex(j);
-                    currYCoord = boundaryShape.getYCoordinateAtIndex(j);
-                    nextXCoord = boundaryShape.getXCoordinateAtIndex(j + 1);
-                    nextYCoord = boundaryShape.getYCoordinateAtIndex(j + 1);
+//                    currXCoord = boundaryShape.getXCoordinateAtIndex(j);
+//                    currYCoord = boundaryShape.getYCoordinateAtIndex(j);
+                    nextXCoord = boundaryShape.get(j + 1).getX();
+                    nextYCoord = boundaryShape.get(j + 1).getY();
 
-                    xMid = (boundaryShape.getXCoordinateAtIndex(j) + boundaryShape.getXCoordinateAtIndex(j + 1)) / 2;
-                    yMid = (boundaryShape.getYCoordinateAtIndex(j) + boundaryShape.getYCoordinateAtIndex(j + 1)) / 2;
+                    xMid = (boundaryShape.get(j).getX() + boundaryShape.get(j + 1).getX()) / 2;
+                    yMid = (boundaryShape.get(j).getY() + boundaryShape.get(j + 1).getY()) / 2;
+                    if(j == 0){
+                        graphicsContext.lineTo(boundaryShape.get(j).getX(), boundaryShape.get(j).getY());
+                        graphicsContext.lineTo(xMid, yMid);
+                    }else{
+                        graphicsContext.quadraticCurveTo(boundaryShape.get(j).getX(), boundaryShape.get(j).getY(), xMid, yMid);
+                    }
 
-                    graphicsContext.quadraticCurveTo(boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j), xMid, yMid);
                 }
-                xMid = (xMid + nextXCoord)/2;
-                yMid = (yMid + nextYCoord)/2;
-                graphicsContext.quadraticCurveTo(xMid, yMid, nextXCoord, nextYCoord);
+//                graphicsContext.setStroke(Color.RED);
+//                graphicsContext.strokeLine(boundaryShape.get(0).getX(), boundaryShape.get(0).getY(),
+//                        boundaryShape.get(boundaryShape.size() - 1).getX(), boundaryShape.get(boundaryShape.size() - 1).getY());
+
+//                xMid = (xMid + nextXCoord)/2;
+//                yMid = (yMid + nextYCoord)/2;
+//                graphicsContext.quadraticCurveTo(xMid, yMid, nextXCoord, nextYCoord);
 
 //                xMid = (xMid + nextPoint.getX())/2;
 //                yMid = (yMid + nextPoint.getY())/2;
@@ -86,8 +136,97 @@ public class RegionAreaRenderer {
 //                graphicsContext.fillOval(nextPoint.getX(), nextPoint.getY(), 4, 4);
             }
 
-            graphicsContext.quadraticCurveTo(nextXCoord, nextYCoord, firstPoint.getX(), firstPoint.getY());
+//            graphicsContext.quadraticCurveTo(nextXCoord, nextYCoord, firstPoint.getX(), firstPoint.getY());
+            if(!firstRenderPass)
+                graphicsContext.lineTo(nextXCoord, nextYCoord);
         }
+
+//            for (int i = 0; i < regionBoundaryShape.size(); i++) {
+//                BoundaryShape boundaryShape = regionBoundaryShape.get(i);
+//
+////                graphicsContext.strokeText(
+////                        Integer.toString(boundaryShape.level),
+////                        (boundaryShape.getXCoordinateStartpoint() + boundaryShape.getXCoordinateEndpoint()) / 2,
+////                        (boundaryShape.getYCoordinateStartpoint() + boundaryShape.getYCoordinateEndpoint()) / 2
+////                );
+//
+//                if(boundaryShape.getShapeLength() == 2){
+////                    if(firstRenderPass){
+////                        graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(0), boundaryShape.getYCoordinateAtIndex(0));
+////                        firstRenderPass = false;
+////                        firstPoint = new Point2D(boundaryShape.getXCoordinateAtIndex(0), boundaryShape.getYCoordinateAtIndex(0));
+////                    }else{
+////                        graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(0), boundaryShape.getYCoordinateAtIndex(0));
+////                    }
+////
+////                    graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(1), boundaryShape.getYCoordinateAtIndex(1));
+//                    continue;
+//                }
+//
+//                double xMid = 0;
+//                double yMid = 0;
+//
+//                for (int j = 0; j < boundaryShape.getShapeLength() - 2; j++) {
+//                    if(firstRenderPass){
+//                        xMid = (boundaryShape.getXCoordinateAtIndex(0) + boundaryShape.getXCoordinateAtIndex(1)) / 2;
+//                        yMid = (boundaryShape.getYCoordinateAtIndex(0) + boundaryShape.getYCoordinateAtIndex(1)) / 2;
+//                        firstPoint = new Point2D(boundaryShape.getXCoordinateAtIndex(0), boundaryShape.getYCoordinateAtIndex(0));
+//                        lastLineTo = firstPoint;
+//                        graphicsContext.moveTo(xMid, yMid);
+////                        firstPoint = new Point2D(xMid, yMid);
+//
+//                        firstRenderPass = false;
+//                    }
+//
+//                    currXCoord = boundaryShape.getXCoordinateAtIndex(j);
+//                    currYCoord = boundaryShape.getYCoordinateAtIndex(j);
+//                    nextXCoord = boundaryShape.getXCoordinateAtIndex(j + 1);
+//                    nextYCoord = boundaryShape.getYCoordinateAtIndex(j + 1);
+//
+//                    xMid = (boundaryShape.getXCoordinateAtIndex(j) + boundaryShape.getXCoordinateAtIndex(j + 1)) / 2;
+//                    yMid = (boundaryShape.getYCoordinateAtIndex(j) + boundaryShape.getYCoordinateAtIndex(j + 1)) / 2;
+//
+//
+//                    if( (j == 0 && prevLevel != -1 && boundaryShape.level != prevLevel) || (j == (boundaryShape.getShapeLength() - 3) ) ){
+//
+//
+//                        graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j));
+//
+////                        graphicsContext.setStroke(Color.RED);
+////                        graphicsContext.strokeLine(lastLineTo.getX(), lastLineTo.getY(), boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j));
+//
+////                        graphicsContext.setStroke(Color.GREEN);
+////                        graphicsContext.strokeLine(prevPoint.getX(), prevPoint.getY(), boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j));
+//
+////                        lastLineTo = new Point2D(boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j));
+//                    }else{
+//                        graphicsContext.quadraticCurveTo(boundaryShape.getXCoordinateAtIndex(j), boundaryShape.getYCoordinateAtIndex(j), xMid, yMid);
+//
+//
+//                    }
+//                    prevLevel = boundaryShape.level;
+//                    prevPoint = new Point2D(xMid, yMid);
+//                }
+//
+////                xMid = (xMid + nextXCoord)/2;
+////                yMid = (yMid + nextYCoord)/2;
+////                graphicsContext.quadraticCurveTo(xMid, yMid, nextXCoord, nextYCoord);
+//
+////                xMid = (xMid + nextPoint.getX())/2;
+////                yMid = (yMid + nextPoint.getY())/2;
+////                graphicsContext.quadraticCurveTo(xMid, yMid, nextPoint.getX(), nextPoint.getY());
+////                graphicsContext.setFill(Color.RED);
+////                graphicsContext.fillOval(xMid, yMid, 4, 4);
+////
+////                graphicsContext.setFill(Color.YELLOW);
+////                graphicsContext.fillOval(nextPoint.getX(), nextPoint.getY(), 4, 4);
+//            }
+//
+////            graphicsContext.quadraticCurveTo(nextXCoord, nextYCoord, firstPoint.getX(), firstPoint.getY());
+//            graphicsContext.lineTo(nextXCoord, nextYCoord);
+//
+////            graphicsContext.lineTo(firstPoint.getX(), firstPoint.getY());
+//        }
     }
 
     private class DirectPolylineBoundaryShapeRenderer<T> implements BoundaryShapeRenderer<T>{

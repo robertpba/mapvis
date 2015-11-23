@@ -102,7 +102,7 @@ public class LeafRegion<T> extends Region<T> {
     }
 
     @Override
-    protected List<Border<T>> getBoundaryShapeForLevel(int level) {
+    protected List<Border<T>> getBordersForLevel(int level) {
         List<Border<T>> result = new ArrayList<>();
         for (Border<T> borderStep : borders) {
             if(borderStep.getBorderCoordinates().size() == 0)
