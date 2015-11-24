@@ -18,11 +18,19 @@ public class ConfigurationConstants {
         Quadric,
         Direct
     };
+
+    public enum SimplificationMethod{
+        DouglasPeucker,
+        Average,
+        None
+    };
+
     public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Direct;
+    public static final SimplificationMethod SIMPLIFICATION_METHOD  = SimplificationMethod.Average;
 
     public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
-    public static final boolean FILL_SHAPE = false;
+    public static final boolean FILL_SHAPE = true;
 
     //UDC Tree
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";

@@ -69,14 +69,14 @@ public class BoundaryShapeL<T> implements IBoundaryShape<T> {
     @Override
     public Point2D getStartPoint(){
         if(xCoords.size() > 0)
-            return new Point2D(xCoords.get(0), yCoords.get(0));
+            return new Point2D(getXCoordinateStartpoint(), getYCoordinateStartpoint());
         return new Point2D(0, 0);
     }
 
     @Override
     public Point2D getEndPoint(){
         if(xCoords.size() > 0)
-            return new Point2D(xCoords.get(xCoords.size() - 1), yCoords.get(yCoords.size() - 1));
+            return new Point2D(getXCoordinateEndpoint(), getYCoordinateEndpoint());
         return new Point2D(0, 0);
     }
 

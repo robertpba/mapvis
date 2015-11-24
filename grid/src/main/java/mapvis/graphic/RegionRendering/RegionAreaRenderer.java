@@ -18,9 +18,9 @@ import java.util.List;
 public class RegionAreaRenderer {
 
     private final GraphicsContext graphicsContext;
-    private final IRegionPathGenerator regionBoundaryPointsGenerator;
+//    private final IRegionPathGenerator regionBoundaryPointsGenerator;
 
-    private final IRegionPathGenerator originalBorderPointsGenerator;
+//    private final IRegionPathGenerator originalBorderPointsGenerator;
     private final HexagonalTilingView view;
     private BoundaryShapeRenderer<INode> shapeRenderer;
 
@@ -120,10 +120,10 @@ public class RegionAreaRenderer {
                             graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
                         }
                     }
-                    graphicsContext.setStroke(Color.RED);
-//
-                    graphicsContext.strokeLine(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(),
-                            boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint());
+//                    graphicsContext.setStroke(Color.RED);
+////
+//                    graphicsContext.strokeLine(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(),
+//                            boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint());
 
 //                    graphicsContext.setFill(Color.GREEN);
 //                    graphicsContext.fillOval(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(), 4, 4);
@@ -240,9 +240,9 @@ public class RegionAreaRenderer {
 //        this.regionBoundaryPointsGenerator = new SimplifiedRegionPathGenerator(graphicsContext,
 //                ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
 //        this.regionBoundaryPointsGenerator = new MovingAverageRegionPathGenerator(2);
-        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
-
-        this.originalBorderPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
+//        this.regionBoundaryPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
+//
+//        this.originalBorderPointsGenerator = new DirectRegionPathGenerator(graphicsContext);
 
         switch (ConfigurationConstants.RENDERING_METHOD){
             case Bezier:
@@ -259,7 +259,8 @@ public class RegionAreaRenderer {
         this.view = view;
     }
 
-    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes,
+                         AbstractRegionPathGenerator<INode> averageRegionPathGenerator) {
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);
@@ -271,11 +272,9 @@ public class RegionAreaRenderer {
 
         graphicsContext.beginPath();
         for (List<IBoundaryShape<INode>> singleBoundaryShape : innerAndOuterBoundaryShapes) {
-            MovingAverageRegionPathGenerator<INode> averageRegionPathGenerator = new MovingAverageRegionPathGenerator<>(2);
-
             int maxToCollect = Math.max(view.getMaxLevelOfBordersToShow(), view.getMaxLevelOfRegionsToShow());
-
-            averageRegionPathGenerator.generatePathForBoundaryShape(singleBoundaryShape, maxToCollect, view.getTree());
+//            List<IBoundaryShape<INode>> summarizedBoundaryShape = BoundaryShapeUtils.summarizeBoundaryShape(singleBoundaryShape, maxToCollect, view.getTree());
+            singleBoundaryShape = averageRegionPathGenerator.generatePathForBoundaryShape(singleBoundaryShape, maxToCollect, view.getTree());
 
             shapeRenderer.renderBoundaryShape(singleBoundaryShape, regionFillColor);
         }

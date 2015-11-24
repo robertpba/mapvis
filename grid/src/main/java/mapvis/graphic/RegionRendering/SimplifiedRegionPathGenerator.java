@@ -9,11 +9,12 @@ import mapvis.models.IBoundaryShape;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T> {
+public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerator<T> {
     private final float tolerance;
     private final boolean useHighQuality;
 
-    public SimplifiedRegionPathGenerator(float tolerance, boolean useHighQuality) {
+    public SimplifiedRegionPathGenerator(GraphicsContext graphicsContext, float tolerance, boolean useHighQuality) {
+        super(graphicsContext);
         this.tolerance = tolerance;
         this.useHighQuality = useHighQuality;
     }
@@ -22,28 +23,7 @@ public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T>
     public void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape) {
 
         for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {
-            List<Point2D> shapePoints = new ArrayList<Point2D>();
 
-            for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-                double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
-                double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);
-
-                shapePoints.add(new Point2D(xValue, yValue));
-            }
-
-            Point2D[] simplifiedPoints = simplifyPoints(shapePoints);
-
-            List<Double> simplifiedXCoords = new ArrayList<>();
-            List<Double> simplifiedYCoords = new ArrayList<>();
-
-            for (Point2D point2D : simplifiedPoints) {
-                simplifiedXCoords.add(point2D.getX());
-                simplifiedYCoords.add(point2D.getY());
-            }
-
-            partialRegionBoundary.setXCoords(simplifiedXCoords);
-            partialRegionBoundary.setYCoords(simplifiedYCoords);
-            partialRegionBoundary.setCoordinatesNeedToBeReversed(false);
         }
 
 //        return simplifiedShape;
@@ -73,4 +53,29 @@ public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T>
         return simplify.simplify(points.toArray(new Point2D[points.size()]), tolerance, useHighQuality);
     }
 
+    @Override
+    void createPathForBoundaryShape(IBoundaryShape<T> partialRegionBoundary) {
+        List<Point2D> shapePoints = new ArrayList<Point2D>();
+
+        for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
+            double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
+            double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);
+
+            shapePoints.add(new Point2D(xValue, yValue));
+        }
+
+        Point2D[] simplifiedPoints = simplifyPoints(shapePoints);
+
+        List<Double> simplifiedXCoords = new ArrayList<>();
+        List<Double> simplifiedYCoords = new ArrayList<>();
+
+        for (Point2D point2D : simplifiedPoints) {
+            simplifiedXCoords.add(point2D.getX());
+            simplifiedYCoords.add(point2D.getY());
+        }
+
+        partialRegionBoundary.setXCoords(simplifiedXCoords);
+        partialRegionBoundary.setYCoords(simplifiedYCoords);
+        partialRegionBoundary.setCoordinatesNeedToBeReversed(false);
+    }
 }

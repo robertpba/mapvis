@@ -20,6 +20,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
     private final HexagonalTilingView view;
     private final RegionAreaRenderer regionAreaRenderer;
     private final RegionBorderRenderer regionBorderRenderer;
+    private AbstractRegionPathGenerator<INode> simplificationAlgorithm;
     private Region regionToDraw;
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
@@ -30,6 +31,22 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         this.regionAreaRenderer = new RegionAreaRenderer(canvas.getGraphicsContext2D(), view);
         this.regionBorderRenderer = new RegionBorderRenderer(canvas.getGraphicsContext2D());
         this.regionLabelRenderer = new RegionLabelRenderer(canvas.getGraphicsContext2D());
+        switch (ConfigurationConstants.SIMPLIFICATION_METHOD) {
+            case DouglasPeucker:
+                this.simplificationAlgorithm =
+                        new SimplifiedRegionPathGenerator<>(view.getCanvas().getGraphicsContext2D(),
+                                ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
+                break;
+            case Average:
+                this.simplificationAlgorithm =
+                        new MovingAverageRegionPathGenerator<>(2, view.getCanvas().getGraphicsContext2D());
+                break;
+            case None:
+                this.simplificationAlgorithm =
+                        new DirectRegionPathGenerator<>(view.getCanvas().getGraphicsContext2D());
+                break;
+        }
+
     }
 
 
@@ -117,14 +134,13 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
         List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxLevelToCollect);
 
-        MovingAverageRegionPathGenerator averageRegionPathGenerator = new MovingAverageRegionPathGenerator(2);
-//        IRegionPathGenerator averageRegionPathGenerator =
-//                new SimplifiedRegionPathGenerator<INode>(ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
+//        AbstractRegionPathGenerator averageRegionPathGenerator = new MovingAverageRegionPathGenerator(2, g);
+
         for (Region<INode> region : childRegionsAtLevel) {
 
             List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes = region.getBoundaryShape();
 
-            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes);
+            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes, simplificationAlgorithm);
 
 //            for (List<IBoundaryShape<INode>> singleBoundaryshape : innerAndOuterBoundaryShapes) {
 //                if(singleBoundaryshape.size() == 0)

@@ -10,11 +10,15 @@ import java.util.List;
 /**
  * Created by dacc on 11/16/2015.
  */
-public class DirectRegionPathGenerator<T> implements IRegionPathGenerator<T> {
-    private final GraphicsContext graphicsContext;
+public class DirectRegionPathGenerator<T> extends AbstractRegionPathGenerator<T> {
 
     public DirectRegionPathGenerator(GraphicsContext graphicsContext) {
-        this.graphicsContext = graphicsContext;
+        super(graphicsContext);
+    }
+
+    @Override
+    void createPathForBoundaryShape(IBoundaryShape<T> summarizedBoundaryStep) {
+        //summarizedBoundaryStep just stays the same
     }
 
     @Override

@@ -45,6 +45,7 @@ public class BoundaryShapeUtils {
                     ){
                 resultingBoundaryShape.add(boundaryShape);
                 undirectedEdgeHashMap.remove(currentBoundaryShape);
+
                 boundaryShape = new ArrayList<>();
                 if(!undirectedEdgeHashMap.isEmpty()){
                     currentBoundaryShape = undirectedEdgeHashMap.getNext();
