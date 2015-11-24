@@ -1,5 +1,6 @@
 package mapvis.graphic.RegionRendering;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.geometry.Point2D;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
@@ -105,21 +106,38 @@ public class BoundaryShapeUtils {
         return false;
     }
 
-    public static <T> List<List<IBoundaryShape<T>>> summarizeBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, int maxToShow, Tree2<T> tree) {
+    public static <T> List<IBoundaryShape<T>> summarizeBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, int maxToShow, Tree2<T> tree) {
         List<List<IBoundaryShape<T>>> summarizedBoundaryShapes = new ArrayList<>();
         List<IBoundaryShape<T>> currentConcatenatedIBoundaryShape = new ArrayList<>();
 
         Tuple2<T, T> prevSeparatedRegions = null;
         Tuple2<T, T> firstSeparatedRegions = null;
         boolean firstIteration = true;
+
+        List<IBoundaryShape<T>> resultingBoundaryShape = new ArrayList<>();
+        IBoundaryShape<T> currBoundaryShape = null;
+
         for (IBoundaryShape<T> tBoundaryShape : regionIBoundaryShape) {
             Tuple2<T, T> separatedRegions = tBoundaryShape.getSeperatedRegionsID(maxToShow, tree);
+
             if ( (prevSeparatedRegions != null) && (!areSameSeparatedRegions(prevSeparatedRegions, separatedRegions) ) ){
-                summarizedBoundaryShapes.add(currentConcatenatedIBoundaryShape);
-                currentConcatenatedIBoundaryShape = new ArrayList<>();
+//                summarizedBoundaryShapes.add(currentConcatenatedIBoundaryShape);
+//                currentConcatenatedIBoundaryShape = new ArrayList<>();
+                resultingBoundaryShape.add(currBoundaryShape);
+                currBoundaryShape = tBoundaryShape;
+            }else{
+                //continue
+                if(currBoundaryShape == null){
+                    //init new
+                    currBoundaryShape = tBoundaryShape;
+                }else{
+                    //append at existing
+                    currBoundaryShape.getXCoords().addAll(tBoundaryShape.getXCoords());
+                    currBoundaryShape.getYCoords().addAll(tBoundaryShape.getYCoords());
+                }
             }
 
-            currentConcatenatedIBoundaryShape.add(tBoundaryShape);
+//            currentConcatenatedIBoundaryShape.add(tBoundaryShape);
 
             prevSeparatedRegions = separatedRegions;
             if(firstIteration){
@@ -129,16 +147,27 @@ public class BoundaryShapeUtils {
 
         }
 
-        if(currentConcatenatedIBoundaryShape.size() > 0){
-            if(summarizedBoundaryShapes.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
-                currentConcatenatedIBoundaryShape.addAll(summarizedBoundaryShapes.get(0));
-                summarizedBoundaryShapes.set(0, currentConcatenatedIBoundaryShape);
+//        if(currentConcatenatedIBoundaryShape.size() > 0){
+//            if(summarizedBoundaryShapes.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
+//                currentConcatenatedIBoundaryShape.addAll(summarizedBoundaryShapes.get(0));
+//                summarizedBoundaryShapes.set(0, currentConcatenatedIBoundaryShape);
+//            }else{
+//                summarizedBoundaryShapes.add(currentConcatenatedIBoundaryShape);
+//            }
+//        }
+
+        if(currBoundaryShape != null){
+            if(resultingBoundaryShape.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
+                currBoundaryShape.getXCoords().addAll(resultingBoundaryShape.get(0).getXCoords());
+                currBoundaryShape.getYCoords().addAll(resultingBoundaryShape.get(0).getYCoords());
+
+                resultingBoundaryShape.set(0, currBoundaryShape);
             }else{
-                summarizedBoundaryShapes.add(currentConcatenatedIBoundaryShape);
+                resultingBoundaryShape.add(currBoundaryShape);
             }
         }
-
-        return summarizedBoundaryShapes;
+//        return summarizedBoundaryShapes;
+        return resultingBoundaryShape;
     }
 
 }

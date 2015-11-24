@@ -18,6 +18,7 @@ public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T>
         this.useHighQuality = useHighQuality;
     }
 
+    @Override
     public void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape) {
 
         for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {

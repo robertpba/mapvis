@@ -117,19 +117,25 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
         List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxLevelToCollect);
 
-//        MovingAverageRegionPathGenerator averageRegionPathGenerator = new MovingAverageRegionPathGenerator(2);
-        IRegionPathGenerator averageRegionPathGenerator =
-                new SimplifiedRegionPathGenerator<INode>(ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
+        MovingAverageRegionPathGenerator averageRegionPathGenerator = new MovingAverageRegionPathGenerator(2);
+//        IRegionPathGenerator averageRegionPathGenerator =
+//                new SimplifiedRegionPathGenerator<INode>(ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
         for (Region<INode> region : childRegionsAtLevel) {
 
             List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes = region.getBoundaryShape();
 
-            for (List<IBoundaryShape<INode>> singleBoundaryshape : innerAndOuterBoundaryShapes) {
-                
-                List<List<IBoundaryShape<INode>>> summarizedBoundaryShape = BoundaryShapeUtils.summarizeBoundaryShape(singleBoundaryshape, maxLevelToCollect, view.getTree());
-                averageRegionPathGenerator.generatePathForBoundaryShapes(summarizedBoundaryShape);
-                regionAreaRenderer.drawArea(regionStyler, region, summarizedBoundaryShape);
-            }
+            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes);
+
+//            for (List<IBoundaryShape<INode>> singleBoundaryshape : innerAndOuterBoundaryShapes) {
+//                if(singleBoundaryshape.size() == 0)
+//                    continue;
+////                List<IBoundaryShape<INode>> summarizedBoundaryShape = BoundaryShapeUtils.summarizeBoundaryShape(singleBoundaryshape, maxLevelToCollect, view.getTree());
+////                averageRegionPathGenerator.generatePathForBoundaryShape(summarizedBoundaryShape);
+//                List<IBoundaryShape<INode>> summarizedBoundaryShape = singleBoundaryshape;
+//                averageRegionPathGenerator.generatePathForBoundaryShape(summarizedBoundaryShape);
+//                regionAreaRenderer.drawArea(regionStyler, region, summarizedBoundaryShape, firstRenderPass);
+//                firstRenderPass = false;
+//            }
         }
 
 

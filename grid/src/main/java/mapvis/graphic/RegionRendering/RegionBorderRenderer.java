@@ -3,7 +3,6 @@ package mapvis.graphic.RegionRendering;
 import javafx.scene.canvas.GraphicsContext;
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.BoundaryShape;
 import mapvis.models.IBoundaryShape;
 
 import java.util.List;
@@ -37,15 +36,15 @@ public class RegionBorderRenderer {
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
         for (List<IBoundaryShape> regionParts : regionBorders) {
             for (IBoundaryShape regionPart : regionParts) {
-                if ( !isSingleSideBorderRenderingEnabled  || regionPart.getBorder().getRenderID() != renderID) {
-                    if(styler.isBorderVisible(regionPart.getBorder())){
-                        graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getBorder()));
+                if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
+                    if(styler.isBorderVisible(regionPart.getFirstBorder())){
+                        graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getFirstBorder()));
                         graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
                         drawIndex++;
                     }
                 }
 
-                regionPart.getBorder().setRenderID(renderID);
+                regionPart.getFirstBorder().setRenderID(renderID);
                 totalDrawnBorder++;
             }
         }

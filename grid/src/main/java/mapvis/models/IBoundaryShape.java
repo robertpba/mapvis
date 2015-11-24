@@ -13,7 +13,7 @@ public interface IBoundaryShape<T> {
 
     int getLevel();
 
-    Border<T> getBorder();
+    Border<T> getFirstBorder();
 
     Tuple2<T, T> getSeperatedRegionsID(int maxLevel, Tree2<T> tree);
 

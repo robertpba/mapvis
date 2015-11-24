@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -147,11 +149,21 @@ public class BoundaryShapeL<T> implements IBoundaryShape<T> {
 
     @Override
     public List<Double> getXCoords() {
+        if(coordinatesNeedToBeReversed) {
+            Collections.reverse(xCoords);
+            Collections.reverse(yCoords);
+            coordinatesNeedToBeReversed = false;
+        }
         return xCoords;
     }
 
     @Override
     public List<Double> getYCoords() {
+        if(coordinatesNeedToBeReversed) {
+            Collections.reverse(xCoords);
+            Collections.reverse(yCoords);
+            coordinatesNeedToBeReversed = false;
+        }
         return yCoords;
     }
 
@@ -181,9 +193,10 @@ public class BoundaryShapeL<T> implements IBoundaryShape<T> {
     }
 
     @Override
-    public Border<T> getBorder() {
+    public Border<T> getFirstBorder() {
         return border;
     }
+
     @Override
     public boolean isCoordinatesNeedToBeReversed() {
         return coordinatesNeedToBeReversed;

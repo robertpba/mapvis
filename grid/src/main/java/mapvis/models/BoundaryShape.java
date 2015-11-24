@@ -179,7 +179,7 @@ public class BoundaryShape<T> implements IBoundaryShape<T> {
 //    }
 
     @Override
-    public Border<T> getBorder() {
+    public Border<T> getFirstBorder() {
         return border;
     }
     @Override

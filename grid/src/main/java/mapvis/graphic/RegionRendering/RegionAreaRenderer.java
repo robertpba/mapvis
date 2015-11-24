@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Pair;
 import mapvis.common.datatype.INode;
+import mapvis.common.datatype.Tree2;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.ConfigurationConstants;
 import mapvis.models.IBoundaryShape;
@@ -23,13 +24,17 @@ public class RegionAreaRenderer {
     private final HexagonalTilingView view;
     private BoundaryShapeRenderer<INode> shapeRenderer;
 
+
+
     private interface BoundaryShapeRenderer<T>{
-        void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor);
+        void renderBoundaryShape2(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor);
+
+        void renderBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor);
     }
 
     private class QuadraticCurveBoundaryShapeRenderer<T> implements BoundaryShapeRenderer<T>{
         @Override
-        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+        public void renderBoundaryShape2(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
 //
 //            int maxToShow = Math.max(view.getMaxLevelOfRegionsToShow(), view.getMaxLevelOfBordersToShow());
 //
@@ -44,12 +49,12 @@ public class RegionAreaRenderer {
             double nextXCoord = 0;
             double nextYCoord = 0;
 
-
-            for (List<IBoundaryShape<T>> summarizedShape : regionBoundaryShape) {
-                double xMid = 0;
-                double yMid = 0;
-                boolean newSummarizedShape = true;
-                for (IBoundaryShape<T> tIBoundaryShape : summarizedShape) {
+            for (List<IBoundaryShape<T>> iBoundaryShapes : regionBoundaryShape) {
+                for (IBoundaryShape<T> tIBoundaryShape : iBoundaryShapes) {
+                    double xMid = 0;
+                    double yMid = 0;
+                    boolean newSummarizedShape = true;
+//                for (IBoundaryShape<T> tIBoundaryShape : summarizedShape) {
                     for (int i = 0; i < tIBoundaryShape.getShapeLength() - 1; i++) {
                         if (firstRenderPass) {
                             xMid = (tIBoundaryShape.getXCoordinateAtIndex(0) + tIBoundaryShape.getXCoordinateAtIndex(1)) / 2;
@@ -76,35 +81,69 @@ public class RegionAreaRenderer {
                         }
                     }
 
-                }
+//                }
 
+                }
             }
+
 
             if(!firstRenderPass)
                 graphicsContext.lineTo(nextXCoord, nextYCoord);
         }
+
+        @Override
+        public void renderBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor) {
+
+        }
     }
 
     private class DirectPolylineBoundaryShapeRenderer<T> implements BoundaryShapeRenderer<T>{
-//        @Override
-        public void renderBoundaryShape2(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor) {
-            boolean firstRenderPass = true;
-            for (IBoundaryShape<T> IBoundaryShape : regionIBoundaryShape) {
-                for (int i = 0; i < IBoundaryShape.getShapeLength(); i++) {
-                    if (firstRenderPass) {
-                        graphicsContext.moveTo(IBoundaryShape.getXCoordinateAtIndex(i), IBoundaryShape.getYCoordinateAtIndex(i));
-                        firstRenderPass = false;
-                    } else {
-                        graphicsContext.lineTo(IBoundaryShape.getXCoordinateAtIndex(i), IBoundaryShape.getYCoordinateAtIndex(i));
-                    }
-                }
-            }
-        }
+        private int renderID = 0;
 
         @Override
-        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+        public void renderBoundaryShape(List<IBoundaryShape<T>> regionBoundaryShape, Color fillColor) {
+//            renderID = 0;
+            if(regionBoundaryShape.size() == 0)
+                return;
+
+//            for (List<IBoundaryShape<T>> iBoundaryShapes : regionBoundaryShape) {
+
+                boolean firstRenderPass = true;
+
+
+                for (IBoundaryShape<T> boundaryShape : regionBoundaryShape) {
+                    for (int i = 0; i < boundaryShape.getShapeLength(); i++) {
+                        if (firstRenderPass) {
+                            graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                            firstRenderPass = false;
+                        } else {
+                            graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                        }
+                    }
+                    graphicsContext.setStroke(Color.RED);
+//
+                    graphicsContext.strokeLine(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(),
+                            boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint());
+
+//                    graphicsContext.setFill(Color.GREEN);
+//                    graphicsContext.fillOval(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(), 4, 4);
+//
+//                    graphicsContext.setFill(Color.BLUE);
+//                    graphicsContext.fillOval(boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint(), 4, 4);
+
+//                    int midPointIndex = boundaryShape.getShapeLength() / 2;
+//                    graphicsContext.strokeText(Integer.toString(renderID), boundaryShape.getXCoordinateAtIndex(midPointIndex), boundaryShape.getYCoordinateAtIndex(midPointIndex));
+                    renderID++;
+                }
+//            }
+
+        }
+
+
+        @Override
+        public void renderBoundaryShape2(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
             for (List<IBoundaryShape<T>> IBoundaryShapes : regionBoundaryShape) {
-                renderBoundaryShape2(IBoundaryShapes, fillColor);
+                renderBoundaryShape2(regionBoundaryShape, fillColor);
             }
         }
     }
@@ -179,15 +218,20 @@ public class RegionAreaRenderer {
             }
         }
 
-//        @Override
-        public void renderBoundaryShape2(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor) {
-            drawSpline(graphicsContext, regionIBoundaryShape, fillColor, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
+        @Override
+        public void renderBoundaryShape2(List<List<IBoundaryShape<T>>> regionIBoundaryShape, Color fillColor) {
+//            drawSpline(graphicsContext, regionIBoundaryShape, fillColor, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
         }
 
         @Override
-        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+        public void renderBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor) {
 
         }
+
+//        @Override
+//        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+//
+//        }
     }
 
     public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
@@ -215,20 +259,27 @@ public class RegionAreaRenderer {
         this.view = view;
     }
 
-
-    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<IBoundaryShape<INode>>> regionBoundaryShapes) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes) {
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);
 
-        if (regionBoundaryShapes.size() == 0)
+        if (innerAndOuterBoundaryShapes.size() == 0)
             return;
 
 //        regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
 
         graphicsContext.beginPath();
+        for (List<IBoundaryShape<INode>> singleBoundaryShape : innerAndOuterBoundaryShapes) {
+            MovingAverageRegionPathGenerator<INode> averageRegionPathGenerator = new MovingAverageRegionPathGenerator<>(2);
 
-        shapeRenderer.renderBoundaryShape(regionBoundaryShapes, regionFillColor);
+            int maxToCollect = Math.max(view.getMaxLevelOfBordersToShow(), view.getMaxLevelOfRegionsToShow());
+
+            averageRegionPathGenerator.generatePathForBoundaryShape(singleBoundaryShape, maxToCollect, view.getTree());
+
+            shapeRenderer.renderBoundaryShape(singleBoundaryShape, regionFillColor);
+        }
+
 
 //        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
 //
