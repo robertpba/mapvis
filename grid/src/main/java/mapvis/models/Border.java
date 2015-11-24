@@ -117,7 +117,7 @@ public class Border<T> {
         return TileBorder.calcStartPointForBorderEdge(borderCoordinate.getTilePos(), dir);
     }
 
-    public BoundaryShape<T> calcBoundaryShape(){
+    public IBoundaryShape<T> calcBoundaryShape(){
         List<Double> xCoordinates = new ArrayList<>();
         List<Double> yCoordinates = new ArrayList<>();
         for (TileBorder tileBorder : borderCoordinates) {
@@ -131,12 +131,17 @@ public class Border<T> {
                 yCoordinates.add(startPoint.getY());
             }
         }
-        BoundaryShape<T> boundaryShape = new BoundaryShape(
-                xCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
-                yCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
+        IBoundaryShape<T> boundaryShape = new BoundaryShapeL(
+                xCoordinates,
+                yCoordinates,
                 this);
 
-        boundaryShape.level = this.level;
+//        BoundaryShape<T> boundaryShape = new BoundaryShape(
+//                xCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
+//                yCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
+//                this);
+//
+//        boundaryShape.level = this.level;
         return boundaryShape;
     }
 }

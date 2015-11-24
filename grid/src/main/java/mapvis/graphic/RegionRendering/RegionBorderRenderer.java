@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.BoundaryShape;
+import mapvis.models.IBoundaryShape;
 
 import java.util.List;
 import java.util.Random;
@@ -30,21 +31,21 @@ public class RegionBorderRenderer {
     }
 
 
-    public void drawBorder(IRegionStyler<INode> styler, List<List<BoundaryShape>> regionBorders, HexagonalTilingView view) {
+    public void drawBorder(IRegionStyler<INode> styler, List<List<IBoundaryShape>> regionBorders, HexagonalTilingView view) {
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
-        for (List<BoundaryShape> regionParts : regionBorders) {
-            for (BoundaryShape regionPart : regionParts) {
-                if ( !isSingleSideBorderRenderingEnabled  || regionPart.border.getRenderID() != renderID) {
-                    if(styler.isBorderVisible(regionPart.border)){
-                        graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.border));
-                        graphicsContext.strokePolyline(regionPart.getXCoords(), regionPart.getYCoords(), regionPart.getShapeLength());
+        for (List<IBoundaryShape> regionParts : regionBorders) {
+            for (IBoundaryShape regionPart : regionParts) {
+                if ( !isSingleSideBorderRenderingEnabled  || regionPart.getBorder().getRenderID() != renderID) {
+                    if(styler.isBorderVisible(regionPart.getBorder())){
+                        graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getBorder()));
+                        graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
                         drawIndex++;
                     }
                 }
 
-                regionPart.border.setRenderID(renderID);
+                regionPart.getBorder().setRenderID(renderID);
                 totalDrawnBorder++;
             }
         }

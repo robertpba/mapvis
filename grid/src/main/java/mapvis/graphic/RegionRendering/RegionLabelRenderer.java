@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
-import mapvis.models.BoundaryShape;
+import mapvis.models.IBoundaryShape;
 import mapvis.models.Region;
 
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class RegionLabelRenderer {
         this.iNodeToLabelPos = new HashMap<>();
     }
 
-    public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<BoundaryShape<INode>>> boundaryShapes) {
+    public void drawLabels(IRegionStyler<INode> regionStyler, Region<INode> region, List<List<IBoundaryShape<INode>>> boundaryShapes) {
 //        graphicsContext.save();
         if(!regionStyler.isLabelVisible(region)){
             return;
@@ -50,15 +50,15 @@ public class RegionLabelRenderer {
 //    calc label position just by using the position of the tiles
 //    }
 
-    private Point2D calcLabelPos(List<List<BoundaryShape<INode>>> regionBoundaryShapes) {
+    private Point2D calcLabelPos(List<List<IBoundaryShape<INode>>> regionBoundaryShapes) {
         double sumXValues = 0;
         double sumYValues = 0;
         int numOfCoords = 0;
-        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
-            if (regionBoundaryShape.size() == 0)
+        for (List<IBoundaryShape<INode>> regionIBoundaryShape : regionBoundaryShapes) {
+            if (regionIBoundaryShape.size() == 0)
                 continue;
 
-            for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
+            for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {
                 for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
                     double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
                     double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);

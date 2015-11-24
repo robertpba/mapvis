@@ -1,8 +1,7 @@
 package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
-import mapvis.models.BoundaryShape;
-import mapvis.models.LeafRegion;
+import mapvis.models.IBoundaryShape;
 
 import java.util.List;
 
@@ -10,5 +9,6 @@ import java.util.List;
  * Created by dacc on 11/16/2015.
  */
 public interface IRegionPathGenerator<T> {
-    List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape);
+    void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape);
+    void generatePathForBoundaryShapes(List<List<IBoundaryShape<T>>> regionBoundaryShape);
 }

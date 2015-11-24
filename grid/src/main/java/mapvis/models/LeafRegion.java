@@ -1,7 +1,7 @@
 package mapvis.models;
 
 import javafx.geometry.Point2D;
-import mapvis.graphic.RegionRendering.BoundaryShapeSorter;
+import mapvis.graphic.RegionRendering.BoundaryShapeUtils;
 
 import java.util.*;
 /**
@@ -21,15 +21,15 @@ public class LeafRegion<T> extends Region<T> {
     }
 
     @Override
-    public List<List<BoundaryShape<T>>> getBoundaryShape() {
+    public List<List<IBoundaryShape<T>>> getBoundaryShape() {
         if(borders.size() == 0)
             return Collections.EMPTY_LIST;
 
-        List<BoundaryShape<T>> boundaryShapes = new ArrayList<>();
+        List<IBoundaryShape<T>> IBoundaryShapes = new ArrayList<>();
         for (Border<T> border : this.borders) {
-            boundaryShapes.add(border.calcBoundaryShape());
+            IBoundaryShapes.add(border.calcBoundaryShape());
         }
-        List<List<BoundaryShape<T>>> ordererBoundaryShapeList = BoundaryShapeSorter.orderBoundaryShapes(boundaryShapes);
+        List<List<IBoundaryShape<T>>> ordererBoundaryShapeList = BoundaryShapeUtils.orderBoundaryShapes(IBoundaryShapes);
         return ordererBoundaryShapeList;
     }
 

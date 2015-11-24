@@ -8,15 +8,12 @@ import mapvis.common.datatype.Tuple2;
 import java.util.List;
 
 /**
- * Created by dacc on 11/19/2015.
- * The BoundaryShape is a temporary object used to render
- * the Borders of a Region. It stores the 2D Coordinates of
- * the corresponding border of the region.
+ * Created by dacc on 11/24/2015.
  */
-public class BoundaryShape<T> implements IBoundaryShape<T> {
+public class BoundaryShapeL<T> implements IBoundaryShape<T> {
     public Border<T> border;
-    private double[] xCoords;
-    private double[] yCoords;
+    private List<Double> xCoords;
+    private List<Double> yCoords;
     public int level;
     public Color color;
 
@@ -27,7 +24,7 @@ public class BoundaryShape<T> implements IBoundaryShape<T> {
     //for rendering. Only then the concatenated coordinates can be connected to a correct path
     public boolean coordinatesNeedToBeReversed;
 
-    public BoundaryShape(double[] xCoords, double[] yCoords, Border<T> border) {
+    public BoundaryShapeL(List<Double> xCoords, List<Double> yCoords, Border<T> border) {
         this.xCoords = xCoords;
         this.yCoords = yCoords;
         this.border = border;
@@ -64,31 +61,31 @@ public class BoundaryShape<T> implements IBoundaryShape<T> {
 
     @Override
     public int getShapeLength(){
-        return xCoords.length;
+        return xCoords.size();
     }
 
     @Override
     public Point2D getStartPoint(){
-        if(xCoords.length > 0)
-            return new Point2D(xCoords[0], yCoords[0]);
+        if(xCoords.size() > 0)
+            return new Point2D(xCoords.get(0), yCoords.get(0));
         return new Point2D(0, 0);
     }
 
     @Override
     public Point2D getEndPoint(){
-        if(xCoords.length > 0)
-            return new Point2D(xCoords[xCoords.length - 1], yCoords[yCoords.length - 1]);
+        if(xCoords.size() > 0)
+            return new Point2D(xCoords.get(xCoords.size() - 1), yCoords.get(yCoords.size() - 1));
         return new Point2D(0, 0);
     }
 
     @Override
     public double getXCoordinateEndpoint(){
-        return getXCoordinateAtIndex(xCoords.length - 1);
+        return getXCoordinateAtIndex(xCoords.size() - 1);
     }
 
     @Override
     public double getYCoordinateEndpoint(){
-        return getYCoordinateAtIndex(xCoords.length - 1);
+        return getYCoordinateAtIndex(xCoords.size() - 1);
     }
 
     @Override
@@ -105,67 +102,67 @@ public class BoundaryShape<T> implements IBoundaryShape<T> {
     @Override
     public double getXCoordinateAtIndex(int index){
         if(coordinatesNeedToBeReversed){
-            return xCoords[xCoords.length - 1 - index];
+            return xCoords.get(xCoords.size() - 1 - index);
         }else{
-            return xCoords[index];
+            return xCoords.get(index);
         }
     }
 
     @Override
     public double getYCoordinateAtIndex(int index){
         if(coordinatesNeedToBeReversed){
-            return yCoords[yCoords.length - 1 - index];
+            return yCoords.get(yCoords.size() - 1 - index);
         }else{
-            return yCoords[index];
+            return yCoords.get(index);
         }
     }
 
     @Override
     public void setXCoordinateAtIndex(int index, double value){
         if(coordinatesNeedToBeReversed){
-            xCoords[xCoords.length - 1 - index] = value;
+            xCoords.set(xCoords.size() - 1 - index, value);
         }else{
-            xCoords[index] = value;
+            xCoords.set(index, value);
         }
     }
 
     @Override
     public void setYCoordinateAtIndex(int index, double value){
         if(coordinatesNeedToBeReversed){
-            yCoords[yCoords.length - 1 - index] = value;
+            yCoords.set(yCoords.size() - 1 - index, value);
         }else{
-            yCoords[index] = value;
+            yCoords.set(index, value);
         }
     }
 
     @Override
-    public List<Double> getXCoords() {
-        return null;
-    }
-
-    @Override
-    public List<Double> getYCoords() {
-        return null;
-    }
-
-    @Override
-    public double[] getXCoordsArray() {
-        return new double[0];
-    }
-
-    @Override
-    public double[] getYCoordsArray() {
-        return new double[0];
-    }
-
-    @Override
     public void setXCoords(List<Double> xCoords) {
-
+        this.xCoords = xCoords;
     }
 
     @Override
     public void setYCoords(List<Double> yCoords) {
+        this.yCoords = yCoords;
+    }
 
+    @Override
+    public List<Double> getXCoords() {
+        return xCoords;
+    }
+
+    @Override
+    public List<Double> getYCoords() {
+        return yCoords;
+    }
+
+    @Override
+    public double[] getXCoordsArray() {
+        return xCoords.stream().mapToDouble(Double::doubleValue).toArray();
+    }
+
+    @Override
+    public double[] getYCoordsArray() {
+        return yCoords.stream().mapToDouble(Double::doubleValue).toArray();
     }
 
 //    @Override
@@ -179,6 +176,11 @@ public class BoundaryShape<T> implements IBoundaryShape<T> {
 //    }
 
     @Override
+    public int getLevel() {
+        return border.getLevel();
+    }
+
+    @Override
     public Border<T> getBorder() {
         return border;
     }
@@ -190,10 +192,6 @@ public class BoundaryShape<T> implements IBoundaryShape<T> {
     @Override
     public void setCoordinatesNeedToBeReversed(boolean coordinatesNeedToBeReversed) {
         this.coordinatesNeedToBeReversed = coordinatesNeedToBeReversed;
-    }
-
-    public int getLevel() {
-        return border.getLevel();
     }
 
     @Override

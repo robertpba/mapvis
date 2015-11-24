@@ -4,25 +4,23 @@ import com.goebl.simplify.PointExtractor;
 import com.goebl.simplify.Simplify;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import mapvis.models.BoundaryShape;
+import mapvis.models.IBoundaryShape;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T> {
-    private final GraphicsContext graphicsContext;
     private final float tolerance;
     private final boolean useHighQuality;
 
-    public SimplifiedRegionPathGenerator(GraphicsContext graphicsContext, float tolerance, boolean useHighQuality) {
+    public SimplifiedRegionPathGenerator(float tolerance, boolean useHighQuality) {
         this.tolerance = tolerance;
         this.useHighQuality = useHighQuality;
-        this.graphicsContext = graphicsContext;
     }
 
-    public List<Point2D[]> generatePathForBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape) {
-        List<Point2D[]> simplifiedShape = new ArrayList<>();
-        for (BoundaryShape partialRegionBoundary : regionBoundaryShape) {
+    public void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape) {
+
+        for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {
             List<Point2D> shapePoints = new ArrayList<Point2D>();
 
             for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
@@ -32,24 +30,29 @@ public class SimplifiedRegionPathGenerator<T> implements IRegionPathGenerator<T>
                 shapePoints.add(new Point2D(xValue, yValue));
             }
 
-            Point2D[] point2Ds = simplifyPoints(shapePoints);
-            double[] simpliyfiedXCoords = new double[point2Ds.length];
-            double[] simpliyfiedYCoords = new double[point2Ds.length];
+            Point2D[] simplifiedPoints = simplifyPoints(shapePoints);
 
-            int i = 0;
-            for (Point2D point2D : point2Ds) {
-                simpliyfiedXCoords[i] = point2D.getX();
-                simpliyfiedYCoords[i] = point2D.getY();
-                i++;
+            List<Double> simplifiedXCoords = new ArrayList<>();
+            List<Double> simplifiedYCoords = new ArrayList<>();
+
+            for (Point2D point2D : simplifiedPoints) {
+                simplifiedXCoords.add(point2D.getX());
+                simplifiedYCoords.add(point2D.getY());
             }
-            partialRegionBoundary.setXCoords(simpliyfiedXCoords);
-            partialRegionBoundary.setYCoords(simpliyfiedYCoords);
-            partialRegionBoundary.coordinatesNeedToBeReversed = false;
 
-            simplifiedShape.add(point2Ds);
+            partialRegionBoundary.setXCoords(simplifiedXCoords);
+            partialRegionBoundary.setYCoords(simplifiedYCoords);
+            partialRegionBoundary.setCoordinatesNeedToBeReversed(false);
         }
 
-        return simplifiedShape;
+//        return simplifiedShape;
+    }
+
+    @Override
+    public void generatePathForBoundaryShapes(List<List<IBoundaryShape<T>>> regionBoundaryShape) {
+        for (List<IBoundaryShape<T>> iBoundaryShapes : regionBoundaryShape) {
+            generatePathForBoundaryShape(iBoundaryShapes);
+        }
     }
 
 

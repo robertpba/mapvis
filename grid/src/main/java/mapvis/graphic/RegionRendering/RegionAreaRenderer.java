@@ -1,25 +1,18 @@
 package mapvis.graphic.RegionRendering;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Pair;
 import mapvis.common.datatype.INode;
-import mapvis.common.datatype.Node;
-import mapvis.common.datatype.Tree2;
-import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.BoundaryShape;
 import mapvis.models.ConfigurationConstants;
+import mapvis.models.IBoundaryShape;
 import mapvis.models.Region;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class RegionAreaRenderer {
 
@@ -31,191 +24,87 @@ public class RegionAreaRenderer {
     private BoundaryShapeRenderer<INode> shapeRenderer;
 
     private interface BoundaryShapeRenderer<T>{
-        void renderBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape, Color fillColor);
+        void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor);
     }
-    private <T> boolean sameNodeTuple(Tuple2<T, T> nodeTupleA, Tuple2<T, T> nodeTupleB){
 
-        if(nodeTupleA.first == null && nodeTupleB.first == null && nodeTupleA.second == null && nodeTupleB.second == null){
-            return true;
-        }
-
-        if(nodeTupleA.first != null && nodeTupleA.second == null){
-            if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleB.second == null)
-                return true;
-
-            if(nodeTupleA.first.equals(nodeTupleB.second) && nodeTupleB.first == null)
-                return true;
-            return false;
-        }
-
-        if(nodeTupleA.second != null && nodeTupleA.first == null){
-            if(nodeTupleA.second.equals(nodeTupleB.second) && nodeTupleB.first == null)
-                return true;
-
-            if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleB.second == null)
-                return true;
-
-            return false;
-        }
-
-        if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleA.second.equals(nodeTupleB.second))
-            return true;
-
-        if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleA.first.equals(nodeTupleB.second))
-            return true;
-
-        return false;
-    }
     private class QuadraticCurveBoundaryShapeRenderer<T> implements BoundaryShapeRenderer<T>{
         @Override
-        public void renderBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape, Color fillColor) {
+        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+//
+//            int maxToShow = Math.max(view.getMaxLevelOfRegionsToShow(), view.getMaxLevelOfBordersToShow());
+//
+//            List<List<BoundaryShape<T>>> summarizeBoundaryShapes = BoundaryShapeUtils.summarizeBoundaryShape(
+//                    regionBoundaryShape, maxToShow, (Tree2<T>) view.getTree()
+//            );
 
-            int prevLevel = -1;
-            int prevLevelNodeA = -1;
-            int prevLevelNodeB = -1;
-            INode regionNodeA = null;
-            INode regionNodeB = null;
-            List<Point2D> currList = new ArrayList<>();
-            String prevRegionSeperatingIDs = "";
-            int maxToShow = Math.max(view.getMaxLevelOfRegionsToShow(), view.getMaxLevelOfBordersToShow());
 
-            List<List<BoundaryShape<T>>> summarizeBoundaryShapes = summarizeBoundaryShape(regionBoundaryShape, currList, maxToShow);
-            List<List<Point2D>> borderLevelChangeShapes = new ArrayList<>();
-
-            for (List<BoundaryShape<T>> summarizedShape : summarizeBoundaryShapes) {
-                List<Point2D> currPShape = new ArrayList<>();
-                for (BoundaryShape<T> tBoundaryShape : summarizedShape) {
-                    for (int i = 0; i < tBoundaryShape.getShapeLength(); i++) {
-                        currPShape.add(new Point2D(tBoundaryShape.getXCoordinateAtIndex(i), tBoundaryShape.getYCoordinateAtIndex(i)));
-                    }
-                }
-                if(currPShape.size() > 0)
-                    borderLevelChangeShapes.add(currPShape);
-            }
-
-            Point2D firstPoint = null;
-            Point2D currentPoint = null;
-            Point2D nextPoint = null;
             boolean firstRenderPass = true;
             double currXCoord = 0;
             double currYCoord = 0;
             double nextXCoord = 0;
             double nextYCoord = 0;
 
-            Point2D lastLineTo = null;
-            Point2D prevPoint = null;
-            prevLevelNodeA = -1;
 
-            for (int i = 0; i < borderLevelChangeShapes.size(); i++) {
-                List<Point2D> boundaryShape = borderLevelChangeShapes.get(i);
-
+            for (List<IBoundaryShape<T>> summarizedShape : regionBoundaryShape) {
                 double xMid = 0;
                 double yMid = 0;
+                boolean newSummarizedShape = true;
+                for (IBoundaryShape<T> tIBoundaryShape : summarizedShape) {
+                    for (int i = 0; i < tIBoundaryShape.getShapeLength() - 1; i++) {
+                        if (firstRenderPass) {
+                            xMid = (tIBoundaryShape.getXCoordinateAtIndex(0) + tIBoundaryShape.getXCoordinateAtIndex(1)) / 2;
+                            yMid = (tIBoundaryShape.getYCoordinateAtIndex(0) + tIBoundaryShape.getYCoordinateAtIndex(1)) / 2;
 
-                for (int j = 0; j < (boundaryShape.size() - 1); j++) {
-                    if (firstRenderPass) {
-                        xMid = (boundaryShape.get(0).getX() + boundaryShape.get(1).getX()) / 2;
-                        yMid = (boundaryShape.get(0).getY() + boundaryShape.get(1).getY()) / 2;
-                        firstPoint = boundaryShape.get(0);
-                        lastLineTo = firstPoint;
-                        graphicsContext.moveTo(xMid, yMid);
-//                        firstPoint = new Point2D(xMid, yMid);
+                            graphicsContext.moveTo(xMid, yMid);
 
-                        firstRenderPass = false;
-                    }
+                            firstRenderPass = false;
+                        }
+                        currXCoord = tIBoundaryShape.getXCoordinateAtIndex(i);
+                        currYCoord = tIBoundaryShape.getYCoordinateAtIndex(i);
 
-//                    currXCoord = boundaryShape.getXCoordinateAtIndex(j);
-//                    currYCoord = boundaryShape.getYCoordinateAtIndex(j);
-                    nextXCoord = boundaryShape.get(j + 1).getX();
-                    nextYCoord = boundaryShape.get(j + 1).getY();
+                        nextXCoord = tIBoundaryShape.getXCoordinateAtIndex(i + 1);
+                        nextYCoord = tIBoundaryShape.getYCoordinateAtIndex(i + 1);
 
-                    xMid = (boundaryShape.get(j).getX() + boundaryShape.get(j + 1).getX()) / 2;
-                    yMid = (boundaryShape.get(j).getY() + boundaryShape.get(j + 1).getY()) / 2;
-                    if(j == 0){
-                        graphicsContext.lineTo(boundaryShape.get(j).getX(), boundaryShape.get(j).getY());
-                        graphicsContext.lineTo(xMid, yMid);
-                    }else{
-                        graphicsContext.quadraticCurveTo(boundaryShape.get(j).getX(), boundaryShape.get(j).getY(), xMid, yMid);
+                        xMid = (currXCoord + nextXCoord) / 2;
+                        yMid = (currYCoord + nextYCoord) / 2;
+                        if (newSummarizedShape) {
+                            graphicsContext.lineTo(currXCoord, currYCoord);
+                            graphicsContext.lineTo(xMid, yMid);
+                            newSummarizedShape = false;
+                        } else {
+                            graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
+                        }
                     }
 
                 }
-                graphicsContext.setStroke(Color.RED);
-                graphicsContext.strokeLine(boundaryShape.get(0).getX(), boundaryShape.get(0).getY(),
-                        boundaryShape.get(boundaryShape.size() - 1).getX(), boundaryShape.get(boundaryShape.size() - 1).getY());
 
-//                xMid = (xMid + nextXCoord)/2;
-//                yMid = (yMid + nextYCoord)/2;
-//                graphicsContext.quadraticCurveTo(xMid, yMid, nextXCoord, nextYCoord);
-
-//                xMid = (xMid + nextPoint.getX())/2;
-//                yMid = (yMid + nextPoint.getY())/2;
-//                graphicsContext.quadraticCurveTo(xMid, yMid, nextPoint.getX(), nextPoint.getY());
-//                graphicsContext.setFill(Color.RED);
-//                graphicsContext.fillOval(xMid, yMid, 4, 4);
-//
-//                graphicsContext.setFill(Color.YELLOW);
-//                graphicsContext.fillOval(nextPoint.getX(), nextPoint.getY(), 4, 4);
             }
 
-//            graphicsContext.quadraticCurveTo(nextXCoord, nextYCoord, firstPoint.getX(), firstPoint.getY());
             if(!firstRenderPass)
                 graphicsContext.lineTo(nextXCoord, nextYCoord);
         }
-
-        private List<List<BoundaryShape<T>>> summarizeBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape, List<Point2D> currList, int maxToShow) {
-            List<List<BoundaryShape<T>>> summarizedBoundaryShapes = new ArrayList<>();
-            List<BoundaryShape<T>> currentConcatenatedBoundaryShape = new ArrayList<>();
-
-            List<List<Point2D>> borderLevelChangeShapes = new ArrayList<>();
-            INode regionNodeA;
-            INode regionNodeB;
-            Tuple2<T, T> nodeTuple = null;
-            for (BoundaryShape<T> tBoundaryShape : regionBoundaryShape) {
-                if ( (nodeTuple != null) && (!sameNodeTuple(nodeTuple, tBoundaryShape.getSeperatedRegionsID(maxToShow, (Tree2<T>) view.getTree()))) ) {
-                    summarizedBoundaryShapes.add(currentConcatenatedBoundaryShape);
-                    currentConcatenatedBoundaryShape = new ArrayList<>();
-
-                    currentConcatenatedBoundaryShape.add(tBoundaryShape);
-                }else {
-                    currentConcatenatedBoundaryShape.add(tBoundaryShape);
-                }
-                nodeTuple = tBoundaryShape.getSeperatedRegionsID(maxToShow, (Tree2<T>) view.getTree());
-
-                if(nodeTuple != null){
-                    regionNodeA = (INode) nodeTuple.first;
-                    regionNodeB = (INode) nodeTuple.second;
-                    String id = (regionNodeA != null ? regionNodeA.getId() : "-1") + "/" + (regionNodeB != null ? regionNodeB.getId() : "-1") ;
-                    graphicsContext.strokeText(
-                            id,
-                            (tBoundaryShape.getXCoordinateStartpoint() + tBoundaryShape.getXCoordinateEndpoint()) / 2,
-                            (tBoundaryShape.getYCoordinateStartpoint() + tBoundaryShape.getYCoordinateEndpoint()) / 2
-                    );
-                }
-
-
-            }
-            if(currentConcatenatedBoundaryShape.size() > 0){
-                summarizedBoundaryShapes.add(currentConcatenatedBoundaryShape);
-            }
-
-            return summarizedBoundaryShapes;
-        }
-
     }
 
     private class DirectPolylineBoundaryShapeRenderer<T> implements BoundaryShapeRenderer<T>{
-        @Override
-        public void renderBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape, Color fillColor) {
+//        @Override
+        public void renderBoundaryShape2(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor) {
             boolean firstRenderPass = true;
-            for (BoundaryShape<T> boundaryShape : regionBoundaryShape) {
-                for (int i = 0; i < boundaryShape.getXCoords().length; i++) {
+            for (IBoundaryShape<T> IBoundaryShape : regionIBoundaryShape) {
+                for (int i = 0; i < IBoundaryShape.getShapeLength(); i++) {
                     if (firstRenderPass) {
-                        graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                        graphicsContext.moveTo(IBoundaryShape.getXCoordinateAtIndex(i), IBoundaryShape.getYCoordinateAtIndex(i));
                         firstRenderPass = false;
                     } else {
-                        graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                        graphicsContext.lineTo(IBoundaryShape.getXCoordinateAtIndex(i), IBoundaryShape.getYCoordinateAtIndex(i));
                     }
                 }
+            }
+        }
+
+        @Override
+        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+            for (List<IBoundaryShape<T>> IBoundaryShapes : regionBoundaryShape) {
+                renderBoundaryShape2(IBoundaryShapes, fillColor);
             }
         }
     }
@@ -246,16 +135,16 @@ public class RegionAreaRenderer {
             return new Pair(new Point2D(p1x, p1y), new Point2D(p2x, p2y));
         }
 
-        private void drawSpline(GraphicsContext graphicsContext, List<BoundaryShape<T>> boundaryShapesOfRegion, Color fillColor, float bezierCurveSmoothness) {
+        private void drawSpline(GraphicsContext graphicsContext, List<IBoundaryShape<T>> IBoundaryShapesOfRegion, Color fillColor, float bezierCurveSmoothness) {
             List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
 
             List<Point2D> inputPointList = new ArrayList<>();
-            BoundaryShape lastBoundaryShape = boundaryShapesOfRegion.get(boundaryShapesOfRegion.size() - 1);
-            Point2D lastPoint = new Point2D(lastBoundaryShape.getXCoordinateEndpoint(), lastBoundaryShape.getYCoordinateEndpoint());
+            IBoundaryShape lastIBoundaryShape = IBoundaryShapesOfRegion.get(IBoundaryShapesOfRegion.size() - 1);
+            Point2D lastPoint = new Point2D(lastIBoundaryShape.getXCoordinateEndpoint(), lastIBoundaryShape.getYCoordinateEndpoint());
             inputPointList.add(lastPoint);
 
-            for (int i = 0; i < boundaryShapesOfRegion.size(); i++) {
-                BoundaryShape boundaryStep = boundaryShapesOfRegion.get(i);
+            for (int i = 0; i < IBoundaryShapesOfRegion.size(); i++) {
+                IBoundaryShape boundaryStep = IBoundaryShapesOfRegion.get(i);
                 for (int j = 0; j < boundaryStep.getShapeLength(); j++) {
                     inputPointList.add(new Point2D(boundaryStep.getXCoordinateAtIndex(j), boundaryStep.getYCoordinateAtIndex(j)));
                 }
@@ -289,9 +178,15 @@ public class RegionAreaRenderer {
                         points[j + 1].getX(), points[j + 1].getY());
             }
         }
+
+//        @Override
+        public void renderBoundaryShape2(List<IBoundaryShape<T>> regionIBoundaryShape, Color fillColor) {
+            drawSpline(graphicsContext, regionIBoundaryShape, fillColor, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
+        }
+
         @Override
-        public void renderBoundaryShape(List<BoundaryShape<T>> regionBoundaryShape, Color fillColor) {
-            drawSpline(graphicsContext, regionBoundaryShape, fillColor, ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
+        public void renderBoundaryShape(List<List<IBoundaryShape<T>>> regionBoundaryShape, Color fillColor) {
+
         }
     }
 
@@ -321,7 +216,7 @@ public class RegionAreaRenderer {
     }
 
 
-    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<BoundaryShape<INode>>> regionBoundaryShapes) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<IBoundaryShape<INode>>> regionBoundaryShapes) {
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);
@@ -329,16 +224,19 @@ public class RegionAreaRenderer {
         if (regionBoundaryShapes.size() == 0)
             return;
 
-        regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
+//        regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
+
         graphicsContext.beginPath();
 
-        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
+        shapeRenderer.renderBoundaryShape(regionBoundaryShapes, regionFillColor);
 
-            if (regionBoundaryShape.size() == 0)
-                continue;
-
-            shapeRenderer.renderBoundaryShape(regionBoundaryShape, regionFillColor);
-        }
+//        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
+//
+//            if (regionBoundaryShape.size() == 0)
+//                continue;
+//
+//            shapeRenderer.renderBoundaryShape(regionBoundaryShape, regionFillColor);
+//        }
 
 
         graphicsContext.setLineCap(StrokeLineCap.ROUND);
@@ -358,21 +256,21 @@ public class RegionAreaRenderer {
         if(!ConfigurationConstants.DRAW_ORIGINAL_SHAPE)
             return;
 
-        graphicsContext.beginPath();
-        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
-
-            if (regionBoundaryShape.size() == 0)
-                continue;
-
-            List<Point2D[]> originalShapePoints = originalBorderPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
-//            this.bezierCurveRenderer.accept(shapePoints);
-            new DirectPolylineBoundaryShapeRenderer<INode>().renderBoundaryShape(regionBoundaryShape, regionFillColor);
-            this.graphicsContext.setStroke(Color.BLACK);
-        }
-
-        graphicsContext.setLineCap(StrokeLineCap.ROUND);
-        graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
-        graphicsContext.stroke();
+//        graphicsContext.beginPath();
+//        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
+//
+//            if (regionBoundaryShape.size() == 0)
+//                continue;
+//
+//            List<Point2D[]> originalShapePoints = originalBorderPointsGenerator.generatePathForBoundaryShape(regionBoundaryShape);
+////            this.bezierCurveRenderer.accept(shapePoints);
+//            new DirectPolylineBoundaryShapeRenderer<INode>().renderBoundaryShape(regionBoundaryShapes, regionFillColor);
+//            this.graphicsContext.setStroke(Color.BLACK);
+//        }
+//
+//        graphicsContext.setLineCap(StrokeLineCap.ROUND);
+//        graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
+//        graphicsContext.stroke();
 //        graphicsContext.fill();
     }
 

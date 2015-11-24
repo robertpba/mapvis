@@ -1,7 +1,6 @@
 package mapvis.models;
 
 import javafx.geometry.Point2D;
-import mapvis.models.LeafRegion;
 
 import java.util.*;
 
@@ -18,9 +17,9 @@ import java.util.*;
  */
 public class UndirectedEdgeHashMap {
 
-    Map<Point2D, List<BoundaryShape>> startToConnectedBoundaryShape = new HashMap<>();
+    Map<Point2D, List<IBoundaryShape>> startToConnectedBoundaryShape = new HashMap<>();
 
-    public void put(BoundaryShape boundaryShape){
+    public void put(IBoundaryShape boundaryShape){
         putPointToHashMap(boundaryShape.getStartPoint(), boundaryShape);
         putPointToHashMap(boundaryShape.getEndPoint(), boundaryShape);
     }
@@ -29,11 +28,11 @@ public class UndirectedEdgeHashMap {
         return startToConnectedBoundaryShape.isEmpty();
     }
 
-    public BoundaryShape getNext(){
+    public IBoundaryShape getNext(){
         return startToConnectedBoundaryShape.values().iterator().next().get(0);
     }
 
-    public void remove(BoundaryShape boundaryShape){
+    public void remove(IBoundaryShape boundaryShape){
         if(boundaryShape == null)
             return;
 
@@ -41,31 +40,31 @@ public class UndirectedEdgeHashMap {
         removePointFromHashMap(boundaryShape.getEndPoint(), boundaryShape);
     }
 
-    private void removePointFromHashMap(Point2D keyPointToRemove, BoundaryShape boundaryShape) {
-        List<BoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(keyPointToRemove);
+    private void removePointFromHashMap(Point2D keyPointToRemove, IBoundaryShape boundaryShape) {
+        List<IBoundaryShape> IBoundaryShapes = startToConnectedBoundaryShape.get(keyPointToRemove);
 
-        if(boundaryShapes == null)
+        if(IBoundaryShapes == null)
             return;
 
-        Iterator<BoundaryShape> iterator = boundaryShapes.iterator();
+        Iterator<IBoundaryShape> iterator = IBoundaryShapes.iterator();
         while (iterator.hasNext()) {
-            BoundaryShape next = iterator.next();
-            if(LeafRegion.isSameBorder(boundaryShape.border, next.border)){
+            IBoundaryShape next = iterator.next();
+            if(LeafRegion.isSameBorder(boundaryShape.getBorder(), next.getBorder())){
                 iterator.remove();
                 break;
             }
         }
 
-        if(boundaryShapes.isEmpty()){
+        if(IBoundaryShapes.isEmpty()){
             startToConnectedBoundaryShape.remove(keyPointToRemove);
         }
     }
 
-    private void putPointToHashMap(Point2D pointToPut, BoundaryShape boundaryShape) {
+    private void putPointToHashMap(Point2D pointToPut, IBoundaryShape boundaryShape) {
         if(startToConnectedBoundaryShape.containsKey(pointToPut)){
-            List<BoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(pointToPut);
-            for (BoundaryShape shape : boundaryShapes) {
-                if(LeafRegion.isSameBorder(boundaryShape.border, shape.border)){
+            List<IBoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(pointToPut);
+            for (IBoundaryShape shape : boundaryShapes) {
+                if(LeafRegion.isSameBorder(boundaryShape.getBorder(), shape.getBorder())){
                     return;
                 }
             }
@@ -75,20 +74,20 @@ public class UndirectedEdgeHashMap {
                 startToConnectedBoundaryShape.get(pointToPut).add(boundaryShape);
             }
         }else{
-            List<BoundaryShape> boundaryShapes = new ArrayList<>();
-            boundaryShapes.add(boundaryShape);
-            startToConnectedBoundaryShape.put(pointToPut, boundaryShapes);
+            List<IBoundaryShape> IBoundaryShapes = new ArrayList<>();
+            IBoundaryShapes.add(boundaryShape);
+            startToConnectedBoundaryShape.put(pointToPut, IBoundaryShapes);
         }
     }
 
-    public BoundaryShape getNextEdgeWithPivotPoint(Point2D pivotPoint, BoundaryShape currentEdge){
-        List<BoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(pivotPoint);
+    public IBoundaryShape getNextEdgeWithPivotPoint(Point2D pivotPoint, IBoundaryShape currentEdge){
+        List<IBoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(pivotPoint);
         if(boundaryShapes == null){
             return null;
         }
 
-        for (BoundaryShape boundaryShape : boundaryShapes) {
-            if(!LeafRegion.isSameBorder(boundaryShape.border, currentEdge.border)){
+        for (IBoundaryShape boundaryShape : boundaryShapes) {
+            if(!LeafRegion.isSameBorder(boundaryShape.getBorder(), currentEdge.getBorder())){
                 return boundaryShape;
             }
         }

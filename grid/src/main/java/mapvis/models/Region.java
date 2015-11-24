@@ -1,6 +1,6 @@
 package mapvis.models;
 
-import mapvis.graphic.RegionRendering.BoundaryShapeSorter;
+import mapvis.graphic.RegionRendering.BoundaryShapeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,17 +51,17 @@ public class Region<T> {
         return result;
     }
 
-    public List<List<BoundaryShape<T>>> getBoundaryShape(){
-        List<BoundaryShape<T>> boundaryShapes = new ArrayList<>();
+    public List<List<IBoundaryShape<T>>> getBoundaryShape(){
+        List<IBoundaryShape<T>> IBoundaryShapes = new ArrayList<>();
 
         for (Region<T> childRegion : childRegions) {
             List<Border<T>> bordersForLevel = childRegion.getBordersForLevel(level);
             for (Border<T> tBorder : bordersForLevel) {
-                boundaryShapes.add(tBorder.calcBoundaryShape());
+                IBoundaryShapes.add(tBorder.calcBoundaryShape());
             }
         }
 
-        return BoundaryShapeSorter.orderBoundaryShapes(boundaryShapes);
+        return BoundaryShapeUtils.orderBoundaryShapes(IBoundaryShapes);
     }
 
 

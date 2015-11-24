@@ -3,22 +3,12 @@ package mapvis.graphic.RegionRendering;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.*;
 
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.BoundaryShape;
-import mapvis.models.LeafRegion;
-import mapvis.models.Region;
-import mapvis.models.Tile;
+import mapvis.models.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dacc on 10/26/2015.
@@ -127,10 +117,19 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
         List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxLevelToCollect);
 
+//        MovingAverageRegionPathGenerator averageRegionPathGenerator = new MovingAverageRegionPathGenerator(2);
+        IRegionPathGenerator averageRegionPathGenerator =
+                new SimplifiedRegionPathGenerator<INode>(ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
         for (Region<INode> region : childRegionsAtLevel) {
-            List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
 
-            regionAreaRenderer.drawArea(regionStyler, region, boundaryShape);
+            List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes = region.getBoundaryShape();
+
+            for (List<IBoundaryShape<INode>> singleBoundaryshape : innerAndOuterBoundaryShapes) {
+                
+                List<List<IBoundaryShape<INode>>> summarizedBoundaryShape = BoundaryShapeUtils.summarizeBoundaryShape(singleBoundaryshape, maxLevelToCollect, view.getTree());
+                averageRegionPathGenerator.generatePathForBoundaryShapes(summarizedBoundaryShape);
+                regionAreaRenderer.drawArea(regionStyler, region, summarizedBoundaryShape);
+            }
         }
 
 
@@ -151,7 +150,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         if(regionStyler.getShowLabels()){
             if(regionStyler.getShowLabels()){
                 for (Region<INode> region : childRegionsAtLevel) {
-                    List<List<BoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+                    List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
 
                     regionLabelRenderer.drawLabels(regionStyler, region, boundaryShape);
                 }
