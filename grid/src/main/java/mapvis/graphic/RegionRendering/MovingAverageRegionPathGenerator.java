@@ -9,10 +9,8 @@ import mapvis.models.IBoundaryShape;
 import mapvis.models.LeafRegion;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dacc on 11/16/2015.
@@ -44,88 +42,6 @@ public class MovingAverageRegionPathGenerator<T> extends AbstractRegionPathGener
         }
     }
 
-    private static <T> boolean areSameSeparatedRegions(Tuple2<T, T> nodeTupleA, Tuple2<T, T> nodeTupleB){
-
-        if(nodeTupleA.first == null && nodeTupleB.first == null && nodeTupleA.second == null && nodeTupleB.second == null){
-            return true;
-        }
-
-        if(nodeTupleA.first != null && nodeTupleA.second == null){
-            if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleB.second == null)
-                return true;
-
-            if(nodeTupleA.first.equals(nodeTupleB.second) && nodeTupleB.first == null)
-                return true;
-            return false;
-        }
-
-        if(nodeTupleA.second != null && nodeTupleA.first == null){
-            if(nodeTupleA.second.equals(nodeTupleB.second) && nodeTupleB.first == null)
-                return true;
-
-            if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleB.second == null)
-                return true;
-
-            return false;
-        }
-
-        if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleA.second.equals(nodeTupleB.second))
-            return true;
-
-        if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleA.first.equals(nodeTupleB.second))
-            return true;
-
-        return false;
-    }
-
-
-    public static <T> List<IBoundaryShape<T>> summarizeBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, int maxToShow, Tree2<T> tree) {
-        Tuple2<T, T> prevSeparatedRegions = null;
-        Tuple2<T, T> firstSeparatedRegions = null;
-        boolean firstIteration = true;
-
-        List<IBoundaryShape<T>> resultingBoundaryShape = new ArrayList<>();
-        IBoundaryShape<T> currBoundaryShape = null;
-
-        for (IBoundaryShape<T> tBoundaryShape : regionIBoundaryShape) {
-            Tuple2<T, T> separatedRegions = tBoundaryShape.getSeperatedRegionsID(maxToShow, tree);
-
-            if ( (prevSeparatedRegions != null) && (!areSameSeparatedRegions(prevSeparatedRegions, separatedRegions) ) ){
-                resultingBoundaryShape.add(currBoundaryShape);
-                currBoundaryShape = tBoundaryShape;
-            }else{
-                //continue
-                if(currBoundaryShape == null){
-                    //init new
-                    currBoundaryShape = tBoundaryShape;
-                }else{
-                    //append at existing
-                    currBoundaryShape.getXCoords().addAll(tBoundaryShape.getXCoords());
-                    currBoundaryShape.getYCoords().addAll(tBoundaryShape.getYCoords());
-                }
-            }
-
-            prevSeparatedRegions = separatedRegions;
-            if(firstIteration){
-                firstIteration = false;
-                firstSeparatedRegions = separatedRegions;
-            }
-
-        }
-
-        if(currBoundaryShape != null){
-            if(resultingBoundaryShape.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
-                currBoundaryShape.getXCoords().addAll(resultingBoundaryShape.get(0).getXCoords());
-                currBoundaryShape.getYCoords().addAll(resultingBoundaryShape.get(0).getYCoords());
-
-                resultingBoundaryShape.set(0, currBoundaryShape);
-            }else{
-                resultingBoundaryShape.add(currBoundaryShape);
-            }
-        }
-
-        return resultingBoundaryShape;
-    }
 
     @Override
     void createPathForBoundaryShape(IBoundaryShape<T> boundaryShape) {

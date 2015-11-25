@@ -25,10 +25,9 @@ public class ConfigurationConstants {
         None
     };
 
-    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Direct;
-    public static final SimplificationMethod SIMPLIFICATION_METHOD  = SimplificationMethod.Average;
+    public static final RenderingMethod RENDERING_METHOD  = RenderingMethod.Bezier;
+    public static final SimplificationMethod SIMPLIFICATION_METHOD  = SimplificationMethod.None;
 
-    public static final boolean USE_BEZIER_CURVE = true;
     public static final boolean DRAW_ORIGINAL_SHAPE = false;
     public static final boolean FILL_SHAPE = true;
 

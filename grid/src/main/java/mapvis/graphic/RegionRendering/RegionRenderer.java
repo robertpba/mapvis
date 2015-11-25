@@ -4,11 +4,16 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import javafx.scene.paint.Color;
+import javafx.util.Pair;
 import mapvis.common.datatype.INode;
+import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dacc on 10/26/2015.
@@ -28,9 +33,23 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
         this.view = view;
         this.canvas = canvas;
-        this.regionAreaRenderer = new RegionAreaRenderer(canvas.getGraphicsContext2D(), view);
-        this.regionBorderRenderer = new RegionBorderRenderer(canvas.getGraphicsContext2D());
-        this.regionLabelRenderer = new RegionLabelRenderer(canvas.getGraphicsContext2D());
+        GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
+        BoundaryShapeRenderer<INode> shapeRenderer = null;
+        switch (ConfigurationConstants.RENDERING_METHOD){
+            case Bezier:
+                shapeRenderer = new BezierCurveBoundaryShapeRenderer<>(graphicsContext2D);
+                break;
+            case Quadric:
+                shapeRenderer = new QuadraticCurveBoundaryShapeRenderer<>(graphicsContext2D);
+                break;
+            case Direct:
+                shapeRenderer = new DirectPolylineBoundaryShapeRenderer<>(graphicsContext2D);
+                break;
+        }
+
+        this.regionAreaRenderer = new RegionAreaRenderer(graphicsContext2D, view, shapeRenderer);
+        this.regionBorderRenderer = new RegionBorderRenderer(graphicsContext2D, shapeRenderer);
+        this.regionLabelRenderer = new RegionLabelRenderer(graphicsContext2D);
         switch (ConfigurationConstants.SIMPLIFICATION_METHOD) {
             case DouglasPeucker:
                 this.simplificationAlgorithm =
@@ -130,59 +149,338 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 //
         boolean disableOrdering = false;
         IRegionStyler<INode> regionStyler = view.getRegionStyler();
-        int maxLevelToCollect = Math.max(regionStyler.getMaxBorderLevelToShow(), regionStyler.getMaxRegionLevelToShow());
+        int maxChildrenToCollect =
+//                Math.max(
+                Math.max(regionStyler.getMaxBorderLevelToShow(),
+                regionStyler.getMaxRegionLevelToShow())
+//                ,regionStyler.getMaxLabelLevelToShow())
+        ;
 
-        List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxLevelToCollect);
-
-//        AbstractRegionPathGenerator averageRegionPathGenerator = new MovingAverageRegionPathGenerator(2, g);
+        List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxChildrenToCollect);
+        for (Region<INode> region : childRegionsAtLevel) {
+            List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes = region.getBoundaryShape();
+            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes, simplificationAlgorithm);
+//            break;
+        }
 
         for (Region<INode> region : childRegionsAtLevel) {
+            List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+            regionBorderRenderer.drawBorder(regionStyler, boundaryShape, view, simplificationAlgorithm);
+//            break;
+        }
 
-            List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes = region.getBoundaryShape();
-
-            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes, simplificationAlgorithm);
-
-//            for (List<IBoundaryShape<INode>> singleBoundaryshape : innerAndOuterBoundaryShapes) {
-//                if(singleBoundaryshape.size() == 0)
-//                    continue;
-////                List<IBoundaryShape<INode>> summarizedBoundaryShape = BoundaryShapeUtils.summarizeBoundaryShape(singleBoundaryshape, maxLevelToCollect, view.getTree());
-////                averageRegionPathGenerator.generatePathForBoundaryShape(summarizedBoundaryShape);
-//                List<IBoundaryShape<INode>> summarizedBoundaryShape = singleBoundaryshape;
-//                averageRegionPathGenerator.generatePathForBoundaryShape(summarizedBoundaryShape);
-//                regionAreaRenderer.drawArea(regionStyler, region, summarizedBoundaryShape, firstRenderPass);
-//                firstRenderPass = false;
+//        if(regionStyler.getShowLabels()){
+//            List<Region<INode>> labelRegions = regionToDraw.getChildRegionsAtLevel(regionStyler.getMaxLabelLevelToShow());
+//            for (Region<INode> region : labelRegions) {
+//                List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+//                regionLabelRenderer.drawLabels(regionStyler, region, boundaryShape);
 //            }
-        }
-
-
-//        GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
-
-
-//        for (Map.Entry<Region<INode>, List<List<BoundaryShape<INode>>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-//            List<List<BoundaryShape<INode>>> boundaryShapes = boundaryShapeTuple.getValue();
-//            regionAreaRenderer.drawArea(regionStyler, boundaryShapeTuple.getKey(), boundaryShapes);
-//        }
 //
-//        for (Map.Entry<Region<INode>, List<List<BoundaryShape>>> boundaryShapeTuple : regionToBoundaryShapes.entrySet()){
-//            List<List<BoundaryShape>> boundaryShapes = boundaryShapeTuple.getValue();
-//            Region<INode> region = boundaryShapeTuple.getKey();
-//            regionBorderRenderer.drawBorder(regionStyler, boundaryShapes, view);
 //        }
-//
-        if(regionStyler.getShowLabels()){
-            if(regionStyler.getShowLabels()){
-                for (Region<INode> region : childRegionsAtLevel) {
-                    List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
-
-                    regionLabelRenderer.drawLabels(regionStyler, region, boundaryShape);
-                }
-            }
-        }
 
         g.restore();
     }
 
     public void setRootRegion(Region<INode> rootRegion) {
         this.regionToDraw = rootRegion;
+    }
+
+    protected abstract class BoundaryShapeRenderer<T>{
+        protected GraphicsContext graphicsContext;
+
+        public BoundaryShapeRenderer(GraphicsContext graphicsContext) {
+            this.graphicsContext = graphicsContext;
+        }
+
+        abstract void renderBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape);
+        abstract void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape);
+    }
+
+    private class QuadraticCurveBoundaryShapeRenderer<T> extends BoundaryShapeRenderer<T>{
+
+        public QuadraticCurveBoundaryShapeRenderer(GraphicsContext graphicsContext) {
+            super(graphicsContext);
+        }
+
+        @Override
+        public void renderBoundaryShape(List<IBoundaryShape<T>> regionBoundaryShape) {
+            boolean firstRenderPass = true;
+            double currXCoord = 0;
+            double currYCoord = 0;
+            double nextXCoord = 0;
+            double nextYCoord = 0;
+
+
+            for (IBoundaryShape<T> tIBoundaryShape : regionBoundaryShape) {
+                boolean newSummarizedShape = true;
+                Point2D endPoint = renderBoundaryShapeAsLoop(tIBoundaryShape, firstRenderPass);
+                nextXCoord = endPoint.getX();
+                nextYCoord = endPoint.getY();
+                firstRenderPass = false;
+//                for (int i = 0; i < tIBoundaryShape.getShapeLength() - 1; i++) {
+//                    double xMid = 0;
+//                    double yMid = 0;
+//                    if (firstRenderPass) {
+//                        xMid = (tIBoundaryShape.getXCoordinateAtIndex(0) + tIBoundaryShape.getXCoordinateAtIndex(1)) / 2;
+//                        yMid = (tIBoundaryShape.getYCoordinateAtIndex(0) + tIBoundaryShape.getYCoordinateAtIndex(1)) / 2;
+//
+//                        graphicsContext.moveTo(xMid, yMid);
+//
+//                        firstRenderPass = false;
+//                    }
+//                    currXCoord = tIBoundaryShape.getXCoordinateAtIndex(i);
+//                    currYCoord = tIBoundaryShape.getYCoordinateAtIndex(i);
+//
+//                    nextXCoord = tIBoundaryShape.getXCoordinateAtIndex(i + 1);
+//                    nextYCoord = tIBoundaryShape.getYCoordinateAtIndex(i + 1);
+//
+//                    xMid = (currXCoord + nextXCoord) / 2;
+//                    yMid = (currYCoord + nextYCoord) / 2;
+////                    if (newSummarizedShape) {
+////                        graphicsContext.lineTo(currXCoord, currYCoord);
+////                        graphicsContext.lineTo(xMid, yMid);
+////                        newSummarizedShape = false;
+////                    } else {
+////                        graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
+////                    }
+//                    graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
+//                }
+            }
+//            graphicsContext.lineTo(nextXCoord, nextYCoord);
+//            graphicsContext.save();
+//            graphicsContext.setStroke(Color.RED);
+//            graphicsContext.setLineWidth(5);
+//            graphicsContext.strokeLine(currXCoord, currYCoord, nextXCoord, nextYCoord);
+//            graphicsContext.restore();
+//
+            if(!firstRenderPass)
+                graphicsContext.lineTo(nextXCoord, nextYCoord);
+        }
+
+
+        Point2D renderBoundaryShapeAsLoop(IBoundaryShape<T> regionIBoundaryShape, boolean moveToRequired) {
+            boolean newSummarizedShape = true;
+            double currXCoord;
+            double currYCoord;
+            double nextXCoord = 0;
+            double nextYCoord = 0;
+            for (int i = 0; i < regionIBoundaryShape.getShapeLength() - 1; i++) {
+                double xMid = 0;
+                double yMid = 0;
+                if (moveToRequired) {
+                    xMid = (regionIBoundaryShape.getXCoordinateAtIndex(0) + regionIBoundaryShape.getXCoordinateAtIndex(1)) / 2;
+                    yMid = (regionIBoundaryShape.getYCoordinateAtIndex(0) + regionIBoundaryShape.getYCoordinateAtIndex(1)) / 2;
+
+                    graphicsContext.moveTo(xMid, yMid);
+
+                    moveToRequired = false;
+                }
+                currXCoord = regionIBoundaryShape.getXCoordinateAtIndex(i);
+                currYCoord = regionIBoundaryShape.getYCoordinateAtIndex(i);
+
+                nextXCoord = regionIBoundaryShape.getXCoordinateAtIndex(i + 1);
+                nextYCoord = regionIBoundaryShape.getYCoordinateAtIndex(i + 1);
+
+                xMid = (currXCoord + nextXCoord) / 2;
+                yMid = (currYCoord + nextYCoord) / 2;
+                if (newSummarizedShape) {
+                    graphicsContext.lineTo(currXCoord, currYCoord);
+                    graphicsContext.lineTo(xMid, yMid);
+                    newSummarizedShape = false;
+                } else {
+                    graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
+                }
+//                graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
+            }
+            return new Point2D(nextXCoord, nextYCoord);
+        }
+
+
+        @Override
+        void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape) {
+            if(regionIBoundaryShape.getShapeLength() == 0)
+                return;
+
+            Point2D lastLine = renderBoundaryShapeAsLoop(regionIBoundaryShape, true);
+            graphicsContext.lineTo(lastLine.getX(), lastLine.getY());
+        }
+    }
+
+    private class DirectPolylineBoundaryShapeRenderer<T> extends BoundaryShapeRenderer<T>{
+
+        public DirectPolylineBoundaryShapeRenderer(GraphicsContext graphicsContext) {
+            super(graphicsContext);
+        }
+
+        @Override
+        public void renderBoundaryShape(List<IBoundaryShape<T>> regionBoundaryShape) {
+            if(regionBoundaryShape.size() == 0)
+                return;
+
+            boolean firstRenderPass = true;
+            for (IBoundaryShape<T> boundaryShape : regionBoundaryShape) {
+                renderBoundaryShapeAsLoop(boundaryShape, firstRenderPass);
+                firstRenderPass = false;
+//                for (int i = 0; i < boundaryShape.getShapeLength(); i++) {
+//                    if (firstRenderPass) {
+//                        graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+//                        firstRenderPass = false;
+//                    } else {
+//                        graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+//                    }
+//                }
+//                graphicsContext.setStroke(Color.RED);
+//                graphicsContext.strokeLine(boundaryShape.getXCoordinateStartpoint(), boundaryShape.getYCoordinateStartpoint(),
+//                    boundaryShape.getXCoordinateEndpoint(), boundaryShape.getYCoordinateEndpoint());
+            }
+        }
+
+        void renderBoundaryShapeAsLoop(IBoundaryShape<T> boundaryShape, boolean moveToRequired){
+            for (int i = 0; i < boundaryShape.getShapeLength(); i++) {
+                if (moveToRequired) {
+                    graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                    moveToRequired = false;
+                } else {
+                    graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                }
+            }
+        }
+
+        @Override
+        void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape) {
+            renderBoundaryShapeAsLoop(regionIBoundaryShape, true);
+        }
+    }
+
+    private class BezierCurveBoundaryShapeRenderer<T> extends BoundaryShapeRenderer<T>{
+
+        public BezierCurveBoundaryShapeRenderer(GraphicsContext graphicsContext) {
+            super(graphicsContext);
+        }
+
+        private Pair<Point2D, Point2D> getControlPoints(Point2D x0, Point2D x1, Point2D x2, double t) {
+            //  x0,y0,x1,y1 are the coordinates of the end (knot) pts of this segment
+            //  x2,y2 is the next knot -- not connected here but needed to calculate p2
+            //  p1 is the control point calculated here, from x1 back toward x0.
+            //  p2 is the next control point, calculated here and returned to become the
+            //  next segment's p1.
+            //  t is the 'tension' which controls how far the control points spread.
+
+            //  Scaling factors: distances from this knot to the previous and following knots.
+            double d01 = Math.sqrt(Math.pow(x1.getX() - x0.getX(), 2) + Math.pow(x1.getY() - x0.getY(), 2));
+            double d12 = Math.sqrt(Math.pow(x2.getX() - x1.getX(), 2) + Math.pow(x2.getY() - x1.getY(), 2));
+
+            double fa = t * d01 / (d01 + d12);
+            double fb = t - fa;
+
+            double p1x = x1.getX() + fa * (x0.getX() - x2.getX());
+            double p1y = x1.getY() + fa * (x0.getY() - x2.getY());
+
+            double p2x = x1.getX() - fb * (x0.getX() - x2.getX());
+            double p2y = x1.getY() - fb * (x0.getY() - x2.getY());
+
+            return new Pair(new Point2D(p1x, p1y), new Point2D(p2x, p2y));
+        }
+
+        @Override
+        public void renderBoundaryShape(List<IBoundaryShape<T>> boundaryShapesOfRegion) {
+
+            if(boundaryShapesOfRegion.size() == 0)
+                return;
+
+            List<Point2D> inputPointList = new ArrayList<>();
+            IBoundaryShape lastIBoundaryShape = boundaryShapesOfRegion.get(boundaryShapesOfRegion.size() - 1);
+            Point2D lastPoint = new Point2D(lastIBoundaryShape.getXCoordinateEndpoint(), lastIBoundaryShape.getYCoordinateEndpoint());
+            inputPointList.add(lastPoint);
+
+            for (int i = 0; i < boundaryShapesOfRegion.size(); i++) {
+                IBoundaryShape boundaryStep = boundaryShapesOfRegion.get(i);
+                for (int j = 0; j < boundaryStep.getShapeLength(); j++) {
+                    inputPointList.add(new Point2D(boundaryStep.getXCoordinateAtIndex(j), boundaryStep.getYCoordinateAtIndex(j)));
+                }
+            }
+
+            Point2D firstPoint = inputPointList.get(0);
+            inputPointList.add(firstPoint);
+
+            List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
+
+            Point2D[] points = inputPointList.toArray(new Point2D[inputPointList.size()]);
+            int n = points.length;
+
+            for (int i = 0; i < n - 2; i++) {
+                Pair<Point2D, Point2D> controlPoints = getControlPoints(points[i], points[i + 1], points[i + 2],
+                        ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
+                cp.add(controlPoints.getKey());
+                cp.add(controlPoints.getValue());
+            }
+            cp.add(cp.get(cp.size() - 2));
+            cp.add(cp.get(cp.size() - 1));
+
+            Point2D[] controlPoints = cp.toArray(new Point2D[cp.size()]);
+
+            renderBezierCurve(points, controlPoints);
+        }
+
+        void renderBezierCurve(Point2D[] points, Point2D[] controlPoints){
+            int n = points.length;
+
+            for (int j = 1; j < n - 1; j++) {
+                if(j == 1){
+                    graphicsContext.moveTo(points[j].getX(), points[j].getY());
+                }
+                Point2D controlPoint1 = controlPoints[2 * j - 1];
+                Point2D controlPoint2 = controlPoints[2 * j];
+
+                graphicsContext.bezierCurveTo(controlPoint1.getX(), controlPoint1.getY(),
+                        controlPoint2.getX(), controlPoint2.getY(),
+                        points[j + 1].getX(), points[j + 1].getY());
+            }
+        }
+        @Override
+        void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape) {
+            if(regionIBoundaryShape.getShapeLength() == 0)
+                return;
+
+            if(regionIBoundaryShape.getShapeLength() == 2){
+                graphicsContext.moveTo(regionIBoundaryShape.getXCoordinateStartpoint(), regionIBoundaryShape.getYCoordinateStartpoint());
+                graphicsContext.lineTo(regionIBoundaryShape.getXCoordinateEndpoint(), regionIBoundaryShape.getYCoordinateEndpoint());
+                return;
+            }
+
+
+            List<Point2D> inputPointList = new ArrayList<>();
+            for (int j = 0; j < regionIBoundaryShape.getShapeLength(); j++) {
+                inputPointList.add(new Point2D(regionIBoundaryShape.getXCoordinateAtIndex(j), regionIBoundaryShape.getYCoordinateAtIndex(j)));
+            }
+            List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
+
+            Point2D[] points = inputPointList.toArray(new Point2D[inputPointList.size()]);
+            int n = points.length;
+
+            for (int i = 0; i < n - 2; i++) {
+                Pair<Point2D, Point2D> controlPoints = getControlPoints(points[i], points[i + 1], points[i + 2],
+                        ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
+                cp.add(controlPoints.getKey());
+                cp.add(controlPoints.getValue());
+            }
+
+            Point2D[] controlPoints = cp.toArray(new Point2D[cp.size()]);
+
+            graphicsContext.moveTo(points[0].getX(), points[0].getY());
+            graphicsContext.quadraticCurveTo(controlPoints[0].getX(), controlPoints[0].getY(), points[1].getX(), points[1].getY());
+
+            for (int j = 1; j < n - 2; j++) {
+                Point2D controlPoint1 = controlPoints[2 * j - 1];
+                Point2D controlPoint2 = controlPoints[2 * j];
+
+                graphicsContext.bezierCurveTo(controlPoint1.getX(), controlPoint1.getY(),
+                        controlPoint2.getX(), controlPoint2.getY(),
+                        points[j + 1].getX(), points[j + 1].getY());
+            }
+
+            graphicsContext.quadraticCurveTo(controlPoints[controlPoints.length - 1].getX(), controlPoints[controlPoints.length - 1].getY(),
+                    points[points.length - 1].getX(), points[points.length - 1].getY());
+        }
     }
 }

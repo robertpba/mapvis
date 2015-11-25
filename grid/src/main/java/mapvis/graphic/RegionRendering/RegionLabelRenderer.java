@@ -40,7 +40,7 @@ public class RegionLabelRenderer {
         }
         graphicsContext.setFont(new Font(graphicsContext.getFont().getName(), 30));
         graphicsContext.setStroke(Color.BLACK);
-        graphicsContext.setLineWidth(3);
+//        graphicsContext.setLineWidth(3);
         graphicsContext.strokeText(nodeItem.getLabel(), labelPos.getX(), labelPos.getY());
 //        graphicsContext.restore();
     }

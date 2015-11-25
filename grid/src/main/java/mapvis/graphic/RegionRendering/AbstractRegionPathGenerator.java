@@ -2,15 +2,12 @@ package mapvis.graphic.RegionRendering;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
+import mapvis.common.datatype.Tuple2;
 import mapvis.models.IBoundaryShape;
 import mapvis.models.LeafRegion;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by dacc on 11/24/2015.
@@ -25,26 +22,110 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         this.graphicsContext = g;
     }
 
+    private static <T> boolean areSameSeparatedRegions(Tuple2<T, T> nodeTupleA, Tuple2<T, T> nodeTupleB){
+
+        if(nodeTupleA.first == null && nodeTupleB.first == null && nodeTupleA.second == null && nodeTupleB.second == null){
+            return true;
+        }
+
+        if(nodeTupleA.first != null && nodeTupleA.second == null){
+            if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleB.second == null)
+                return true;
+
+            if(nodeTupleA.first.equals(nodeTupleB.second) && nodeTupleB.first == null)
+                return true;
+            return false;
+        }
+
+        if(nodeTupleA.second != null && nodeTupleA.first == null){
+            if(nodeTupleA.second.equals(nodeTupleB.second) && nodeTupleB.first == null)
+                return true;
+
+            if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleB.second == null)
+                return true;
+
+            return false;
+        }
+
+        if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleA.second.equals(nodeTupleB.second))
+            return true;
+
+        if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleA.first.equals(nodeTupleB.second))
+            return true;
+
+        return false;
+    }
+
+    public static <T> List<IBoundaryShape<T>> summarizeBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, int maxToShow, Tree2<T> tree) {
+        Tuple2<T, T> prevSeparatedRegions = null;
+        Tuple2<T, T> firstSeparatedRegions = null;
+        boolean firstIteration = true;
+
+        List<IBoundaryShape<T>> resultingBoundaryShape = new ArrayList<>();
+        IBoundaryShape<T> currBoundaryShape = null;
+
+        for (IBoundaryShape<T> tBoundaryShape : regionIBoundaryShape) {
+            Tuple2<T, T> separatedRegions = tBoundaryShape.getSeperatedRegionsID(maxToShow, tree);
+
+            if ( (prevSeparatedRegions != null) && (!areSameSeparatedRegions(prevSeparatedRegions, separatedRegions) ) ){
+                resultingBoundaryShape.add(currBoundaryShape);
+                currBoundaryShape = tBoundaryShape;
+            }else{
+                //continue
+                if(currBoundaryShape == null){
+                    //init new
+                    currBoundaryShape = tBoundaryShape;
+                }else{
+                    //append at existing but leave out the first one as it has the same coordinate like the end point of currBoundaryShape
+//                    currBoundaryShape.getXCoords().addAll(tBoundaryShape.getXCoords());
+//                    currBoundaryShape.getYCoords().addAll(tBoundaryShape.getYCoords());
+
+                    Iterator<Double> xIterator = tBoundaryShape.getXCoords().iterator();
+                    Iterator<Double> yIterator = tBoundaryShape.getYCoords().iterator();
+                    xIterator.next();
+                    yIterator.next();
+                    while (xIterator.hasNext()){
+                        currBoundaryShape.getXCoords().add(xIterator.next());
+                        currBoundaryShape.getYCoords().add(yIterator.next());
+                    }
+                }
+            }
+
+            prevSeparatedRegions = separatedRegions;
+            if(firstIteration){
+                firstIteration = false;
+                firstSeparatedRegions = separatedRegions;
+            }
+
+        }
+
+        if(currBoundaryShape != null){
+            if(resultingBoundaryShape.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
+//                currBoundaryShape.getXCoords().addAll(resultingBoundaryShape.get(0).getXCoords());
+//                currBoundaryShape.getYCoords().addAll(resultingBoundaryShape.get(0).getYCoords());
+
+                Iterator<Double> xIterator = resultingBoundaryShape.get(0).getXCoords().iterator();
+                Iterator<Double> yIterator = resultingBoundaryShape.get(0).getYCoords().iterator();
+                xIterator.next();
+                yIterator.next();
+                while (xIterator.hasNext()){
+                    currBoundaryShape.getXCoords().add(xIterator.next());
+                    currBoundaryShape.getYCoords().add(yIterator.next());
+                }
+                resultingBoundaryShape.set(0, currBoundaryShape);
+            }else{
+                resultingBoundaryShape.add(currBoundaryShape);
+            }
+        }
+
+        return resultingBoundaryShape;
+    }
+
     public List<IBoundaryShape<T>> generatePathForBoundaryShape(List<IBoundaryShape<T>> singleBoundaryShape, int maxToCollect, Tree2<T> tree) {
         if(singleBoundaryShape.size() == 0)
             return singleBoundaryShape;
 
-        List<IBoundaryShape<T>> summarizedBoundaryShape = MovingAverageRegionPathGenerator.summarizeBoundaryShape(singleBoundaryShape, maxToCollect, tree);
-
-//        Tuple2<Point2D, Point2D> borderID = getBorderIdentifier(singleBoundaryShape);
-//        if(simplifiedBorders.containsKey(borderID)){
-//            List<IBoundaryShape<T>> iBoundaryShapes = simplifiedBorders.get(borderID);
-//            Point2D startPoint = calcStartPointOfBoundaryShapeList(iBoundaryShapes);
-//            Point2D endPoint = calcEndPointOfBoundaryShapeList(iBoundaryShapes);
-//            if(startPoint.equals(calcStartPointOfBoundaryShapeList(singleBoundaryShape))
-//                    && endPoint.equals(calcEndPointOfBoundaryShapeList(singleBoundaryShape))) {
-//                System.out.println("reuse possible");
-//                return iBoundaryShapes;
-//            }else{
-//                System.out.println("reverse reuse possible");
-//            }
-//
-//        }
+        List<IBoundaryShape<T>> summarizedBoundaryShape = summarizeBoundaryShape(singleBoundaryShape, maxToCollect, tree);
 
         List<IBoundaryShape<T>> simplifiedPath = new ArrayList<>();
 
@@ -61,11 +142,8 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
                         && startPoint.equals(getRoundedEndPointOfBoundaryShape(iBoundaryShapes)))) {
                     iBoundaryShapes.setCoordinatesNeedToBeReversed(!iBoundaryShapes.isCoordinatesNeedToBeReversed());
                 }
-//                System.out.println("reverse reuse possible");
-//                graphicsContext.setStroke(Color.GREEN);
-//                graphicsContext.setLineWidth(5);
-//                graphicsContext.strokeLine(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
-//                graphicsContext.setLineWidth(2);
+                System.out.println("Reusing Border");
+
                 simplifiedPath.add(iBoundaryShapes);
             }else{
                 createPathForBoundaryShape(summarizedBoundaryStep);

@@ -1,6 +1,7 @@
 package mapvis.graphic.RegionRendering;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import mapvis.common.datatype.INode;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.IBoundaryShape;
@@ -10,7 +11,7 @@ import java.util.Random;
 
 public class RegionBorderRenderer {
 
-//    public static final RenderState INITIAL_BORDER_RENDERSTATE = RenderState.StateA;
+    private RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer;
     private int totalDrawnBorder;
     private int drawIndex;
     private final GraphicsContext graphicsContext;
@@ -19,9 +20,10 @@ public class RegionBorderRenderer {
     private boolean isSingleSideBorderRenderingEnabled;
 
 
-    public RegionBorderRenderer(GraphicsContext graphicsContext) {
+    public RegionBorderRenderer(GraphicsContext graphicsContext, RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer) {
         this.graphicsContext = graphicsContext;
         this.renderIDRandomGen = new Random(0);
+        this.shapeRenderer = shapeRenderer;
         this.isSingleSideBorderRenderingEnabled = true;
     }
 
@@ -30,16 +32,41 @@ public class RegionBorderRenderer {
     }
 
 
-    public void drawBorder(IRegionStyler<INode> styler, List<List<IBoundaryShape>> regionBorders, HexagonalTilingView view) {
+    public void drawBorder(IRegionStyler<INode> styler,
+                           List<List<IBoundaryShape<INode>>> regionBorders,
+                           HexagonalTilingView view,
+                           AbstractRegionPathGenerator<INode> simplificationAlgorithm) {
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
-        for (List<IBoundaryShape> regionParts : regionBorders) {
-            for (IBoundaryShape regionPart : regionParts) {
+        for (List<IBoundaryShape<INode>> regionParts : regionBorders) {
+            int maxToCollect = Math.max(view.getMaxLevelOfBordersToShow(), view.getMaxLevelOfRegionsToShow());
+            regionParts = simplificationAlgorithm.generatePathForBoundaryShape(regionParts, maxToCollect, view.getTree());
+//            if (!isSingleSideBorderRenderingEnabled || regionPart.getFirstBorder().getRenderID() != renderID) {
+//                if (styler.isBorderVisible(regionPart.getFirstBorder())) {
+//                    graphicsContext.beginPath();
+//
+////                        graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
+//                    shapeRenderer.renderBoundaryShape(regionParts);
+////                        graphicsContext.setStroke(Color.BLACK);
+////                        graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getFirstBorder()));
+//                    graphicsContext.setLineWidth(2);
+//                    graphicsContext.stroke();
+//                    drawIndex++;
+//                }
+//            }
+
+             for (IBoundaryShape<INode> regionPart : regionParts) {
                 if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.getFirstBorder())){
+                        graphicsContext.beginPath();
+
+//                        graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
+                        shapeRenderer.renderBoundaryShape(regionPart);
+//                        graphicsContext.setStroke(Color.BLACK);
                         graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getFirstBorder()));
-                        graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
+//                        graphicsContext.setLineWidth(2);
+                        graphicsContext.stroke();
                         drawIndex++;
                     }
                 }
