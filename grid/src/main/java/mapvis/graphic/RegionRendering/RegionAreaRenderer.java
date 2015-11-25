@@ -26,14 +26,17 @@ public class RegionAreaRenderer {
         this.shapeRenderer = shapeRenderer;
     }
 
-    public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view, RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer) {
+    public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
         this.graphicsContext = graphicsContext;
-        this.shapeRenderer = shapeRenderer;
+        this.shapeRenderer = null;
         this.view = view;
     }
 
     public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes,
                          AbstractRegionPathGenerator<INode> averageRegionPathGenerator) {
+        if(shapeRenderer == null)
+            return;
+
         Color regionFillColor = regionStyler.getColor(regionToDraw);
         graphicsContext.setFill(regionFillColor);
         graphicsContext.setFillRule(FillRule.EVEN_ODD);

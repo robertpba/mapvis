@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -42,6 +43,8 @@ public class HexagonalTilingView extends Pane {
     private ObjectProperty<TileStyler<INode>> tileStyler = new SimpleObjectProperty<>();
     private ObjectProperty<IRegionStyler<INode>> regionStyler = new SimpleObjectProperty<>();
 
+    private ObjectProperty<ConfigurationConstants.RenderingMethod> renderingMethod = new SimpleObjectProperty<>();
+    private ObjectProperty<ConfigurationConstants.SimplificationMethod> simplificationMethod = new SimpleObjectProperty<>();
 
     private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private IntegerProperty maxLevelOfLabelsToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
@@ -52,6 +55,7 @@ public class HexagonalTilingView extends Pane {
     private DoubleProperty originX = new SimpleDoubleProperty(0);
     private DoubleProperty originY = new SimpleDoubleProperty(0);
     private Group panel;
+
 
     public Group getPanel() {
         return panel;
@@ -77,6 +81,8 @@ public class HexagonalTilingView extends Pane {
         maxLevelOfBordersToShow.addListener(this::onBorderLevelsToShowChanged);
         maxLevelOfLabelsToShow.addListener(this::onLabelLevelsToShowChanged);
         maxLevelOfRegionsToShow.addListener(this::onRegionLevelsToShowChanged);
+        renderingMethod.addListener(this::onRenderingMethodChanged);
+        simplificationMethod.addListener(this::onBoundarySimplificationMethodChanged);
     }
 
     private void initHexagonTilingView(){
@@ -147,9 +153,14 @@ public class HexagonalTilingView extends Pane {
     public void updateHexagons() {
 
         GraphicsContext g = canvas.getGraphicsContext2D();
+
         if(ConfigurationConstants.USE_REGION_RENDERING){
+            if(getRegionStyler() == null)
+                return;
             g.setFill(getRegionStyler().getBackground());
         }else{
+            if(getTileStyler() == null)
+                return;
             g.setFill(getTileStyler().getBackground());
         }
 
@@ -240,6 +251,26 @@ public class HexagonalTilingView extends Pane {
     public IntegerProperty maxLevelOfLabelsToShowProperty() {return maxLevelOfLabelsToShow; }
     public void setMaxLevelOfLabelsToShow(int maxLevelOfLabelsToShow) {this.maxLevelOfLabelsToShow.set(maxLevelOfLabelsToShow );    }
 
+    public ConfigurationConstants.RenderingMethod getRenderingMethod() {
+        return renderingMethod.get();
+    }
+    public ObjectProperty<ConfigurationConstants.RenderingMethod> renderingMethodProperty() {
+        return renderingMethod;
+    }
+    public void setRenderingMethod(ConfigurationConstants.RenderingMethod renderingMethod) {
+        this.renderingMethod.set(renderingMethod);
+    }
+
+    public ObjectProperty<ConfigurationConstants.SimplificationMethod> simplificationMethodProperty() {
+        return simplificationMethod;
+    }
+    public ConfigurationConstants.SimplificationMethod getSimplificationMethod() {
+        return simplificationMethod.get();
+    }
+    public void setSimplificationMethod(ConfigurationConstants.SimplificationMethod simplificationMethod) {
+        this.simplificationMethod.set(simplificationMethod);
+    }
+
     public void zoom(double scale){
         Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
         zoom(center, scale);
@@ -318,6 +349,23 @@ public class HexagonalTilingView extends Pane {
     }
     private void onRegionLevelsToShowChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
         updateHexagons();
+    }
+
+    private void onRenderingMethodChanged(ObservableValue<? extends ConfigurationConstants.RenderingMethod> observable,
+                                             ConfigurationConstants.RenderingMethod oldValue, ConfigurationConstants.RenderingMethod newValue){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
+            RegionRenderer regionRenderer = (RegionRenderer) this.renderer;
+            regionRenderer.setRenderingMethod(newValue);
+            updateHexagons();
+        }
+    }
+    private void onBoundarySimplificationMethodChanged(ObservableValue<? extends ConfigurationConstants.SimplificationMethod> observable,
+                                          ConfigurationConstants.SimplificationMethod oldValue, ConfigurationConstants.SimplificationMethod newValue){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
+            RegionRenderer regionRenderer = (RegionRenderer) this.renderer;
+            regionRenderer.setBoundarySimplificationMethod(newValue);
+            updateHexagons();
+        }
     }
 
 

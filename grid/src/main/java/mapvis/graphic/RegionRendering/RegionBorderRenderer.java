@@ -1,5 +1,6 @@
 package mapvis.graphic.RegionRendering;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.INode;
@@ -20,10 +21,10 @@ public class RegionBorderRenderer {
     private boolean isSingleSideBorderRenderingEnabled;
 
 
-    public RegionBorderRenderer(GraphicsContext graphicsContext, RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer) {
+    public RegionBorderRenderer(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.renderIDRandomGen = new Random(0);
-        this.shapeRenderer = shapeRenderer;
+        this.shapeRenderer = null;
         this.isSingleSideBorderRenderingEnabled = true;
     }
 
@@ -36,6 +37,9 @@ public class RegionBorderRenderer {
                            List<List<IBoundaryShape<INode>>> regionBorders,
                            HexagonalTilingView view,
                            AbstractRegionPathGenerator<INode> simplificationAlgorithm) {
+        if(shapeRenderer == null)
+            return;
+
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
@@ -60,16 +64,24 @@ public class RegionBorderRenderer {
                 if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.getFirstBorder())){
                         graphicsContext.beginPath();
-
-//                        graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
                         shapeRenderer.renderBoundaryShape(regionPart);
-//                        graphicsContext.setStroke(Color.BLACK);
                         graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getFirstBorder()));
 //                        graphicsContext.setLineWidth(2);
                         graphicsContext.stroke();
                         drawIndex++;
                     }
                 }
+//                else{
+//                    graphicsContext.save();
+//                    graphicsContext.setStroke(Color.RED);
+//                    int midIndex = regionPart.getShapeLength()/2;
+//                    Point2D midPoint = new Point2D(regionPart.getXCoordinateAtIndex(midIndex), regionPart.getYCoordinateAtIndex(midIndex));
+//                    graphicsContext.strokeLine(regionPart.getXCoordinateStartpoint(), regionPart.getYCoordinateStartpoint(),
+//                            midPoint.getX(), midPoint.getY());
+//                    graphicsContext.strokeLine(midPoint.getX(), midPoint.getY(),
+//                            regionPart.getXCoordinateEndpoint(), regionPart.getYCoordinateEndpoint());
+//                    graphicsContext.restore();
+//                }
 
                 regionPart.getFirstBorder().setRenderID(renderID);
                 totalDrawnBorder++;
@@ -94,5 +106,9 @@ public class RegionBorderRenderer {
 
     public boolean isSingleSideBorderRenderingEnabled() {
         return isSingleSideBorderRenderingEnabled;
+    }
+
+    public void setShapeRenderer(RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer) {
+        this.shapeRenderer = shapeRenderer;
     }
 }

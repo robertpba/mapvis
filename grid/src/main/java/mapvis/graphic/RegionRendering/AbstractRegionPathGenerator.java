@@ -142,7 +142,7 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
                         && startPoint.equals(getRoundedEndPointOfBoundaryShape(iBoundaryShapes)))) {
                     iBoundaryShapes.setCoordinatesNeedToBeReversed(!iBoundaryShapes.isCoordinatesNeedToBeReversed());
                 }
-                System.out.println("Reusing Border");
+//                System.out.println("Reusing Border");
 
                 simplifiedPath.add(iBoundaryShapes);
             }else{

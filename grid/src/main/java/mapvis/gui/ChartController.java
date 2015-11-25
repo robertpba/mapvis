@@ -8,16 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import mapvis.Drawer;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.TreeStatistics;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.ConfigurationConstants;
 import mapvis.models.Grid;
 
 import java.io.IOException;
@@ -47,6 +45,11 @@ public class ChartController implements Initializable  {
     public Slider bordersLevelsToShowSlider;
     @FXML
     public Slider levelsToShowSlider;
+
+    @FXML
+    public ComboBox simplificationMethodComboBox;
+    @FXML
+    public ComboBox renderingMethodComboBox;
 
     @FXML
     private ChoiceBox labelLevelsToShowChoiceBox;
@@ -104,6 +107,22 @@ public class ChartController implements Initializable  {
             bordersLevelsToShowSlider.setMax(maxDepth);
             levelsToShowSlider.setMax(maxDepth);
         });
+        renderingMethodComboBox.valueProperty().bindBidirectional(chart.renderingMethodProperty());
+        for (ConfigurationConstants.RenderingMethod renderingMethod : ConfigurationConstants.RenderingMethod.values()) {
+            renderingMethodComboBox.getItems().add(renderingMethod);
+        }
+        renderingMethodComboBox.getSelectionModel().select(ConfigurationConstants.RENDERING_METHOD_DEFAULT);
+        simplificationMethodComboBox.valueProperty().bindBidirectional(chart.simplificationMethodProperty());
+        for (ConfigurationConstants.SimplificationMethod simplificationMethod : ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT.values()) {
+            simplificationMethodComboBox.getItems().add(simplificationMethod);
+        }
+        simplificationMethodComboBox.getSelectionModel().select(ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT);
+//        renderingMethodComboBox.getItems().addAll(
+//                filesystemTreeSettingsController, randomTreeSettingsController,
+//                udcTreeSettingsController, loadDumpedTreeSettingsController
+//        );
+//        inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
+
 
 //        levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
@@ -172,5 +191,11 @@ public class ChartController implements Initializable  {
 
     public void setTree(Tree2<INode> tree) {
         this.tree.set(tree);
+    }
+
+    public void onSimplificationMethodChanged(ActionEvent event) {
+    }
+
+    public void onRenderingMethodChanged(ActionEvent event) {
     }
 }

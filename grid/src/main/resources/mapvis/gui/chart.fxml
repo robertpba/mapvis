@@ -23,6 +23,8 @@
                         <FlowPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                             <children>
                         <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
+                                <ComboBox fx:id="simplificationMethodComboBox" onAction="#onSimplificationMethodChanged" prefHeight="25.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
+                                <ComboBox fx:id="renderingMethodComboBox" onAction="#onRenderingMethodChanged" prefHeight="25.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
                             <GridPane prefHeight="90.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" GridPane.columnIndex="0" GridPane.rowIndex="0" />

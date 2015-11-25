@@ -4,16 +4,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import mapvis.common.datatype.INode;
-import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dacc on 10/26/2015.
@@ -25,7 +22,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
     private final HexagonalTilingView view;
     private final RegionAreaRenderer regionAreaRenderer;
     private final RegionBorderRenderer regionBorderRenderer;
-    private AbstractRegionPathGenerator<INode> simplificationAlgorithm;
+    private AbstractRegionPathGenerator<INode> boundarySimplificationAlgorithm;
     private Region regionToDraw;
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
@@ -34,38 +31,13 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         this.view = view;
         this.canvas = canvas;
         GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
-        BoundaryShapeRenderer<INode> shapeRenderer = null;
-        switch (ConfigurationConstants.RENDERING_METHOD){
-            case Bezier:
-                shapeRenderer = new BezierCurveBoundaryShapeRenderer<>(graphicsContext2D);
-                break;
-            case Quadric:
-                shapeRenderer = new QuadraticCurveBoundaryShapeRenderer<>(graphicsContext2D);
-                break;
-            case Direct:
-                shapeRenderer = new DirectPolylineBoundaryShapeRenderer<>(graphicsContext2D);
-                break;
-        }
 
-        this.regionAreaRenderer = new RegionAreaRenderer(graphicsContext2D, view, shapeRenderer);
-        this.regionBorderRenderer = new RegionBorderRenderer(graphicsContext2D, shapeRenderer);
+        this.regionAreaRenderer = new RegionAreaRenderer(graphicsContext2D, view);
+        this.regionBorderRenderer = new RegionBorderRenderer(graphicsContext2D);
         this.regionLabelRenderer = new RegionLabelRenderer(graphicsContext2D);
-        switch (ConfigurationConstants.SIMPLIFICATION_METHOD) {
-            case DouglasPeucker:
-                this.simplificationAlgorithm =
-                        new SimplifiedRegionPathGenerator<>(view.getCanvas().getGraphicsContext2D(),
-                                ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
-                break;
-            case Average:
-                this.simplificationAlgorithm =
-                        new MovingAverageRegionPathGenerator<>(2, view.getCanvas().getGraphicsContext2D());
-                break;
-            case None:
-                this.simplificationAlgorithm =
-                        new DirectRegionPathGenerator<>(view.getCanvas().getGraphicsContext2D());
-                break;
-        }
 
+        setRenderingMethod(ConfigurationConstants.RENDERING_METHOD_DEFAULT);
+        setBoundarySimplificationMethod(ConfigurationConstants.SimplificationMethod.None);
     }
 
 
@@ -159,30 +131,64 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxChildrenToCollect);
         for (Region<INode> region : childRegionsAtLevel) {
             List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes = region.getBoundaryShape();
-            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes, simplificationAlgorithm);
-//            break;
+            regionAreaRenderer.drawArea(regionStyler, region, innerAndOuterBoundaryShapes, boundarySimplificationAlgorithm);
         }
 
         for (Region<INode> region : childRegionsAtLevel) {
             List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
-            regionBorderRenderer.drawBorder(regionStyler, boundaryShape, view, simplificationAlgorithm);
-//            break;
+            regionBorderRenderer.drawBorder(regionStyler, boundaryShape, view, boundarySimplificationAlgorithm);
         }
 
-//        if(regionStyler.getShowLabels()){
-//            List<Region<INode>> labelRegions = regionToDraw.getChildRegionsAtLevel(regionStyler.getMaxLabelLevelToShow());
-//            for (Region<INode> region : labelRegions) {
-//                List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
-//                regionLabelRenderer.drawLabels(regionStyler, region, boundaryShape);
-//            }
-//
-//        }
+        if(regionStyler.getShowLabels()){
+            List<Region<INode>> labelRegions = regionToDraw.getChildRegionsAtLevel(regionStyler.getMaxLabelLevelToShow());
+            for (Region<INode> region : labelRegions) {
+                List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
+                regionLabelRenderer.drawLabels(regionStyler, region, boundaryShape);
+            }
+        }
 
         g.restore();
     }
 
     public void setRootRegion(Region<INode> rootRegion) {
         this.regionToDraw = rootRegion;
+    }
+
+    public void setRenderingMethod(ConfigurationConstants.RenderingMethod renderingMethod) {
+        GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
+        BoundaryShapeRenderer<INode> shapeRenderer = null;
+        switch (renderingMethod){
+            case Bezier:
+                shapeRenderer = new BezierCurveBoundaryShapeRenderer<>(graphicsContext2D);
+                break;
+            case Quadric:
+                shapeRenderer = new QuadraticCurveBoundaryShapeRenderer<>(graphicsContext2D);
+                break;
+            case Direct:
+                shapeRenderer = new DirectPolylineBoundaryShapeRenderer<>(graphicsContext2D);
+                break;
+        }
+        this.regionAreaRenderer.setShapeRenderer(shapeRenderer);
+        this.regionBorderRenderer.setShapeRenderer(shapeRenderer);
+    }
+
+    public void setBoundarySimplificationMethod(ConfigurationConstants.SimplificationMethod boundarySimplificationMethod) {
+        GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
+        switch (boundarySimplificationMethod) {
+            case DouglasPeucker:
+                this.boundarySimplificationAlgorithm =
+                        new SimplifiedRegionPathGenerator<>(graphicsContext2D,
+                                ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
+                break;
+            case Average:
+                this.boundarySimplificationAlgorithm =
+                        new MovingAverageRegionPathGenerator<>(2, graphicsContext2D);
+                break;
+            case None:
+                this.boundarySimplificationAlgorithm =
+                        new DirectRegionPathGenerator<>(graphicsContext2D);
+                break;
+        }
     }
 
     protected abstract class BoundaryShapeRenderer<T>{
@@ -290,7 +296,6 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 } else {
                     graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
                 }
-//                graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
             }
             return new Point2D(nextXCoord, nextYCoord);
         }
