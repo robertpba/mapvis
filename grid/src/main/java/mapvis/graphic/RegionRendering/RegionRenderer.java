@@ -427,8 +427,9 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 Tuple2<IBoundaryShape<T>, Boolean> boundaryStepTuple = boundaryShapeAndOrdering.get(i);
                 IBoundaryShape<T> boundaryStep = boundaryStepTuple.first;
                 boundaryStep.setCoordinatesNeedToBeReversed(boundaryStepTuple.second);
+//                inputPointList.addAll(boundaryStep.getCoordinates());
 
-                inputPointList.forEach(point2D -> inputPointList.add(point2D));
+                boundaryStep.forEach(point2D -> inputPointList.add(point2D));
             }
 
             Point2D firstPoint = inputPointList.get(0);
@@ -479,8 +480,8 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 return;
             }
 
-
             List<Point2D> inputPointList = new ArrayList<>();
+//            List<Point2D> inputPointList = regionIBoundaryShape.getCoordinates();
             regionIBoundaryShape.forEach(point2D -> inputPointList.add(point2D));
 
             List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...

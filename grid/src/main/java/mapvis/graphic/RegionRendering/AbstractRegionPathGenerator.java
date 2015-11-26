@@ -77,16 +77,11 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
                     currBoundaryShape = tBoundaryShape;
                 }else{
                     //append at existing but leave out the first one as it has the same coordinate like the end point of currBoundaryShape
-//                    currBoundaryShape.getXCoords().addAll(tBoundaryShape.getXCoords());
-//                    currBoundaryShape.getYCoords().addAll(tBoundaryShape.getYCoords());
+                    Iterator<Point2D> coorIterator = tBoundaryShape.iterator();
+                    coorIterator.next();
 
-                    Iterator<Double> xIterator = tBoundaryShape.getXCoords().iterator();
-                    Iterator<Double> yIterator = tBoundaryShape.getYCoords().iterator();
-                    xIterator.next();
-                    yIterator.next();
-                    while (xIterator.hasNext()){
-                        currBoundaryShape.getXCoords().add(xIterator.next());
-                        currBoundaryShape.getYCoords().add(yIterator.next());
+                    while (coorIterator.hasNext()){
+                        currBoundaryShape.getCoordinates().add(coorIterator.next());
                     }
                 }
             }
@@ -101,16 +96,12 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
 
         if(currBoundaryShape != null){
             if(resultingBoundaryShape.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
-//                currBoundaryShape.getXCoords().addAll(resultingBoundaryShape.get(0).getXCoords());
-//                currBoundaryShape.getYCoords().addAll(resultingBoundaryShape.get(0).getYCoords());
+                //append at existing but leave out the first one as it has the same coordinate like the end point of currBoundaryShape
+                Iterator<Point2D> coorIterator = resultingBoundaryShape.get(0).iterator();
+                coorIterator.next();
 
-                Iterator<Double> xIterator = resultingBoundaryShape.get(0).getXCoords().iterator();
-                Iterator<Double> yIterator = resultingBoundaryShape.get(0).getYCoords().iterator();
-                xIterator.next();
-                yIterator.next();
-                while (xIterator.hasNext()){
-                    currBoundaryShape.getXCoords().add(xIterator.next());
-                    currBoundaryShape.getYCoords().add(yIterator.next());
+                while (coorIterator.hasNext()){
+                    currBoundaryShape.getCoordinates().add(coorIterator.next());
                 }
                 resultingBoundaryShape.set(0, currBoundaryShape);
             }else{

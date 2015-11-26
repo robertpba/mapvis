@@ -133,8 +133,8 @@ public class BoundaryShapeUtils {
                     currBoundaryShape = tBoundaryShape;
                 }else{
                     //append at existing
-                    currBoundaryShape.getXCoords().addAll(tBoundaryShape.getXCoords());
-                    currBoundaryShape.getYCoords().addAll(tBoundaryShape.getYCoords());
+                    //TODO: fix double points?
+                    currBoundaryShape.getCoordinates().addAll(tBoundaryShape.getCoordinates());
                 }
             }
 
@@ -159,8 +159,9 @@ public class BoundaryShapeUtils {
 
         if(currBoundaryShape != null){
             if(resultingBoundaryShape.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
-                currBoundaryShape.getXCoords().addAll(resultingBoundaryShape.get(0).getXCoords());
-                currBoundaryShape.getYCoords().addAll(resultingBoundaryShape.get(0).getYCoords());
+                //TODO: fix double points?
+                currBoundaryShape.getCoordinates().addAll(resultingBoundaryShape.get(0).getCoordinates());
+//                currBoundaryShape.getYCoords().addAll(resultingBoundaryShape.get(0).getYCoords());
 
                 resultingBoundaryShape.set(0, currBoundaryShape);
             }else{
