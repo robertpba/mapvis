@@ -87,7 +87,7 @@ public class BoundaryShape<T> implements IBoundaryShape<T>, Iterable<Point2D> {
 
     @Override
     public double getXCoordinateEndpoint(){
-        return getYCoordinateAtIndex(shapeCoordinates.size() - 1);
+        return getXCoordinateAtIndex(shapeCoordinates.size() - 1);
     }
 
     @Override

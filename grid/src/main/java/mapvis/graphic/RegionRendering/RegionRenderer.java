@@ -142,9 +142,9 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             regionToSimplifiedBorders.add(new Tuple2<>(region, simplifiedBorders));
         }
 
-//        for (Tuple2<Region<INode>, List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>>> region : regionToSimplifiedBorders) {
-//            regionAreaRenderer.drawArea(regionStyler, region.first, region.second);
-//        }
+        for (Tuple2<Region<INode>, List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>>> region : regionToSimplifiedBorders) {
+            regionAreaRenderer.drawArea(regionStyler, region.first, region.second);
+        }
 
         for (Tuple2<Region<INode>, List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>>> region : regionToSimplifiedBorders) {
             regionBorderRenderer.drawBorder(regionStyler, region.second);
@@ -427,9 +427,9 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 Tuple2<IBoundaryShape<T>, Boolean> boundaryStepTuple = boundaryShapeAndOrdering.get(i);
                 IBoundaryShape<T> boundaryStep = boundaryStepTuple.first;
                 boundaryStep.setCoordinatesNeedToBeReversed(boundaryStepTuple.second);
-                inputPointList.addAll(boundaryStep.getCoordinates());
+//                inputPointList.addAll(boundaryStep.getCoordinates());
 
-//                boundaryStep.forEach(point2D -> inputPointList.add(point2D));
+                boundaryStep.forEach(point2D -> inputPointList.add(point2D));
             }
 
             Point2D firstPoint = inputPointList.get(0);
