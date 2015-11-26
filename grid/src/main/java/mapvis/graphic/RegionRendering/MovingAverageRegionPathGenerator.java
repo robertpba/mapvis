@@ -16,11 +16,9 @@ import java.util.List;
  * Created by dacc on 11/16/2015.
  */
 public class MovingAverageRegionPathGenerator<T> extends AbstractRegionPathGenerator<T> {
-    private int averageWindowSize;
 
-    public MovingAverageRegionPathGenerator(int averageWindowSize, GraphicsContext g){
+    public MovingAverageRegionPathGenerator(GraphicsContext g){
         super(g);
-        this.averageWindowSize = averageWindowSize;
     }
 
 
@@ -45,27 +43,26 @@ public class MovingAverageRegionPathGenerator<T> extends AbstractRegionPathGener
 
     @Override
     void createPathForBoundaryShape(IBoundaryShape<T> boundaryShape) {
+        if(boundaryShape.getShapeLength() < 2)
+            return;
+
         List<Double> averagedXCoordinates = new ArrayList<>();
         List<Double> averagedYCoordinates = new ArrayList<>();
 
         averagedXCoordinates.add(boundaryShape.getXCoordinateStartpoint());
         averagedYCoordinates.add(boundaryShape.getYCoordinateStartpoint());
 
-        for (int boundaryStep = 0; boundaryStep < boundaryShape.getShapeLength() - 1; boundaryStep++) {
-            double sumXValues = 0;
-            double sumYValues = 0;
-            int numOfValues = 0;
+        Iterator<Point2D> currPointIterator = boundaryShape.iterator();
+        Iterator<Point2D> nextPointIterator = boundaryShape.iterator();
+        nextPointIterator.next();
 
-            for (int windowsIndex = 0; windowsIndex < 2; windowsIndex++) {
-                int currIndex = boundaryStep + windowsIndex;
-                sumXValues += boundaryShape.getXCoordinateAtIndex(currIndex);
-                sumYValues += boundaryShape.getYCoordinateAtIndex(currIndex);
+        while (nextPointIterator.hasNext()){
+            Point2D currPoint = currPointIterator.next();
+            Point2D nextPoint = nextPointIterator.next();
+            Point2D averagePoint = currPoint.add(nextPoint).multiply(0.5);
 
-                numOfValues++;
-            }
-
-            averagedXCoordinates.add(sumXValues / numOfValues);
-            averagedYCoordinates.add(sumYValues / numOfValues);
+            averagedXCoordinates.add(averagePoint.getX());
+            averagedYCoordinates.add(averagePoint.getY());
         }
 
         averagedXCoordinates.add(boundaryShape.getXCoordinateEndpoint());
@@ -120,3 +117,4 @@ public class MovingAverageRegionPathGenerator<T> extends AbstractRegionPathGener
 //        return new Point2D(xCoordinateStartpoint, yCoordinateStartpoint);
 //    }
 }
+

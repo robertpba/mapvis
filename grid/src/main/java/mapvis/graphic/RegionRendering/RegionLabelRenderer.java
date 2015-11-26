@@ -8,6 +8,7 @@ import mapvis.common.datatype.INode;
 import mapvis.models.IBoundaryShape;
 import mapvis.models.Region;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,23 +52,22 @@ public class RegionLabelRenderer {
 //    }
 
     private Point2D calcLabelPos(List<List<IBoundaryShape<INode>>> regionBoundaryShapes) {
-        double sumXValues = 0;
-        double sumYValues = 0;
+
+        Point2D sumOfCoordinates = new Point2D(0, 0);
         int numOfCoords = 0;
         for (List<IBoundaryShape<INode>> regionIBoundaryShape : regionBoundaryShapes) {
             if (regionIBoundaryShape.size() == 0)
                 continue;
 
-            for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {
-                for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-                    double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
-                    double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);
-                    sumXValues += xValue;
-                    sumYValues += yValue;
+            for (IBoundaryShape<INode> partialRegionBoundary : regionIBoundaryShape) {
+                for (Point2D currPoint : partialRegionBoundary) {
+                    sumOfCoordinates = sumOfCoordinates.add(currPoint);
                     numOfCoords++;
                 }
             }
         }
-        return new Point2D(sumXValues/numOfCoords, sumYValues/numOfCoords);
+        if(numOfCoords == 0)
+            return sumOfCoordinates;
+        return sumOfCoordinates.multiply(1.0 / numOfCoords);
     }
 }

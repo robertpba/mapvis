@@ -55,14 +55,9 @@ public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerato
 
     @Override
     void createPathForBoundaryShape(IBoundaryShape<T> partialRegionBoundary) {
-        List<Point2D> shapePoints = new ArrayList<Point2D>();
+        List<Point2D> shapePoints = new ArrayList<>();
 
-        for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-            double xValue = partialRegionBoundary.getXCoordinateAtIndex(i);
-            double yValue = partialRegionBoundary.getYCoordinateAtIndex(i);
-
-            shapePoints.add(new Point2D(xValue, yValue));
-        }
+        partialRegionBoundary.forEach(coordinate -> shapePoints.add(coordinate));
 
         Point2D[] simplifiedPoints = simplifyPoints(shapePoints);
 

@@ -131,12 +131,12 @@ public class Border<T> {
                 yCoordinates.add(startPoint.getY());
             }
         }
-        IBoundaryShape<T> boundaryShape = new BoundaryShapeL(
+        IBoundaryShape<T> boundaryShape = new BoundaryShape(
                 xCoordinates,
                 yCoordinates,
                 this);
 
-//        BoundaryShape<T> boundaryShape = new BoundaryShape(
+//        IBoundaryShape<T> boundaryShape = new BoundaryShape(
 //                xCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
 //                yCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
 //                this);

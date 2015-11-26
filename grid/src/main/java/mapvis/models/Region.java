@@ -52,16 +52,16 @@ public class Region<T> {
     }
 
     public List<List<IBoundaryShape<T>>> getBoundaryShape(){
-        List<IBoundaryShape<T>> IBoundaryShapes = new ArrayList<>();
+        List<IBoundaryShape<T>> boundaryShapes = new ArrayList<>();
 
         for (Region<T> childRegion : childRegions) {
             List<Border<T>> bordersForLevel = childRegion.getBordersForLevel(level);
             for (Border<T> tBorder : bordersForLevel) {
-                IBoundaryShapes.add(tBorder.calcBoundaryShape());
+                boundaryShapes.add(tBorder.calcBoundaryShape());
             }
         }
 
-        return BoundaryShapeUtils.orderBoundaryShapes(IBoundaryShapes);
+        return BoundaryShapeUtils.orderBoundaryShapes(boundaryShapes);
     }
 
 

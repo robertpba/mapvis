@@ -11,6 +11,7 @@ import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -144,6 +145,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         for (Tuple2<Region<INode>, List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>>> region : regionToSimplifiedBorders) {
             regionAreaRenderer.drawArea(regionStyler, region.first, region.second);
         }
+
         for (Tuple2<Region<INode>, List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>>> region : regionToSimplifiedBorders) {
             regionBorderRenderer.drawBorder(regionStyler, region.second);
         }
@@ -199,7 +201,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 break;
             case Average:
                 this.boundarySimplificationAlgorithm =
-                        new MovingAverageRegionPathGenerator<>(2, graphicsContext2D);
+                        new MovingAverageRegionPathGenerator<>(graphicsContext2D);
                 break;
             case None:
                 this.boundarySimplificationAlgorithm =
@@ -290,38 +292,34 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
         Point2D renderBoundaryShapeAsLoop(IBoundaryShape<T> regionIBoundaryShape, boolean moveToRequired) {
             boolean newSummarizedShape = true;
-            double currXCoord;
-            double currYCoord;
-            double nextXCoord = 0;
-            double nextYCoord = 0;
-            for (int i = 0; i < regionIBoundaryShape.getShapeLength() - 1; i++) {
-                double xMid = 0;
-                double yMid = 0;
+
+            Iterator<Point2D> currCoordinateIterator = regionIBoundaryShape.iterator();
+            Iterator<Point2D> nextCoordinateIterator = regionIBoundaryShape.iterator();
+            Point2D nextCoordinate = nextCoordinateIterator.next();
+
+            while (nextCoordinateIterator.hasNext()){
+
+                Point2D currCoordinate = currCoordinateIterator.next();
+                nextCoordinate = nextCoordinateIterator.next();
+
+                Point2D midPoint = currCoordinate.add(nextCoordinate).multiply(0.5);;
+
                 if (moveToRequired) {
-                    xMid = (regionIBoundaryShape.getXCoordinateAtIndex(0) + regionIBoundaryShape.getXCoordinateAtIndex(1)) / 2;
-                    yMid = (regionIBoundaryShape.getYCoordinateAtIndex(0) + regionIBoundaryShape.getYCoordinateAtIndex(1)) / 2;
-
-                    graphicsContext.moveTo(xMid, yMid);
-
+                    graphicsContext.moveTo(midPoint.getX(), midPoint.getY());
                     moveToRequired = false;
                 }
-                currXCoord = regionIBoundaryShape.getXCoordinateAtIndex(i);
-                currYCoord = regionIBoundaryShape.getYCoordinateAtIndex(i);
-
-                nextXCoord = regionIBoundaryShape.getXCoordinateAtIndex(i + 1);
-                nextYCoord = regionIBoundaryShape.getYCoordinateAtIndex(i + 1);
-
-                xMid = (currXCoord + nextXCoord) / 2;
-                yMid = (currYCoord + nextYCoord) / 2;
-                if (newSummarizedShape) {
-                    graphicsContext.lineTo(currXCoord, currYCoord);
-                    graphicsContext.lineTo(xMid, yMid);
+                if(newSummarizedShape){
+                    graphicsContext.lineTo(currCoordinate.getX(), currCoordinate.getY());
+                    graphicsContext.lineTo(midPoint.getX(), midPoint.getY());
                     newSummarizedShape = false;
-                } else {
-                    graphicsContext.quadraticCurveTo(currXCoord, currYCoord, xMid, yMid);
+                }else{
+                    graphicsContext.quadraticCurveTo(currCoordinate.getX(), currCoordinate.getY(),
+                            midPoint.getX(), midPoint.getY());
                 }
+
             }
-            return new Point2D(nextXCoord, nextYCoord);
+
+            return nextCoordinate;
         }
 
 
@@ -366,12 +364,12 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         }
 
         void renderBoundaryShapeAsLoop(IBoundaryShape<T> boundaryShape, boolean moveToRequired){
-            for (int i = 0; i < boundaryShape.getShapeLength(); i++) {
+            for (Point2D borderCoordinate: boundaryShape) {
                 if (moveToRequired) {
-                    graphicsContext.moveTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                    graphicsContext.moveTo(borderCoordinate.getX(), borderCoordinate.getY());
                     moveToRequired = false;
                 } else {
-                    graphicsContext.lineTo(boundaryShape.getXCoordinateAtIndex(i), boundaryShape.getYCoordinateAtIndex(i));
+                    graphicsContext.lineTo(borderCoordinate.getX(), borderCoordinate.getY());
                 }
             }
         }
@@ -429,9 +427,8 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 Tuple2<IBoundaryShape<T>, Boolean> boundaryStepTuple = boundaryShapeAndOrdering.get(i);
                 IBoundaryShape<T> boundaryStep = boundaryStepTuple.first;
                 boundaryStep.setCoordinatesNeedToBeReversed(boundaryStepTuple.second);
-                for (int j = 0; j < boundaryStep.getShapeLength(); j++) {
-                    inputPointList.add(new Point2D(boundaryStep.getXCoordinateAtIndex(j), boundaryStep.getYCoordinateAtIndex(j)));
-                }
+
+                inputPointList.forEach(point2D -> inputPointList.add(point2D));
             }
 
             Point2D firstPoint = inputPointList.get(0);
@@ -484,9 +481,8 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
 
             List<Point2D> inputPointList = new ArrayList<>();
-            for (int j = 0; j < regionIBoundaryShape.getShapeLength(); j++) {
-                inputPointList.add(new Point2D(regionIBoundaryShape.getXCoordinateAtIndex(j), regionIBoundaryShape.getYCoordinateAtIndex(j)));
-            }
+            regionIBoundaryShape.forEach(point2D -> inputPointList.add(point2D));
+
             List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
 
             Point2D[] points = inputPointList.toArray(new Point2D[inputPointList.size()]);

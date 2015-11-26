@@ -8,7 +8,7 @@ import javafx.util.Pair;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.BoundaryShape;
+
 import mapvis.models.ConfigurationConstants;
 import mapvis.models.IBoundaryShape;
 import mapvis.models.Region;
@@ -70,7 +70,7 @@ public class RegionAreaRenderer {
             return;
 
 //        graphicsContext.beginPath();
-//        for (List<BoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
+//        for (List<IBoundaryShape<INode>> regionBoundaryShape : regionBoundaryShapes) {
 //
 //            if (regionBoundaryShape.size() == 0)
 //                continue;

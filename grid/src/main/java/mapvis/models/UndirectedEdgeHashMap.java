@@ -6,11 +6,11 @@ import java.util.*;
 
 /**
  * Created by dacc on 11/6/2015.
- * This class is used to sort the unordered @BoundaryShape
+ * This class is used to sort the unordered @IBoundaryShape
  * defining the Region for rendering. To calculate the entire border
  * around one Region the @BoundaryShapes of the Region have to be
  * concatenated. Concatenation is resolved by calculating the
- * start and endpoint of the @BoundaryShape and finding subsequent
+ * start and endpoint of the @IBoundaryShape and finding subsequent
  * Border. Since the coordinate of @BoundaryShapes cannot be globally
  * ordered. Lookup of start and endpoints have to be used to resolve one
  * of the correct orders around one Region.

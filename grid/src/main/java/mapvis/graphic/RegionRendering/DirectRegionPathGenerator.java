@@ -23,15 +23,7 @@ public class DirectRegionPathGenerator<T> extends AbstractRegionPathGenerator<T>
 
     @Override
     public void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape) {
-        List<Point2D[]> shapePoints = new ArrayList<>();
-        for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {
-            Point2D[] partialShapPoints = new Point2D[partialRegionBoundary.getShapeLength()];
-            for (int i = 0; i < partialRegionBoundary.getShapeLength(); i++) {
-                partialShapPoints[i] = new Point2D(partialRegionBoundary.getXCoordinateAtIndex(i), partialRegionBoundary.getYCoordinateAtIndex(i));
-            }
-            shapePoints.add(partialShapPoints);
-        }
-//        return shapePoints;
+
     }
 
     @Override
