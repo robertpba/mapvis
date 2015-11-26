@@ -1,11 +1,8 @@
 package mapvis.graphic.RegionRendering;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
-import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.IBoundaryShape;
 
 import java.util.List;
@@ -35,15 +32,15 @@ public class RegionBorderRenderer {
 
 
     public void drawBorder(IRegionStyler<INode> styler,
-                           List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>> regionBorders) {
+                           List<AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation<INode>> regionBorders) {
         if(shapeRenderer == null)
             return;
 
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
-        for (AbstractRegionPathGenerator.SortedBounaryShapes<INode> regionParts : regionBorders) {
-             for (Tuple2<IBoundaryShape<INode>, Boolean> regionPartTuple : regionParts.boundaryShapeAndOrdering) {
+        for (AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation<INode> regionParts : regionBorders) {
+             for (Tuple2<IBoundaryShape<INode>, Boolean> regionPartTuple : regionParts) {
                  IBoundaryShape<INode> regionPart = regionPartTuple.first;
                  if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.getFirstBorder())){

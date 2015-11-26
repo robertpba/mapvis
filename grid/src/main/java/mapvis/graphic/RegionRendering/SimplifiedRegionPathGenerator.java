@@ -20,24 +20,6 @@ public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerato
         this.useHighQuality = useHighQuality;
     }
 
-    @Override
-    public void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape) {
-
-        for (IBoundaryShape partialRegionBoundary : regionIBoundaryShape) {
-
-        }
-
-//        return simplifiedShape;
-    }
-
-    @Override
-    public void generatePathForBoundaryShapes(List<List<IBoundaryShape<T>>> regionBoundaryShape) {
-        for (List<IBoundaryShape<T>> iBoundaryShapes : regionBoundaryShape) {
-            generatePathForBoundaryShape(iBoundaryShapes);
-        }
-    }
-
-
     private Point2D[] simplifyPoints(List<Point2D> points) {
         Simplify<Point2D> simplify = new Simplify<>(new Point2D[0], new PointExtractor<Point2D>() {
             @Override

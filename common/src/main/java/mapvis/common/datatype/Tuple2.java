@@ -22,6 +22,39 @@ public class Tuple2<T1, T2> {
         return true;
     }
 
+    public boolean hasSameTupleElements(Tuple2<T1, T2> nodeTupleB){
+        if(this.first == null && nodeTupleB.first == null && this.second == null && nodeTupleB.second == null){
+            return true;
+        }
+
+        if(this.first != null && this.second == null){
+            if(this.first.equals(nodeTupleB.first) && nodeTupleB.second == null)
+                return true;
+
+            if(this.first.equals(nodeTupleB.second) && nodeTupleB.first == null)
+                return true;
+            return false;
+        }
+
+        if(this.second != null && this.first == null){
+            if(this.second.equals(nodeTupleB.second) && nodeTupleB.first == null)
+                return true;
+
+            if(this.second.equals(nodeTupleB.first) && nodeTupleB.second == null)
+                return true;
+
+            return false;
+        }
+
+        if(this.first.equals(nodeTupleB.first) && this.second.equals(nodeTupleB.second))
+            return true;
+
+        if(this.second.equals(nodeTupleB.first) && this.first.equals(nodeTupleB.second))
+            return true;
+
+        return false;
+    }
+
     @Override
     public int hashCode() {
         int result = first != null ? first.hashCode() : 0;

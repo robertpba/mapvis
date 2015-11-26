@@ -28,8 +28,6 @@ public class ConfigurationConstants {
     public static final RenderingMethod RENDERING_METHOD_DEFAULT = RenderingMethod.Direct;
     public static final SimplificationMethod SIMPLIFICATION_METHOD_DEFAULT = SimplificationMethod.None;
 
-    public static final boolean DRAW_ORIGINAL_SHAPE = false;
-    public static final boolean FILL_SHAPE = true;
 
     //UDC Tree
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";

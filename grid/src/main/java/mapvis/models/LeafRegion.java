@@ -38,46 +38,11 @@ public class LeafRegion<T> extends Region<T> {
             return;
 
         for (Border<T> existingBorder : this.borders) {
-            if(isSameBorder(border, existingBorder)){
+            if(existingBorder.equals(border)){
                 return;
             }
         }
         borders.add(border);
-    }
-
-    public static boolean isSameBorder(Border newBorder, Border existingBorder) {
-        if(newBorder == null || existingBorder == null)
-            return true;
-
-        if(newBorder.getNodeA() == null && existingBorder.getNodeA() != null)
-            return false;
-
-        if(newBorder.getNodeB() == null && existingBorder.getNodeB() != null)
-            return false;
-
-        if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))
-            return false;
-
-        if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
-            return false;
-
-        Point2D newBorderStartPoint = roundToCoordinatesTo4Digits(newBorder.getStartPoint());
-        Point2D existingBorderStartPoint = roundToCoordinatesTo4Digits(existingBorder.getStartPoint());
-
-        Point2D newBorderLastPoint = roundToCoordinatesTo4Digits(newBorder.getLastPoint());
-        Point2D existingBorderLastPoint = roundToCoordinatesTo4Digits(existingBorder.getLastPoint());
-
-        if(newBorderStartPoint.equals(existingBorderStartPoint) && newBorderLastPoint.equals(existingBorderLastPoint)
-                || newBorderStartPoint.equals(existingBorderLastPoint) && newBorderLastPoint.equals(existingBorderStartPoint)){
-            if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))
-                return false;
-            if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
-                return false;
-
-            return true;
-        }
-
-        return false;
     }
 
     @Override

@@ -41,6 +41,16 @@ public class Border<T> {
         this.borderCoordinates = borderCoordinates;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+        return isSameBorder(this, (Border) obj);
+    }
+
+
+
     public List<TileBorder> getBorderCoordinates() {
         return Collections.unmodifiableList(borderCoordinates);
     }
@@ -118,9 +128,6 @@ public class Border<T> {
     }
 
     public IBoundaryShape<T> calcBoundaryShape(){
-        List<Double> xCoordinates = new ArrayList<>();
-        List<Double> yCoordinates = new ArrayList<>();
-
         List<Point2D> shapeCoordinates = new ArrayList<>();
 
         for (TileBorder tileBorder : borderCoordinates) {
@@ -129,25 +136,47 @@ public class Border<T> {
                         TileBorder.calcStartPointForBorderEdge(tileBorder.getTilePos(),
                                 direction)
                 );
-
-                xCoordinates.add(startPoint.getX());
-                yCoordinates.add(startPoint.getY());
                 shapeCoordinates.add(startPoint);
             }
         }
         IBoundaryShape<T> boundaryShape = new BoundaryShape(shapeCoordinates, this);
 
-//        IBoundaryShape<T> boundaryShape = new BoundaryShape(
-//                xCoordinates,
-//                yCoordinates,
-//                this);
 
-//        IBoundaryShape<T> boundaryShape = new BoundaryShape(
-//                xCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
-//                yCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),
-//                this);
-//
-//        boundaryShape.level = this.level;
         return boundaryShape;
+    }
+
+    private static boolean isSameBorder(Border newBorder, Border existingBorder) {
+        if(newBorder == null || existingBorder == null)
+            return true;
+
+        if(newBorder.getNodeA() == null && existingBorder.getNodeA() != null)
+            return false;
+
+        if(newBorder.getNodeB() == null && existingBorder.getNodeB() != null)
+            return false;
+
+        if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))
+            return false;
+
+        if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
+            return false;
+
+        Point2D newBorderStartPoint = LeafRegion.roundToCoordinatesTo4Digits(newBorder.getStartPoint());
+        Point2D existingBorderStartPoint = LeafRegion.roundToCoordinatesTo4Digits(existingBorder.getStartPoint());
+
+        Point2D newBorderLastPoint = LeafRegion.roundToCoordinatesTo4Digits(newBorder.getLastPoint());
+        Point2D existingBorderLastPoint = LeafRegion.roundToCoordinatesTo4Digits(existingBorder.getLastPoint());
+
+        if(newBorderStartPoint.equals(existingBorderStartPoint) && newBorderLastPoint.equals(existingBorderLastPoint)
+                || newBorderStartPoint.equals(existingBorderLastPoint) && newBorderLastPoint.equals(existingBorderStartPoint)){
+            if(newBorder.getNodeA() != null && !newBorder.getNodeA().equals(existingBorder.getNodeA()))
+                return false;
+            if(newBorder.getNodeB() != null && !newBorder.getNodeB().equals(existingBorder.getNodeB()))
+                return false;
+
+            return true;
+        }
+
+        return false;
     }
 }

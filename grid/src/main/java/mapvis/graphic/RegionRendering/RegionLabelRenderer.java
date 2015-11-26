@@ -41,15 +41,11 @@ public class RegionLabelRenderer {
         }
         graphicsContext.setFont(new Font(graphicsContext.getFont().getName(), 30));
         graphicsContext.setStroke(Color.BLACK);
-//        graphicsContext.setLineWidth(3);
+        graphicsContext.setLineWidth(3);
         graphicsContext.strokeText(nodeItem.getLabel(), labelPos.getX(), labelPos.getY());
 //        graphicsContext.restore();
     }
 
-//    private Point2D calcLabelPos(Region<INode> region) {
-//        region.g
-//    calc label position just by using the position of the tiles
-//    }
 
     private Point2D calcLabelPos(List<List<IBoundaryShape<INode>>> regionBoundaryShapes) {
 
@@ -68,6 +64,7 @@ public class RegionLabelRenderer {
         }
         if(numOfCoords == 0)
             return sumOfCoordinates;
+
         return sumOfCoordinates.multiply(1.0 / numOfCoords);
     }
 }

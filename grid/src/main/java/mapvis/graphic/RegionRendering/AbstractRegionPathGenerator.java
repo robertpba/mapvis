@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by dacc on 11/24/2015.
  */
-public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGenerator<T> {
+public abstract class AbstractRegionPathGenerator<T> {
 
     Map<BorderIdentifier, IBoundaryShape<T>> simplifiedBorders = new HashMap<>();
 
@@ -22,41 +22,7 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         this.graphicsContext = g;
     }
 
-    private static <T> boolean areSameSeparatedRegions(Tuple2<T, T> nodeTupleA, Tuple2<T, T> nodeTupleB){
-
-        if(nodeTupleA.first == null && nodeTupleB.first == null && nodeTupleA.second == null && nodeTupleB.second == null){
-            return true;
-        }
-
-        if(nodeTupleA.first != null && nodeTupleA.second == null){
-            if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleB.second == null)
-                return true;
-
-            if(nodeTupleA.first.equals(nodeTupleB.second) && nodeTupleB.first == null)
-                return true;
-            return false;
-        }
-
-        if(nodeTupleA.second != null && nodeTupleA.first == null){
-            if(nodeTupleA.second.equals(nodeTupleB.second) && nodeTupleB.first == null)
-                return true;
-
-            if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleB.second == null)
-                return true;
-
-            return false;
-        }
-
-        if(nodeTupleA.first.equals(nodeTupleB.first) && nodeTupleA.second.equals(nodeTupleB.second))
-            return true;
-
-        if(nodeTupleA.second.equals(nodeTupleB.first) && nodeTupleA.first.equals(nodeTupleB.second))
-            return true;
-
-        return false;
-    }
-
-    public static <T> List<IBoundaryShape<T>> summarizeBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape, int maxToShow, Tree2<T> tree) {
+    public static <T> List<IBoundaryShape<T>> summarizeBoundaryShapesWithSameNeighbours(List<IBoundaryShape<T>> regionIBoundaryShape, int maxShownRegionLevel, Tree2<T> tree) {
         Tuple2<T, T> prevSeparatedRegions = null;
         Tuple2<T, T> firstSeparatedRegions = null;
         boolean firstIteration = true;
@@ -65,9 +31,9 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         IBoundaryShape<T> currBoundaryShape = null;
 
         for (IBoundaryShape<T> tBoundaryShape : regionIBoundaryShape) {
-            Tuple2<T, T> separatedRegions = tBoundaryShape.getSeperatedRegionsID(maxToShow, tree);
+            Tuple2<T, T> separatedRegions = tBoundaryShape.getSeperatedRegionsID(maxShownRegionLevel, tree);
 
-            if ( (prevSeparatedRegions != null) && (!areSameSeparatedRegions(prevSeparatedRegions, separatedRegions) ) ){
+            if ( (prevSeparatedRegions != null) && (!prevSeparatedRegions.hasSameTupleElements(separatedRegions) ) ){
                 resultingBoundaryShape.add(currBoundaryShape);
                 currBoundaryShape = tBoundaryShape;
             }else{
@@ -95,7 +61,7 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         }
 
         if(currBoundaryShape != null){
-            if(resultingBoundaryShape.size() > 0 && areSameSeparatedRegions(firstSeparatedRegions, prevSeparatedRegions)){
+            if(resultingBoundaryShape.size() > 0 && firstSeparatedRegions.hasSameTupleElements(prevSeparatedRegions)){
                 //append at existing but leave out the first one as it has the same coordinate like the end point of currBoundaryShape
                 Iterator<Point2D> coorIterator = resultingBoundaryShape.get(0).iterator();
                 coorIterator.next();
@@ -112,22 +78,19 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         return resultingBoundaryShape;
     }
 
-    public static class SortedBounaryShapes<T>{
-        List<Tuple2<IBoundaryShape<T>, Boolean>> boundaryShapeAndOrdering = new ArrayList<>();
-        public SortedBounaryShapes(){}
+    public static class BoundaryShapesWithReverseInformation<T> extends ArrayList<Tuple2<IBoundaryShape<T>, Boolean>>{
         public void addBoundaryShapeWithOrdering(IBoundaryShape<T> boundaryShape, Boolean ordering){
-            boundaryShapeAndOrdering.add(new Tuple2<IBoundaryShape<T>, Boolean>(boundaryShape, ordering));
+            this.add(new Tuple2<IBoundaryShape<T>, Boolean>(boundaryShape, ordering));
         }
     }
 
-    public SortedBounaryShapes<T> generatePathForBoundaryShape(List<IBoundaryShape<T>> singleBoundaryShape, int maxToCollect, Tree2<T> tree) {
+    public BoundaryShapesWithReverseInformation<T> generatePathForBoundaryShape(List<IBoundaryShape<T>> singleBoundaryShape, int maxToCollect, Tree2<T> tree) {
         if(singleBoundaryShape.size() == 0)
-            return new SortedBounaryShapes();
+            return new BoundaryShapesWithReverseInformation();
 
-        List<IBoundaryShape<T>> summarizedBoundaryShape = summarizeBoundaryShape(singleBoundaryShape, maxToCollect, tree);
+        List<IBoundaryShape<T>> summarizedBoundaryShape = summarizeBoundaryShapesWithSameNeighbours(singleBoundaryShape, maxToCollect, tree);
 
-//        List<IBoundaryShape<T>> simplifiedPath = new ArrayList<>();
-        SortedBounaryShapes<T> result = new SortedBounaryShapes<>();
+        BoundaryShapesWithReverseInformation<T> result = new BoundaryShapesWithReverseInformation<>();
 
         for (IBoundaryShape<T> summarizedBoundaryStep : summarizedBoundaryShape) {
             BorderIdentifier borderID = getBorderIdentifier(summarizedBoundaryStep);
@@ -140,7 +103,6 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
                 Boolean reverseRequired = iBoundaryShapes.isCoordinatesNeedToBeReversed();
                 if ( (endPoint.equals(getRoundedStartPointOfBoundaryShape(iBoundaryShapes))
                         && startPoint.equals(getRoundedEndPointOfBoundaryShape(iBoundaryShapes)))) {
-//                    iBoundaryShapes.setCoordinatesNeedToBeReversed(!iBoundaryShapes.isCoordinatesNeedToBeReversed());
                     reverseRequired = !reverseRequired;
                 }
 //                System.out.println("Reusing Border");
@@ -187,6 +149,7 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
     protected void clearChangedPaths(){
         simplifiedBorders.clear();
     }
+
     protected class BorderIdentifier{
         Point2D startPoint;
         Point2D endPoint;

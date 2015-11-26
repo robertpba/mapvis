@@ -20,14 +20,4 @@ public class DirectRegionPathGenerator<T> extends AbstractRegionPathGenerator<T>
     void createPathForBoundaryShape(IBoundaryShape<T> summarizedBoundaryStep) {
         //summarizedBoundaryStep just stays the same
     }
-
-    @Override
-    public void generatePathForBoundaryShape(List<IBoundaryShape<T>> regionIBoundaryShape) {
-
-    }
-
-    @Override
-    public void generatePathForBoundaryShapes(List<List<IBoundaryShape<T>>> regionBoundaryShape) {
-
-    }
 }

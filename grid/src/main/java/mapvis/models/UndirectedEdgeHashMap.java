@@ -49,7 +49,7 @@ public class UndirectedEdgeHashMap {
         Iterator<IBoundaryShape> iterator = IBoundaryShapes.iterator();
         while (iterator.hasNext()) {
             IBoundaryShape next = iterator.next();
-            if(LeafRegion.isSameBorder(boundaryShape.getFirstBorder(), next.getFirstBorder())){
+            if(boundaryShape.getFirstBorder().equals(next.getFirstBorder())){
                 iterator.remove();
                 break;
             }
@@ -64,7 +64,7 @@ public class UndirectedEdgeHashMap {
         if(startToConnectedBoundaryShape.containsKey(pointToPut)){
             List<IBoundaryShape> boundaryShapes = startToConnectedBoundaryShape.get(pointToPut);
             for (IBoundaryShape shape : boundaryShapes) {
-                if(LeafRegion.isSameBorder(boundaryShape.getFirstBorder(), shape.getFirstBorder())){
+                if(boundaryShape.equals(shape.getFirstBorder())){
                     return;
                 }
             }
@@ -87,7 +87,7 @@ public class UndirectedEdgeHashMap {
         }
 
         for (IBoundaryShape boundaryShape : boundaryShapes) {
-            if(!LeafRegion.isSameBorder(boundaryShape.getFirstBorder(), currentEdge.getFirstBorder())){
+            if(!boundaryShape.getFirstBorder().equals(currentEdge.getFirstBorder())){
                 return boundaryShape;
             }
         }
