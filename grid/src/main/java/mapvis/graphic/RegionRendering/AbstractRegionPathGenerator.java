@@ -183,6 +183,9 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         return LeafRegion.roundToCoordinatesTo4Digits(boundaryShapeStep.getEndPoint());
     }
 
+    protected void clearChangedPaths(){
+        simplifiedBorders.clear();
+    }
     protected class BorderIdentifier{
         Point2D startPoint;
         Point2D endPoint;

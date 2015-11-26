@@ -45,6 +45,9 @@ public class HexagonalTilingView extends Pane {
 
     private ObjectProperty<ConfigurationConstants.RenderingMethod> renderingMethod = new SimpleObjectProperty<>();
     private ObjectProperty<ConfigurationConstants.SimplificationMethod> simplificationMethod = new SimpleObjectProperty<>();
+    private DoubleProperty simplificationTolerance = new SimpleDoubleProperty(ConfigurationConstants.SIMPLIFICATION_TOLERANCE);
+    private BooleanProperty useHQDouglasSimplification = new SimpleBooleanProperty(ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
+
 
     private IntegerProperty maxLevelOfBordersToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
     private IntegerProperty maxLevelOfLabelsToShow = new SimpleIntegerProperty(Integer.MAX_VALUE);
@@ -83,6 +86,8 @@ public class HexagonalTilingView extends Pane {
         maxLevelOfRegionsToShow.addListener(this::onRegionLevelsToShowChanged);
         renderingMethod.addListener(this::onRenderingMethodChanged);
         simplificationMethod.addListener(this::onBoundarySimplificationMethodChanged);
+        useHQDouglasSimplification.addListener(this::onUseHQDouglasSimplificationChanged);
+        simplificationTolerance.addListener(this::onSimplificationToleranceChanged);
     }
 
     private void initHexagonTilingView(){
@@ -271,6 +276,20 @@ public class HexagonalTilingView extends Pane {
         this.simplificationMethod.set(simplificationMethod);
     }
 
+    public DoubleProperty simplificationToleranceProperty() {
+        return simplificationTolerance;
+    }
+    public void setSimplificationTolerance(double simplificationTolerance) {
+        this.simplificationTolerance.set(simplificationTolerance);
+    }
+
+    public BooleanProperty useHQDouglasSimplificationProperty() {
+        return useHQDouglasSimplification;
+    }
+    public void setUseHQDouglasSimplification(boolean useHQDouglasSimplification) {
+        this.useHQDouglasSimplification.set(useHQDouglasSimplification);
+    }
+
     public void zoom(double scale){
         Point2D center = new Point2D(getWidth() / 2, getHeight() / 2);
         zoom(center, scale);
@@ -364,6 +383,21 @@ public class HexagonalTilingView extends Pane {
         if(ConfigurationConstants.USE_REGION_RENDERING){
             RegionRenderer regionRenderer = (RegionRenderer) this.renderer;
             regionRenderer.setBoundarySimplificationMethod(newValue);
+            updateHexagons();
+        }
+    }
+    private void onUseHQDouglasSimplificationChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
+            RegionRenderer regionRenderer = (RegionRenderer) this.renderer;
+            regionRenderer.setBoundarySimplificationAlgorithmSettings(this.simplificationTolerance.floatValue(), newValue);
+            updateHexagons();
+        }
+    }
+
+    private void onSimplificationToleranceChanged(ObservableValue<? extends Number> observable, Number oldValue, Number newValue){
+        if(ConfigurationConstants.USE_REGION_RENDERING){
+            RegionRenderer regionRenderer = (RegionRenderer) this.renderer;
+            regionRenderer.setBoundarySimplificationAlgorithmSettings(newValue.floatValue(), useHQDouglasSimplification.get());
             updateHexagons();
         }
     }

@@ -4,12 +4,14 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 import mapvis.Drawer;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
@@ -47,9 +49,13 @@ public class ChartController implements Initializable  {
     public Slider levelsToShowSlider;
 
     @FXML
-    public ComboBox simplificationMethodComboBox;
+    private ComboBox<ConfigurationConstants.SimplificationMethod> simplificationMethodComboBox;
     @FXML
-    public ComboBox renderingMethodComboBox;
+    public ComboBox<ConfigurationConstants.RenderingMethod> renderingMethodComboBox;
+    @FXML
+    private CheckBox HQDouglasPeuckerSimplifCheckBox;
+    @FXML
+    private Slider douglasPeuckerToleranceSlider;
 
     @FXML
     private ChoiceBox labelLevelsToShowChoiceBox;
@@ -68,12 +74,27 @@ public class ChartController implements Initializable  {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        StringConverter<Number> sc = new StringConverter<Number>() {
+            @Override
+            public String toString(Number object) {
+                if (object != null) {
+                    return Integer.toString((int) Math.round(object.doubleValue()));
+                }else
+                    return null;
+            }
+
+            @Override
+            public Number fromString(String string) {
+                Double d = Double.parseDouble(string);
+                return d;
+            }
+        };
         zoomSlider.valueProperty()
                 .bindBidirectional(chart.zoomProperty());
         originX.textProperty()
-                .bind(chart.originXProperty().asString());
+                .bindBidirectional(chart.originXProperty(), sc);
         originY.textProperty()
-                .bind(chart.originXProperty().asString());
+                .bindBidirectional(chart.originYProperty(), sc);
         showLabelsCheckBox.selectedProperty()
                 .bindBidirectional(chart.areLabelsShownProperty());
         bordersLevelsToShowSlider.valueProperty()
@@ -82,6 +103,10 @@ public class ChartController implements Initializable  {
                 .bindBidirectional(chart.maxLevelOfLabelsToShowProperty());
         levelsToShowSlider.valueProperty()
                 .bindBidirectional(chart.maxLevelOfRegionsToShowProperty());
+        douglasPeuckerToleranceSlider.valueProperty()
+                .bindBidirectional(chart.simplificationToleranceProperty());
+        HQDouglasPeuckerSimplifCheckBox.selectedProperty()
+                .bindBidirectional(chart.useHQDouglasSimplificationProperty());
         grid.bindBidirectional(chart.gridProperty());
         tree.bindBidirectional(chart.treeProperty());
 
@@ -116,18 +141,23 @@ public class ChartController implements Initializable  {
         for (ConfigurationConstants.SimplificationMethod simplificationMethod : ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT.values()) {
             simplificationMethodComboBox.getItems().add(simplificationMethod);
         }
+        simplificationMethodComboBox.valueProperty().addListener(this::onSimplificationSelectionChanged);
         simplificationMethodComboBox.getSelectionModel().select(ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT);
-//        renderingMethodComboBox.getItems().addAll(
-//                filesystemTreeSettingsController, randomTreeSettingsController,
-//                udcTreeSettingsController, loadDumpedTreeSettingsController
-//        );
-//        inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
 
-//        levelsToShowSlider.valueProperty().addListener((observable1, oldValue, newValue) -> chart.updateHexagons());
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 
+    private void onSimplificationSelectionChanged(ObservableValue<? extends ConfigurationConstants.SimplificationMethod> observable,
+                                                       ConfigurationConstants.SimplificationMethod oldValue, ConfigurationConstants.SimplificationMethod newValue){
+        if(newValue == ConfigurationConstants.SimplificationMethod.DouglasPeucker){
+            HQDouglasPeuckerSimplifCheckBox.setVisible(true);
+            douglasPeuckerToleranceSlider.setVisible(true);
+        }else{
+            HQDouglasPeuckerSimplifCheckBox.setVisible(false);
+            douglasPeuckerToleranceSlider.setVisible(false);
+        }
+    }
     @FXML
     public void reset(ActionEvent event) {
         chart.zoomTo(1.0);

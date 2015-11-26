@@ -172,6 +172,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         this.regionBorderRenderer.setShapeRenderer(shapeRenderer);
     }
 
+
     public void setBoundarySimplificationMethod(ConfigurationConstants.SimplificationMethod boundarySimplificationMethod) {
         GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
         switch (boundarySimplificationMethod) {
@@ -188,6 +189,12 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 this.boundarySimplificationAlgorithm =
                         new DirectRegionPathGenerator<>(graphicsContext2D);
                 break;
+        }
+    }
+
+    public void setBoundarySimplificationAlgorithmSettings(float simplificationTolerance, boolean useHighQualityDouglasPeucker){
+        if(this.boundarySimplificationAlgorithm instanceof SimplifiedRegionPathGenerator){
+            ((SimplifiedRegionPathGenerator) boundarySimplificationAlgorithm).setSettings(simplificationTolerance, useHighQualityDouglasPeucker);
         }
     }
 

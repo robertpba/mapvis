@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerator<T> {
-    private final float tolerance;
-    private final boolean useHighQuality;
+    private float tolerance;
+    private boolean useHighQuality;
 
     public SimplifiedRegionPathGenerator(GraphicsContext graphicsContext, float tolerance, boolean useHighQuality) {
         super(graphicsContext);
@@ -38,7 +38,7 @@ public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerato
 
 
     private Point2D[] simplifyPoints(List<Point2D> points) {
-        Simplify<Point2D> simplify = new Simplify<Point2D>(new Point2D[0], new PointExtractor<Point2D>() {
+        Simplify<Point2D> simplify = new Simplify<>(new Point2D[0], new PointExtractor<Point2D>() {
             @Override
             public double getX(Point2D point) {
                 return point.getX();
@@ -77,5 +77,11 @@ public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerato
         partialRegionBoundary.setXCoords(simplifiedXCoords);
         partialRegionBoundary.setYCoords(simplifiedYCoords);
         partialRegionBoundary.setCoordinatesNeedToBeReversed(false);
+    }
+
+    public void setSettings(float tolerance, boolean useHighQuality){
+        this.clearChangedPaths();
+        this.tolerance = tolerance;
+        this.useHighQuality = useHighQuality;
     }
 }
