@@ -1,22 +1,28 @@
 package mapvis.models;
 
+/**
+ * A tile corresponds to a Hexagon in the Visualization.
+ * It stored the Tile position in the grid and the Node
+ * Element of the Tree as item.
+ * Depending on the visualization the Hexagon/Tile may be
+ * occupied (LAND) or not (Empty, Sea)
+ * @param <T>
+ */
 public class Tile<T> {
-    int x;
-    int y;
-    T item;
-    int tag;
+    private T item;
+    private int tag;
 
-    Pos pos;
+    private Pos pos;
 
     public final static int EMPTY = -1;
     public final static int LAND = 0;
     public final static int SEA = 1;  // territorial sea
 
     public int getX() {
-        return x;
+        return pos.getX();
     }
     public int getY() {
-        return y;
+        return pos.getY();
     }
     public T getItem() {
         return item;
@@ -34,8 +40,6 @@ public class Tile<T> {
     public Tile(Pos pos) { this(pos, null, EMPTY); }
     public Tile(Pos pos, T item) { this(pos, item, LAND); }
     public Tile(Pos pos, T item, int tag){
-        this.x = pos.getX();
-        this.y = pos.getY();
         this.pos = pos;
         this.item = item;
         this.tag = tag;
@@ -48,8 +52,8 @@ public class Tile<T> {
 
         Tile tile = (Tile) o;
 
-        if (x != tile.x) return false;
-        if (y != tile.y) return false;
+        if (getX() != tile.getX()) return false;
+        if (getY() != tile.getY()) return false;
         //if (item != null ? !item.equals(tile.item) : tile.item != null) return false;
 
         return true;
@@ -57,10 +61,14 @@ public class Tile<T> {
 
     @Override
     public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
+        int result = getX();
+        result = 31 * result + getY();
         //result = 31 * result + (item != null ? item.hashCode() : 0);
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Label " + getTag() + " Pos: " + getPos().getX() + ";" + getPos().getY();
+    }
 }

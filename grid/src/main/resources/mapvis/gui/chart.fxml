@@ -1,79 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import mapvis.graphic.HexagonalTilingView?>
-<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.ChartController">
     <bottom>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox prefHeight="243.0" prefWidth="694.0" BorderPane.alignment="CENTER">
             <children>
                 <Slider fx:id="zoomSlider" blockIncrement="0.1" majorTickUnit="0.05" max="1.0" min="0.1" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" BorderPane.alignment="CENTER" />
-                <HBox>
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="366.0" minWidth="10.0" prefWidth="135.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="565.0" minWidth="10.0" prefWidth="559.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[ " />
-                        <Text fx:id="originX" strokeType="OUTSIDE" strokeWidth="0.0" text="x" BorderPane.alignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" , " />
-                        <Text fx:id="originY" strokeType="OUTSIDE" strokeWidth="0.0" text="y" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" ]">
-                            <HBox.margin>
-                            </HBox.margin>
-                        </Text>
-                        <Button mnemonicParsing="false" onAction="#reset" text="Reset" />
-                        <FlowPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.vgrow="NEVER">
                             <children>
-                        <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" />
-                              <ChoiceBox fx:id="levelChoiceBox">
-                                 <items>
-                                 <FXCollections fx:factory="observableArrayList">
-                                    <Integer fx:value="100" />
-                                    <Integer fx:value="1" />
-                                    <Integer fx:value="2" />
-                                    <Integer fx:value="3" />
-                                    <Integer fx:value="4" />
-                                    <Integer fx:value="5" />
-                                 </FXCollections>
-                                 </items>
-                                 <value>
-                              <Integer fx:value="100" />
-                           </value>
-                              </ChoiceBox>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxBorders" />
-                                <ChoiceBox fx:id="bordersLevelsToShowChoiceBox">
-                                    <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                            <Integer fx:value="100" />
-                                            <Integer fx:value="1" />
-                                            <Integer fx:value="2" />
-                                            <Integer fx:value="3" />
-                                            <Integer fx:value="4" />
-                                            <Integer fx:value="5" />
-                                        </FXCollections>
-                                    </items>
-                                    <value>
-                                        <Integer fx:value="100" />
-                                    </value>
-                                </ChoiceBox>
-                                <CheckBox fx:id="showLabelsCheckBox" mnemonicParsing="false" text="Show Labels"/>
-                        <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="colorSchemeGroup" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton mnemonicParsing="false" onAction="#onChooseRamp" text="Ramp" toggleGroup="$colorSchemeGroup" />
-                        <Button mnemonicParsing="false" onAction="#save" text="save" />
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[ " />
+                                <Text fx:id="originX" strokeType="OUTSIDE" strokeWidth="0.0" text="x" textAlignment="RIGHT" wrappingWidth="25.0" />
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" , " />
+                                <Text fx:id="originY" strokeType="OUTSIDE" strokeWidth="0.0" text="y" textAlignment="RIGHT" wrappingWidth="25.0" />
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" ]" wrappingWidth="22.908203125" />
+                                <Button mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="45.0" text="Reset" />
+                            </children>
+                        </FlowPane>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLevels" GridPane.rowIndex="2" />
+                        <Slider fx:id="levelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxBorders" GridPane.rowIndex="3" />
+                        <Slider fx:id="bordersLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="30.0" prefWidth="336.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Slider fx:id="douglasPeuckerToleranceSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" minorTickCount="0" prefWidth="548.0" showTickLabels="true" showTickMarks="true" value="4.55" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                            <children>
+                                <ColorPicker fx:id="colorPicker" editable="true" promptText="Background" />
+                                <ComboBox fx:id="renderingMethodComboBox" onAction="#onRenderingMethodChanged" prefHeight="25.0" prefWidth="115.0" />
+                                <ComboBox fx:id="simplificationMethodComboBox" onAction="#onSimplificationMethodChanged" prefHeight="25.0" prefWidth="115.0" />
+                                <CheckBox fx:id="HQDouglasPeuckerSimplifCheckBox" mnemonicParsing="false" prefHeight="17.0" prefWidth="166.0" text="HQ Douglas-Peucker" />
+                            </children>
+                        </FlowPane>
+
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="MaxLabels" GridPane.rowIndex="4" />
+                        <Slider fx:id="labelLevelsToShowSlider" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" minorTickCount="0" prefHeight="37.0" prefWidth="325.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <FlowPane hgap="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                            <children>
+                                <CheckBox fx:id="showLabelsCheckBox" mnemonicParsing="false" text="Show Labels" />
+                                <RadioButton mnemonicParsing="false" onAction="#onChooseRandom" selected="true" text="Random">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="colorSchemeGroup" />
+                                    </toggleGroup>
+                                </RadioButton>
+                                <RadioButton mnemonicParsing="false" onAction="#onChooseRamp" text="Ramp" toggleGroup="$colorSchemeGroup" />
+                                <Button mnemonicParsing="false" onAction="#save" text="save" />
                             </children>
                         </FlowPane>
                     </children>
-                </HBox>
+                    <VBox.margin>
+                        <Insets left="5.0" />
+                    </VBox.margin>
+                </GridPane>
             </children>
         </VBox>
     </bottom>
     <center>
-        <HexagonalTilingView fx:id="chart" BorderPane.alignment="CENTER">
-        </HexagonalTilingView>
+        <VBox BorderPane.alignment="CENTER">
+        <children>
+            <HexagonalTilingView fx:id="chart" BorderPane.alignment="CENTER">
+            </HexagonalTilingView>
+        </children>
+        </VBox>
     </center>
 </BorderPane>

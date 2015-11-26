@@ -1,6 +1,7 @@
 package mapvis.layouts;
 
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.dac.Compact;
 import mapvis.layouts.dac.Disperse;
@@ -10,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Dac {
 
-    static Entry<Node> createEntry(Node root){
-        Entry<Node> entry = new Entry<>();
+    static Entry<INode> createEntry(INode root){
+        Entry<INode> entry = new Entry<>();
         entry.node = root;
         entry.r =  Math.sqrt((double) root.getVal("size"))/2;
 
@@ -22,7 +23,7 @@ public class Dac {
         return entry;
     }
 
-    static void updatePosition(Entry<Node> entry){
+    static void updatePosition(Entry<INode> entry){
         entry.node.setVal("x",entry.x);
         entry.node.setVal("y", entry.y);
 
@@ -34,12 +35,12 @@ public class Dac {
         entry.children.forEach(Dac::updatePosition);
     }
 
-    static void adjust(Entry<Node> entry) {
+    static void adjust(Entry<INode> entry) {
 
     }
 
-    public static void run(Node root, int steps){
-        Entry<Node> entry = createEntry(root);
+    public static void run(INode root, int steps){
+        Entry<INode> entry = createEntry(root);
         Disperse.disperse(entry, steps);
         Compact.compact(entry);
         //entry.children.forEach(Compact::compact);

@@ -1,6 +1,6 @@
 package mapvis;
 
-import mapvis.common.datatype.Node;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
@@ -18,10 +18,10 @@ import java.awt.geom.Point2D;
 import java.io.*;
 
 public class Drawer {
-    private Grid<Node> grid;
-    Tree2<Node> tree;
+    private Grid<INode> grid;
+    Tree2<INode> tree;
 
-    public Drawer(Grid<Node> grid, Tree2<Node> tree) {
+    public Drawer(Grid<INode> grid, Tree2<INode> tree) {
         System.out.println("Creating: " + this.getClass().getName());
         this.grid = grid;
         this.tree = tree;
@@ -90,8 +90,8 @@ public class Drawer {
         return new Point2D.Double(cx, cy);
     }
 
-    void drawTile(Graphics2D g, Tile<Node> tile) {
-        TileCache<Node> cache = getCache(tile.getX(), tile.getY());
+    void drawTile(Graphics2D g, Tile<INode> tile) {
+        TileCache<INode> cache = getCache(tile.getX(), tile.getY());
 
         if (cache.t == Tile.SEA || cache.v == null)
             return;
@@ -130,9 +130,9 @@ public class Drawer {
     }
 
 
-    TileCache<Node> getCache(int x, int y){
+    TileCache<INode> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
-        Tile<Node> tile = grid.getTile(x, y);
+        Tile<INode> tile = grid.getTile(x, y);
         if (cache.x == x && cache.y == y && cache.t == tile.getTag())
             return cache;
 
@@ -140,7 +140,7 @@ public class Drawer {
         cache.y = y;
         cache.t = tile.getTag();
 
-        Node t = grid.getItem(x, y);
+        INode t = grid.getItem(x, y);
 
         if (t == null)
             cache.v = null;
@@ -158,8 +158,8 @@ public class Drawer {
     }
 
     int calcLevel(int x, int y, Dir dir){
-        Tile<Node> t = grid.getTile(x, y);
-        Tile<Node> tn = grid.getNeighbour(x, y, dir);
+        Tile<INode> t = grid.getTile(x, y);
+        Tile<INode> tn = grid.getNeighbour(x, y, dir);
         if (t.getItem() == null || tn.getItem() == null || t.getItem() == tn.getItem())
             return 0;
         if (t.getTag() == Tile.SEA)
@@ -168,7 +168,7 @@ public class Drawer {
             return 0;
 
 
-        Node lca = tree.getLCA(t.getItem(), tn.getItem());
+        INode lca = tree.getLCA(t.getItem(), tn.getItem());
         if (lca == null) return 0;
 
         return tree.getDepth(lca) + 1;
@@ -187,7 +187,7 @@ public class Drawer {
         public int borderNW;
         public int borderSW;
     }
-    TileCache<Node> cache;
+    TileCache<INode> cache;
 
 
     public void export() throws IOException {

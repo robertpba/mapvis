@@ -7,23 +7,19 @@ import mapvis.models.Tile;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class HashMapGrid<T> implements Grid<T> {
 
+    private Map<Pos, Tile<T>> map = new HashMap<>();
+
+    private int minX;
+    private int minY;
+    private int maxX;
+    private int maxY;
+
     public HashMapGrid() {
-        System.out.println("Creating: " + this.getClass().getName());
-    }
-
-    Map<Pos, Tile<T>> map = new HashMap<>();
-
-    int minX;
-    int minY;
-    int maxX;
-    int maxY;
-
-    @Override
-    public int getMinY() {
-        return minY;
     }
 
     @Override
@@ -31,6 +27,10 @@ public class HashMapGrid<T> implements Grid<T> {
         map.clear();
     }
 
+    @Override
+    public int getMinY() {
+        return minY;
+    }
     @Override
     public int getMinX() {
         return minX;
@@ -52,7 +52,6 @@ public class HashMapGrid<T> implements Grid<T> {
         minY = Math.min(minY, tile.getY());
         maxY = Math.max(maxY, tile.getY());
     }
-
 
     @Override
     public Tile<T> getTile(Pos pos) {
@@ -95,6 +94,13 @@ public class HashMapGrid<T> implements Grid<T> {
         }
 
         return getTile(nx, ny);
+    }
+
+    public List<Dir> getNeighborDirectionsFulfilling(Predicate<Tile<T>> typeTester, int x, int y){
+        return Arrays.asList(Dir.values()).
+                stream().filter(
+                dir -> typeTester.test(getNeighbour(x, y, dir))
+        ).collect(Collectors.toList());
     }
 
     @Override

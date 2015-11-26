@@ -7,20 +7,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import mapvis.Impl.HashMapGrid;
-import mapvis.algo.Method1;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
-import mapvis.common.datatype.Node;
 import mapvis.common.datatype.NodeUtils;
-import org.yaml.snakeyaml.Yaml;
-import utils.RandomTreeGenerator;
+import mapvis.models.ConfigurationConstants;
+import mapvis.treeGenerator.RandomTreeGenerator;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 
+/**
+ * This Controller is responsible for the generation of the
+ * RandomTree according to the UI.
+ */
 public class RandomTreeSettingsController implements Initializable, IDatasetGeneratorController {
     @FXML
     private TextField weightField;
@@ -37,18 +36,13 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
     @FXML
     private Button generateTreeButton;
 
-    private static final int DEFAULT_SEED = 1;
-    private static final int DEFAULT_WEIGHT = 100;
-    private static final int DEFAULT_DEPTH = 3;
-    private static final int DEFAULT_SPAN = 10;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatasetSelectionController");
     }
 
-    public MPTreeImp<Node> generateTree(ActionEvent event) {
-        int span = DEFAULT_SPAN, weight = DEFAULT_WEIGHT, depth = DEFAULT_DEPTH, seed = DEFAULT_SEED;
+    public MPTreeImp<INode> generateTree(ActionEvent event) {
+        int span = ConfigurationConstants.DEFAULT_RANDOM_TREE_SPAN, weight = ConfigurationConstants.DEFAULT_RANDOM_TREE_WEIGHT, depth = ConfigurationConstants.DEFAULT_RANDOM_TREE_DEPTH, seed = ConfigurationConstants.DEFAULT_RANDOM_TREE_SEED;
         try {
             span = Integer.parseInt(spanField.getText());
         }
@@ -67,8 +61,8 @@ public class RandomTreeSettingsController implements Initializable, IDatasetGene
         catch (NumberFormatException ignored) {  }
 
         RandomTreeGenerator randomTreeGenerator = new RandomTreeGenerator(seed);
-        MPTreeImp<Node> genTree = randomTreeGenerator.getTree(depth, span, weight);
-        NodeUtils.populateSize(genTree.getRoot());
+        MPTreeImp<INode> genTree = randomTreeGenerator.getTree(depth, span, weight);
+        NodeUtils.populateSize(genTree.getRoot(), genTree);
         return genTree;
     }
 

@@ -1,5 +1,6 @@
 package mapvis.layouts.pea.gui.actions;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.layouts.pea.gui.RenderAction;
 import mapvis.layouts.pea.model.*;
@@ -31,7 +32,7 @@ public class RenderOriginCentroid implements RenderAction {
     }
 
 
-    private void drawPolygonOrigin(Graphics2D g, Node node){
+    private void drawPolygonOrigin(Graphics2D g, INode node){
         final int r = 4;
         Polygon polygon = model.getPolygon(node);
         int x = (int)polygon.originX - (r/2);
@@ -41,7 +42,7 @@ public class RenderOriginCentroid implements RenderAction {
         g.fillOval(x,y,r,r);
     }
 
-    private void drawPolygonCentroid(Graphics2D g, Node node){
+    private void drawPolygonCentroid(Graphics2D g, INode node){
         final int r = 4;
         Polygon polygon = model.getPolygon(node);
         Point2D centroid = polygon.calcCentroid();

@@ -1,5 +1,6 @@
 package mapvis;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import mapvis.io.random.Config;
 import mapvis.io.random.RandomNodeGen;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 public class EPEA {
 
-    public static void enlarge(Node root, double scale){
+    public static void enlarge(INode root, double scale){
         root.setVal("size", (double)root.getVal("size")*scale);
 
         root.getChildren().forEach(n->enlarge(n,scale));

@@ -3,6 +3,7 @@ package mapvis;
 
 import mapvis.Impl.HashMapGrid;
 import mapvis.algo.Method1;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
 import mapvis.io.random.Config;
@@ -32,10 +33,10 @@ public class EHTA {
         RandomNodeGen generator = new RandomNodeGen();
         Node root = generator.getTree(config);
         
-        MPTreeImp<Node> treemodel = MPTreeImp.from(root);
+        MPTreeImp<INode> treemodel = MPTreeImp.from(root);
 
-        HashMapGrid<Node> grid = new HashMapGrid<>();
-        Method1<Node> method1 = new Method1<>(treemodel, grid);
+        HashMapGrid<INode> grid = new HashMapGrid<>();
+        Method1<INode> method1 = new Method1<>(treemodel, grid);
         method1.beta = 2;
 
         method1.Begin();

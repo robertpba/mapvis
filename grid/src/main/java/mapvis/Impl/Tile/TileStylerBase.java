@@ -1,8 +1,11 @@
-package mapvis.Impl;
+package mapvis.Impl.Tile;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.TileStyler;
+import mapvis.graphic.HexagonRendering.TileStyler;
 import mapvis.models.Dir;
 import mapvis.models.Grid;
 import mapvis.models.Tile;
@@ -50,9 +53,10 @@ public class TileStylerBase<T> implements TileStyler<T> {
         this.tree = tree;
     }
 
-    void resetStyler(Tree2<T> tree, Grid<T> grid){
+    public void resetStyler(Tree2<T> tree, Grid<T> grid, int maxBorderLevelToShow){
         this.tree = tree;
         this.grid = grid;
+        this.maxBorderLevelToShow = maxBorderLevelToShow;
     }
 
     @Override
@@ -118,18 +122,16 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return Color.AQUAMARINE;
     }
 
-    @Override
-    public void setMaxBorderLevelToShow(int maxBorderLevelToShow) {
-        this.maxBorderLevelToShow = maxBorderLevelToShow;
-    }
-
 
     private TileCache<T> getCache(int x, int y){
         if (cache == null) cache = new TileCache<>();
+
+        //known tile?
         Tile<T> tile = grid.getTile(x, y);
         if (cache.x == x && cache.y == y && cache.t == tile.getTag())
             return cache;
 
+        //create new one
         cache.x = x;
         cache.y = y;
         cache.t = tile.getTag();
@@ -151,7 +153,8 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return cache;
     }
 
-    private int calcLevel(int x, int y, Dir dir){
+    public int calcLevel(int x, int y, Dir dir){
+        //calc level of border at tile position and direction
         Tile<T> t = getGrid().getTile(x, y);
         Tile<T> tn = getGrid().getNeighbour(x, y, dir);
         if (t.getItem() == null || tn.getItem() == null || t.getItem() == tn.getItem())
@@ -172,14 +175,49 @@ public class TileStylerBase<T> implements TileStyler<T> {
         return level;
     }
 
-    protected double getBorderWidthByLevel(int l){
+    public double getBorderWidthByLevel(int l){
         return (4.0 - l)*(4.0 - l)/2;
     }
     protected Color getBorderColorByLevel(int l){
         return Color.BLACK;
     }
-    protected Color getColorByValue(T v) {
+    public Color getColorByValue(T nodeItem) {
         return Color.RED;
     }
 
+    public static class StylerUIElements {
+        private final ObjectProperty<Color> background;
+        private final DoubleProperty maxBorderLevelToShow;
+        private final DoubleProperty maxRegionLevelToShow;
+        private final DoubleProperty labelLevelToShow;
+        private final BooleanProperty showLabels;
+
+        public StylerUIElements(ObjectProperty<Color> background, DoubleProperty maxBorderLevelToShow, DoubleProperty maxRegionLevelToShow, DoubleProperty labelLevelToShow, BooleanProperty showLabels) {
+            this.background = background;
+            this.maxBorderLevelToShow = maxBorderLevelToShow;
+            this.maxRegionLevelToShow = maxRegionLevelToShow;
+            this.labelLevelToShow = labelLevelToShow;
+            this.showLabels = showLabels;
+        }
+
+        public ObjectProperty<Color> getBackground() {
+            return background;
+        }
+
+        public DoubleProperty getMaxBorderLevelToShow() {
+            return maxBorderLevelToShow;
+        }
+
+        public DoubleProperty getMaxRegionLevelToShow() {
+            return maxRegionLevelToShow;
+        }
+
+        public DoubleProperty getLabelLevelToShow() {
+            return labelLevelToShow;
+        }
+
+        public BooleanProperty getShowLabels() {
+            return showLabels;
+        }
+    }
 }

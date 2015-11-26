@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <VBox fx:id="vBox" nodeOrientation="LEFT_TO_RIGHT" prefHeight="409.0" prefWidth="323.0" translateX="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapvis.gui.DatasetSelectionController">
 
     <children>
@@ -25,7 +22,6 @@
       <HBox prefHeight="25.0" prefWidth="296.0">
          <children>
             <Button fx:id="generateTreeButton" mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
-            <Button mnemonicParsing="false" onAction="#loadFile" text="Load File" />
             <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
             <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="93.0" text="Max Level" textAlignment="CENTER" wrapText="true">
                <opaqueInsets>
@@ -41,9 +37,10 @@
          <children>
               <fx:include fx:id="randomTreeSettings" source="RandomTreeSettingsLayout.fxml" />
               <fx:include fx:id="filesystemTreeSettings" source="FilesystemTreeSettingsLayout.fxml" />
-             <fx:include fx:id="udcTreeSettings" source="UDCTreeSettingsLayout.fxml" />
+              <fx:include fx:id="udcTreeSettings" source="UDCTreeSettingsLayout.fxml" />
+              <fx:include fx:id="loadDumpedTreeSettings" source="LoadDumpedTreeSettingsLayout.fxml" />
          </children>
       </VBox>
-      <TextArea fx:id="infoArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+      <TextArea fx:id="infoArea" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="323.0" VBox.vgrow="ALWAYS" />
     </children>
 </VBox>

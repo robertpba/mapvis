@@ -1,6 +1,7 @@
 package mapvis;
 
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
@@ -13,7 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.*;
 
 public class RectangleCanvas extends JPanel {
-        Node root;
+        INode root;
 
         public RectangleCanvas(Node root) {
             this.root = root;
@@ -23,7 +24,7 @@ public class RectangleCanvas extends JPanel {
             recPaintNode((Graphics2D) g,root);
         }
 
-        void recPaintNode(Graphics2D g, Node node) {
+        void recPaintNode(Graphics2D g, INode node) {
             double x = (double) node.getVal("x");
             double y = (double) node.getVal("y");
             double r = Math.sqrt((double)node.getVal("size"))/2;
@@ -48,7 +49,7 @@ public class RectangleCanvas extends JPanel {
             g.draw(new Rectangle2D.Double(x0,y0,x1-x0,y1-y0));
 
 
-            for (Node child : node.getChildren()) {
+            for (INode child : node.getChildren()) {
                 recPaintNode(g, child);
             }
         }

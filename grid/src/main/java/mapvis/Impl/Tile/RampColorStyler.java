@@ -1,4 +1,4 @@
-package mapvis.Impl;
+package mapvis.Impl.Tile;
 
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.Tree2;
@@ -26,8 +26,8 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
         rec(tree.getRoot(), null);
     }
 
-    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background){
-        super.resetStyler(tree, grid);
+    public void resetStyler(Tree2<T> tree, Grid<T> grid, int level, Color background, int maxBorderLevelToShow){
+        super.resetStyler(tree, grid, maxBorderLevelToShow);
         initSyler(level, background);
     }
 
@@ -60,12 +60,12 @@ public class RampColorStyler<T> extends TileStylerBase<T> {
 
 
     @Override
-    protected Color getColorByValue(T v) {
-        return map.get(v);
+    public Color getColorByValue(T nodeItem) {
+        return map.get(nodeItem);
     }
 
     @Override
-    protected double getBorderWidthByLevel(int l) {
+    public double getBorderWidthByLevel(int l) {
         return (depth + 1 - l)*(depth + 1 - l)/2.0;
     }
 

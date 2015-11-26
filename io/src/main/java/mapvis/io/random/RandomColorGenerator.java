@@ -1,5 +1,6 @@
 package mapvis.io.random;
 
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Node;
 
 import java.awt.*;
@@ -17,17 +18,17 @@ public class RandomColorGenerator {
     };
     int i=0;
 
-    public void color(Node root, int level){
+    public void color(INode root, int level){
         _color(root, level+1, getRandomColor());
     }
 
-    void _color(Node node, int level, Color color){
+    void _color(INode node, int level, Color color){
         if (level > 0){
             color = getRandomColor();
         }
         node.setVal("color", color.getRGB());
 
-        for (Node child : node.getChildren()) {
+        for (INode child : node.getChildren()) {
             _color(child, level-1, color);
         }
     }

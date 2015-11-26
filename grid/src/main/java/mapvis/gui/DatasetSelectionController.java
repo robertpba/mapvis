@@ -5,49 +5,55 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import mapvis.Impl.HashMapGrid;
+import mapvis.Impl.Region.BorderCreator;
 import mapvis.algo.Method1;
 import mapvis.common.datatype.*;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.ConfigurationConstants;
 import mapvis.models.Grid;
-import org.yaml.snakeyaml.Yaml;
+import mapvis.models.Region;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 
+/**
+ * This Controller is controls the selection of the TreeGenerators and delegates
+ * the generation of the tree to the responsible @IDatasetGeneratorController
+ */
 public class DatasetSelectionController implements Initializable {
     private static final String INFO_AREA_PROCESS_SEPARATOR = "-------------";
-    public TextArea infoArea;
-    public Button generateTreeButton;
 
-    public ObjectProperty<Tree2<Node>> tree = new SimpleObjectProperty<>();
-    public ObjectProperty<Grid<Node>> grid = new SimpleObjectProperty<>();
-    public ObjectProperty<Method1<Node>> method1 = new SimpleObjectProperty<>();
+    //data objects
+    public ObjectProperty<Tree2<INode>> tree = new SimpleObjectProperty<>();
+    public ObjectProperty<Grid<INode>> grid = new SimpleObjectProperty<>();
+    public ObjectProperty<Method1<INode>> method1 = new SimpleObjectProperty<>();
+    public SimpleObjectProperty<TreeStatistics> lastTreeStatistics;
 
     public HexagonalTilingView chart;
 
-    IDatasetGeneratorController activeDatasetGenerator;
+    private IDatasetGeneratorController selectedDatasetGenerator;
 
+    @FXML
+    private TextArea infoArea;
+    @FXML
+    private Button generateTreeButton;
     @FXML
     private TextField dropLevelsTextField;
-
     @FXML
     private ComboBox<IDatasetGeneratorController> inputSourceComboBox;
-
     @FXML
     private RandomTreeSettingsController randomTreeSettingsController;
-
     @FXML
     private FilesystemTreeSettingsController filesystemTreeSettingsController;
-
     @FXML
     private UDCTreeSettingsController udcTreeSettingsController;
-
-    private TreeStatistics lastTreeStatistics;
+    @FXML
+    private LoadDumpedTreeSettingsController loadDumpedTreeSettingsController;
 
     public DatasetSelectionController() {
         System.out.println("Creating: " + this.getClass().getName());
@@ -56,29 +62,37 @@ public class DatasetSelectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Init DatasetSelectionController");
-        inputSourceComboBox.getItems().addAll(filesystemTreeSettingsController, randomTreeSettingsController, udcTreeSettingsController);
+        //add all controller which allow for tree generation to the combo box
+        inputSourceComboBox.getItems().addAll(
+                filesystemTreeSettingsController, randomTreeSettingsController,
+                udcTreeSettingsController, loadDumpedTreeSettingsController
+        );
         inputSourceComboBox.getSelectionModel().select(filesystemTreeSettingsController);
 
+        //only allow numerical values for the "drop Levels" button
         dropLevelsTextField.textProperty().addListener((observable1, oldValue, newValue) -> {
-            System.out.println("first: " + !("".equals(newValue)) + " " + !newValue.matches("[0-9]"));
             if (!"".equals(newValue) && !newValue.matches("[0-9]*")) {
                 dropLevelsTextField.setText(oldValue);
             }
         });
+
+        lastTreeStatistics = new SimpleObjectProperty<>();
     }
 
-    private IDatasetGeneratorController getActiveDatasetGenerator() {
+    private IDatasetGeneratorController getSelectedDatasetGenerator() {
         return inputSourceComboBox.getSelectionModel().getSelectedItem();
     }
 
     @FXML
     private void onSelectionChanged(ActionEvent event) {
-        activeDatasetGenerator = getActiveDatasetGenerator();
-        if(activeDatasetGenerator == null){
+        selectedDatasetGenerator = getSelectedDatasetGenerator();
+        if(selectedDatasetGenerator == null){
             return;
         }
         inputSourceComboBox.getItems().stream().forEach(iDatasetGeneratorController ->{
-            if(activeDatasetGenerator.equals(iDatasetGeneratorController)){
+            //enable/disable all controllers according to the selection, so only the
+            //UI of the recent selected datasetcontroller is shown
+            if(selectedDatasetGenerator.equals(iDatasetGeneratorController)){
                 iDatasetGeneratorController.setVisible(true);
             }else{
                 iDatasetGeneratorController.setVisible(false);
@@ -91,54 +105,59 @@ public class DatasetSelectionController implements Initializable {
         long startTime = System.currentTimeMillis();
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("generating map..");
-        method1.get().Begin();
+
+        //generate regions of visualization
+        Region<INode> rootRegion = method1.get().Begin();
+
+        //reconstruct the borders if using region rendering
+        if(ConfigurationConstants.USE_REGION_RENDERING){
+            BorderCreator<INode> borderCreator = new BorderCreator<>(method1.get());
+            borderCreator.createBorders();
+
+            grid.get().resetGrid();
+            chart.setRootRegion(rootRegion);
+        }
 
         long estimatedTime = System.currentTimeMillis() - startTime;
         logTextToInfoArea("generation finished: mm: "+ estimatedTime);
         logTextToInfoArea("rendering map");
+
         chart.updateHexagons();
+
         logTextToInfoArea("rendering finished");
     }
 
     @FXML
     private void generateTree(ActionEvent event) {
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
-        logTextToInfoArea("reading data..");
-        if(activeDatasetGenerator == null){
+        logTextToInfoArea("generating tree..");
+        if(selectedDatasetGenerator == null){
             return;
         }
-        MPTreeImp<Node> generatedTree = activeDatasetGenerator.generateTree(event);
+        MPTreeImp<INode> generatedTree = null;
+        try {
+            generatedTree = selectedDatasetGenerator.generateTree(event);
+        } catch (Exception e) {
+            logTextToInfoArea("tenerating tree failed: " + e);
+            return;
+        }
         setTreeModel(generatedTree);
-        logTextToInfoArea("reading data finished");
-        lastTreeStatistics = NodeUtils.getTreeDepthStatistics(generatedTree.getRoot());
-        logTextToInfoArea(lastTreeStatistics != null ? lastTreeStatistics.toString() : "error reading statistics");
+        logTextToInfoArea("tree generation finished");
+        lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
+        logTextToInfoArea(lastTreeStatistics.get() != null ?
+                lastTreeStatistics.get().createStatisticsOverview(true)
+                : "error reading statistics");
     }
 
-    @FXML
-    private void loadFile(ActionEvent event) throws FileNotFoundException {
-        //TreeLoader loader = new TreeLoader();
-        //loader.load("data/simple.txt");
 
-//        TreeLoader2 loader = new TreeLoader2();
-//        loader.load("data/university_data_tree.csv");
-//        Tree2<Node> treemodel = loader.convertToTreeModel();
-
-        Yaml yaml = new Yaml();
-        FileInputStream fileInputStream = new FileInputStream("io/data/rand01.yaml");
-        Node node = yaml.loadAs(fileInputStream, Node.class);
-
-        MPTreeImp<Node> treeModel = MPTreeImp.from(node);
-        setTreeModel(treeModel);
-    }
-
-    private void setTreeModel(MPTreeImp<Node> treeModel)
+    private void setTreeModel(MPTreeImp<INode> treeModel)
     {
         tree.set(treeModel);
 
         grid.set(new HashMapGrid<>());
         method1.set(new Method1<>(tree.get(), grid.get()));
 
-        Set<Node> leaves = tree.get().getLeaves();
+//        Set<INode> leaves = tree.get().getLeaves();
 //        logTextToInfoArea(String.format("%d leaves", leaves.size()));
     }
 
@@ -148,23 +167,29 @@ public class DatasetSelectionController implements Initializable {
             int levelsToDrop = Integer.parseInt(dropLevelsTextField.getText());
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Dropping levels > " + levelsToDrop);
+
             Node filteredTree = NodeUtils.filterByDepth(tree.get().getRoot(), levelsToDrop);
             TreeStatistics cappedTreeStatistics = NodeUtils.getTreeDepthStatistics(filteredTree);
-            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics, cappedTreeStatistics);
-            MPTreeImp<Node> cappedTreeModel = MPTreeImp.from(filteredTree);
+            TreeStatistics diffTreeStatistics = NodeUtils.diffTreeStatistics(lastTreeStatistics.get(), cappedTreeStatistics);
+
+            MPTreeImp<INode> cappedTreeModel = MPTreeImp.from(filteredTree);
             setTreeModel(cappedTreeModel);
-            lastTreeStatistics = cappedTreeStatistics;
-            if(lastTreeStatistics == null || lastTreeStatistics == null){
+            lastTreeStatistics.set(cappedTreeStatistics);
+            if(lastTreeStatistics == null || lastTreeStatistics.get() == null){
                 logTextToInfoArea("Error dropping levels");
                 return;
             }
+
             logTextToInfoArea("Dropping finished");
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("New Tree:");
-            logTextToInfoArea(lastTreeStatistics.toString());
+
+            logTextToInfoArea(lastTreeStatistics.get().createStatisticsOverview(false));
+
             logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
             logTextToInfoArea("Diff to last tree:");
-            logTextToInfoArea(diffTreeStatistics.toString());
+
+            logTextToInfoArea(diffTreeStatistics.createStatisticsOverview(true));
         }catch (NumberFormatException ex){
             return;
         }

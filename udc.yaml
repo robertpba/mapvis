@@ -1,0 +1,2731 @@
+!!mapvis.common.datatype.Node
+children:
+- children:
+  - children:
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '4'
+        label: Concepts of science and knowledge
+        size: 1.0
+      - children: []
+        data: {size: 1.0}
+        id: '5'
+        label: Methodology
+        size: 1.0
+      - children: []
+        data: {size: 2.0}
+        id: '6'
+        label: '*'
+        size: 2.0
+      data: {size: 4.0}
+      id: '3'
+      label: Science and knowledge in general. Organization of intellectual work
+      size: 4.0
+    - children:
+      - children:
+        - children: []
+          data: {size: 3.0}
+          id: '9'
+          label: Conventional writing systems used for general purposes of literate language communities. Orthographies
+          size: 3.0
+        data: {size: 3.0}
+        id: '8'
+        label: Writing systems. Graphic representations of concepts
+        size: 3.0
+      - children: []
+        data: {size: 7.0}
+        id: '10'
+        label: Special auxiliary subdivision for writing systems and scripts
+        size: 7.0
+      - children: []
+        data: {size: 3.0}
+        id: '11'
+        label: '*'
+        size: 3.0
+      data: {size: 13.0}
+      id: '7'
+      label: Writing systems and scripts
+      size: 13.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '13'
+        label: Computer architecture
+        size: 4.0
+      - children:
+        - children: []
+          data: {size: 2.0}
+          id: '15'
+          label: Special auxiliary subdivision for hardware
+          size: 2.0
+        - children: []
+          data: {size: 5.0}
+          id: '16'
+          label: '*'
+          size: 5.0
+        data: {size: 7.0}
+        id: '14'
+        label: Computer hardware
+        size: 7.0
+      - children:
+        - children: []
+          data: {size: 3.0}
+          id: '18'
+          label: Special auxiliary subdivision for software
+          size: 3.0
+        - children: []
+          data: {size: 5.0}
+          id: '19'
+          label: '*'
+          size: 5.0
+        data: {size: 8.0}
+        id: '17'
+        label: Software
+        size: 8.0
+      - children: []
+        data: {size: 4.0}
+        id: '20'
+        label: Human-computer interaction. Man-machine interface. User interface. User environment
+        size: 4.0
+      - children: []
+        data: {size: 4.0}
+        id: '21'
+        label: Data
+        size: 4.0
+      - children:
+        - children: []
+          data: {size: 1.0}
+          id: '23'
+          label: Networks according to area covered
+          size: 1.0
+        - children: []
+          data: {size: 5.0}
+          id: '24'
+          label: '*'
+          size: 5.0
+        data: {size: 6.0}
+        id: '22'
+        label: Computer communication. Computer networks
+        size: 6.0
+      - children: []
+        data: {size: 4.0}
+        id: '25'
+        label: Application-oriented computer-based techniques
+        size: 4.0
+      - children: []
+        data: {size: 7.0}
+        id: '26'
+        label: Special auxiliary subdivision for computing
+        size: 7.0
+      - children: []
+        data: {size: 1.0}
+        id: '27'
+        label: '*'
+        size: 1.0
+      data: {size: 45.0}
+      id: '12'
+      label: Computer science and technology. Computing. Data processing
+      size: 45.0
+    - children:
+      - children: []
+        data: {size: 3.0}
+        id: '29'
+        label: Management activities
+        size: 3.0
+      - children: []
+        data: {size: 5.0}
+        id: '30'
+        label: Fields of management
+        size: 5.0
+      - children: []
+        data: {size: 6.0}
+        id: '31'
+        label: '*'
+        size: 6.0
+      data: {size: 14.0}
+      id: '28'
+      label: Management
+      size: 14.0
+    - children: []
+      data: {size: 3.0}
+      id: '32'
+      label: Standardization of products, operations, weights, measures and time
+      size: 3.0
+    - children: []
+      data: {size: 1.0}
+      id: '33'
+      label: Activity and organizing. Communication and control theory generally (cybernetics). 'Human engineering'
+      size: 1.0
+    - children: []
+      data: {size: 2.0}
+      id: '34'
+      label: '*'
+      size: 2.0
+    data: {size: 82.0}
+    id: '2'
+    label: Prolegomena. Fundamentals of knowledge and culture. Propaedeutics
+    size: 82.0
+  - children:
+    - children: []
+      data: {size: 3.0}
+      id: '36'
+      label: Catalogues
+      size: 3.0
+    - children: []
+      data: {size: 6.0}
+      id: '37'
+      label: '*'
+      size: 6.0
+    data: {size: 9.0}
+    id: '35'
+    label: Bibliography and bibliographies. Catalogues
+    size: 9.0
+  - children:
+    - children: []
+      data: {size: 3.0}
+      id: '39'
+      label: General libraries
+      size: 3.0
+    - children: []
+      data: {size: 6.0}
+      id: '40'
+      label: '*'
+      size: 6.0
+    data: {size: 9.0}
+    id: '38'
+    label: Librarianship
+    size: 9.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 3.0}
+        id: '43'
+        label: Nongovernmental organizations and cooperation
+        size: 3.0
+      - children: []
+        data: {size: 1.0}
+        id: '44'
+        label: '*'
+        size: 1.0
+      data: {size: 4.0}
+      id: '42'
+      label: Organizations and other types of cooperation
+      size: 4.0
+    - children: []
+      data: {size: 2.0}
+      id: '45'
+      label: Special auxiliary subdivision for organizations and associations
+      size: 2.0
+    - children: []
+      data: {size: 1.0}
+      id: '46'
+      label: '*'
+      size: 1.0
+    data: {size: 7.0}
+    id: '41'
+    label: Organizations of a general nature
+    size: 7.0
+  - children: []
+    data: {size: 4.0}
+    id: '47'
+    label: Polygraphies. Collective works
+    size: 4.0
+  - children: []
+    data: {size: 7.0}
+    id: '48'
+    label: Manuscripts. Rare and remarkable works
+    size: 7.0
+  - children: []
+    data: {size: 3.0}
+    id: '49'
+    label: '*'
+    size: 3.0
+  data: {size: 121.0}
+  id: '1'
+  label: SCIENCE AND KNOWLEDGE. ORGANIZATION. COMPUTER SCIENCE. INFORMATION. DOCUMENTATION. LIBRARIANSHIP. INSTITUTIONS. PUBLICATIONS
+  size: 121.0
+- children:
+  - children: []
+    data: {size: 2.0}
+    id: '51'
+    label: Metaphysics
+    size: 2.0
+  - children: []
+    data: {size: 4.0}
+    id: '52'
+    label: Philosophy of mind and spirit. Metaphysics of spiritual life
+    size: 4.0
+  - children: []
+    data: {size: 2.0}
+    id: '53'
+    label: Philosophical systems and points of view
+    size: 2.0
+  - children:
+    - children: []
+      data: {size: 5.0}
+      id: '55'
+      label: Executive functions
+      size: 5.0
+    - children: []
+      data: {size: 7.0}
+      id: '56'
+      label: '*'
+      size: 7.0
+    data: {size: 12.0}
+    id: '54'
+    label: Psychology
+    size: 12.0
+  - children:
+    - children: []
+      data: {size: 1.0}
+      id: '58'
+      label: Theory of knowledge. Epistemology
+      size: 1.0
+    - children: []
+      data: {size: 3.0}
+      id: '59'
+      label: '*'
+      size: 3.0
+    data: {size: 4.0}
+    id: '57'
+    label: Logic. Epistemology. Theory of knowledge. Methodology of logic
+    size: 4.0
+  - children: []
+    data: {size: 5.0}
+    id: '60'
+    label: Moral philosophy. Ethics. Practical philosophy
+    size: 5.0
+  - children: []
+    data: {size: 2.0}
+    id: '61'
+    label: '*'
+    size: 2.0
+  data: {size: 31.0}
+  id: '50'
+  label: PHILOSOPHY. PSYCHOLOGY
+  size: 31.0
+- children:
+  - children:
+    - children: []
+      data: {size: 2.0}
+      id: '64'
+      label: Prehistoric and primitive religions
+      size: 2.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '66'
+        label: Religions of China
+        size: 1.0
+      - children: []
+        data: {size: 2.0}
+        id: '67'
+        label: '*'
+        size: 2.0
+      data: {size: 3.0}
+      id: '65'
+      label: Religions originating in the Far East
+      size: 3.0
+    - children: []
+      data: {size: 3.0}
+      id: '68'
+      label: Religions originating in Indian sub-continent. Hindu religion in the broad sense
+      size: 3.0
+    - children: []
+      data: {size: 4.0}
+      id: '69'
+      label: Buddhism
+      size: 4.0
+    - children: []
+      data: {size: 6.0}
+      id: '70'
+      label: Religions of antiquity. Minor cults and religions
+      size: 6.0
+    - children: []
+      data: {size: 6.0}
+      id: '71'
+      label: Judaism
+      size: 6.0
+    - children:
+      - children:
+        - children:
+          - children: []
+            data: {size: 2.0}
+            id: '75'
+            label: Catholic church
+            size: 2.0
+          - children: []
+            data: {size: 5.0}
+            id: '76'
+            label: Protestant churches
+            size: 5.0
+          - children: []
+            data: {size: 1.0}
+            id: '77'
+            label: '*'
+            size: 1.0
+          data: {size: 8.0}
+          id: '74'
+          label: Western Church. Western Christianity
+          size: 8.0
+        - children: []
+          data: {size: 1.0}
+          id: '78'
+          label: '*'
+          size: 1.0
+        data: {size: 9.0}
+        id: '73'
+        label: Christian churches and denominations
+        size: 9.0
+      data: {size: 9.0}
+      id: '72'
+      label: Christianity
+      size: 9.0
+    - children: []
+      data: {size: 5.0}
+      id: '79'
+      label: Islam
+      size: 5.0
+    - children: []
+      data: {size: 1.0}
+      id: '80'
+      label: '*'
+      size: 1.0
+    data: {size: 39.0}
+    id: '63'
+    label: Religious systems. Religions and faiths
+    size: 39.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '83'
+        label: Man. Mankind. Humanity. Doctrinal anthropology
+        size: 1.0
+      - children: []
+        data: {size: 4.0}
+        id: '84'
+        label: '*'
+        size: 4.0
+      data: {size: 5.0}
+      id: '82'
+      label: Theory and philosophy of religion. Nature of religion. Phenomenon of religion
+      size: 5.0
+    - children: []
+      data: {size: 4.0}
+      id: '85'
+      label: Evidences of religion
+      size: 4.0
+    - children: []
+      data: {size: 7.0}
+      id: '86'
+      label: Persons in religion
+      size: 7.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '88'
+        label: Education in religion
+        size: 1.0
+      - children: []
+        data: {size: 3.0}
+        id: '89'
+        label: '*'
+        size: 3.0
+      data: {size: 4.0}
+      id: '87'
+      label: Religious activities. Religious practice
+      size: 4.0
+    - children: []
+      data: {size: 6.0}
+      id: '90'
+      label: Worship broadly. Cult. Rites and ceremonies
+      size: 6.0
+    - children: []
+      data: {size: 2.0}
+      id: '91'
+      label: Processes in religion
+      size: 2.0
+    - children: []
+      data: {size: 6.0}
+      id: '92'
+      label: Religious organization and administration
+      size: 6.0
+    - children: []
+      data: {size: 2.0}
+      id: '93'
+      label: Religions characterised by various properties
+      size: 2.0
+    - children: []
+      data: {size: 1.0}
+      id: '94'
+      label: '*'
+      size: 1.0
+    data: {size: 37.0}
+    id: '81'
+    label: Special auxiliary subdivision for religion
+    size: 37.0
+  data: {size: 76.0}
+  id: '62'
+  label: RELIGION. THEOLOGY
+  size: 76.0
+- children:
+  - children: []
+    data: {size: 4.0}
+    id: '96'
+    label: Statistics as a science. Statistical theory
+    size: 4.0
+  - children:
+    - children: []
+      data: {size: 1.0}
+      id: '98'
+      label: Demography. Population studies
+      size: 1.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '100'
+        label: Social structure. Society as a social system
+        size: 4.0
+      - children: []
+        data: {size: 5.0}
+        id: '101'
+        label: '*'
+        size: 5.0
+      data: {size: 9.0}
+      id: '99'
+      label: Sociology
+      size: 9.0
+    data: {size: 10.0}
+    id: '97'
+    label: Society
+    size: 10.0
+  - children:
+    - children: []
+      data: {size: 3.0}
+      id: '103'
+      label: Home affairs. Internal policy
+      size: 3.0
+    - children: []
+      data: {size: 5.0}
+      id: '104'
+      label: International relations. World, global politics. International affairs. Foreign policy
+      size: 5.0
+    - children: []
+      data: {size: 7.0}
+      id: '105'
+      label: '*'
+      size: 7.0
+    data: {size: 15.0}
+    id: '102'
+    label: Politics
+    size: 15.0
+  - children:
+    - children: []
+      data: {size: 5.0}
+      id: '107'
+      label: Economics in general
+      size: 5.0
+    - children: []
+      data: {size: 5.0}
+      id: '108'
+      label: Labour. Employment. Work. Labour economics. Organization of labour
+      size: 5.0
+    - children: []
+      data: {size: 7.0}
+      id: '109'
+      label: Regional economics. Territorial economics. Land economics. Housing economics
+      size: 7.0
+    - children: []
+      data: {size: 4.0}
+      id: '110'
+      label: Finance
+      size: 4.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '112'
+        label: Production and services according to economic sectors
+        size: 1.0
+      - children: []
+        data: {size: 4.0}
+        id: '113'
+        label: '*'
+        size: 4.0
+      data: {size: 5.0}
+      id: '111'
+      label: Economic situation. Economic policy. Management of the economy. Economic planning. Production. Services. Prices
+      size: 5.0
+    - children: []
+      data: {size: 5.0}
+      id: '114'
+      label: Trade. Commerce. International economic relations. World economy
+      size: 5.0
+    - children: []
+      data: {size: 1.0}
+      id: '115'
+      label: '*'
+      size: 1.0
+    data: {size: 32.0}
+    id: '106'
+    label: Economics. Economic science
+    size: 32.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '118'
+        label: Types and forms of law
+        size: 2.0
+      - children: []
+        data: {size: 2.0}
+        id: '119'
+        label: '*'
+        size: 2.0
+      data: {size: 4.0}
+      id: '117'
+      label: Law in general. Legal methods and auxiliary sciences
+      size: 4.0
+    - children:
+      - children: []
+        data: {size: 7.0}
+        id: '121'
+        label: Public international law. Law of nations
+        size: 7.0
+      - children: []
+        data: {size: 1.0}
+        id: '122'
+        label: '*'
+        size: 1.0
+      data: {size: 8.0}
+      id: '120'
+      label: International law
+      size: 8.0
+    - children: []
+      data: {size: 9.0}
+      id: '123'
+      label: Public law. Constitutional law. Administrative law
+      size: 9.0
+    - children:
+      - children:
+        - children: []
+          data: {size: 4.0}
+          id: '126'
+          label: Particular offences. Specific punishable acts
+          size: 4.0
+        - children: []
+          data: {size: 1.0}
+          id: '127'
+          label: '*'
+          size: 1.0
+        data: {size: 5.0}
+        id: '125'
+        label: Criminal law
+        size: 5.0
+      - children: []
+        data: {size: 3.0}
+        id: '128'
+        label: '*'
+        size: 3.0
+      data: {size: 8.0}
+      id: '124'
+      label: Criminal law. Penal offences
+      size: 8.0
+    - children: []
+      data: {size: 5.0}
+      id: '129'
+      label: Special criminal law. Military, naval, air force laws
+      size: 5.0
+    - children: []
+      data: {size: 6.0}
+      id: '130'
+      label: Economic law. Law of government control of the economy
+      size: 6.0
+    - children: []
+      data: {size: 9.0}
+      id: '131'
+      label: Civil law
+      size: 9.0
+    - children: []
+      data: {size: 2.0}
+      id: '132'
+      label: '*'
+      size: 2.0
+    data: {size: 51.0}
+    id: '116'
+    label: Law. Jurisprudence
+    size: 51.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 5.0}
+        id: '135'
+        label: Middle levels of administration. Regional, provincial government. Regional authorities
+        size: 5.0
+      - children: []
+        data: {size: 1.0}
+        id: '136'
+        label: High level, top level of administration. Central, national government
+        size: 1.0
+      - children: []
+        data: {size: 1.0}
+        id: '137'
+        label: '*'
+        size: 1.0
+      data: {size: 7.0}
+      id: '134'
+      label: Levels of administration. Local, regional, central administration
+      size: 7.0
+    - children:
+      - children: []
+        data: {size: 7.0}
+        id: '139'
+        label: Military affairs generally
+        size: 7.0
+      - children:
+        - children: []
+          data: {size: 3.0}
+          id: '141'
+          label: Army service generally. Infantry. Foot soldiers
+          size: 3.0
+        - children: []
+          data: {size: 4.0}
+          id: '142'
+          label: Artillery. Engineers. Aviation. Various technical units and their function
+          size: 4.0
+        - children: []
+          data: {size: 1.0}
+          id: '143'
+          label: '*'
+          size: 1.0
+        data: {size: 8.0}
+        id: '140'
+        label: Individual branches of land and air forces
+        size: 8.0
+      - children: []
+        data: {size: 1.0}
+        id: '144'
+        label: '*'
+        size: 1.0
+      data: {size: 16.0}
+      id: '138'
+      label: Military affairs. Art of war. Military science. Defence. Armed forces
+      size: 16.0
+    - children: []
+      data: {size: 1.0}
+      id: '145'
+      label: '*'
+      size: 1.0
+    data: {size: 24.0}
+    id: '133'
+    label: Public administration. Government. Military affairs
+    size: 24.0
+  - children:
+    - children: []
+      data: {size: 11.0}
+      id: '147'
+      label: Social welfare
+      size: 11.0
+    - children: []
+      data: {size: 3.0}
+      id: '148'
+      label: '*'
+      size: 3.0
+    data: {size: 14.0}
+    id: '146'
+    label: Safeguarding the mental and material necessities of life
+    size: 14.0
+  - children:
+    - children: []
+      data: {size: 6.0}
+      id: '150'
+      label: Special auxiliary table for theory, principles, methods and organization of education
+      size: 6.0
+    - children: []
+      data: {size: 6.0}
+      id: '151'
+      label: '*'
+      size: 6.0
+    data: {size: 12.0}
+    id: '149'
+    label: Education
+    size: 12.0
+  - children: []
+    data: {size: 6.0}
+    id: '152'
+    label: Cultural anthropology. Ethnography. Customs. Manners. Traditions. Way of life
+    size: 6.0
+  - children: []
+    data: {size: 4.0}
+    id: '153'
+    label: '*'
+    size: 4.0
+  data: {size: 172.0}
+  id: '95'
+  label: SOCIAL SCIENCES
+  size: 172.0
+- children:
+  - children:
+    - children: []
+      data: {size: 1.0}
+      id: '156'
+      label: The environment and its protection
+      size: 1.0
+    - children: []
+      data: {size: 1.0}
+      id: '157'
+      label: '*'
+      size: 1.0
+    data: {size: 2.0}
+    id: '155'
+    label: Environmental science. Conservation of natural resources. Threats to the environment and protection against them
+    size: 2.0
+  - children:
+    - children: []
+      data: {size: 3.0}
+      id: '159'
+      label: Fundamental and general considerations of mathematics
+      size: 3.0
+    - children: []
+      data: {size: 1.0}
+      id: '160'
+      label: Geometry
+      size: 1.0
+    - children: []
+      data: {size: 1.0}
+      id: '161'
+      label: Analysis
+      size: 1.0
+    - children: []
+      data: {size: 2.0}
+      id: '162'
+      label: 'Operational research (OR): mathematical theories and methods'
+      size: 2.0
+    - children: []
+      data: {size: 7.0}
+      id: '163'
+      label: '*'
+      size: 7.0
+    data: {size: 14.0}
+    id: '158'
+    label: Mathematics
+    size: 14.0
+  - children:
+    - children: []
+      data: {size: 1.0}
+      id: '165'
+      label: Theoretical astronomy. Celestial mechanics
+      size: 1.0
+    - children: []
+      data: {size: 4.0}
+      id: '166'
+      label: The Solar System
+      size: 4.0
+    - children: []
+      data: {size: 7.0}
+      id: '167'
+      label: Stars. Stellar systems. The Universe
+      size: 7.0
+    - children: []
+      data: {size: 8.0}
+      id: '168'
+      label: Geodesy. Surveying. Photogrammetry. Remote sensing. Cartography
+      size: 8.0
+    - children: []
+      data: {size: 1.0}
+      id: '169'
+      label: '*'
+      size: 1.0
+    data: {size: 21.0}
+    id: '164'
+    label: Astronomy. Astrophysics. Space research. Geodesy
+    size: 21.0
+  - children:
+    - children:
+      - children:
+        - children: []
+          data: {size: 5.0}
+          id: '173'
+          label: Special auxiliary subdivision for mechanics
+          size: 5.0
+        - children: []
+          data: {size: 8.0}
+          id: '174'
+          label: '*'
+          size: 8.0
+        data: {size: 13.0}
+        id: '172'
+        label: General mechanics. Mechanics of solid and rigid bodies
+        size: 13.0
+      - children: []
+        data: {size: 6.0}
+        id: '175'
+        label: Fluid mechanics in general. Mechanics of liquids (hydromechanics)
+        size: 6.0
+      - children: []
+        data: {size: 6.0}
+        id: '176'
+        label: Mechanics of gases. Aeromechanics. Plasma physics
+        size: 6.0
+      - children: []
+        data: {size: 8.0}
+        id: '177'
+        label: Vibrations. Waves. Acoustics
+        size: 8.0
+      data: {size: 33.0}
+      id: '171'
+      label: Mechanics
+      size: 33.0
+    - children:
+      - children:
+        - children: []
+          data: {size: 3.0}
+          id: '180'
+          label: Radiation according to wavelength. Hertzian waves. Light colours
+          size: 3.0
+        - children: []
+          data: {size: 4.0}
+          id: '181'
+          label: '*'
+          size: 4.0
+        data: {size: 7.0}
+        id: '179'
+        label: Special auxiliary subdivision for optics
+        size: 7.0
+      - children: []
+        data: {size: 7.0}
+        id: '182'
+        label: '*'
+        size: 7.0
+      data: {size: 14.0}
+      id: '178'
+      label: Optics
+      size: 14.0
+    - children: []
+      data: {size: 7.0}
+      id: '183'
+      label: Heat. Thermodynamics. Statistical physics
+      size: 7.0
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '185'
+        label: Magnetism. Electromagnetism
+        size: 2.0
+      - children: []
+        data: {size: 3.0}
+        id: '186'
+        label: '*'
+        size: 3.0
+      data: {size: 5.0}
+      id: '184'
+      label: Electricity. Magnetism. Electromagnetism
+      size: 5.0
+    - children: []
+      data: {size: 7.0}
+      id: '187'
+      label: Physical nature of matter
+      size: 7.0
+    - children: []
+      data: {size: 9.0}
+      id: '188'
+      label: Special auxiliary subdivision for physics
+      size: 9.0
+    - children: []
+      data: {size: 1.0}
+      id: '189'
+      label: '*'
+      size: 1.0
+    data: {size: 76.0}
+    id: '170'
+    label: Physics
+    size: 76.0
+  - children:
+    - children: []
+      data: {size: 9.0}
+      id: '191'
+      label: Practical laboratory chemistry. Preparative and experimental chemistry
+      size: 9.0
+    - children: []
+      data: {size: 6.0}
+      id: '192'
+      label: Analytical chemistry
+      size: 6.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '194'
+        label: Special auxiliary subdivision for physical chemistry
+        size: 4.0
+      - children: []
+        data: {size: 7.0}
+        id: '195'
+        label: '*'
+        size: 7.0
+      data: {size: 11.0}
+      id: '193'
+      label: Physical chemistry
+      size: 11.0
+    - children: []
+      data: {size: 2.0}
+      id: '196'
+      label: Inorganic chemistry
+      size: 2.0
+    - children: []
+      data: {size: 1.0}
+      id: '197'
+      label: Organic chemistry
+      size: 1.0
+    - children:
+      - children: []
+        data: {size: 6.0}
+        id: '199'
+        label: Crystallography
+        size: 6.0
+      - children:
+        - children: []
+          data: {size: 7.0}
+          id: '201'
+          label: Systematic mineralogy
+          size: 7.0
+        data: {size: 7.0}
+        id: '200'
+        label: Mineralogy. Special study of minerals
+        size: 7.0
+      data: {size: 13.0}
+      id: '198'
+      label: Mineralogical sciences. Crystallography. Mineralogy
+      size: 13.0
+    - children: []
+      data: {size: 3.0}
+      id: '202'
+      label: Special auxiliary subdivision for state of substance, chemicals
+      size: 3.0
+    - children: []
+      data: {size: 6.0}
+      id: '203'
+      label: Special auxiliary subdivision for composition, production, preparation and analysis
+      size: 6.0
+    data: {size: 51.0}
+    id: '190'
+    label: Chemistry. Crystallography. Mineralogy
+    size: 51.0
+  - children:
+    - children: []
+      data: {size: 7.0}
+      id: '205'
+      label: Ancillary sciences of geology etc.
+      size: 7.0
+    - children:
+      - children:
+        - children: []
+          data: {size: 2.0}
+          id: '208'
+          label: Internal geodynamics (endogenous processes)
+          size: 2.0
+        - children: []
+          data: {size: 1.0}
+          id: '209'
+          label: External geodynamics (exogenous processes)
+          size: 1.0
+        - children: []
+          data: {size: 2.0}
+          id: '210'
+          label: Geomorphology. Study of the Earth's physical forms
+          size: 2.0
+        - children: []
+          data: {size: 1.0}
+          id: '211'
+          label: '*'
+          size: 1.0
+        data: {size: 6.0}
+        id: '207'
+        label: General geology
+        size: 6.0
+      - children: []
+        data: {size: 1.0}
+        id: '212'
+        label: Meteorology
+        size: 1.0
+      - children: []
+        data: {size: 2.0}
+        id: '213'
+        label: '*'
+        size: 2.0
+      data: {size: 9.0}
+      id: '206'
+      label: General geology. Meteorology. Climatology. Historical geology. Stratigraphy. Palaeogeography
+      size: 9.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '215'
+        label: Igneous, sedimentary and metamorphic petrology
+        size: 4.0
+      - children: []
+        data: {size: 1.0}
+        id: '216'
+        label: '*'
+        size: 1.0
+      data: {size: 5.0}
+      id: '214'
+      label: Petrology. Petrography
+      size: 5.0
+    - children:
+      - children: []
+        data: {size: 7.0}
+        id: '218'
+        label: Ore and other mineral deposits. Natural resources
+        size: 7.0
+      - children: []
+        data: {size: 1.0}
+        id: '219'
+        label: '*'
+        size: 1.0
+      data: {size: 8.0}
+      id: '217'
+      label: Economic geology. Mineral deposits
+      size: 8.0
+    - children: []
+      data: {size: 2.0}
+      id: '220'
+      label: Hydrosphere. Water in general. Hydrology
+      size: 2.0
+    data: {size: 31.0}
+    id: '204'
+    label: Earth Sciences. Geological sciences
+    size: 31.0
+  - children:
+    - children: []
+      data: {size: 3.0}
+      id: '222'
+      label: Systematic palaeobotany
+      size: 3.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '224'
+        label: Articulata
+        size: 1.0
+      - children:
+        - children:
+          - children: []
+            data: {size: 1.0}
+            id: '227'
+            label: Sauropsida (fossil). Synapsida (fossil)
+            size: 1.0
+          - children: []
+            data: {size: 1.0}
+            id: '228'
+            label: '*'
+            size: 1.0
+          data: {size: 2.0}
+          id: '226'
+          label: Vertebrata. Fossil vertebrates
+          size: 2.0
+        data: {size: 2.0}
+        id: '225'
+        label: Chordata
+        size: 2.0
+      - children: []
+        data: {size: 2.0}
+        id: '229'
+        label: '*'
+        size: 2.0
+      data: {size: 5.0}
+      id: '223'
+      label: Systematic palaeozoology
+      size: 5.0
+    data: {size: 8.0}
+    id: '221'
+    label: Palaeontology
+    size: 8.0
+  - children:
+    - children: []
+      data: {size: 2.0}
+      id: '231'
+      label: Physical anthropology
+      size: 2.0
+    - children: []
+      data: {size: 3.0}
+      id: '232'
+      label: Microbiology
+      size: 3.0
+    - children: []
+      data: {size: 7.0}
+      id: '233'
+      label: Special auxiliary subdivision for theoretical aspects, characteristics, factors etc. in biology
+      size: 7.0
+    - children: []
+      data: {size: 6.0}
+      id: '234'
+      label: '*'
+      size: 6.0
+    data: {size: 18.0}
+    id: '230'
+    label: Biological sciences in general
+    size: 18.0
+  - children:
+    - children: []
+      data: {size: 8.0}
+      id: '236'
+      label: General botany
+      size: 8.0
+    - children:
+      - children: []
+        data: {size: 5.0}
+        id: '238'
+        label: Special auxiliary subdivisions for classification of plants according to size and form
+        size: 5.0
+      - children:
+        - children:
+          - children: []
+            data: {size: 1.0}
+            id: '241'
+            label: Seed plants in general. Spermatophyta. Phanerogams. Siphonogamous embryophyta.
+            size: 1.0
+          - children:
+            - children: []
+              data: {size: 2.0}
+              id: '243'
+              label: Dicotyledonae (Magnoliopsida)
+              size: 2.0
+            data: {size: 2.0}
+            id: '242'
+            label: Angiospermae (Magnoliophyta). Angiosperms. Flowering plants. Covered-seed plants. Later seed plants
+            size: 2.0
+          - children: []
+            data: {size: 1.0}
+            id: '244'
+            label: '*'
+            size: 1.0
+          data: {size: 4.0}
+          id: '240'
+          label: Tracheophyta. Vascular plants
+          size: 4.0
+        - children: []
+          data: {size: 1.0}
+          id: '245'
+          label: '*'
+          size: 1.0
+        data: {size: 5.0}
+        id: '239'
+        label: Plantae
+        size: 5.0
+      - children: []
+        data: {size: 5.0}
+        id: '246'
+        label: '*'
+        size: 5.0
+      data: {size: 15.0}
+      id: '237'
+      label: Systematic botany
+      size: 15.0
+    data: {size: 23.0}
+    id: '235'
+    label: Botany
+    size: 23.0
+  - children:
+    - children: []
+      data: {size: 8.0}
+      id: '248'
+      label: General zoology
+      size: 8.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '250'
+        label: Articulata
+        size: 1.0
+      - children:
+        - children:
+          - children: []
+            data: {size: 2.0}
+            id: '253'
+            label: Sauropsida. Synapsida
+            size: 2.0
+          - children:
+            - children:
+              - children: []
+                data: {size: 1.0}
+                id: '256'
+                label: Marsupialia (Marsupials)
+                size: 1.0
+              data: {size: 1.0}
+              id: '255'
+              label: Metatheria
+              size: 1.0
+            - children:
+              - children:
+                - children: []
+                  data: {size: 3.0}
+                  id: '259'
+                  label: Simiiformes (Simians)
+                  size: 3.0
+                - children: []
+                  data: {size: 1.0}
+                  id: '260'
+                  label: '*'
+                  size: 1.0
+                data: {size: 4.0}
+                id: '258'
+                label: Primates
+                size: 4.0
+              - children: []
+                data: {size: 5.0}
+                id: '261'
+                label: Ungulata
+                size: 5.0
+              - children: []
+                data: {size: 8.0}
+                id: '262'
+                label: '*'
+                size: 8.0
+              data: {size: 17.0}
+              id: '257'
+              label: Eutheria
+              size: 17.0
+            - children: []
+              data: {size: 1.0}
+              id: '263'
+              label: '*'
+              size: 1.0
+            data: {size: 19.0}
+            id: '254'
+            label: Mammalia (Mammals)
+            size: 19.0
+          - children: []
+            data: {size: 3.0}
+            id: '264'
+            label: Amphibia
+            size: 3.0
+          - children: []
+            data: {size: 1.0}
+            id: '265'
+            label: '*'
+            size: 1.0
+          data: {size: 25.0}
+          id: '252'
+          label: Vertebrata
+          size: 25.0
+        - children: []
+          data: {size: 1.0}
+          id: '266'
+          label: '*'
+          size: 1.0
+        data: {size: 26.0}
+        id: '251'
+        label: Chordata
+        size: 26.0
+      - children: []
+        data: {size: 2.0}
+        id: '267'
+        label: '*'
+        size: 2.0
+      data: {size: 29.0}
+      id: '249'
+      label: Systematic zoology
+      size: 29.0
+    data: {size: 37.0}
+    id: '247'
+    label: Zoology
+    size: 37.0
+  data: {size: 281.0}
+  id: '154'
+  label: MATHEMATICS. NATURAL SCIENCES
+  size: 281.0
+- children:
+  - children: []
+    data: {size: 5.0}
+    id: '269'
+    label: Biotechnology
+    size: 5.0
+  - children:
+    - children:
+      - children:
+        - children: []
+          data: {size: 8.0}
+          id: '273'
+          label: Systematic physiology
+          size: 8.0
+        data: {size: 8.0}
+        id: '272'
+        label: Physiology. Human and comparative physiology
+        size: 8.0
+      - children: []
+        data: {size: 1.0}
+        id: '274'
+        label: '*'
+        size: 1.0
+      data: {size: 9.0}
+      id: '271'
+      label: Human biology
+      size: 9.0
+    - children: []
+      data: {size: 8.0}
+      id: '275'
+      label: Hygiene generally. Personal health and hygiene
+      size: 8.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '277'
+        label: Sanitary inspection and control
+        size: 1.0
+      - children: []
+        data: {size: 7.0}
+        id: '278'
+        label: '*'
+        size: 7.0
+      data: {size: 8.0}
+      id: '276'
+      label: Public health and hygiene. Accident prevention
+      size: 8.0
+    - children: []
+      data: {size: 6.0}
+      id: '279'
+      label: Pharmacology. Therapeutics. Toxicology
+      size: 6.0
+    - children:
+      - children:
+        - children: []
+          data: {size: 1.0}
+          id: '282'
+          label: Pathology of the digestive system. Complaints of the alimentary canal
+          size: 1.0
+        - children: []
+          data: {size: 1.0}
+          id: '283'
+          label: Neurology. Neuropathology. Nervous system
+          size: 1.0
+        - children: []
+          data: {size: 7.0}
+          id: '284'
+          label: '*'
+          size: 7.0
+        data: {size: 9.0}
+        id: '281'
+        label: Special pathology
+        size: 9.0
+      - children: []
+        data: {size: 9.0}
+        id: '285'
+        label: Special auxiliary subdivision for morbid processes
+        size: 9.0
+      - children: []
+        data: {size: 15.0}
+        id: '286'
+        label: Special auxiliary subdivision for general aspects of pathology
+        size: 15.0
+      - children: []
+        data: {size: 6.0}
+        id: '287'
+        label: Special auxiliary subdivision for medical and surgical instrumentation and equipment
+        size: 6.0
+      data: {size: 39.0}
+      id: '280'
+      label: Pathology. Clinical medicine
+      size: 39.0
+    - children: []
+      data: {size: 2.0}
+      id: '288'
+      label: Surgery. Orthopaedics. Ophthalmology
+      size: 2.0
+    - children: []
+      data: {size: 1.0}
+      id: '289'
+      label: '*'
+      size: 1.0
+    data: {size: 73.0}
+    id: '270'
+    label: Medical sciences
+    size: 73.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 8.0}
+        id: '292'
+        label: Variables, conditions and characteristics of production processes, plant and equipment
+        size: 8.0
+      - children: []
+        data: {size: 8.0}
+        id: '293'
+        label: '*'
+        size: 8.0
+      data: {size: 16.0}
+      id: '291'
+      label: Special auxiliary subdivision for technology in general
+      size: 16.0
+    - children: []
+      data: {size: 2.0}
+      id: '294'
+      label: Materials testing. Commercial materials. Power stations. Economics of energy
+      size: 2.0
+    - children: []
+      data: {size: 9.0}
+      id: '295'
+      label: Mechanical engineering in general. Nuclear technology. Electrical engineering. Machinery
+      size: 9.0
+    - children: []
+      data: {size: 8.0}
+      id: '296'
+      label: Mining
+      size: 8.0
+    - children:
+      - children:
+        - children: []
+          data: {size: 3.0}
+          id: '299'
+          label: Field engineering. Fortifications. Defence works
+          size: 3.0
+        - children: []
+          data: {size: 4.0}
+          id: '300'
+          label: '*'
+          size: 4.0
+        data: {size: 7.0}
+        id: '298'
+        label: Land-based military engineering. Artillery
+        size: 7.0
+      - children: []
+        data: {size: 2.0}
+        id: '301'
+        label: Naval engineering
+        size: 2.0
+      data: {size: 9.0}
+      id: '297'
+      label: Military engineering
+      size: 9.0
+    - children:
+      - children: []
+        data: {size: 5.0}
+        id: '303'
+        label: Special auxiliary subdivision for civil and structural engineering
+        size: 5.0
+      - children: []
+        data: {size: 4.0}
+        id: '304'
+        label: Bridge construction
+        size: 4.0
+      - children: []
+        data: {size: 2.0}
+        id: '305'
+        label: '*'
+        size: 2.0
+      data: {size: 11.0}
+      id: '302'
+      label: Civil and structural engineering in general
+      size: 11.0
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '307'
+        label: Railways. Tramways. Cableways
+        size: 2.0
+      - children: []
+        data: {size: 2.0}
+        id: '308'
+        label: Highway engineering
+        size: 2.0
+      data: {size: 4.0}
+      id: '306'
+      label: Civil engineering of land transport. Railway engineering. Highway engineering
+      size: 4.0
+    - children:
+      - children: []
+        data: {size: 5.0}
+        id: '310'
+        label: Hydraulic engineering in general
+        size: 5.0
+      - children: []
+        data: {size: 6.0}
+        id: '311'
+        label: Natural waterway, port, harbour and shore engineering. Navigational, dredging, salvage and rescue facilities. Dams and hydraulic power plant
+        size: 6.0
+      data: {size: 11.0}
+      id: '309'
+      label: Hydraulic engineering and construction. Water (aquatic) structures
+      size: 11.0
+    - children: []
+      data: {size: 8.0}
+      id: '312'
+      label: Public health engineering. Water. Sanitation. Illuminating engineering
+      size: 8.0
+    - children:
+      - children: []
+        data: {size: 8.0}
+        id: '314'
+        label: Special auxiliary subdivision for transport vehicle engineering
+        size: 8.0
+      - children: []
+        data: {size: 4.0}
+        id: '315'
+        label: '*'
+        size: 4.0
+      data: {size: 12.0}
+      id: '313'
+      label: Transport vehicle engineering
+      size: 12.0
+    data: {size: 90.0}
+    id: '290'
+    label: Engineering. Technology in general
+    size: 90.0
+  - children:
+    - children: []
+      data: {size: 10.0}
+      id: '317'
+      label: Forestry
+      size: 10.0
+    - children:
+      - children: []
+        data: {size: 7.0}
+        id: '319'
+        label: Agriculture in general
+        size: 7.0
+      - children:
+        - children: []
+          data: {size: 9.0}
+          id: '321'
+          label: Field crops and their production
+          size: 9.0
+        - children: []
+          data: {size: 7.0}
+          id: '322'
+          label: Fruit growing
+          size: 7.0
+        - children:
+          - children: []
+            data: {size: 7.0}
+            id: '324'
+            label: Vegetables. Kitchen gardening
+            size: 7.0
+          - children: []
+            data: {size: 1.0}
+            id: '325'
+            label: '*'
+            size: 1.0
+          data: {size: 8.0}
+          id: '323'
+          label: Garden plants. Gardening
+          size: 8.0
+        data: {size: 24.0}
+        id: '320'
+        label: Horticulture in general. Specific crops
+        size: 24.0
+      - children: []
+        data: {size: 1.0}
+        id: '326'
+        label: '*'
+        size: 1.0
+      data: {size: 32.0}
+      id: '318'
+      label: Farm management. Agronomy. Horticulture
+      size: 32.0
+    - children:
+      - children: []
+        data: {size: 8.0}
+        id: '328'
+        label: Special auxiliary subdivision for animal husbandry
+        size: 8.0
+      - children: []
+        data: {size: 9.0}
+        id: '329'
+        label: '*'
+        size: 9.0
+      data: {size: 17.0}
+      id: '327'
+      label: Animal husbandry and breeding in general. Livestock rearing. Breeding of domestic animals
+      size: 17.0
+    - children: []
+      data: {size: 6.0}
+      id: '330'
+      label: Hunting. Fishing. Fish breeding
+      size: 6.0
+    - children: []
+      data: {size: 2.0}
+      id: '331'
+      label: '*'
+      size: 2.0
+    data: {size: 67.0}
+    id: '316'
+    label: Agriculture and related sciences and techniques. Forestry. Farming. Wildlife exploitation
+    size: 67.0
+  - children:
+    - children: []
+      data: {size: 2.0}
+      id: '333'
+      label: Food. Cooking. Dishes. Meals
+      size: 2.0
+    - children:
+      - children: []
+        data: {size: 3.0}
+        id: '335'
+        label: Installations for health and comfort in dwellings
+        size: 3.0
+      - children: []
+        data: {size: 2.0}
+        id: '336'
+        label: '*'
+        size: 2.0
+      data: {size: 5.0}
+      id: '334'
+      label: The home. Household fittings and furnishings
+      size: 5.0
+    - children:
+      - children: []
+        data: {size: 3.0}
+        id: '338'
+        label: Clothing. Body care
+        size: 3.0
+      - children: []
+        data: {size: 2.0}
+        id: '339'
+        label: '*'
+        size: 2.0
+      data: {size: 5.0}
+      id: '337'
+      label: Personal requisites. Household management
+      size: 5.0
+    - children: []
+      data: {size: 5.0}
+      id: '340'
+      label: Special auxiliary subdivision for domestic science
+      size: 5.0
+    - children: []
+      data: {size: 1.0}
+      id: '341'
+      label: '*'
+      size: 1.0
+    data: {size: 18.0}
+    id: '332'
+    label: Home economics. Domestic science. Housekeeping
+    size: 18.0
+  - children:
+    - children: []
+      data: {size: 2.0}
+      id: '343'
+      label: Telecommunication and telecontrol (organization, services)
+      size: 2.0
+    - children: []
+      data: {size: 2.0}
+      id: '344'
+      label: Graphic industries. Printing. Publishing. Book trade
+      size: 2.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '346'
+        label: Land transport
+        size: 4.0
+      - children: []
+        data: {size: 3.0}
+        id: '347'
+        label: '*'
+        size: 3.0
+      data: {size: 7.0}
+      id: '345'
+      label: Transport and postal services. Traffic organization and control
+      size: 7.0
+    - children: []
+      data: {size: 8.0}
+      id: '348'
+      label: Business management, administration. Commercial organization
+      size: 8.0
+    - children: []
+      data: {size: 4.0}
+      id: '349'
+      label: Publicity. Information work. Public relations
+      size: 4.0
+    - children: []
+      data: {size: 1.0}
+      id: '350'
+      label: '*'
+      size: 1.0
+    data: {size: 24.0}
+    id: '342'
+    label: Communication and transport industries. Accountancy. Business management. Public relations
+    size: 24.0
+  - children:
+    - children: []
+      data: {size: 9.0}
+      id: '352'
+      label: Chemicals
+      size: 9.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '354'
+        label: Explosives
+        size: 4.0
+      - children: []
+        data: {size: 4.0}
+        id: '355'
+        label: Heat economy. Fuel economy. Fuels. Heating
+        size: 4.0
+      - children: []
+        data: {size: 1.0}
+        id: '356'
+        label: '*'
+        size: 1.0
+      data: {size: 9.0}
+      id: '353'
+      label: Explosives. Fuels
+      size: 9.0
+    - children: []
+      data: {size: 8.0}
+      id: '357'
+      label: Industrial microbiology. Industrial mycology. Zymurgy, fermentation industry. Beverage industry. Stimulant industry
+      size: 8.0
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '359'
+        label: Technology and processing of cereal grains
+        size: 2.0
+      - children: []
+        data: {size: 6.0}
+        id: '360'
+        label: '*'
+        size: 6.0
+      data: {size: 8.0}
+      id: '358'
+      label: Production and preservation of solid foodstuffs
+      size: 8.0
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '362'
+        label: Processes and products of the petroleum and allied industries
+        size: 2.0
+      - children: []
+        data: {size: 5.0}
+        id: '363'
+        label: '*'
+        size: 5.0
+      data: {size: 7.0}
+      id: '361'
+      label: Oils. Fats. Waxes. Adhesives. Gums. Resins
+      size: 7.0
+    - children:
+      - children: []
+        data: {size: 4.0}
+        id: '365'
+        label: Ceramics
+        size: 4.0
+      - children: []
+        data: {size: 2.0}
+        id: '366'
+        label: '*'
+        size: 2.0
+      data: {size: 6.0}
+      id: '364'
+      label: Glass industry. Ceramics. Cement and concrete
+      size: 6.0
+    - children: []
+      data: {size: 5.0}
+      id: '367'
+      label: Colour industries
+      size: 5.0
+    - children: []
+      data: {size: 2.0}
+      id: '368'
+      label: Metallurgy
+      size: 2.0
+    - children: []
+      data: {size: 7.0}
+      id: '369'
+      label: Special auxiliary subdivision for chemical engineering
+      size: 7.0
+    data: {size: 61.0}
+    id: '351'
+    label: Chemical technology. Chemical and related industries
+    size: 61.0
+  - children:
+    - children: []
+      data: {size: 2.0}
+      id: '371'
+      label: Articles of precious metals, gems, precious stones
+      size: 2.0
+    - children:
+      - children:
+        - children:
+          - children: []
+            data: {size: 2.0}
+            id: '375'
+            label: Vegetable fibres
+            size: 2.0
+          - children: []
+            data: {size: 1.0}
+            id: '376'
+            label: '*'
+            size: 1.0
+          data: {size: 3.0}
+          id: '374'
+          label: Natural fibres
+          size: 3.0
+        - children: []
+          data: {size: 2.0}
+          id: '377'
+          label: '*'
+          size: 2.0
+        data: {size: 5.0}
+        id: '373'
+        label: Textile fibres
+        size: 5.0
+      data: {size: 5.0}
+      id: '372'
+      label: Textile industry
+      size: 5.0
+    - children: []
+      data: {size: 4.0}
+      id: '378'
+      label: Industries based on macromolecular materials. Rubber industry. Plastics industry
+      size: 4.0
+    - children: []
+      data: {size: 3.0}
+      id: '379'
+      label: Industries based on various processable materials
+      size: 3.0
+    - children: []
+      data: {size: 5.0}
+      id: '380'
+      label: '*'
+      size: 5.0
+    data: {size: 19.0}
+    id: '370'
+    label: Various industries, trades and crafts
+    size: 19.0
+  - children:
+    - children: []
+      data: {size: 6.0}
+      id: '382'
+      label: Precision mechanisms and instruments
+      size: 6.0
+    - children: []
+      data: {size: 4.0}
+      id: '383'
+      label: Smithery. Blacksmithery. Farriery. Hand-forged ironwork
+      size: 4.0
+    - children: []
+      data: {size: 3.0}
+      id: '384'
+      label: Furniture and allied industries. Furniture manufacture. Upholstery
+      size: 3.0
+    - children: []
+      data: {size: 8.0}
+      id: '385'
+      label: Saddlery. Footwear. Gloving. Travel, sports, games and other equipment
+      size: 8.0
+    - children: []
+      data: {size: 7.0}
+      id: '386'
+      label: Clothing industry. Garment manufacture. Beauty culture
+      size: 7.0
+    - children: []
+      data: {size: 1.0}
+      id: '387'
+      label: Fancy goods. Toys. Decorative articles
+      size: 1.0
+    - children: []
+      data: {size: 3.0}
+      id: '388'
+      label: '*'
+      size: 3.0
+    data: {size: 32.0}
+    id: '381'
+    label: Industries, crafts and trades for finished or assembled articles
+    size: 32.0
+  - children: []
+    data: {size: 7.0}
+    id: '389'
+    label: Building (construction) trade. Building materials. Building practice and procedure
+    size: 7.0
+  data: {size: 396.0}
+  id: '268'
+  label: APPLIED SCIENCES. MEDICINE. TECHNOLOGY
+  size: 396.0
+- children:
+  - children:
+    - children: []
+      data: {size: 8.0}
+      id: '392'
+      label: Artistic periods and phases. Schools, styles, influences
+      size: 8.0
+    - children: []
+      data: {size: 8.0}
+      id: '393'
+      label: '*'
+      size: 8.0
+    data: {size: 16.0}
+    id: '391'
+    label: Special auxiliary subdivision for the arts
+    size: 16.0
+  - children: []
+    data: {size: 4.0}
+    id: '394'
+    label: Physical planning. Regional, town and country planning. Landscapes, parks, gardens
+    size: 4.0
+  - children:
+    - children: []
+      data: {size: 5.0}
+      id: '396'
+      label: Special auxiliary subdivision for architecture
+      size: 5.0
+    - children: []
+      data: {size: 5.0}
+      id: '397'
+      label: '*'
+      size: 5.0
+    data: {size: 10.0}
+    id: '395'
+    label: Architecture
+    size: 10.0
+  - children:
+    - children: []
+      data: {size: 7.0}
+      id: '399'
+      label: Ceramic arts. Pottery
+      size: 7.0
+    - children: []
+      data: {size: 2.0}
+      id: '400'
+      label: Metal arts
+      size: 2.0
+    - children: []
+      data: {size: 3.0}
+      id: '401'
+      label: '*'
+      size: 3.0
+    data: {size: 12.0}
+    id: '398'
+    label: Plastic arts
+    size: 12.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 3.0}
+        id: '404'
+        label: Drawing in general
+        size: 3.0
+      - children: []
+        data: {size: 2.0}
+        id: '405'
+        label: '*'
+        size: 2.0
+      data: {size: 5.0}
+      id: '403'
+      label: Drawing
+      size: 5.0
+    - children: []
+      data: {size: 5.0}
+      id: '406'
+      label: Industrial and domestic arts and crafts. Applied arts
+      size: 5.0
+    data: {size: 10.0}
+    id: '402'
+    label: Drawing. Design. Applied arts and crafts
+    size: 10.0
+  - children: []
+    data: {size: 4.0}
+    id: '407'
+    label: Graphic art, printmaking. Graphics
+    size: 4.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 6.0}
+        id: '410'
+        label: Kinds of photography and photograph
+        size: 6.0
+      - children: []
+        data: {size: 2.0}
+        id: '411'
+        label: '*'
+        size: 2.0
+      data: {size: 8.0}
+      id: '409'
+      label: Special auxiliary subdivision for photography
+      size: 8.0
+    - children: []
+      data: {size: 7.0}
+      id: '412'
+      label: '*'
+      size: 7.0
+    data: {size: 15.0}
+    id: '408'
+    label: Photography and similar processes
+    size: 15.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 7.0}
+        id: '415'
+        label: Vocal music
+        size: 7.0
+      - children: []
+        data: {size: 2.0}
+        id: '416'
+        label: Instrumental music. Symphonic music. Grouping of instruments. Ensemble music
+        size: 2.0
+      - children: []
+        data: {size: 2.0}
+        id: '417'
+        label: '*'
+        size: 2.0
+      data: {size: 11.0}
+      id: '414'
+      label: Kinds of music
+      size: 11.0
+    - children: []
+      data: {size: 17.0}
+      id: '418'
+      label: '*'
+      size: 17.0
+    data: {size: 28.0}
+    id: '413'
+    label: Music
+    size: 28.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '421'
+        label: Special auxiliary subdivision for cinema, films
+        size: 2.0
+      - children: []
+        data: {size: 6.0}
+        id: '422'
+        label: '*'
+        size: 6.0
+      data: {size: 8.0}
+      id: '420'
+      label: Cinema. Films (motion pictures)
+      size: 8.0
+    - children: []
+      data: {size: 5.0}
+      id: '423'
+      label: Theatre. Stagecraft. Dramatic performances
+      size: 5.0
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '425'
+        label: Parlour games. Party games
+        size: 2.0
+      - children: []
+        data: {size: 3.0}
+        id: '426'
+        label: '*'
+        size: 3.0
+      data: {size: 5.0}
+      id: '424'
+      label: Social entertainments and recreations. Art of movement. Dance
+      size: 5.0
+    - children: []
+      data: {size: 7.0}
+      id: '427'
+      label: Board and table games (of thought, skill and chance)
+      size: 7.0
+    - children:
+      - children: []
+        data: {size: 3.0}
+        id: '429'
+        label: Ball games
+        size: 3.0
+      - children: []
+        data: {size: 8.0}
+        id: '430'
+        label: Special auxiliary subdivision for sport, games, physical exercise
+        size: 8.0
+      - children: []
+        data: {size: 8.0}
+        id: '431'
+        label: '*'
+        size: 8.0
+      data: {size: 19.0}
+      id: '428'
+      label: Sport. Games. Physical exercises
+      size: 19.0
+    - children: []
+      data: {size: 3.0}
+      id: '432'
+      label: Water sports. Aerial sports
+      size: 3.0
+    - children: []
+      data: {size: 5.0}
+      id: '433'
+      label: Riding and driving. Horse and other animal sports
+      size: 5.0
+    - children: []
+      data: {size: 1.0}
+      id: '434'
+      label: '*'
+      size: 1.0
+    data: {size: 53.0}
+    id: '419'
+    label: Recreation. Entertainment. Games. Sport
+    size: 53.0
+  - children: []
+    data: {size: 1.0}
+    id: '435'
+    label: '*'
+    size: 1.0
+  data: {size: 153.0}
+  id: '390'
+  label: THE ARTS. RECREATION. ENTERTAINMENT. SPORT
+  size: 153.0
+- children:
+  - children:
+    - children: []
+      data: {size: 3.0}
+      id: '438'
+      label: Prosody. Auxiliary sciences and sources of philology
+      size: 3.0
+    - children: []
+      data: {size: 3.0}
+      id: '439'
+      label: Rhetoric. The effective use of language
+      size: 3.0
+    data: {size: 6.0}
+    id: '437'
+    label: General questions relating to both linguistics and literature. Philology
+    size: 6.0
+  - children:
+    - children: []
+      data: {size: 5.0}
+      id: '441'
+      label: Special auxiliary numbers for origins and periods of languages
+      size: 5.0
+    - children:
+      - children:
+        - children:
+          - children: []
+            data: {size: 1.0}
+            id: '445'
+            label: Artificial languages for use among human beings. International auxiliary languages (interlanguages)
+            size: 1.0
+          data: {size: 1.0}
+          id: '444'
+          label: Artificial languages
+          size: 1.0
+        - children:
+          - children:
+            - children:
+              - children: []
+                data: {size: 2.0}
+                id: '449'
+                label: West Germanic languages (other than English)
+                size: 2.0
+              - children: []
+                data: {size: 3.0}
+                id: '450'
+                label: North Germanic (Nordic) languages
+                size: 3.0
+              - children: []
+                data: {size: 1.0}
+                id: '451'
+                label: '*'
+                size: 1.0
+              data: {size: 6.0}
+              id: '448'
+              label: Germanic languages
+              size: 6.0
+            - children: []
+              data: {size: 1.0}
+              id: '452'
+              label: Italic languages
+              size: 1.0
+            - children:
+              - children: []
+                data: {size: 1.0}
+                id: '454'
+                label: Italo-Romance / Italo-Romanic languages
+                size: 1.0
+              - children: []
+                data: {size: 1.0}
+                id: '455'
+                label: Gallo-Romance / Gallo-Romanic languages
+                size: 1.0
+              - children: []
+                data: {size: 3.0}
+                id: '456'
+                label: Ibero-Romance / Ibero-Romanic languages
+                size: 3.0
+              - children: []
+                data: {size: 1.0}
+                id: '457'
+                label: Balkan Romance / Balkan Romanic languages
+                size: 1.0
+              data: {size: 6.0}
+              id: '453'
+              label: Romance / Romanic languages
+              size: 6.0
+            - children:
+              - children: []
+                data: {size: 3.0}
+                id: '459'
+                label: East Slavic / Slavonic languages
+                size: 3.0
+              - children: []
+                data: {size: 3.0}
+                id: '460'
+                label: West Slavic / Slavonic languages
+                size: 3.0
+              - children:
+                - children: []
+                  data: {size: 2.0}
+                  id: '462'
+                  label: Serbian and Croatian languages
+                  size: 2.0
+                - children: []
+                  data: {size: 3.0}
+                  id: '463'
+                  label: '*'
+                  size: 3.0
+                data: {size: 5.0}
+                id: '461'
+                label: South Slavic / Slavonic languages
+                size: 5.0
+              data: {size: 11.0}
+              id: '458'
+              label: Slavic / Slavonic languages
+              size: 11.0
+            - children: []
+              data: {size: 2.0}
+              id: '464'
+              label: Baltic languages
+              size: 2.0
+            - children:
+              - children:
+                - children:
+                  - children: []
+                    data: {size: 1.0}
+                    id: '468'
+                    label: Central Modern Indic languages
+                    size: 1.0
+                  - children: []
+                    data: {size: 1.0}
+                    id: '469'
+                    label: Eastern Modern Indic languages
+                    size: 1.0
+                  data: {size: 2.0}
+                  id: '467'
+                  label: Modern Indic languages
+                  size: 2.0
+                data: {size: 2.0}
+                id: '466'
+                label: Indic languages
+                size: 2.0
+              data: {size: 2.0}
+              id: '465'
+              label: Indo-Iranian languages
+              size: 2.0
+            - children: []
+              data: {size: 3.0}
+              id: '470'
+              label: '*'
+              size: 3.0
+            data: {size: 31.0}
+            id: '447'
+            label: Indo-European languages
+            size: 31.0
+          - children:
+            - children:
+              - children: []
+                data: {size: 1.0}
+                id: '473'
+                label: Southern (Kartvelian) group
+                size: 1.0
+              data: {size: 1.0}
+              id: '472'
+              label: Caucasian languages
+              size: 1.0
+            - children: []
+              data: {size: 1.0}
+              id: '474'
+              label: '*'
+              size: 1.0
+            data: {size: 2.0}
+            id: '471'
+            label: Dead languages of unknown affiliation. Caucasian languages
+            size: 2.0
+          - children:
+            - children:
+              - children:
+                - children:
+                  - children: []
+                    data: {size: 2.0}
+                    id: '479'
+                    label: Finnic languages
+                    size: 2.0
+                  - children: []
+                    data: {size: 1.0}
+                    id: '480'
+                    label: Ugric languages
+                    size: 1.0
+                  data: {size: 3.0}
+                  id: '478'
+                  label: Finno-Ugric languages
+                  size: 3.0
+                data: {size: 3.0}
+                id: '477'
+                label: Uralic languages
+                size: 3.0
+              data: {size: 3.0}
+              id: '476'
+              label: Ural-Altaic languages
+              size: 3.0
+            - children: []
+              data: {size: 1.0}
+              id: '481'
+              label: Sino-Tibetan languages
+              size: 1.0
+            - children: []
+              data: {size: 1.0}
+              id: '482'
+              label: '*'
+              size: 1.0
+            data: {size: 5.0}
+            id: '475'
+            label: Ural-Altaic, Palaeo-Siberian, Eskimo-Aleut, Dravidian and Sino-Tibetan languages. Japanese. Korean. Ainu
+            size: 5.0
+          - children: []
+            data: {size: 4.0}
+            id: '483'
+            label: '*'
+            size: 4.0
+          data: {size: 42.0}
+          id: '446'
+          label: Individual natural languages
+          size: 42.0
+        data: {size: 43.0}
+        id: '443'
+        label: All languages natural or artificial
+        size: 43.0
+      data: {size: 43.0}
+      id: '442'
+      label: Languages
+      size: 43.0
+    - children:
+      - children: []
+        data: {size: 7.0}
+        id: '485'
+        label: Theory of signs. Theory of translation. Standardization. Usage. Geographical linguistics
+        size: 7.0
+      - children: []
+        data: {size: 7.0}
+        id: '486'
+        label: Mathematical and applied linguistics. Phonetics. Graphemics. Grammar. Semantics. Stylistics
+        size: 7.0
+      - children: []
+        data: {size: 2.0}
+        id: '487'
+        label: Text linguistics, Discourse analysis. Typological linguistics
+        size: 2.0
+      - children: []
+        data: {size: 1.0}
+        id: '488'
+        label: '*'
+        size: 1.0
+      data: {size: 17.0}
+      id: '484'
+      label: Special auxiliary subdivision for subject fields and facets of linguistics and languages
+      size: 17.0
+    - children: []
+      data: {size: 2.0}
+      id: '489'
+      label: '*'
+      size: 2.0
+    data: {size: 67.0}
+    id: '440'
+    label: Linguistics and languages
+    size: 67.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 2.0}
+        id: '492'
+        label: Fiction. Prose narrative
+        size: 2.0
+      - children: []
+        data: {size: 2.0}
+        id: '493'
+        label: Various other literary forms
+        size: 2.0
+      - children: []
+        data: {size: 7.0}
+        id: '494'
+        label: '*'
+        size: 7.0
+      data: {size: 11.0}
+      id: '491'
+      label: Special auxiliary subdivision for literary forms, genres
+      size: 11.0
+    - children:
+      - children:
+        - children:
+          - children: []
+            data: {size: 2.0}
+            id: '498'
+            label: West Germanic literatures (other than English)
+            size: 2.0
+          - children: []
+            data: {size: 3.0}
+            id: '499'
+            label: North Germanic, Nordic (Scandinavian) literatures
+            size: 3.0
+          - children: []
+            data: {size: 1.0}
+            id: '500'
+            label: '*'
+            size: 1.0
+          data: {size: 6.0}
+          id: '497'
+          label: Literature of Germanic languages
+          size: 6.0
+        - children:
+          - children: []
+            data: {size: 3.0}
+            id: '502'
+            label: Literature of Ibero-Romance / Ibero-Romanic) languages
+            size: 3.0
+          - children: []
+            data: {size: 1.0}
+            id: '503'
+            label: Literature of Balkan Romance / Romanic languages
+            size: 1.0
+          - children: []
+            data: {size: 1.0}
+            id: '504'
+            label: Literature of Italo-Romance / Italo-Romanic languages
+            size: 1.0
+          - children: []
+            data: {size: 1.0}
+            id: '505'
+            label: Literature of Gallo-Romance / Gallo-Romanic languages
+            size: 1.0
+          data: {size: 6.0}
+          id: '501'
+          label: Literature of Romance (Romanic) languages
+          size: 6.0
+        - children:
+          - children: []
+            data: {size: 3.0}
+            id: '507'
+            label: East Slavic / Slavonic literature
+            size: 3.0
+          - children: []
+            data: {size: 3.0}
+            id: '508'
+            label: West Slavic / Slavonic literatures
+            size: 3.0
+          - children:
+            - children: []
+              data: {size: 2.0}
+              id: '510'
+              label: Serbian literature. Croatian literature
+              size: 2.0
+            - children: []
+              data: {size: 3.0}
+              id: '511'
+              label: '*'
+              size: 3.0
+            data: {size: 5.0}
+            id: '509'
+            label: South Slavic / Slavonic literatures
+            size: 5.0
+          data: {size: 11.0}
+          id: '506'
+          label: Literature of Slavic (Slavonic) languages
+          size: 11.0
+        - children: []
+          data: {size: 2.0}
+          id: '512'
+          label: Literature of Baltic languages
+          size: 2.0
+        - children: []
+          data: {size: 1.0}
+          id: '513'
+          label: Literature of Italic languages
+          size: 1.0
+        - children:
+          - children:
+            - children: []
+              data: {size: 2.0}
+              id: '516'
+              label: Literature of modern Indic languages
+              size: 2.0
+            data: {size: 2.0}
+            id: '515'
+            label: Indic literatures
+            size: 2.0
+          data: {size: 2.0}
+          id: '514'
+          label: Literature of Indo-Iranian languages
+          size: 2.0
+        - children: []
+          data: {size: 3.0}
+          id: '517'
+          label: '*'
+          size: 3.0
+        data: {size: 31.0}
+        id: '496'
+        label: Indo-European literature
+        size: 31.0
+      - children:
+        - children: []
+          data: {size: 1.0}
+          id: '519'
+          label: South Caucasian (Kartvelian) literature
+          size: 1.0
+        data: {size: 1.0}
+        id: '518'
+        label: Literature of Caucasian languages. Literature of dead languages of unknown affiliation
+        size: 1.0
+      - children:
+        - children:
+          - children:
+            - children:
+              - children: []
+                data: {size: 2.0}
+                id: '524'
+                label: Literature of Finnic languages
+                size: 2.0
+              - children: []
+                data: {size: 1.0}
+                id: '525'
+                label: Literature of Ugric languages
+                size: 1.0
+              data: {size: 3.0}
+              id: '523'
+              label: Literature of Finno-Ugric languages
+              size: 3.0
+            data: {size: 3.0}
+            id: '522'
+            label: Literature of Uralic languages
+            size: 3.0
+          data: {size: 3.0}
+          id: '521'
+          label: Literature of Ural-Altaic languages
+          size: 3.0
+        - children: []
+          data: {size: 1.0}
+          id: '526'
+          label: Literature of Sino-Tibetan languages
+          size: 1.0
+        - children: []
+          data: {size: 1.0}
+          id: '527'
+          label: '*'
+          size: 1.0
+        data: {size: 5.0}
+        id: '520'
+        label: Literature of Ural-Altaic, Japanese, Korean, Ainu, Palaeo-Siberian, Eskimo-Aleut, Dravidian languages, Sino-Tibetan languages
+        size: 5.0
+      - children: []
+        data: {size: 5.0}
+        id: '528'
+        label: '*'
+        size: 5.0
+      data: {size: 42.0}
+      id: '495'
+      label: Literatures of individual languages and language families
+      size: 42.0
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '530'
+        label: Literary criticism. Literary studies
+        size: 1.0
+      - children: []
+        data: {size: 1.0}
+        id: '531'
+        label: '*'
+        size: 1.0
+      data: {size: 2.0}
+      id: '529'
+      label: Special auxiliary subdivision for theory, study and technique of literature
+      size: 2.0
+    data: {size: 55.0}
+    id: '490'
+    label: Literature
+    size: 55.0
+  data: {size: 128.0}
+  id: '436'
+  label: LANGUAGE. LINGUISTICS. LITERATURE
+  size: 128.0
+- children:
+  - children:
+    - children: []
+      data: {size: 4.0}
+      id: '534'
+      label: General questions. Geography as a science. Exploration. Travel
+      size: 4.0
+    - children:
+      - children: []
+        data: {size: 5.0}
+        id: '536'
+        label: Theoretical geography
+        size: 5.0
+      - children: []
+        data: {size: 2.0}
+        id: '537'
+        label: '*'
+        size: 2.0
+      data: {size: 7.0}
+      id: '535'
+      label: General geography. Science of geographical factors (systematic geography). Theoretical geography
+      size: 7.0
+    - children: []
+      data: {size: 2.0}
+      id: '538'
+      label: '*'
+      size: 2.0
+    data: {size: 13.0}
+    id: '533'
+    label: Geography. Exploration of the Earth and of individual countries. Travel. Regional geography
+    size: 13.0
+  - children: []
+    data: {size: 5.0}
+    id: '539'
+    label: Biographical studies. Genealogy. Heraldry. Flags
+    size: 5.0
+  - children:
+    - children:
+      - children: []
+        data: {size: 1.0}
+        id: '542'
+        label: Methodology of history. Ancillary historical sciences
+        size: 1.0
+      - children: []
+        data: {size: 2.0}
+        id: '543'
+        label: '*'
+        size: 2.0
+      data: {size: 3.0}
+      id: '541'
+      label: Science of history. Historiography
+      size: 3.0
+    - children: []
+      data: {size: 1.0}
+      id: '544'
+      label: '*'
+      size: 1.0
+    data: {size: 4.0}
+    id: '540'
+    label: History
+    size: 4.0
+  - children: []
+    data: {size: 4.0}
+    id: '545'
+    label: Archaeology. Prehistory. Cultural remains. Area studies
+    size: 4.0
+  data: {size: 26.0}
+  id: '532'
+  label: GEOGRAPHY. BIOGRAPHY. HISTORY
+  size: 26.0
+data: {size: 1384.0}
+id: '0'
+label: MAIN TABLES
+size: 1384.0

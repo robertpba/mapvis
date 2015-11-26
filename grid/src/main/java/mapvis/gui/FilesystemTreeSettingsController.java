@@ -6,9 +6,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 import mapvis.common.datatype.Node;
-import mapvis.fileSystemTree.*;
+import mapvis.treeGenerator.FilesystemNode;
+import mapvis.treeGenerator.ITreeGenerator;
+import mapvis.treeGenerator.TreeGeneratorSummedLeaves;
 
 import java.io.File;
 import java.net.URL;
@@ -16,6 +19,8 @@ import java.util.ResourceBundle;
 
 /**
  * Created by dacc on 10/9/2015.
+ * This Controller is responsible for the generation of the FilesystemTree
+ * according to the UI.
  */
 public class FilesystemTreeSettingsController implements Initializable, IDatasetGeneratorController {
 
@@ -25,7 +30,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     @FXML
     private VBox vBox;
 
-    private TreeGenerator treeGenerator;
+    private ITreeGenerator treeGenerator;
 
     public File selectedDirectory;
 
@@ -33,11 +38,9 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
 
     public FilesystemTreeSettingsController() {
         System.out.println("Creating: " + this.getClass().getName());
-//        this.treeGenerator = new FilesystemTreeGenerator();
-        this.treeGenerator = new TreeGenerator();
-//        this.selectedDirectoryTextfield.textProperty().bind(this.selectedDirectory);
+        this.treeGenerator = new TreeGeneratorSummedLeaves();
         this.directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select the Directory to visualize");
+        this.directoryChooser.setTitle("Select the Directory to visualize");
     }
 
     @Override
@@ -53,8 +56,7 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
             return;
         }
         selectedDirectory = selectedFolder;
-        treeGenerator.configure(new FilesystemNode(selectedFolder.getPath()));
-        System.out.printf("Path:" + selectedFolder.getPath());
+        treeGenerator.setRootNode(new FilesystemNode(selectedFolder.getPath()));
         selectedDirectoryTextfield.setText(selectedFolder.getPath());
     }
 
@@ -64,12 +66,12 @@ public class FilesystemTreeSettingsController implements Initializable, IDataset
     }
 
     @Override
-    public MPTreeImp<Node> generateTree(ActionEvent event) {
+    public MPTreeImp<INode> generateTree(ActionEvent event) {
         if(selectedDirectory == null || !selectedDirectory.exists())
             return MPTreeImp.from(new Node(Integer.toString(0), "root"));
 
-        Node generatedTree = treeGenerator.genTree();
-        MPTreeImp<Node> treeModel = MPTreeImp.from(generatedTree);
+        INode generatedTree = treeGenerator.genTree();
+        MPTreeImp<INode> treeModel = MPTreeImp.from(generatedTree);
         return treeModel;
     }
 
