@@ -121,13 +121,22 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
         return resultingBoundaryShape;
     }
 
-    public List<IBoundaryShape<T>> generatePathForBoundaryShape(List<IBoundaryShape<T>> singleBoundaryShape, int maxToCollect, Tree2<T> tree) {
+    public static class SortedBounaryShapes<T>{
+        List<Tuple2<IBoundaryShape<T>, Boolean>> boundaryShapeAndOrdering = new ArrayList<>();
+        public SortedBounaryShapes(){}
+        public void addBoundaryShapeWithOrdering(IBoundaryShape<T> boundaryShape, Boolean ordering){
+            boundaryShapeAndOrdering.add(new Tuple2<IBoundaryShape<T>, Boolean>(boundaryShape, ordering));
+        }
+    }
+
+    public SortedBounaryShapes<T> generatePathForBoundaryShape(List<IBoundaryShape<T>> singleBoundaryShape, int maxToCollect, Tree2<T> tree) {
         if(singleBoundaryShape.size() == 0)
-            return singleBoundaryShape;
+            return new SortedBounaryShapes();
 
         List<IBoundaryShape<T>> summarizedBoundaryShape = summarizeBoundaryShape(singleBoundaryShape, maxToCollect, tree);
 
-        List<IBoundaryShape<T>> simplifiedPath = new ArrayList<>();
+//        List<IBoundaryShape<T>> simplifiedPath = new ArrayList<>();
+        SortedBounaryShapes<T> result = new SortedBounaryShapes<>();
 
         for (IBoundaryShape<T> summarizedBoundaryStep : summarizedBoundaryShape) {
             BorderIdentifier borderID = getBorderIdentifier(summarizedBoundaryStep);
@@ -137,23 +146,24 @@ public abstract class AbstractRegionPathGenerator<T> implements IRegionPathGener
 
                 Point2D startPoint = getRoundedStartPointOfBoundaryShape(summarizedBoundaryStep);
                 Point2D endPoint = getRoundedEndPointOfBoundaryShape(summarizedBoundaryStep);
-
+                Boolean reverseRequired = iBoundaryShapes.isCoordinatesNeedToBeReversed();
                 if ( (endPoint.equals(getRoundedStartPointOfBoundaryShape(iBoundaryShapes))
                         && startPoint.equals(getRoundedEndPointOfBoundaryShape(iBoundaryShapes)))) {
-                    iBoundaryShapes.setCoordinatesNeedToBeReversed(!iBoundaryShapes.isCoordinatesNeedToBeReversed());
+//                    iBoundaryShapes.setCoordinatesNeedToBeReversed(!iBoundaryShapes.isCoordinatesNeedToBeReversed());
+                    reverseRequired = !reverseRequired;
                 }
 //                System.out.println("Reusing Border");
 
-                simplifiedPath.add(iBoundaryShapes);
+                result.addBoundaryShapeWithOrdering(iBoundaryShapes, reverseRequired);
             }else{
                 createPathForBoundaryShape(summarizedBoundaryStep);
                 simplifiedBorders.put(borderID, summarizedBoundaryStep);
-                simplifiedPath.add(summarizedBoundaryStep);
+                result.addBoundaryShapeWithOrdering(summarizedBoundaryStep, summarizedBoundaryStep.isCoordinatesNeedToBeReversed());
             }
         }
 
 
-        return simplifiedPath;
+        return result;
     }
 
     abstract void createPathForBoundaryShape(IBoundaryShape<T> summarizedBoundaryStep);

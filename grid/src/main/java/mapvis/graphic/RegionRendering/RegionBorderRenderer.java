@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import mapvis.common.datatype.INode;
+import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.models.IBoundaryShape;
 
@@ -34,34 +35,17 @@ public class RegionBorderRenderer {
 
 
     public void drawBorder(IRegionStyler<INode> styler,
-                           List<List<IBoundaryShape<INode>>> regionBorders,
-                           HexagonalTilingView view,
-                           AbstractRegionPathGenerator<INode> simplificationAlgorithm) {
+                           List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>> regionBorders) {
         if(shapeRenderer == null)
             return;
 
 //        graphicsContext.save();
 //        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
-        for (List<IBoundaryShape<INode>> regionParts : regionBorders) {
-            int maxToCollect = Math.max(view.getMaxLevelOfBordersToShow(), view.getMaxLevelOfRegionsToShow());
-            regionParts = simplificationAlgorithm.generatePathForBoundaryShape(regionParts, maxToCollect, view.getTree());
-//            if (!isSingleSideBorderRenderingEnabled || regionPart.getFirstBorder().getRenderID() != renderID) {
-//                if (styler.isBorderVisible(regionPart.getFirstBorder())) {
-//                    graphicsContext.beginPath();
-//
-////                        graphicsContext.strokePolyline(regionPart.getXCoordsArray(), regionPart.getYCoordsArray(), regionPart.getShapeLength());
-//                    shapeRenderer.renderBoundaryShape(regionParts);
-////                        graphicsContext.setStroke(Color.BLACK);
-////                        graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getFirstBorder()));
-//                    graphicsContext.setLineWidth(2);
-//                    graphicsContext.stroke();
-//                    drawIndex++;
-//                }
-//            }
-
-             for (IBoundaryShape<INode> regionPart : regionParts) {
-                if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
+        for (AbstractRegionPathGenerator.SortedBounaryShapes<INode> regionParts : regionBorders) {
+             for (Tuple2<IBoundaryShape<INode>, Boolean> regionPartTuple : regionParts.boundaryShapeAndOrdering) {
+                 IBoundaryShape<INode> regionPart = regionPartTuple.first;
+                 if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.getFirstBorder())){
                         graphicsContext.beginPath();
                         shapeRenderer.renderBoundaryShape(regionPart);

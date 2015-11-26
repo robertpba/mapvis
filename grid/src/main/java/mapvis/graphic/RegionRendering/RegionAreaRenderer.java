@@ -8,6 +8,7 @@ import javafx.util.Pair;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
 import mapvis.graphic.HexagonalTilingView;
+import mapvis.models.BoundaryShape;
 import mapvis.models.ConfigurationConstants;
 import mapvis.models.IBoundaryShape;
 import mapvis.models.Region;
@@ -32,8 +33,7 @@ public class RegionAreaRenderer {
         this.view = view;
     }
 
-    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<List<IBoundaryShape<INode>>> innerAndOuterBoundaryShapes,
-                         AbstractRegionPathGenerator<INode> averageRegionPathGenerator) {
+    public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw, final List<AbstractRegionPathGenerator.SortedBounaryShapes<INode>> innerAndOuterBoundaryShapes) {
         if(shapeRenderer == null)
             return;
 
@@ -44,12 +44,11 @@ public class RegionAreaRenderer {
         if (innerAndOuterBoundaryShapes.size() == 0)
             return;
 
-//        regionBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
+//        innerAndOuterBoundaryShapes.sort((o1, o2) -> o2.size() - o1.size());
 
         graphicsContext.beginPath();
-        for (List<IBoundaryShape<INode>> singleBoundaryShape : innerAndOuterBoundaryShapes) {
-            int maxToCollect = Math.max(view.getMaxLevelOfBordersToShow(), view.getMaxLevelOfRegionsToShow());
-            singleBoundaryShape = averageRegionPathGenerator.generatePathForBoundaryShape(singleBoundaryShape, maxToCollect, view.getTree());
+
+        for (AbstractRegionPathGenerator.SortedBounaryShapes<INode> singleBoundaryShape : innerAndOuterBoundaryShapes) {
             shapeRenderer.renderBoundaryShape(singleBoundaryShape);
         }
 
@@ -62,7 +61,7 @@ public class RegionAreaRenderer {
         }
 
 
-//        graphicsContext.stroke();
+        graphicsContext.stroke();
         if(ConfigurationConstants.FILL_SHAPE){
             graphicsContext.fill();
         }
