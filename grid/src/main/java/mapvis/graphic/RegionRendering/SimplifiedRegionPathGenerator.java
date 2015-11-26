@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import mapvis.models.IBoundaryShape;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerator<T> {
@@ -55,22 +56,13 @@ public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerato
 
     @Override
     void createPathForBoundaryShape(IBoundaryShape<T> partialRegionBoundary) {
-        List<Point2D> shapePoints = new ArrayList<>();
-
-        partialRegionBoundary.forEach(coordinate -> shapePoints.add(coordinate));
+        List<Point2D> shapePoints =partialRegionBoundary.getCoordinates();
 
         Point2D[] simplifiedPoints = simplifyPoints(shapePoints);
 
-        List<Double> simplifiedXCoords = new ArrayList<>();
-        List<Double> simplifiedYCoords = new ArrayList<>();
+        List<Point2D> simplifiedPointCoordinates = Arrays.asList(simplifiedPoints);
 
-        for (Point2D point2D : simplifiedPoints) {
-            simplifiedXCoords.add(point2D.getX());
-            simplifiedYCoords.add(point2D.getY());
-        }
-
-        partialRegionBoundary.setXCoords(simplifiedXCoords);
-        partialRegionBoundary.setYCoords(simplifiedYCoords);
+        partialRegionBoundary.setCoordinates(simplifiedPointCoordinates);
         partialRegionBoundary.setCoordinatesNeedToBeReversed(false);
     }
 

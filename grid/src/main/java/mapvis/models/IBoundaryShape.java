@@ -39,17 +39,23 @@ public interface IBoundaryShape<T> extends Iterable<Point2D> {
 
     void setYCoordinateAtIndex(int index, double value);
 
-    List<Double> getXCoords();
+    List<Point2D> getCoordinates();
 
-    List<Double> getYCoords();
+    Point2D getCoordinateAtIndex(int index);
 
-    double[] getXCoordsArray();
+//    List<Double> getXCoords();
+//
+//    List<Double> getYCoords();
 
-    double[] getYCoordsArray();
+//    double[] getXCoordsArray();
+//
+//    double[] getYCoordsArray();
+//
+//    void setXCoords(List<Double> xCoords);
+//
+//    void setYCoords(List<Double> yCoords);
 
-    void setXCoords(List<Double> xCoords);
-
-    void setYCoords(List<Double> yCoords);
+    void setCoordinates(List<Point2D> coordinates);
 
     boolean isCoordinatesNeedToBeReversed();
 

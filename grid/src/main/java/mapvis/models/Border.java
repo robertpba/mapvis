@@ -120,6 +120,9 @@ public class Border<T> {
     public IBoundaryShape<T> calcBoundaryShape(){
         List<Double> xCoordinates = new ArrayList<>();
         List<Double> yCoordinates = new ArrayList<>();
+
+        List<Point2D> shapeCoordinates = new ArrayList<>();
+
         for (TileBorder tileBorder : borderCoordinates) {
             for (Dir direction : tileBorder.getDirections()) {
                 Point2D startPoint = LeafRegion.roundToCoordinatesTo4Digits(
@@ -129,12 +132,15 @@ public class Border<T> {
 
                 xCoordinates.add(startPoint.getX());
                 yCoordinates.add(startPoint.getY());
+                shapeCoordinates.add(startPoint);
             }
         }
-        IBoundaryShape<T> boundaryShape = new BoundaryShape(
-                xCoordinates,
-                yCoordinates,
-                this);
+        IBoundaryShape<T> boundaryShape = new BoundaryShape(shapeCoordinates, this);
+
+//        IBoundaryShape<T> boundaryShape = new BoundaryShape(
+//                xCoordinates,
+//                yCoordinates,
+//                this);
 
 //        IBoundaryShape<T> boundaryShape = new BoundaryShape(
 //                xCoordinates.stream().mapToDouble(Double::doubleValue).toArray(),

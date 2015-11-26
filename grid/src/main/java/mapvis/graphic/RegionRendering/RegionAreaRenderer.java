@@ -63,7 +63,7 @@ public class RegionAreaRenderer {
 
         graphicsContext.stroke();
         if(ConfigurationConstants.FILL_SHAPE){
-            graphicsContext.fill();
+//            graphicsContext.fill();
         }
 
         if(!ConfigurationConstants.DRAW_ORIGINAL_SHAPE)

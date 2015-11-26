@@ -46,11 +46,11 @@ public class MovingAverageRegionPathGenerator<T> extends AbstractRegionPathGener
         if(boundaryShape.getShapeLength() < 2)
             return;
 
-        List<Double> averagedXCoordinates = new ArrayList<>();
-        List<Double> averagedYCoordinates = new ArrayList<>();
+        List<Point2D> averagedCoordinates = new ArrayList<>();
+//        List<Double> averagedYCoordinates = new ArrayList<>();
 
-        averagedXCoordinates.add(boundaryShape.getXCoordinateStartpoint());
-        averagedYCoordinates.add(boundaryShape.getYCoordinateStartpoint());
+        averagedCoordinates.add(boundaryShape.getStartPoint());
+//        averagedYCoordinates.add(boundaryShape.getYCoordinateStartpoint());
 
         Iterator<Point2D> currPointIterator = boundaryShape.iterator();
         Iterator<Point2D> nextPointIterator = boundaryShape.iterator();
@@ -61,15 +61,15 @@ public class MovingAverageRegionPathGenerator<T> extends AbstractRegionPathGener
             Point2D nextPoint = nextPointIterator.next();
             Point2D averagePoint = currPoint.add(nextPoint).multiply(0.5);
 
-            averagedXCoordinates.add(averagePoint.getX());
-            averagedYCoordinates.add(averagePoint.getY());
+            averagedCoordinates.add(averagePoint);
+//            averagedYCoordinates.add(averagePoint.getY());
         }
 
-        averagedXCoordinates.add(boundaryShape.getXCoordinateEndpoint());
-        averagedYCoordinates.add(boundaryShape.getYCoordinateEndpoint());
-
-        boundaryShape.setXCoords(averagedXCoordinates);
-        boundaryShape.setYCoords(averagedYCoordinates);
+        averagedCoordinates.add(boundaryShape.getEndPoint());
+//        averagedYCoordinates.add(boundaryShape.getYCoordinateEndpoint());
+        boundaryShape.setCoordinates(averagedCoordinates);
+//        boundaryShape.setXCoords(averagedXCoordinates);
+//        boundaryShape.setYCoords(averagedYCoordinates);
         boundaryShape.setCoordinatesNeedToBeReversed(false);
     }
 
