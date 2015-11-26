@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by dacc on 11/24/2015.
  */
-public interface IBoundaryShape<T> {
+public interface IBoundaryShape<T> extends Iterable<Point2D> {
 
     int getLevel();
 
