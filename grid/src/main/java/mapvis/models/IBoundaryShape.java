@@ -15,8 +15,6 @@ public interface IBoundaryShape<T> extends Iterable<Point2D> {
 
     Border<T> getFirstBorder();
 
-    Tuple2<T, T> getSeperatedRegionsID(int maxLevel, Tree2<T> tree);
-
     int getShapeLength();
 
     Point2D getStartPoint();
@@ -42,18 +40,6 @@ public interface IBoundaryShape<T> extends Iterable<Point2D> {
     List<Point2D> getCoordinates();
 
     Point2D getCoordinateAtIndex(int index);
-
-//    List<Double> getXCoords();
-//
-//    List<Double> getYCoords();
-
-//    double[] getXCoordsArray();
-//
-//    double[] getYCoordsArray();
-//
-//    void setXCoords(List<Double> xCoords);
-//
-//    void setYCoords(List<Double> yCoords);
 
     void setCoordinates(List<Point2D> coordinates);
 

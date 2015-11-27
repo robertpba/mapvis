@@ -7,6 +7,9 @@ public interface Tree2<T> extends Tree<T>
 {
     Set<T> getChildren(T obj);
     T getParent(T node);
+
+    T getParentAtLevel(T node, int level);
+
     Set<T> getNodes();
     T getRoot();
     Set<T> getLeaves();

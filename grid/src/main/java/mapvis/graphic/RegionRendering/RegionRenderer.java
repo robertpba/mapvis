@@ -406,7 +406,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             super(graphicsContext);
         }
 
-        private Pair<Point2D, Point2D> getControlPoints(Point2D x0, Point2D x1, Point2D x2, double t) {
+        private Tuple2<Point2D, Point2D> getControlPoints(Point2D x0, Point2D x1, Point2D x2, double t) {
             //  x0,y0,x1,y1 are the coordinates of the end (knot) pts of this segment
             //  x2,y2 is the next knot -- not connected here but needed to calculate p2
             //  p1 is the control point calculated here, from x1 back toward x0.
@@ -427,7 +427,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             double p2x = x1.getX() - fb * (x0.getX() - x2.getX());
             double p2y = x1.getY() - fb * (x0.getY() - x2.getY());
 
-            return new Pair(new Point2D(p1x, p1y), new Point2D(p2x, p2y));
+            return new Tuple2(new Point2D(p1x, p1y), new Point2D(p2x, p2y));
         }
 
         @Override
@@ -454,40 +454,69 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             Point2D firstPoint = inputPointList.get(0);
             inputPointList.add(firstPoint);
 
-            List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
+            List<Point2D> controlPoints = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
 
-            Point2D[] points = inputPointList.toArray(new Point2D[inputPointList.size()]);
-            int n = points.length;
+            Iterator<Point2D> firstPointIt = inputPointList.iterator();
+            Iterator<Point2D> secondPointIt = inputPointList.iterator();
+            secondPointIt.next();
 
-            for (int i = 0; i < n - 2; i++) {
-                Pair<Point2D, Point2D> controlPoints = getControlPoints(points[i], points[i + 1], points[i + 2],
+            Iterator<Point2D> thirdPointIt = inputPointList.iterator();
+            thirdPointIt.next();
+            thirdPointIt.next();
+
+            while(thirdPointIt.hasNext()){
+                Point2D firstPointCoord = firstPointIt.next();
+                Point2D secondPointCoord = secondPointIt.next();
+                Point2D thirdPointCoord = thirdPointIt.next();
+
+                Tuple2<Point2D, Point2D> controlPointPair = getControlPoints(firstPointCoord, secondPointCoord, thirdPointCoord,
                         ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
-                cp.add(controlPoints.getKey());
-                cp.add(controlPoints.getValue());
+                controlPoints.add(controlPointPair.first);
+                controlPoints.add(controlPointPair.second);
             }
-            cp.add(cp.get(cp.size() - 2));
-            cp.add(cp.get(cp.size() - 1));
 
-            Point2D[] controlPoints = cp.toArray(new Point2D[cp.size()]);
+            controlPoints.add(controlPoints.get(controlPoints.size() - 2));
+            controlPoints.add(controlPoints.get(controlPoints.size() - 1));
 
-            renderBezierCurve(points, controlPoints);
+            renderBezierCurve(inputPointList, controlPoints);
         }
 
-        void renderBezierCurve(Point2D[] points, Point2D[] controlPoints){
-            int n = points.length;
+        void renderBezierCurve(List<Point2D> inputPointList, List<Point2D> controlPoints){
 
-            for (int j = 1; j < n - 1; j++) {
-                if(j == 1){
-                    graphicsContext.moveTo(points[j].getX(), points[j].getY());
-                }
-                Point2D controlPoint1 = controlPoints[2 * j - 1];
-                Point2D controlPoint2 = controlPoints[2 * j];
+            Iterator<Point2D> inputPointIt = inputPointList.iterator();
+            inputPointIt.next();
+
+
+            Iterator<Point2D> firstControlPointIt = controlPoints.iterator();
+            firstControlPointIt.next();
+
+            Iterator<Point2D> secondControlPointIt = controlPoints.iterator();
+            secondControlPointIt.next();
+            secondControlPointIt.next();
+
+            Point2D currInputPoint = inputPointIt.next();
+
+            graphicsContext.moveTo(currInputPoint.getX(), currInputPoint.getY());
+
+            while (inputPointIt.hasNext()) {
+                //startIndex 1
+                currInputPoint = inputPointIt.next();
+
+                //startIndex 1
+                Point2D controlPoint1 = firstControlPointIt.next();
+                //startIndex 2
+                Point2D controlPoint2 = secondControlPointIt.next();
+
+                //switch to next Pair<controlPoint1, controlPoint2>
+                firstControlPointIt.next();
+                secondControlPointIt.next();
 
                 graphicsContext.bezierCurveTo(controlPoint1.getX(), controlPoint1.getY(),
                         controlPoint2.getX(), controlPoint2.getY(),
-                        points[j + 1].getX(), points[j + 1].getY());
+                        currInputPoint.getX(), currInputPoint.getY());
             }
         }
+
         @Override
         void renderBoundaryShapeSegment(IBoundaryShape<T> regionIBoundaryShape) {
             if(regionIBoundaryShape.getShapeLength() == 0)
@@ -501,34 +530,63 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
             List<Point2D> inputPointList = regionIBoundaryShape.getCoordinates();
 
-            List<Point2D> cp = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
+            List<Point2D> controlPoints = new ArrayList<>();   // array of control points, as x0,y0,x1,y1,...
 
-            Point2D[] points = inputPointList.toArray(new Point2D[inputPointList.size()]);
-            int n = points.length;
 
-            for (int i = 0; i < n - 2; i++) {
-                Pair<Point2D, Point2D> controlPoints = getControlPoints(points[i], points[i + 1], points[i + 2],
+            Iterator<Point2D> firstPointIt = inputPointList.iterator();
+            Iterator<Point2D> secondPointIt = inputPointList.iterator();
+            secondPointIt.next();
+
+            Iterator<Point2D> thirdPointIt = inputPointList.iterator();
+            thirdPointIt.next();
+            thirdPointIt.next();
+
+            while(thirdPointIt.hasNext()){
+                Point2D firstPointCoord = firstPointIt.next();
+                Point2D secondPointCoord = secondPointIt.next();
+                Point2D thirdPointCoord = thirdPointIt.next();
+
+                Tuple2<Point2D, Point2D> controlPointPair = getControlPoints(firstPointCoord, secondPointCoord, thirdPointCoord,
                         ConfigurationConstants.BEZIER_CURVE_SMOOTHNESS);
-                cp.add(controlPoints.getKey());
-                cp.add(controlPoints.getValue());
+                controlPoints.add(controlPointPair.first);
+                controlPoints.add(controlPointPair.second);
             }
 
-            Point2D[] controlPoints = cp.toArray(new Point2D[cp.size()]);
+            Iterator<Point2D> inputPointIterator = inputPointList.iterator();
 
-            graphicsContext.moveTo(points[0].getX(), points[0].getY());
-            graphicsContext.quadraticCurveTo(controlPoints[0].getX(), controlPoints[0].getY(), points[1].getX(), points[1].getY());
+            Point2D currInputPoint = inputPointIterator.next();
+            graphicsContext.moveTo(currInputPoint.getX(), currInputPoint.getY());
 
-            for (int j = 1; j < n - 2; j++) {
-                Point2D controlPoint1 = controlPoints[2 * j - 1];
-                Point2D controlPoint2 = controlPoints[2 * j];
+            //index 0
+            currInputPoint = inputPointIterator.next();
 
-                graphicsContext.bezierCurveTo(controlPoint1.getX(), controlPoint1.getY(),
-                        controlPoint2.getX(), controlPoint2.getY(),
-                        points[j + 1].getX(), points[j + 1].getY());
+            Iterator<Point2D> firstControlPointIt = controlPoints.iterator();
+            Point2D firstControlPoint = firstControlPointIt.next();//index 0
+
+            graphicsContext.quadraticCurveTo(firstControlPoint.getX(), firstControlPoint.getY(), currInputPoint.getX(), currInputPoint.getY());
+            currInputPoint = inputPointIterator.next(); //index 1
+
+            Iterator<Point2D> secondControlPointIt = controlPoints.iterator();
+            secondControlPointIt.next();                             //index 0
+            Point2D secondControlPoint = secondControlPointIt.next();//index 1
+
+            while (secondControlPointIt.hasNext()){
+                firstControlPoint = firstControlPointIt.next();
+                secondControlPoint = secondControlPointIt.next();
+
+                graphicsContext.bezierCurveTo(firstControlPoint.getX(), firstControlPoint.getY(),
+                        secondControlPoint.getX(), secondControlPoint.getY(),
+                        currInputPoint.getX(), currInputPoint.getY());
+
+
+                firstControlPoint = firstControlPointIt.next();
+                secondControlPoint = secondControlPointIt.next();
+
+                currInputPoint = inputPointIterator.next();
             }
 
-            graphicsContext.quadraticCurveTo(controlPoints[controlPoints.length - 1].getX(), controlPoints[controlPoints.length - 1].getY(),
-                    points[points.length - 1].getX(), points[points.length - 1].getY());
+            graphicsContext.quadraticCurveTo(secondControlPoint.getX(), secondControlPoint.getY(),
+                    currInputPoint.getX(), currInputPoint.getY());
         }
     }
 }

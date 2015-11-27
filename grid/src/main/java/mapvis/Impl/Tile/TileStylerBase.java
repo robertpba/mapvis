@@ -192,7 +192,11 @@ public class TileStylerBase<T> implements TileStyler<T> {
         private final DoubleProperty labelLevelToShow;
         private final BooleanProperty showLabels;
 
-        public StylerUIElements(ObjectProperty<Color> background, DoubleProperty maxBorderLevelToShow, DoubleProperty maxRegionLevelToShow, DoubleProperty labelLevelToShow, BooleanProperty showLabels) {
+        public StylerUIElements(ObjectProperty<Color> background,
+                                DoubleProperty maxBorderLevelToShow,
+                                DoubleProperty maxRegionLevelToShow,
+                                DoubleProperty labelLevelToShow,
+                                BooleanProperty showLabels) {
             this.background = background;
             this.maxBorderLevelToShow = maxBorderLevelToShow;
             this.maxRegionLevelToShow = maxRegionLevelToShow;

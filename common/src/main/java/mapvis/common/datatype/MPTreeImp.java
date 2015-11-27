@@ -49,6 +49,21 @@ public class MPTreeImp<T> implements Tree2<T> {
     }
 
     @Override
+    public T getParentAtLevel(T node, int level) {
+        T result = null;
+        if(node != null){
+            List<T> pathToNodeA = getPathToNode(node);
+
+            if(level >= pathToNodeA.size()){
+                result = node;
+            }else{
+                result = pathToNodeA.get(level);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public Set<T> getNodes(){
         checkDirty();
         return Collections.unmodifiableSet(o2n.keySet());

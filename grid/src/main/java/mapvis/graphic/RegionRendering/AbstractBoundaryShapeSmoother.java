@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import mapvis.common.datatype.Tree2;
 import mapvis.common.datatype.Tuple2;
+import mapvis.models.Border;
 import mapvis.models.IBoundaryShape;
 import mapvis.models.LeafRegion;
 
@@ -117,6 +118,15 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
         smoothBoundaryShapes.clear();
     }
 
+
+    public static<T> Tuple2<T, T> getSeparatedRegionsAtBorder(Border<T> border, int maxLevel, Tree2<T> tree){
+        T nodeA = border.getNodeA();
+        T nodeB = border.getNodeB();
+        T regionNodeA = tree.getParentAtLevel(nodeA, maxLevel);
+        T regionNodeB = tree.getParentAtLevel(nodeB, maxLevel);
+        return new Tuple2<>(regionNodeA, regionNodeB);
+    }
+
     /**
      * This method summarizes subsequent BoundaryShapes that have the same neighbouring regions
      * to one combined longer BoundaryShape. The smaller the maximum region/border level shown
@@ -139,8 +149,8 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
         IBoundaryShape<T> currBoundaryShape = null;
 
         for (IBoundaryShape<T> tBoundaryShape : regionIBoundaryShape) {
-            //request the neighbors seperated by the regions in the current visualization
-            Tuple2<T, T> separatedRegions = tBoundaryShape.getSeperatedRegionsID(maxShownRegionLevel, tree);
+            //request the neighbors separated by the regions in the current visualization
+            Tuple2<T, T> separatedRegions = getSeparatedRegionsAtBorder(tBoundaryShape.getFirstBorder(), maxShownRegionLevel, tree);
 
             if ( (prevSeparatedRegions != null) && (!prevSeparatedRegions.hasSameTupleElements(separatedRegions) ) ){
                 //neighboring regions changed

@@ -6,14 +6,18 @@ import mapvis.graphic.RegionRendering.BoundaryShapeUtils;
 import java.util.*;
 /**
  * Created by dacc on 10/26/2015.
+ * LeafRegions correspond to the LeafNodes of the Tree. LeafRegions
+ * store the borders of all levels and parent Regions are able to
+ * request the Borders of their level for calculating the BoundaryShape
+ * defined by the Borders.
  */
 public class LeafRegion<T> extends Region<T> {
-    boolean areBodersOrdered;
+
     protected List<Border<T>> borders;
+
     public LeafRegion(T o, int level) {
         super(Collections.emptyList(), o, level);
         this.borders = new ArrayList<>();
-        this.areBodersOrdered = false;
     }
 
     public List<Border<T>> getBorders() {
@@ -25,12 +29,12 @@ public class LeafRegion<T> extends Region<T> {
         if(borders.size() == 0)
             return Collections.EMPTY_LIST;
 
-        List<IBoundaryShape<T>> IBoundaryShapes = new ArrayList<>();
+        List<IBoundaryShape<T>> boundaryShapes = new ArrayList<>();
         for (Border<T> border : this.borders) {
-            IBoundaryShapes.add(border.calcBoundaryShape());
+            boundaryShapes.add(border.calcBoundaryShape());
         }
-        List<List<IBoundaryShape<T>>> ordererBoundaryShapeList = BoundaryShapeUtils.orderBoundaryShapes(IBoundaryShapes);
-        return ordererBoundaryShapeList;
+
+        return BoundaryShapeUtils.orderBoundaryShapes(boundaryShapes);
     }
 
     public void addBorder(Border<T> border) {

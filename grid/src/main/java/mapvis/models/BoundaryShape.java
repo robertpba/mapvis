@@ -11,59 +11,21 @@ import java.util.*;
  * Created by dacc on 11/24/2015.
  */
 public class BoundaryShape<T> implements IBoundaryShape<T>, Iterable<Point2D> {
+
     public Border<T> border;
-//    private List<Double> xCoords;
-//    private List<Double> yCoords;
     private List<Point2D> shapeCoordinates;
     public int level;
     public Color color;
 
-
-
     //BoundaryShapes are according to Region-Borders. Region-Borders may have ordering of the coordinates depending
-    //the region to be rendered => coordinatesNeedToBeReversed is true if the stored xCoordinates, yCoordinates have to be reversed
+    //the region to be rendered => coordinatesNeedToBeReversed is true if the stored shapeCoordinates have to be reversed
     //for rendering. Only then the concatenated coordinates can be connected to a correct path
     public boolean coordinatesNeedToBeReversed;
-
-//    public BoundaryShape(List<Double> xCoords, List<Double> yCoords, Border<T> border) {
-//        this.xCoords = xCoords;
-//        this.yCoords = yCoords;
-//        this.border = border;
-//        this.coordinatesNeedToBeReversed = false;
-//    }
 
     public BoundaryShape(List<Point2D> shapeCoordinates, Border<T> tBorder) {
         this.border = tBorder;
         this.coordinatesNeedToBeReversed = false;
         this.shapeCoordinates = shapeCoordinates;
-    }
-
-    @Override
-    public Tuple2<T, T> getSeperatedRegionsID(int maxLevel, Tree2<T> tree){
-        T nodeA = border.getNodeA();
-        T nodeB = border.getNodeB();
-        T regionNodeA = null;
-        T regionNodeB = null;
-        if(nodeA != null){
-            List<T> pathToNodeA = tree.getPathToNode(nodeA);
-
-            if(maxLevel >= pathToNodeA.size()){
-                regionNodeA = nodeA;
-            }else{
-                regionNodeA = pathToNodeA.get(maxLevel);
-            }
-
-        }
-        if(nodeB != null){
-            List<T> pathToNodeB = tree.getPathToNode(nodeB);
-
-            if(maxLevel >= pathToNodeB.size()){
-                regionNodeB = nodeB;
-            }else{
-                regionNodeB = pathToNodeB.get(maxLevel);
-            }
-        }
-        return new Tuple2<>(regionNodeA, regionNodeB);
     }
 
     @Override
@@ -170,56 +132,6 @@ public class BoundaryShape<T> implements IBoundaryShape<T>, Iterable<Point2D> {
         this.shapeCoordinates = coordinates;
     }
 
-//    @Override
-//    public void setXCoords(List<Double> xCoords) {
-//        this.xCoords = xCoords;
-//    }
-//
-//    @Override
-//    public void setYCoords(List<Double> yCoords) {
-//        this.yCoords = yCoords;
-//    }
-
-//    @Override
-//    public List<Double> getXCoords() {
-//        if(coordinatesNeedToBeReversed) {
-//            Collections.reverse(xCoords);
-//            Collections.reverse(yCoords);
-//            coordinatesNeedToBeReversed = false;
-//        }
-//        return xCoords;
-//    }
-//
-//    @Override
-//    public List<Double> getYCoords() {
-//        if(coordinatesNeedToBeReversed) {
-//            Collections.reverse(xCoords);
-//            Collections.reverse(yCoords);
-//            coordinatesNeedToBeReversed = false;
-//        }
-//        return yCoords;
-//    }
-//
-//    @Override
-//    public double[] getXCoordsArray() {
-//        return xCoords.stream().mapToDouble(Double::doubleValue).toArray();
-//    }
-//
-//    @Override
-//    public double[] getYCoordsArray() {
-//        return yCoords.stream().mapToDouble(Double::doubleValue).toArray();
-//    }
-
-//    @Override
-//    public void setXCoords(double[] xCoords) {
-//        this.xCoords = xCoords;
-//    }
-//
-//    @Override
-//    public void setYCoords(double[] yCoords) {
-//        this.yCoords = yCoords;
-//    }
-
     @Override
     public int getLevel() {
         return border.getLevel();
@@ -258,15 +170,7 @@ public class BoundaryShape<T> implements IBoundaryShape<T>, Iterable<Point2D> {
         return new Iterator<Point2D>(){
             private int currIndex = 0;
             private Iterator<Point2D> iterator = shapeCoordinates.iterator();
-//            private ListIterator<Point2D> listIterator = null;
-//            {
-//                if(coordinatesNeedToBeReversed){
-//                    listIterator = shapeCoordinates.listIterator(shapeCoordinates.size() - 1);
-//                }else{
-//                    listIterator = shapeCoordinates.listIterator();
-//                }
-//
-//            }
+
             public boolean hasNext() {
                 if(currIndex < shapeCoordinates.size())
                     return true;
