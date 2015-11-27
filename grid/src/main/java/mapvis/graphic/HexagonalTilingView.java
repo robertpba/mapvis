@@ -21,7 +21,9 @@ import mapvis.graphic.RegionRendering.IRegionAreaStyler;
 import mapvis.graphic.RegionRendering.IRegionStyler;
 import mapvis.graphic.RegionRendering.ITreeVisualizationRenderer;
 import mapvis.graphic.RegionRendering.RegionRenderer;
-import mapvis.models.*;
+import mapvis.models.ConfigurationConstants;
+import mapvis.models.Grid;
+import mapvis.models.Region;
 
 import java.io.IOException;
 

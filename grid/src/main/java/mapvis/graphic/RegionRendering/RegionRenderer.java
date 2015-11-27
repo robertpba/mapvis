@@ -3,16 +3,18 @@ package mapvis.graphic.RegionRendering;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
-import javafx.util.Pair;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tuple2;
 import mapvis.graphic.HexagonalTilingView;
-import mapvis.models.*;
+import mapvis.models.ConfigurationConstants;
+import mapvis.models.IBoundaryShape;
+import mapvis.models.Region;
+import mapvis.models.Tile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import static mapvis.graphic.RegionRendering.AbstractBoundaryShapeSmoother.BoundaryShapesWithReverseInformation;
 
 /**

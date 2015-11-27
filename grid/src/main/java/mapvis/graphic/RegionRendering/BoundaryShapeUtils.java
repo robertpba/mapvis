@@ -1,12 +1,12 @@
 package mapvis.graphic.RegionRendering;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.geometry.Point2D;
-import mapvis.common.datatype.Tree2;
-import mapvis.common.datatype.Tuple2;
-import mapvis.models.*;
+import mapvis.models.IBoundaryShape;
+import mapvis.models.UndirectedEdgeHashMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by dacc on 11/6/2015.

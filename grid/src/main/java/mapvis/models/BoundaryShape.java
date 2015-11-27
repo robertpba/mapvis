@@ -2,10 +2,10 @@ package mapvis.models;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import mapvis.common.datatype.Tree2;
-import mapvis.common.datatype.Tuple2;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by dacc on 11/24/2015.

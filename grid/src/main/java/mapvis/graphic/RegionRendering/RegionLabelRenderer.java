@@ -8,7 +8,6 @@ import mapvis.common.datatype.INode;
 import mapvis.models.IBoundaryShape;
 import mapvis.models.Region;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

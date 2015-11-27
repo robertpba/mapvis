@@ -1,8 +1,6 @@
 package mapvis.models;
 
 import javafx.geometry.Point2D;
-import mapvis.common.datatype.Tree2;
-import mapvis.common.datatype.Tuple2;
 
 import java.util.List;
 

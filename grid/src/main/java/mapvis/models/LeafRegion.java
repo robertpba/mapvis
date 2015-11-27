@@ -3,7 +3,9 @@ package mapvis.models;
 import javafx.geometry.Point2D;
 import mapvis.graphic.RegionRendering.BoundaryShapeUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /**
  * Created by dacc on 10/26/2015.
  * LeafRegions correspond to the LeafNodes of the Tree. LeafRegions

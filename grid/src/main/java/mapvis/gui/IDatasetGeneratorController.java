@@ -4,8 +4,6 @@ import javafx.event.ActionEvent;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.MPTreeImp;
 
-import java.io.FileNotFoundException;
-
 /**
  * Created by dacc on 10/12/2015.
  */

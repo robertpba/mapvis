@@ -2,7 +2,6 @@ package mapvis.graphic.HexagonRendering;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,8 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import mapvis.common.datatype.INode;
 import mapvis.common.datatype.Tree2;
-import mapvis.graphic.HexagonRendering.HexagonRender;
-import mapvis.graphic.HexagonRendering.TileStyler;
 import mapvis.graphic.HexagonalTilingView;
 import mapvis.graphic.RegionRendering.ITreeVisualizationRenderer;
 import mapvis.models.Dir;

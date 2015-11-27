@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
-import mapvis.Impl.*;
+import mapvis.Impl.HashMapGrid;
 import mapvis.Impl.Region.RampRegionColorStyler;
 import mapvis.Impl.Region.RandomRegionColorStyler;
 import mapvis.Impl.Tile.RampColorStyler;

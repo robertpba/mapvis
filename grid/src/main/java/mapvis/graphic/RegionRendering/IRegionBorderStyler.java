@@ -2,7 +2,6 @@ package mapvis.graphic.RegionRendering;
 
 import javafx.scene.paint.Color;
 import mapvis.models.Border;
-import mapvis.models.Dir;
 
 /**
  * Created by dacc on 11/12/2015.

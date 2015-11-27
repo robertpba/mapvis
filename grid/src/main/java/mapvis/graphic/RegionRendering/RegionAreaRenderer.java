@@ -1,10 +1,11 @@
 package mapvis.graphic.RegionRendering;
 
-import javafx.scene.canvas.*;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.FillRule;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import mapvis.common.datatype.INode;
-
 import mapvis.models.Region;
 
 import java.util.List;
