@@ -8,6 +8,12 @@ import mapvis.models.IBoundaryShape;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class renders the borders/IBoundaryShapes of Regions. Thereby it is
+ * ensured that each Border is rendered only once. Rendering of the borders is
+ * performed using the provided BoundaryShapeRenderer and according to the
+ * settings stored in the IRegionBorderStyler.
+ */
 public class RegionBorderRenderer {
 
     private RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer;
@@ -31,23 +37,21 @@ public class RegionBorderRenderer {
     }
 
 
-    public void drawBorder(IRegionStyler<INode> styler,
-                           List<AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation<INode>> regionBorders) {
+    public void drawBorder(IRegionBorderStyler<INode> styler,
+                           List<AbstractBoundaryShapeSmoother.BoundaryShapesWithReverseInformation<INode>> regionBorders) {
         if(shapeRenderer == null)
             return;
 
 //        graphicsContext.save();
-//        ObservableList<Node> children = view.getChildren();
 //        graphicsContext.setLineJoin(StrokeLineJoin.MITER);
-        for (AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation<INode> regionParts : regionBorders) {
+        for (AbstractBoundaryShapeSmoother.BoundaryShapesWithReverseInformation<INode> regionParts : regionBorders) {
              for (Tuple2<IBoundaryShape<INode>, Boolean> regionPartTuple : regionParts) {
                  IBoundaryShape<INode> regionPart = regionPartTuple.first;
                  if ( !isSingleSideBorderRenderingEnabled  || regionPart.getFirstBorder().getRenderID() != renderID) {
                     if(styler.isBorderVisible(regionPart.getFirstBorder())){
                         graphicsContext.beginPath();
-                        shapeRenderer.renderBoundaryShape(regionPart);
+                        shapeRenderer.renderBoundaryShapeSegment(regionPart);
                         graphicsContext.setLineWidth(styler.getBorderWidth(regionPart.getFirstBorder()));
-//                        graphicsContext.setLineWidth(2);
                         graphicsContext.stroke();
                         drawIndex++;
                     }
@@ -71,6 +75,11 @@ public class RegionBorderRenderer {
 //        graphicsContext.restore();
     }
 
+    /**
+     * For each new rendering phase a random ID is generated.
+     * This ID is then used to detect whether one Border was
+     * already rendered or not.
+     */
     public void initForNextRenderingPhase() {
         this.renderID = getNextRenderID();
         this.drawIndex = 0;

@@ -15,6 +15,9 @@ import java.util.Map;
 
 /**
  * Created by dacc on 11/12/2015.
+ * This class is used to render the labels of the Regions. The
+ * location of calculated as the center of all coordinates of the
+ * BoundaryShapes defining the border of the region.
  */
 public class RegionLabelRenderer {
 
@@ -31,17 +34,20 @@ public class RegionLabelRenderer {
         if(!regionStyler.isLabelVisible(region)){
             return;
         }
+
         Point2D labelPos = null;
         INode nodeItem = region.getNodeItem();
+        //calc the location or reuse previously calculated position
         if(!iNodeToLabelPos.containsKey(nodeItem)){
             labelPos = calcLabelPos(boundaryShapes);
             iNodeToLabelPos.put(nodeItem, labelPos);
         }else{
             labelPos = iNodeToLabelPos.get(nodeItem );
         }
-        graphicsContext.setFont(new Font(graphicsContext.getFont().getName(), 30));
+
+        graphicsContext.setFont(new Font(graphicsContext.getFont().getName(), 25));
         graphicsContext.setStroke(Color.BLACK);
-        graphicsContext.setLineWidth(3);
+        graphicsContext.setLineWidth(2.5);
         graphicsContext.strokeText(nodeItem.getLabel(), labelPos.getX(), labelPos.getY());
 //        graphicsContext.restore();
     }
@@ -51,6 +57,7 @@ public class RegionLabelRenderer {
 
         Point2D sumOfCoordinates = new Point2D(0, 0);
         int numOfCoords = 0;
+        //calc the position as the center of all coordinates of the IBoundaryShapes
         for (List<IBoundaryShape<INode>> regionIBoundaryShape : regionBoundaryShapes) {
             if (regionIBoundaryShape.size() == 0)
                 continue;
@@ -62,6 +69,8 @@ public class RegionLabelRenderer {
                 }
             }
         }
+
+        //avoid mutliplication by 1.0/0
         if(numOfCoords == 0)
             return sumOfCoordinates;
 

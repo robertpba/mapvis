@@ -1,20 +1,16 @@
 package mapvis.graphic;
 
-import com.sun.javafx.geom.AreaOp;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Path;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 import mapvis.common.datatype.INode;
@@ -44,7 +40,7 @@ public class HexagonalTilingView extends Pane {
     private ObjectProperty<IRegionStyler<INode>> regionStyler = new SimpleObjectProperty<>();
 
     private ObjectProperty<ConfigurationConstants.RenderingMethod> renderingMethod = new SimpleObjectProperty<>();
-    private ObjectProperty<ConfigurationConstants.SimplificationMethod> simplificationMethod = new SimpleObjectProperty<>();
+    private ObjectProperty<ConfigurationConstants.BoundaryShapeSmoothingMethod> simplificationMethod = new SimpleObjectProperty<>();
     private DoubleProperty simplificationTolerance = new SimpleDoubleProperty(ConfigurationConstants.SIMPLIFICATION_TOLERANCE);
     private BooleanProperty useHQDouglasSimplification = new SimpleBooleanProperty(ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
 
@@ -266,14 +262,14 @@ public class HexagonalTilingView extends Pane {
         this.renderingMethod.set(renderingMethod);
     }
 
-    public ObjectProperty<ConfigurationConstants.SimplificationMethod> simplificationMethodProperty() {
+    public ObjectProperty<ConfigurationConstants.BoundaryShapeSmoothingMethod> simplificationMethodProperty() {
         return simplificationMethod;
     }
-    public ConfigurationConstants.SimplificationMethod getSimplificationMethod() {
+    public ConfigurationConstants.BoundaryShapeSmoothingMethod getSimplificationMethod() {
         return simplificationMethod.get();
     }
-    public void setSimplificationMethod(ConfigurationConstants.SimplificationMethod simplificationMethod) {
-        this.simplificationMethod.set(simplificationMethod);
+    public void setSimplificationMethod(ConfigurationConstants.BoundaryShapeSmoothingMethod boundaryShapeSmoothingMethod) {
+        this.simplificationMethod.set(boundaryShapeSmoothingMethod);
     }
 
     public DoubleProperty simplificationToleranceProperty() {
@@ -378,8 +374,8 @@ public class HexagonalTilingView extends Pane {
             updateHexagons();
         }
     }
-    private void onBoundarySimplificationMethodChanged(ObservableValue<? extends ConfigurationConstants.SimplificationMethod> observable,
-                                          ConfigurationConstants.SimplificationMethod oldValue, ConfigurationConstants.SimplificationMethod newValue){
+    private void onBoundarySimplificationMethodChanged(ObservableValue<? extends ConfigurationConstants.BoundaryShapeSmoothingMethod> observable,
+                                          ConfigurationConstants.BoundaryShapeSmoothingMethod oldValue, ConfigurationConstants.BoundaryShapeSmoothingMethod newValue){
         if(ConfigurationConstants.USE_REGION_RENDERING){
             RegionRenderer regionRenderer = (RegionRenderer) this.renderer;
             regionRenderer.setBoundarySimplificationMethod(newValue);

@@ -4,16 +4,18 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import mapvis.common.datatype.INode;
-import mapvis.graphic.HexagonalTilingView;
 
 import mapvis.models.Region;
 
 import java.util.List;
 
+/**
+ * This class is used to render the area of Regions according to the
+ * IRegionStyler. Rendering is performed using the @BoundaryShapeRenderer
+ */
 public class RegionAreaRenderer {
 
     private final GraphicsContext graphicsContext;
-    private final HexagonalTilingView view;
     private RegionRenderer.BoundaryShapeRenderer<INode> shapeRenderer;
 
 
@@ -21,14 +23,13 @@ public class RegionAreaRenderer {
         this.shapeRenderer = shapeRenderer;
     }
 
-    public RegionAreaRenderer(GraphicsContext graphicsContext, HexagonalTilingView view) {
+    public RegionAreaRenderer(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.shapeRenderer = null;
-        this.view = view;
     }
 
     public void drawArea(final IRegionStyler<INode> regionStyler, final Region<INode> regionToDraw,
-                         final List<AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation<INode>> innerAndOuterBoundaryShapes) {
+                         final List<AbstractBoundaryShapeSmoother.BoundaryShapesWithReverseInformation<INode>> innerAndOuterBoundaryShapes) {
         if(shapeRenderer == null)
             return;
 
@@ -43,8 +44,8 @@ public class RegionAreaRenderer {
 
         graphicsContext.beginPath();
 
-        for (AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation<INode> singleBoundaryShape : innerAndOuterBoundaryShapes) {
-            shapeRenderer.renderBoundaryShape(singleBoundaryShape);
+        for (AbstractBoundaryShapeSmoother.BoundaryShapesWithReverseInformation<INode> singleBoundaryShape : innerAndOuterBoundaryShapes) {
+            shapeRenderer.renderClosedBoundaryShapeArea(singleBoundaryShape);
         }
 
         graphicsContext.setLineCap(StrokeLineCap.ROUND);

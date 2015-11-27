@@ -13,6 +13,15 @@ import java.util.*;
  */
 public class BoundaryShapeUtils {
 
+    /**
+     * This method orders given IBoundaryShapes: IBoundaryShapes are ordered, so they can be rendered one after
+     * another by connecting them to a closed path. Since a Region can have outer and inner Borders (e.g. if
+     * Region contains a lake), closed ordered IBoundaryShapes are stored separated in the returned List.
+     * @param boundaryShapes
+     * @param <T> the node type of the IBoundaryShape
+     * @return List of ordered IBoundaryShapes. Each List element contains a list BoundaryShapes defining one circular
+     * Boundary
+     */
     public static <T> List<List<IBoundaryShape<T>>> orderBoundaryShapes(List<IBoundaryShape<T>> boundaryShapes) {
         if(boundaryShapes.isEmpty())
             return Collections.emptyList();

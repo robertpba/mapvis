@@ -19,14 +19,14 @@ public class ConfigurationConstants {
         Direct
     };
 
-    public enum SimplificationMethod{
+    public enum BoundaryShapeSmoothingMethod {
         DouglasPeucker,
         Average,
         None
     };
 
     public static final RenderingMethod RENDERING_METHOD_DEFAULT = RenderingMethod.Direct;
-    public static final SimplificationMethod SIMPLIFICATION_METHOD_DEFAULT = SimplificationMethod.None;
+    public static final BoundaryShapeSmoothingMethod SIMPLIFICATION_METHOD_DEFAULT = BoundaryShapeSmoothingMethod.None;
 
 
     //UDC Tree

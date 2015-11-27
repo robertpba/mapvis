@@ -49,7 +49,7 @@ public class ChartController implements Initializable  {
     public Slider levelsToShowSlider;
 
     @FXML
-    private ComboBox<ConfigurationConstants.SimplificationMethod> simplificationMethodComboBox;
+    private ComboBox<ConfigurationConstants.BoundaryShapeSmoothingMethod> simplificationMethodComboBox;
     @FXML
     public ComboBox<ConfigurationConstants.RenderingMethod> renderingMethodComboBox;
     @FXML
@@ -138,8 +138,8 @@ public class ChartController implements Initializable  {
         }
         renderingMethodComboBox.getSelectionModel().select(ConfigurationConstants.RENDERING_METHOD_DEFAULT);
         simplificationMethodComboBox.valueProperty().bindBidirectional(chart.simplificationMethodProperty());
-        for (ConfigurationConstants.SimplificationMethod simplificationMethod : ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT.values()) {
-            simplificationMethodComboBox.getItems().add(simplificationMethod);
+        for (ConfigurationConstants.BoundaryShapeSmoothingMethod boundaryShapeSmoothingMethod : ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT.values()) {
+            simplificationMethodComboBox.getItems().add(boundaryShapeSmoothingMethod);
         }
         simplificationMethodComboBox.valueProperty().addListener(this::onSimplificationSelectionChanged);
         simplificationMethodComboBox.getSelectionModel().select(ConfigurationConstants.SIMPLIFICATION_METHOD_DEFAULT);
@@ -148,9 +148,9 @@ public class ChartController implements Initializable  {
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> chart.updateHexagons());
     }
 
-    private void onSimplificationSelectionChanged(ObservableValue<? extends ConfigurationConstants.SimplificationMethod> observable,
-                                                       ConfigurationConstants.SimplificationMethod oldValue, ConfigurationConstants.SimplificationMethod newValue){
-        if(newValue == ConfigurationConstants.SimplificationMethod.DouglasPeucker){
+    private void onSimplificationSelectionChanged(ObservableValue<? extends ConfigurationConstants.BoundaryShapeSmoothingMethod> observable,
+                                                       ConfigurationConstants.BoundaryShapeSmoothingMethod oldValue, ConfigurationConstants.BoundaryShapeSmoothingMethod newValue){
+        if(newValue == ConfigurationConstants.BoundaryShapeSmoothingMethod.DouglasPeucker){
             HQDouglasPeuckerSimplifCheckBox.setVisible(true);
             douglasPeuckerToleranceSlider.setVisible(true);
         }else{

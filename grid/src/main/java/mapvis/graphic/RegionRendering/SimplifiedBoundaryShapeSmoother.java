@@ -6,15 +6,19 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import mapvis.models.IBoundaryShape;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerator<T> {
+/**
+ * This class is used to smooth IBoundaryShapes by simplifying them
+ * using the Douglas-Peucker algorithm.
+ * @param <T>
+ */
+public class SimplifiedBoundaryShapeSmoother<T> extends AbstractBoundaryShapeSmoother<T> {
     private float tolerance;
     private boolean useHighQuality;
 
-    public SimplifiedRegionPathGenerator(GraphicsContext graphicsContext, float tolerance, boolean useHighQuality) {
+    public SimplifiedBoundaryShapeSmoother(GraphicsContext graphicsContext, float tolerance, boolean useHighQuality) {
         super(graphicsContext);
         this.tolerance = tolerance;
         this.useHighQuality = useHighQuality;
@@ -37,8 +41,8 @@ public class SimplifiedRegionPathGenerator<T> extends AbstractRegionPathGenerato
     }
 
     @Override
-    void createPathForBoundaryShape(IBoundaryShape<T> partialRegionBoundary) {
-        List<Point2D> shapePoints =partialRegionBoundary.getCoordinates();
+    void smoothBoundaryShape(IBoundaryShape<T> partialRegionBoundary) {
+        List<Point2D> shapePoints = partialRegionBoundary.getCoordinates();
 
         Point2D[] simplifiedPoints = simplifyPoints(shapePoints);
 

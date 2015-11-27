@@ -13,34 +13,45 @@ import mapvis.models.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import static mapvis.graphic.RegionRendering.AbstractRegionPathGenerator.BoundaryShapesWithReverseInformation;
+import static mapvis.graphic.RegionRendering.AbstractBoundaryShapeSmoother.BoundaryShapesWithReverseInformation;
 
 /**
  * Created by dacc on 10/26/2015.
+ * This class is used to Render the Regions created for each Tree Node.
+ * This Renderer first renders the Area of the Region using the @RegionAreaRenderer,
+ * then the Borders using the @RegionBorderRenderer and
+ * finally the Labels of the Nodes using the @RegionLabelRenderer. The rendering
+ * is performed according to the Rendering configuration of the UI which is stored
+ * and implemented in the @IRegionStyler, @AbstractBoundaryShapeSmoother and @BoundaryShapeRenderer.
  */
 public class RegionRenderer implements ITreeVisualizationRenderer {
 
     private final Canvas canvas;
-    private final RegionLabelRenderer regionLabelRenderer;
     private final HexagonalTilingView view;
+
     private final RegionAreaRenderer regionAreaRenderer;
     private final RegionBorderRenderer regionBorderRenderer;
-    private AbstractRegionPathGenerator<INode> boundarySimplificationAlgorithm;
-    private Region regionToDraw;
+    private final RegionLabelRenderer regionLabelRenderer;
+
+    private AbstractBoundaryShapeSmoother<INode> boundarySimplificationAlgorithm;
+
+    private Region rootRegion;
 
     public RegionRenderer(HexagonalTilingView view, Canvas canvas) {
         System.out.println("Creating: " + this.getClass().getName());
 
         this.view = view;
         this.canvas = canvas;
+
         GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
 
-        this.regionAreaRenderer = new RegionAreaRenderer(graphicsContext2D, view);
+        this.regionAreaRenderer = new RegionAreaRenderer(graphicsContext2D);
         this.regionBorderRenderer = new RegionBorderRenderer(graphicsContext2D);
         this.regionLabelRenderer = new RegionLabelRenderer(graphicsContext2D);
         this.regionBorderRenderer.setIsSingleSideBorderRenderingEnabled(true);
+
         setRenderingMethod(ConfigurationConstants.RENDERING_METHOD_DEFAULT);
-        setBoundarySimplificationMethod(ConfigurationConstants.SimplificationMethod.None);
+        setBoundarySimplificationMethod(ConfigurationConstants.BoundaryShapeSmoothingMethod.None);
     }
 
 
@@ -56,7 +67,9 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
     public void renderScene(final Point2D topleftBorder, final Point2D bottomRightBorder) {
         regionAreaRenderer.initForNextRenderingPhase();
         regionBorderRenderer.initForNextRenderingPhase();
+
         drawRegion(topleftBorder, bottomRightBorder);
+
         regionAreaRenderer.finishRenderingPhase();
         regionBorderRenderer.finishRenderingPhase();
     }
@@ -73,9 +86,10 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
     public void drawRegion(final Point2D topleftBorder, final Point2D bottomRightBorder) {
 
-        if(regionToDraw == null)
+        if(rootRegion == null)
             return;
-        GraphicsContext g = canvas.getGraphicsContext2D();
+
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 //        Path path = new Path();
 //
 //        MoveTo moveTo = new MoveTo();
@@ -119,17 +133,27 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 //        if(true)
 //            return;
 
-        g.save();
+        graphicsContext.save();
 
 
         IRegionStyler<INode> regionStyler = view.getRegionStyler();
-        int maxChildrenToCollect =
-                Math.max(regionStyler.getMaxBorderLevelToShow(),
-                regionStyler.getMaxRegionLevelToShow());
+
+        //request the maximum region level to be collected. Area and Borders have
+        //to have the same shape, so smoothing of the borders has to be performed on the
+        //highest visualized level to ensure consistency between area and border.
+
+        //IRegionStyler ensures that Regions with level > MaxRegionLevel, but which were
+        //collected for because maxBorderLevel > MaxRegionLevel, are assigned to color of the
+        //parent with is of maxRegionLevel.
+
+        //IRegionStyler also ensures that Borders with level > maxBorderLevel are not rendered
+        int maxChildrenToCollect = Math.max(regionStyler.getMaxBorderLevelToShow(),
+                                            regionStyler.getMaxRegionLevelToShow());
 
 
-        List<Region<INode>> childRegionsAtLevel = regionToDraw.getChildRegionsAtLevel(maxChildrenToCollect);
+        List<Region<INode>> childRegionsAtLevel = rootRegion.getChildRegionsAtLevel(maxChildrenToCollect);
 
+        //smooth the BoundaryShaps of Regions
         List<Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>>> regionToSimplifiedBorders = new ArrayList<>();
         for (Region<INode> region : childRegionsAtLevel) {
             List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
@@ -137,27 +161,30 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
             for (List<IBoundaryShape<INode>> iBoundaryShapes : boundaryShape) {
                 BoundaryShapesWithReverseInformation<INode> simplifiedBoundaryShape = boundarySimplificationAlgorithm.
-                        generatePathForBoundaryShape(iBoundaryShapes, maxChildrenToCollect, view.getTree());
+                        summarizeAndSmoothBoundaryShape(iBoundaryShapes, maxChildrenToCollect, view.getTree());
                 simplifiedBorders.add(simplifiedBoundaryShape);
             }
             regionToSimplifiedBorders.add(new Tuple2<>(region, simplifiedBorders));
         }
 
+        //Render the Areas
         for (Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>> regionAndSimplifiedBorder : regionToSimplifiedBorders) {
             regionAreaRenderer.drawArea(regionStyler, regionAndSimplifiedBorder.first, regionAndSimplifiedBorder.second);
         }
 
+        //Render the Borders
         for (Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>> regionAndSimplifiedBorder : regionToSimplifiedBorders) {
             regionBorderRenderer.drawBorder(regionStyler, regionAndSimplifiedBorder.second);
         }
 
 
+        //Render the Borders
         if(regionStyler.getShowLabels()){
             List<Region<INode>> labelRegions = null;
             if(regionStyler.getMaxLabelLevelToShow() == maxChildrenToCollect){
                 labelRegions = childRegionsAtLevel;
             }else{
-                labelRegions = regionToDraw.getChildRegionsAtLevel(regionStyler.getMaxLabelLevelToShow());
+                labelRegions = rootRegion.getChildRegionsAtLevel(regionStyler.getMaxLabelLevelToShow());
             }
 
             for (Region<INode> region : labelRegions) {
@@ -166,11 +193,11 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             }
         }
 
-        g.restore();
+        graphicsContext.restore();
     }
 
     public void setRootRegion(Region<INode> rootRegion) {
-        this.regionToDraw = rootRegion;
+        this.rootRegion = rootRegion;
     }
 
     public void setRenderingMethod(ConfigurationConstants.RenderingMethod renderingMethod) {
@@ -191,32 +218,35 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         this.regionBorderRenderer.setShapeRenderer(shapeRenderer);
     }
 
-
-    public void setBoundarySimplificationMethod(ConfigurationConstants.SimplificationMethod boundarySimplificationMethod) {
+    public void setBoundarySimplificationMethod(ConfigurationConstants.BoundaryShapeSmoothingMethod boundaryShapeSmoothingMethod) {
         GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
-        switch (boundarySimplificationMethod) {
+        switch (boundaryShapeSmoothingMethod) {
             case DouglasPeucker:
                 this.boundarySimplificationAlgorithm =
-                        new SimplifiedRegionPathGenerator<>(graphicsContext2D,
+                        new SimplifiedBoundaryShapeSmoother<>(graphicsContext2D,
                                 ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
                 break;
             case Average:
                 this.boundarySimplificationAlgorithm =
-                        new MovingAverageRegionPathGenerator<>(graphicsContext2D);
+                        new MovingAverageBoundaryShapeSmoother<>(graphicsContext2D);
                 break;
             case None:
                 this.boundarySimplificationAlgorithm =
-                        new DirectRegionPathGenerator<>(graphicsContext2D);
+                        new DirectBoundaryShapeSmoother<>(graphicsContext2D);
                 break;
         }
     }
 
     public void setBoundarySimplificationAlgorithmSettings(float simplificationTolerance, boolean useHighQualityDouglasPeucker){
-        if(this.boundarySimplificationAlgorithm instanceof SimplifiedRegionPathGenerator){
-            ((SimplifiedRegionPathGenerator) boundarySimplificationAlgorithm).setSettings(simplificationTolerance, useHighQualityDouglasPeucker);
+        if(this.boundarySimplificationAlgorithm instanceof SimplifiedBoundaryShapeSmoother){
+            ((SimplifiedBoundaryShapeSmoother) boundarySimplificationAlgorithm).setSettings(simplificationTolerance, useHighQualityDouglasPeucker);
         }
     }
 
+    /**
+     * Abstract class for Rendering the IBoundaryShapes
+     * @param <T>
+     */
     protected abstract class BoundaryShapeRenderer<T>{
         protected GraphicsContext graphicsContext;
 
@@ -224,10 +254,26 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             this.graphicsContext = graphicsContext;
         }
 
-        abstract void renderBoundaryShape(BoundaryShapesWithReverseInformation<T> regionIBoundaryShape);
-        abstract void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape);
+        /**
+         * This method renders the area defined by the @BoundaryShapesWithReverseInformation
+         * as a Path.
+         * @param regionIBoundaryShape the regionBoundaryShape defining the area of a Region
+         */
+        abstract void renderClosedBoundaryShapeArea(BoundaryShapesWithReverseInformation<T> regionIBoundaryShape);
+
+        /**
+         * This method renders the boundaryShape as Path. regionIBoundaryShape is not supposed
+         * to be a closed area but also a part of a border.
+         * @param regionIBoundaryShape the IBoundaryShape to be rendered
+         */
+        abstract void renderBoundaryShapeSegment(IBoundaryShape<T> regionIBoundaryShape);
     }
 
+    /**
+     * This class renders IBoundaryShapes by connecting subsequent IBoundaryShape coordinates
+     * with a quadratic curve.
+     * @param <T> the NodeType of the tree
+     */
     private class QuadraticCurveBoundaryShapeRenderer<T> extends BoundaryShapeRenderer<T>{
 
         public QuadraticCurveBoundaryShapeRenderer(GraphicsContext graphicsContext) {
@@ -235,16 +281,19 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         }
 
         @Override
-        public void renderBoundaryShape(BoundaryShapesWithReverseInformation<T> regionBoundaryShape) {
+        public void renderClosedBoundaryShapeArea(BoundaryShapesWithReverseInformation<T> regionBoundaryShape) {
             boolean firstRenderPass = true;
 
             Point2D closingEndPoint = null;
 
             for (Tuple2<IBoundaryShape<T>, Boolean> tIBoundaryShape : regionBoundaryShape) {
+                //recover the reverse information
                 tIBoundaryShape.first.setCoordinatesNeedToBeReversed(tIBoundaryShape.second);
                 closingEndPoint = renderBoundaryShapeAsLoop(tIBoundaryShape.first, firstRenderPass);
                 firstRenderPass = false;
             }
+
+            //close the area by a line
             if(!firstRenderPass)
                 graphicsContext.lineTo(closingEndPoint.getX(), closingEndPoint.getY());
         }
@@ -256,12 +305,14 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             Iterator<Point2D> currCoordinateIterator = regionIBoundaryShape.iterator();
             Iterator<Point2D> nextCoordinateIterator = regionIBoundaryShape.iterator();
             Point2D nextCoordinate = nextCoordinateIterator.next();
+            Point2D currCoordinate = null;
 
             while (nextCoordinateIterator.hasNext()){
 
-                Point2D currCoordinate = currCoordinateIterator.next();
+                currCoordinate = currCoordinateIterator.next();
                 nextCoordinate = nextCoordinateIterator.next();
 
+                //calc midPoint between two subsequent coordinates
                 Point2D midPoint = currCoordinate.add(nextCoordinate).multiply(0.5);;
 
                 if (moveToRequired) {
@@ -269,10 +320,13 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                     moveToRequired = false;
                 }
                 if(newSummarizedShape){
+                    //current point to midPoint is connected by single lines
                     graphicsContext.lineTo(currCoordinate.getX(), currCoordinate.getY());
                     graphicsContext.lineTo(midPoint.getX(), midPoint.getY());
                     newSummarizedShape = false;
                 }else{
+                    //quadratic curve from last mid point to current midPoint and using the current
+                    //coordinate as control point
                     graphicsContext.quadraticCurveTo(currCoordinate.getX(), currCoordinate.getY(),
                             midPoint.getX(), midPoint.getY());
                 }
@@ -283,7 +337,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
 
 
         @Override
-        void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape) {
+        void renderBoundaryShapeSegment(IBoundaryShape<T> regionIBoundaryShape) {
             if(regionIBoundaryShape.getShapeLength() == 0)
                 return;
 
@@ -292,6 +346,11 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         }
     }
 
+    /**
+     * This @BoundaryShapeRenderer renders the IBoundaryShape coordinates by connecting
+     * them by lines.
+     * @param <T>
+     */
     private class DirectPolylineBoundaryShapeRenderer<T> extends BoundaryShapeRenderer<T>{
 
         public DirectPolylineBoundaryShapeRenderer(GraphicsContext graphicsContext) {
@@ -299,13 +358,15 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         }
 
         @Override
-        public void renderBoundaryShape(BoundaryShapesWithReverseInformation<T> regionBoundaryShape) {
+        public void renderClosedBoundaryShapeArea(BoundaryShapesWithReverseInformation<T> regionBoundaryShape) {
             if(regionBoundaryShape.size() == 0)
                 return;
-
+            //first renderpass always requires moveTo as initial point of the path
             boolean firstRenderPass = true;
             for (Tuple2<IBoundaryShape<T>, Boolean> boundaryShape : regionBoundaryShape) {
+                //recover the reverse information
                 boundaryShape.first.setCoordinatesNeedToBeReversed(boundaryShape.second);
+
                 renderBoundaryShapeAsLoop(boundaryShape.first, firstRenderPass);
                 firstRenderPass = false;
             }
@@ -323,11 +384,22 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         }
 
         @Override
-        void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape) {
+        void renderBoundaryShapeSegment(IBoundaryShape<T> regionIBoundaryShape) {
             renderBoundaryShapeAsLoop(regionIBoundaryShape, true);
         }
     }
 
+    /**
+     * This @BoundaryShapeRenderer renders the @IBoundaryShapes by fitting Bezier curves. The general
+     * algorithm is implemented according to the explanations and source code available on:
+     *
+     * http://scaledinnovation.com/analytics/splines/aboutSplines.html
+     * view-source:http://scaledinnovation.com/analytics/splines/splines.html
+     *
+     * Source code is published under  GNU General Public License of version 3 or later with
+     * Copyright 2010 by Robin W. Spencer.
+     * @param <T> the ItemType of the Nodes of the Tree
+     */
     private class BezierCurveBoundaryShapeRenderer<T> extends BoundaryShapeRenderer<T>{
 
         public BezierCurveBoundaryShapeRenderer(GraphicsContext graphicsContext) {
@@ -359,7 +431,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         }
 
         @Override
-        public void renderBoundaryShape(BoundaryShapesWithReverseInformation<T> boundaryShapesWithReverseInformation) {
+        public void renderClosedBoundaryShapeArea(BoundaryShapesWithReverseInformation<T> boundaryShapesWithReverseInformation) {
             List<Tuple2<IBoundaryShape<T>, Boolean>> boundaryShapeAndOrdering = boundaryShapesWithReverseInformation;
             if(boundaryShapeAndOrdering.size() == 0)
                 return;
@@ -417,7 +489,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             }
         }
         @Override
-        void renderBoundaryShape(IBoundaryShape<T> regionIBoundaryShape) {
+        void renderBoundaryShapeSegment(IBoundaryShape<T> regionIBoundaryShape) {
             if(regionIBoundaryShape.getShapeLength() == 0)
                 return;
 
