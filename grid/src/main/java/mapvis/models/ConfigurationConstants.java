@@ -29,7 +29,7 @@ public class ConfigurationConstants {
     public static final BoundaryShapeSmoothingMethod SIMPLIFICATION_METHOD_DEFAULT = BoundaryShapeSmoothingMethod.None;
 
 
-    //UDC Tree
+    //UDC Tree: downloadable at http://www.udcdata.info/
     public static final String UDC_FILE_PATH = "D:/downloads/datasets/Libraries/UDC/udcsummary-skos.rdf";
 
     //Random Tree
