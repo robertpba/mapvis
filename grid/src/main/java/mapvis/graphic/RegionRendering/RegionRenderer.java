@@ -272,7 +272,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                 currCoordinate = currCoordinateIterator.next();
                 nextCoordinate = nextCoordinateIterator.next();
 
-                //calc midPoint between two subsequent coordinates
+                //calc secondPoint between two subsequent coordinates
                 Point2D midPoint = currCoordinate.add(nextCoordinate).multiply(0.5);;
 
                 if (moveToRequired) {
@@ -280,12 +280,12 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
                     moveToRequired = false;
                 }
                 if(newSummarizedShape){
-                    //current point to midPoint is connected by single lines
+                    //current point to secondPoint is connected by single lines
                     graphicsContext.lineTo(currCoordinate.getX(), currCoordinate.getY());
                     graphicsContext.lineTo(midPoint.getX(), midPoint.getY());
                     newSummarizedShape = false;
                 }else{
-                    //quadratic curve from last mid point to current midPoint and using the current
+                    //quadratic curve from last mid point to current secondPoint and using the current
                     //coordinate as control point
                     graphicsContext.quadraticCurveTo(currCoordinate.getX(), currCoordinate.getY(),
                             midPoint.getX(), midPoint.getY());

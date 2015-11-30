@@ -96,9 +96,20 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
         if(startPoint.hashCode() > endPoint.hashCode()){
             identifier.startPoint = startPoint;
             identifier.endPoint = endPoint;
+            if(boundaryShapeStep.getShapeLength() > 2){
+                //required to avoid e.g. wrong matches if start and endpoint are connected
+                //by a path with the same path lengths
+                identifier.secondPoint = boundaryShapeStep.getCoordinateAtIndex(1);
+            }
         }else{
             identifier.startPoint = endPoint;
             identifier.endPoint = startPoint;
+            if(boundaryShapeStep.getShapeLength() > 2){
+                //required to avoid e.g. wrong matches if start and endpoint are connected
+                //by a path with the same path lengths
+                identifier.secondPoint = LeafRegion.
+                        roundToCoordinatesTo4Digits(boundaryShapeStep.getCoordinateAtIndex(boundaryShapeStep.getShapeLength() - 2));
+            }
         }
         identifier.borderLength = boundaryShapeStep.getShapeLength();
         return identifier;
@@ -198,14 +209,17 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
     protected class BorderIdentifier{
         Point2D startPoint;
         Point2D endPoint;
+        Point2D secondPoint;
         int borderLength;
 
+        BorderIdentifier(){
+            startPoint = new Point2D(0, 0);
+            secondPoint = new Point2D(0, 0);
+            endPoint = new Point2D(0, 0);
+        }
         @Override
         public int hashCode() {
-            return startPoint.hashCode() + endPoint.hashCode() * endPoint.hashCode() + borderLength;
-//            int result = startPoint != null ? startPoint.hashCode() : 0;
-//            result = 31 * result + (endPoint != null ? endPoint.hashCode() : 0);
-//            return result;
+            return startPoint.hashCode() + endPoint.hashCode() * endPoint.hashCode() + secondPoint.hashCode() + borderLength;
         }
 
         @Override
@@ -217,11 +231,12 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
                 return false;
             if(!this.endPoint.equals(otherID.endPoint))
                 return false;
-//            if(!this.midPoint.equals(otherID.midPoint))
-//                return false;
-            if(borderLength != ((MovingAverageBoundaryShapeSmoother.BorderIdentifier) obj).borderLength)
+            if(borderLength != otherID.borderLength)
                 return false;
-
+            if(this.secondPoint != null) {
+                if (!this.secondPoint.equals(otherID.secondPoint))
+                    return false;
+            }
             return true;
         }
     }
