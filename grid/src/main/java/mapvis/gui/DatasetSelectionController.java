@@ -101,7 +101,30 @@ public class DatasetSelectionController implements Initializable {
     }
 
     @FXML
-    private void begin(ActionEvent event) {
+    private void generateTree(ActionEvent event) {
+        logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
+        logTextToInfoArea("generating tree..");
+        if(selectedDatasetGenerator == null){
+            return;
+        }
+        MPTreeImp<INode> generatedTree = null;
+        try {
+            generatedTree = selectedDatasetGenerator.generateTree(event);
+        } catch (Exception e) {
+            logTextToInfoArea("tenerating tree failed: " + e);
+            return;
+        }
+        setTreeModel(generatedTree);
+        logTextToInfoArea("tree generation finished");
+        lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
+        logTextToInfoArea(lastTreeStatistics.get() != null ?
+                lastTreeStatistics.get().createStatisticsOverview(true)
+                : "error reading statistics");
+    }
+
+
+    @FXML
+    private void renderTree(ActionEvent event) {
         long startTime = System.currentTimeMillis();
         logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
         logTextToInfoArea("generating map..");
@@ -126,29 +149,6 @@ public class DatasetSelectionController implements Initializable {
 
         logTextToInfoArea("rendering finished");
     }
-
-    @FXML
-    private void generateTree(ActionEvent event) {
-        logTextToInfoArea(INFO_AREA_PROCESS_SEPARATOR);
-        logTextToInfoArea("generating tree..");
-        if(selectedDatasetGenerator == null){
-            return;
-        }
-        MPTreeImp<INode> generatedTree = null;
-        try {
-            generatedTree = selectedDatasetGenerator.generateTree(event);
-        } catch (Exception e) {
-            logTextToInfoArea("tenerating tree failed: " + e);
-            return;
-        }
-        setTreeModel(generatedTree);
-        logTextToInfoArea("tree generation finished");
-        lastTreeStatistics.set(NodeUtils.getTreeDepthStatistics(generatedTree.getRoot()));
-        logTextToInfoArea(lastTreeStatistics.get() != null ?
-                lastTreeStatistics.get().createStatisticsOverview(true)
-                : "error reading statistics");
-    }
-
 
     private void setTreeModel(MPTreeImp<INode> treeModel)
     {

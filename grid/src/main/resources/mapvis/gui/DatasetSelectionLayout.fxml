@@ -15,14 +15,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label prefHeight="11.0" prefWidth="96.0" text="Input Type:" />
+                <Label prefHeight="11.0" prefWidth="96.0" text="Data Source:" />
             <ComboBox fx:id="inputSourceComboBox" onAction="#onSelectionChanged" prefHeight="25.0" prefWidth="224.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
             </children>
         </GridPane>
       <HBox prefHeight="25.0" prefWidth="296.0">
          <children>
             <Button fx:id="generateTreeButton" mnemonicParsing="false" onAction="#generateTree" text="Generate tree" />
-            <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
+            <Button mnemonicParsing="false" onAction="#renderTree" text="Render tree" />
             <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="93.0" text="Max Level" textAlignment="CENTER" wrapText="true">
                <opaqueInsets>
                   <Insets />

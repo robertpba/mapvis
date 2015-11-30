@@ -86,13 +86,15 @@ public class HexagonalTilingView extends Pane {
         simplificationMethod.addListener(this::onBoundarySimplificationMethodChanged);
         useHQDouglasSimplification.addListener(this::onUseHQDouglasSimplificationChanged);
         simplificationTolerance.addListener(this::onSimplificationToleranceChanged);
+
+        tree.addListener((observable, oldValue, newValue) -> initHexagonTilingView());
     }
+
 
     private void initHexagonTilingView(){
         setPrefHeight(1000);
         setPrefWidth(1000);
-//        this.setMaxWidth(500);
-//        this.setMaxHeight(50);
+
         canvas = new Canvas();
         canvas.widthProperty().bind(this.widthProperty());
         canvas.heightProperty().bind(this.heightProperty());
@@ -102,23 +104,8 @@ public class HexagonalTilingView extends Pane {
         }else {
             renderer = new HexagonTreeRender(this, tileStyler, grid, tree);
         }
-//        panel = new Group();
-//        panel.prefHeight(1000);
-//        panel.prefWidth(1000);
-//
-//        double width = getWidth();
-//        double width1 = getLayoutBounds().getWidth();
-//
-//
-//        Scene scene = new Scene(panel, 1000, 1000);
 
-//
-//        Path path = new Path();
-//
-//        getChildren().addAll(panel);
         getChildren().addAll(canvas);
-
-
     }
 
     public static Point2D hexagonalToPlain(int x, int y){

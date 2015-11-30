@@ -11,28 +11,23 @@
     <center>
         <TabPane>
             <tabs>
-                <Tab closable="false" text="InputSource">
+                <Tab closable="false" text="Data Source">
                     <content>
                         <fx:include fx:id="datasetSelection" source="DatasetSelectionLayout.fxml"/>
                     </content>
                 </Tab>
-                <Tab closable="false" text="Canvas">
+                <Tab closable="false" text="Visualization">
                     <content>
                         <fx:include fx:id="chart" source="chart.fxml"/>
                     </content>
                 </Tab>
-                <Tab closable="false" text="Nodes">
+                <Tab closable="false" text="Tree">
                     <content>
                         <TreeTableView fx:id="treeTableView" prefHeight="200.0" prefWidth="200.0">
                             <columns>
                                 <TreeTableColumn minWidth="50.0" prefWidth="110.0" text="ID">
                                     <cellValueFactory>
                                         <TreeItemPropertyValueFactory property="id"/>
-                                    </cellValueFactory>
-                                </TreeTableColumn>
-                                <TreeTableColumn minWidth="45.0" prefWidth="47.0" text="Level">
-                                    <cellValueFactory>
-                                        <TreeItemPropertyValueFactory property="maxHexagonLevelToShow"/>
                                     </cellValueFactory>
                                 </TreeTableColumn>
                                 <TreeTableColumn minWidth="0.0" prefWidth="89.0" text="Size">

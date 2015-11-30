@@ -35,7 +35,7 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
     private final RegionBorderRenderer regionBorderRenderer;
     private final RegionLabelRenderer regionLabelRenderer;
 
-    private AbstractBoundaryShapeSmoother<INode> boundarySimplificationAlgorithm;
+    private AbstractBoundaryShapeSmoother<INode> boundarysSmoothingAlgorithm;
 
     private Region rootRegion;
 
@@ -92,48 +92,6 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
             return;
 
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-//        Path path = new Path();
-//
-//        MoveTo moveTo = new MoveTo();
-//        moveTo.setX(100.0f);
-//        moveTo.setY(100.0f);
-//
-//        HLineTo hLineTo = new HLineTo();
-//        hLineTo.setX(300.0f);
-//
-//        VLineTo vLineTo = new VLineTo();
-//        vLineTo.setY(300.0f);
-//
-//
-//        path.getElements().addAll(moveTo, hLineTo, vLineTo);
-//        path.setStroke(Color.RED);
-//
-//
-//
-//        Path path2 = new Path();
-//
-//        MoveTo moveTo2 = new MoveTo();
-//        moveTo2.setX(300.0f);
-//        moveTo2.setY(300.0f);
-//
-//        HLineTo hLineTo3 = new HLineTo();
-//        hLineTo3.setX(100.0f);
-//
-//        VLineTo hLineTo2 = new VLineTo();
-//        hLineTo2.setY(100.0f);
-//
-//        path2.getElements().addAll(moveTo2, hLineTo3, hLineTo2);
-//        path2.setStroke(Color.YELLOW);
-//
-//        Path path3 = new Path();
-//        path3.getElements().addAll(path.getElements());
-//        path3.getElements().addAll(path2.getElements());
-//        path3.setStroke(Color.TRANSPARENT);
-//        path3.setFill(Color.GREEN);
-//
-//        this.view.getChildren().addAll(/*path, path2, */path3);
-//        if(true)
-//            return;
 
         graphicsContext.save();
 
@@ -156,26 +114,26 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         List<Region<INode>> childRegionsAtLevel = rootRegion.getChildRegionsAtLevel(maxChildrenToCollect);
 
         //smooth the BoundaryShaps of Regions
-        List<Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>>> regionToSimplifiedBorders = new ArrayList<>();
+        List<Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>>> regionToSmoothedBorders = new ArrayList<>();
         for (Region<INode> region : childRegionsAtLevel) {
             List<List<IBoundaryShape<INode>>> boundaryShape = region.getBoundaryShape();
             List<BoundaryShapesWithReverseInformation<INode>> simplifiedBorders = new ArrayList<>();
 
             for (List<IBoundaryShape<INode>> iBoundaryShapes : boundaryShape) {
-                BoundaryShapesWithReverseInformation<INode> simplifiedBoundaryShape = boundarySimplificationAlgorithm.
+                BoundaryShapesWithReverseInformation<INode> simplifiedBoundaryShape = boundarysSmoothingAlgorithm.
                         summarizeAndSmoothBoundaryShape(iBoundaryShapes, maxChildrenToCollect, view.getTree());
                 simplifiedBorders.add(simplifiedBoundaryShape);
             }
-            regionToSimplifiedBorders.add(new Tuple2<>(region, simplifiedBorders));
+            regionToSmoothedBorders.add(new Tuple2<>(region, simplifiedBorders));
         }
 
         //Render the Areas
-        for (Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>> regionAndSimplifiedBorder : regionToSimplifiedBorders) {
+        for (Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>> regionAndSimplifiedBorder : regionToSmoothedBorders) {
             regionAreaRenderer.drawArea(regionStyler, regionAndSimplifiedBorder.first, regionAndSimplifiedBorder.second);
         }
 
         //Render the Borders
-        for (Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>> regionAndSimplifiedBorder : regionToSimplifiedBorders) {
+        for (Tuple2<Region<INode>, List<BoundaryShapesWithReverseInformation<INode>>> regionAndSimplifiedBorder : regionToSmoothedBorders) {
             regionBorderRenderer.drawBorder(regionStyler, regionAndSimplifiedBorder.second);
         }
 
@@ -224,24 +182,24 @@ public class RegionRenderer implements ITreeVisualizationRenderer {
         GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
         switch (boundaryShapeSmoothingMethod) {
             case DouglasPeucker:
-                this.boundarySimplificationAlgorithm =
+                this.boundarysSmoothingAlgorithm =
                         new SimplifiedBoundaryShapeSmoother<>(graphicsContext2D,
                                 ConfigurationConstants.SIMPLIFICATION_TOLERANCE, ConfigurationConstants.USE_HIGH_QUALITY_SIMPLIFICATION);
                 break;
             case Average:
-                this.boundarySimplificationAlgorithm =
+                this.boundarysSmoothingAlgorithm =
                         new MovingAverageBoundaryShapeSmoother<>(graphicsContext2D);
                 break;
             case None:
-                this.boundarySimplificationAlgorithm =
+                this.boundarysSmoothingAlgorithm =
                         new DirectBoundaryShapeSmoother<>(graphicsContext2D);
                 break;
         }
     }
 
     public void setBoundarySimplificationAlgorithmSettings(float simplificationTolerance, boolean useHighQualityDouglasPeucker){
-        if(this.boundarySimplificationAlgorithm instanceof SimplifiedBoundaryShapeSmoother){
-            ((SimplifiedBoundaryShapeSmoother) boundarySimplificationAlgorithm).setSettings(simplificationTolerance, useHighQualityDouglasPeucker);
+        if(this.boundarysSmoothingAlgorithm instanceof SimplifiedBoundaryShapeSmoother){
+            ((SimplifiedBoundaryShapeSmoother) boundarysSmoothingAlgorithm).setSettings(simplificationTolerance, useHighQualityDouglasPeucker);
         }
     }
 

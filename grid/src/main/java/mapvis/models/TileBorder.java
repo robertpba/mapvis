@@ -22,16 +22,18 @@ public class TileBorder {
             new int[]{10, 11,  0,  1},
             new int[]{ 2,  3,  4,  5},
             new int[]{ 8,  9, 10, 11},
-            new int[]{ 4,  5,  6, 7},
+            new int[]{ 4,  5,  6,  7},
             new int[]{ 6,  7,  8,  9},
     };
     static final double COS30 = Math.cos(Math.toRadians(30));
+
     static final double sideLength = 10;
+
     public static final double[] POINTS = new double[]{
-        - sideLength/2, - sideLength*COS30, //  0 - 1
-                sideLength/2, - sideLength*COS30,  // 5  c  2
-                sideLength,     0.0,               //  4 - 3
-                sideLength/2,   sideLength*COS30,
+                - sideLength/2, - sideLength*COS30, //  0 - 1
+                  sideLength/2, - sideLength*COS30,  // 5  c  2
+                  sideLength,     0.0,               //  4 - 3
+                  sideLength/2,   sideLength*COS30,
                 - sideLength/2,   sideLength*COS30,
                 - sideLength,     0.0
     };

@@ -56,17 +56,6 @@ public class RegionBorderRenderer {
                         drawIndex++;
                     }
                 }
-//                else{
-//                    graphicsContext.save();
-//                    graphicsContext.setStroke(Color.RED);
-//                    int midIndex = regionPart.getShapeLength()/2;
-//                    Point2D midPoint = new Point2D(regionPart.getXCoordinateAtIndex(midIndex), regionPart.getYCoordinateAtIndex(midIndex));
-//                    graphicsContext.strokeLine(regionPart.getXCoordinateStartpoint(), regionPart.getYCoordinateStartpoint(),
-//                            midPoint.getX(), midPoint.getY());
-//                    graphicsContext.strokeLine(midPoint.getX(), midPoint.getY(),
-//                            regionPart.getXCoordinateEndpoint(), regionPart.getYCoordinateEndpoint());
-//                    graphicsContext.restore();
-//                }
 
                 regionPart.getFirstBorder().setRenderID(renderID);
                 totalDrawnBorder++;

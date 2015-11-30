@@ -22,12 +22,6 @@ import java.util.*;
  */
 public abstract class AbstractBoundaryShapeSmoother<T> {
 
-    public static class BoundaryShapesWithReverseInformation<T> extends ArrayList<Tuple2<IBoundaryShape<T>, Boolean>>{
-        public void addBoundaryShapeWithOrdering(IBoundaryShape<T> boundaryShape, Boolean ordering){
-            this.add(new Tuple2<IBoundaryShape<T>, Boolean>(boundaryShape, ordering));
-        }
-    }
-
     private Map<BorderIdentifier, IBoundaryShape<T>> smoothBoundaryShapes = new HashMap<>();
     protected final GraphicsContext graphicsContext;
 
@@ -49,7 +43,7 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
         //combine IBoundaryShapes if possible
         List<IBoundaryShape<T>> summarizedBoundaryShape = summarizeBoundaryShapesWithSameNeighbours(singleBoundaryShape, maxToCollect, tree);
 
-        BoundaryShapesWithReverseInformation<T> smoothedBoudaryShapesWithReverseInformation = new BoundaryShapesWithReverseInformation<>();
+        BoundaryShapesWithReverseInformation<T> smoothedBoundaryShapesWithReverseInformation = new BoundaryShapesWithReverseInformation<>();
 
         //smooth BoundaryShape or use cached one
         for (IBoundaryShape<T> summarizedBoundaryStep : summarizedBoundaryShape) {
@@ -71,16 +65,16 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
                 }
 //                System.out.println("Reusing Border");
                 //store reverse information for rendering
-                smoothedBoudaryShapesWithReverseInformation.addBoundaryShapeWithOrdering(iBoundaryShapes, reverseRequired);
+                smoothedBoundaryShapesWithReverseInformation.addBoundaryShapeWithOrdering(iBoundaryShapes, reverseRequired);
             }else{
                 smoothBoundaryShape(summarizedBoundaryStep);
                 smoothBoundaryShapes.put(borderID, summarizedBoundaryStep);
-                smoothedBoudaryShapesWithReverseInformation.addBoundaryShapeWithOrdering(summarizedBoundaryStep, summarizedBoundaryStep.isCoordinatesNeedToBeReversed());
+                smoothedBoundaryShapesWithReverseInformation.addBoundaryShapeWithOrdering(summarizedBoundaryStep, summarizedBoundaryStep.isCoordinatesNeedToBeReversed());
             }
         }
 
 
-        return smoothedBoudaryShapesWithReverseInformation;
+        return smoothedBoundaryShapesWithReverseInformation;
     }
 
     private Point2D getRoundedStartPointOfBoundaryShape(IBoundaryShape<T> summarizedBoundaryStep) {
@@ -229,6 +223,12 @@ public abstract class AbstractBoundaryShapeSmoother<T> {
                 return false;
 
             return true;
+        }
+    }
+
+    public static class BoundaryShapesWithReverseInformation<T> extends ArrayList<Tuple2<IBoundaryShape<T>, Boolean>>{
+        public void addBoundaryShapeWithOrdering(IBoundaryShape<T> boundaryShape, Boolean ordering){
+            this.add(new Tuple2<IBoundaryShape<T>, Boolean>(boundaryShape, ordering));
         }
     }
 }

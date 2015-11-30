@@ -1,6 +1,7 @@
 package mapvis.Impl.Region;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.paint.Color;
 import mapvis.Impl.Tile.TileStylerBase;
 import mapvis.common.datatype.Tree2;
@@ -29,7 +30,12 @@ public class RandomRegionColorStyler<T> extends RegionStylerBase<T> {
         this.background = stylerUIElements.getBackground();
         this.rand = new Random(seed);
         rec(tree.get().getRoot());
-        this.tree.addListener((observable, oldValue, newValue) -> rec(tree.get().getRoot()));
+        this.tree.addListener(this::treeChangedListener);
+    }
+
+    private void treeChangedListener(ObservableValue<? extends Tree2<T>> observable, Tree2<T> oldValue, Tree2<T> newValue){
+        this.map.clear();
+        rec(tree.get().getRoot());
     }
 
     private void rec(T node){
